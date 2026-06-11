@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+@theme {
+  /* CinPressa brand, per the official CINPRESSA Logo Spec Sheet (locked) */
+  --color-ink: #14304f;
+  --color-body: #46586b;
+  --color-muted: #76879a;
+  --color-sky: #3aaed8;
+  --color-blue: #2261ad;
+  --color-orange: #f9a81a;
+  --color-pale: #bed7ec;
+  --color-mist: #f4f8fc;
+  --color-line: #dce7f1;
+  --color-deep: #0d2342;
+
+  --font-sans: var(--font-montserrat), "Montserrat", "Gotham", system-ui, sans-serif;
+
+  --ease-brand: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #ffffff;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-pale);
+  color: var(--color-ink);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.anim-rise {
+  animation: rise 1s var(--ease-brand) both;
+}
+
+.anim-orbit {
+  animation: orbit 180s linear infinite;
+  transform-origin: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-rise,
+  .anim-orbit {
+    animation: none;
+  }
+}
