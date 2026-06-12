@@ -34,7 +34,7 @@ export function SiteNav() {
             scrolled ? "h-[60px]" : "h-[76px]"
           }`}
         >
-          <a href="#top" aria-label="CinPressa Pharma, back to top" className="shrink-0">
+          <a href="/" aria-label="CinPressa Pharma, home" className="shrink-0">
             <Image
               src="/cinpressa-logo.png"
               alt="CinPressa Pharma"
@@ -47,11 +47,14 @@ export function SiteNav() {
             />
           </a>
           <nav aria-label="Primary" className="flex items-center gap-6 lg:gap-8">
-            <a href="https://cinrx.com" className="nav-link hidden sm:block">
-              CinRx
+            <a href="/" className="nav-link hidden sm:block">
+              Home
+            </a>
+            <a href="/contact" className="nav-link hidden sm:block">
+              Contact
             </a>
             <a
-              href="https://cinrx.com/contact#partnering"
+              href="/contact"
               className="group inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-blue px-5 py-2.5 text-[0.8rem] font-medium text-white transition-all duration-300 hover:bg-ink hover:shadow-[0_14px_28px_-14px_rgba(34,97,173,0.55)] active:translate-y-px"
             >
               Partner with us
