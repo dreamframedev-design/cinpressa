@@ -2,10 +2,17 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { ArrowIcon } from "@/components/arrow-icon";
+
+const sectionLinks = [
+  { id: "overview", label: "Overview" },
+  { id: "model", label: "The model" },
+] as const;
 
 export function SiteNav() {
   const sentinelRef = useRef<HTMLDivElement>(null);
   const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState<string | null>(null);
 
   useEffect(() => {
     const sentinel = sentinelRef.current;
@@ -18,51 +25,76 @@ export function SiteNav() {
     return () => observer.disconnect();
   }, []);
 
+  // Scrollspy: a section is active while it crosses the upper-middle band
+  // of the viewport.
+  useEffect(() => {
+    const sections = sectionLinks
+      .map((link) => document.getElementById(link.id))
+      .filter((el): el is HTMLElement => el !== null);
+    if (sections.length === 0) return;
+
+    const inView = new Set<string>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) inView.add(entry.target.id);
+          else inView.delete(entry.target.id);
+        }
+        setActive(sectionLinks.find((link) => inView.has(link.id))?.id ?? null);
+      },
+      { rootMargin: "-40% 0px -55% 0px" }
+    );
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
       <div ref={sentinelRef} aria-hidden className="absolute inset-x-0 top-0 h-px" />
       <header
-        className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
+        className={`anim-nav fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
           scrolled
-            ? "border-b border-line bg-white/85 backdrop-blur-md"
+            ? "border-b border-line bg-white/85 shadow-[0_12px_32px_-24px_rgba(13,35,66,0.25)] backdrop-blur-md"
             : "border-b border-transparent bg-transparent"
         }`}
       >
-        <div className="mx-auto flex h-[68px] max-w-7xl items-center justify-between px-6 lg:px-10">
-          <a href="#top" aria-label="CinPressa Pharma, back to top">
+        <div
+          className={`mx-auto flex max-w-7xl items-center justify-between px-6 transition-[height] duration-500 ease-brand lg:px-10 ${
+            scrolled ? "h-[60px]" : "h-[76px]"
+          }`}
+        >
+          <a href="#top" aria-label="CinPressa Pharma, back to top" className="shrink-0">
             <Image
               src="/cinpressa-logo.png"
               alt="CinPressa Pharma"
               width={768}
               height={160}
               priority
-              className="h-7 w-auto md:h-8"
+              className={`w-auto transition-all duration-500 ease-brand ${
+                scrolled ? "h-6 md:h-7" : "h-7 md:h-8"
+              }`}
             />
           </a>
-          <nav className="flex items-center gap-8">
-            <a
-              href="#overview"
-              className="hidden text-[0.82rem] font-medium text-body transition-colors hover:text-blue md:block"
-            >
-              Overview
-            </a>
-            <a
-              href="#model"
-              className="hidden text-[0.82rem] font-medium text-body transition-colors hover:text-blue md:block"
-            >
-              The model
-            </a>
-            <a
-              href="https://cinrx.com"
-              className="hidden text-[0.82rem] font-medium text-body transition-colors hover:text-blue sm:block"
-            >
+          <nav aria-label="Primary" className="flex items-center gap-6 lg:gap-8">
+            {sectionLinks.map((link) => (
+              <a
+                key={link.id}
+                href={`#${link.id}`}
+                aria-current={active === link.id ? "true" : undefined}
+                className="nav-link hidden sm:block"
+              >
+                {link.label}
+              </a>
+            ))}
+            <a href="https://cinrx.com" className="nav-link hidden md:block">
               CinRx
             </a>
             <a
               href="https://cinrx.com/contact#partnering"
-              className="inline-flex items-center rounded-full bg-blue px-5 py-2.5 text-[0.8rem] font-medium text-white transition-all duration-300 hover:bg-ink active:translate-y-px"
+              className="group inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-blue px-5 py-2.5 text-[0.8rem] font-medium text-white transition-all duration-300 hover:bg-ink hover:shadow-[0_14px_28px_-14px_rgba(34,97,173,0.55)] active:translate-y-px"
             >
               Partner with us
+              <ArrowIcon className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" />
             </a>
           </nav>
         </div>

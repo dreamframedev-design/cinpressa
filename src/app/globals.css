@@ -4,7 +4,7 @@
   /* CinPressa brand, per the official CINPRESSA Logo Spec Sheet (locked) */
   --color-ink: #14304f;
   --color-body: #46586b;
-  --color-muted: #76879a;
+  --color-muted: #5b6e83;
   --color-sky: #3aaed8;
   --color-blue: #2261ad;
   --color-orange: #f9a81a;
@@ -34,6 +34,24 @@ body {
   color: var(--color-ink);
 }
 
+:focus-visible {
+  outline: 2px solid var(--color-sky);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* ---------- Page-load choreography (hero + nav) ---------- */
+
 @keyframes rise {
   from {
     opacity: 0;
@@ -45,9 +63,53 @@ body {
   }
 }
 
+@keyframes nav-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 @keyframes orbit {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes cue {
+  0% {
+    transform: translateY(-100%);
+  }
+  55% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(100%);
   }
 }
 
@@ -55,14 +117,174 @@ body {
   animation: rise 1s var(--ease-brand) both;
 }
 
+.anim-nav {
+  animation: nav-in 0.9s var(--ease-brand) 0.5s both;
+}
+
+.anim-pop {
+  display: inline-block;
+  transform-origin: 30% 85%;
+  animation: pop 0.55s var(--ease-brand) both;
+}
+
 .anim-orbit {
   animation: orbit 180s linear infinite;
   transform-origin: center;
 }
 
+.anim-orbit-dot {
+  animation: orbit 70s linear infinite reverse;
+  transform-origin: center;
+}
+
+.anim-float {
+  animation: float 9s ease-in-out 1.4s infinite;
+}
+
+/* Scroll cue at the base of the hero */
+.scroll-cue {
+  position: relative;
+  width: 1px;
+  height: 48px;
+  overflow: hidden;
+  background: var(--color-line);
+}
+
+.scroll-cue::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--color-blue);
+  transform: translateY(-100%);
+  animation: cue 2.8s var(--ease-brand) 1.6s infinite;
+}
+
+/* Dissolve the cue while leaving the hero (scroll-driven, progressive enhancement) */
+@supports (animation-timeline: scroll()) {
+  .scroll-cue {
+    animation: cue-fade linear both;
+    /* scroll(root): the hero's overflow-hidden box is the nearest scroll
+       container, so "nearest" would never progress */
+    animation-timeline: scroll(root);
+    animation-range: 0px 260px;
+  }
+
+  @keyframes cue-fade {
+    to {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+}
+
+/* ---------- Scroll-driven reveals (Reveal component) ----------
+   Content is visible by default; .reveal-pending is added by JS only
+   to elements still below the viewport, so nothing ships hidden. */
+
+.reveal-pending {
+  opacity: 0;
+}
+
+.reveal-pending[data-reveal="rise"] {
+  transform: translateY(26px);
+}
+
+.reveal-pending[data-reveal="rise-blur"] {
+  transform: translateY(20px);
+  filter: blur(10px);
+}
+
+.reveal-pending[data-reveal="draw"] {
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.reveal-pending.reveal-in {
+  opacity: 1;
+  transform: none;
+  filter: none;
+  transition:
+    opacity 0.9s var(--ease-brand) var(--reveal-delay, 0ms),
+    transform 0.9s var(--ease-brand) var(--reveal-delay, 0ms),
+    filter 0.9s var(--ease-brand) var(--reveal-delay, 0ms);
+}
+
+/* ---------- Nav links ---------- */
+
+.nav-link {
+  position: relative;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--color-body);
+  transition: color 0.3s ease;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: -6px;
+  height: 1px;
+  background: var(--color-blue);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s var(--ease-brand);
+}
+
+.nav-link:hover {
+  color: var(--color-blue);
+}
+
+.nav-link:hover::after,
+.nav-link[aria-current]::after {
+  transform: scaleX(1);
+}
+
+.nav-link[aria-current] {
+  color: var(--color-ink);
+}
+
+/* ---------- Inline / footer link underline ---------- */
+
+.link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition:
+    background-size 0.45s var(--ease-brand),
+    color 0.3s ease;
+}
+
+.link-underline:hover,
+.group:hover .link-underline {
+  background-size: 100% 1px;
+}
+
+/* ---------- Reduced motion ---------- */
+
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   .anim-rise,
-  .anim-orbit {
+  .anim-nav,
+  .anim-pop,
+  .anim-orbit,
+  .anim-orbit-dot,
+  .anim-float {
     animation: none;
+  }
+
+  .scroll-cue::after {
+    animation: none;
+    transform: none;
+  }
+
+  .reveal-pending {
+    opacity: 1;
+    transform: none;
+    filter: none;
   }
 }
