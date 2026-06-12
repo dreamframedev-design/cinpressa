@@ -4,15 +4,9 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { ArrowIcon } from "@/components/arrow-icon";
 
-const sectionLinks = [
-  { id: "overview", label: "Overview" },
-  { id: "model", label: "The model" },
-] as const;
-
 export function SiteNav() {
   const sentinelRef = useRef<HTMLDivElement>(null);
   const [scrolled, setScrolled] = useState(false);
-  const [active, setActive] = useState<string | null>(null);
 
   useEffect(() => {
     const sentinel = sentinelRef.current;
@@ -22,29 +16,6 @@ export function SiteNav() {
       { rootMargin: "24px 0px 0px 0px" }
     );
     observer.observe(sentinel);
-    return () => observer.disconnect();
-  }, []);
-
-  // Scrollspy: a section is active while it crosses the upper-middle band
-  // of the viewport.
-  useEffect(() => {
-    const sections = sectionLinks
-      .map((link) => document.getElementById(link.id))
-      .filter((el): el is HTMLElement => el !== null);
-    if (sections.length === 0) return;
-
-    const inView = new Set<string>();
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) inView.add(entry.target.id);
-          else inView.delete(entry.target.id);
-        }
-        setActive(sectionLinks.find((link) => inView.has(link.id))?.id ?? null);
-      },
-      { rootMargin: "-40% 0px -55% 0px" }
-    );
-    sections.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
   }, []);
 
@@ -76,17 +47,7 @@ export function SiteNav() {
             />
           </a>
           <nav aria-label="Primary" className="flex items-center gap-6 lg:gap-8">
-            {sectionLinks.map((link) => (
-              <a
-                key={link.id}
-                href={`#${link.id}`}
-                aria-current={active === link.id ? "true" : undefined}
-                className="nav-link hidden sm:block"
-              >
-                {link.label}
-              </a>
-            ))}
-            <a href="https://cinrx.com" className="nav-link hidden md:block">
+            <a href="https://cinrx.com" className="nav-link hidden sm:block">
               CinRx
             </a>
             <a
