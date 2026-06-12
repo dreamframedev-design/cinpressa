@@ -34,9 +34,6 @@ export default function Home() {
                   style={{ animationDelay: "0.1s" }}
                 >
                   CinPressa
-                  <span className="anim-pop text-orange" style={{ animationDelay: "1.05s" }}>
-                    .
-                  </span>
                 </span>
               </h1>
               <p
