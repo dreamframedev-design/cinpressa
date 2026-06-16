@@ -38,7 +38,7 @@ export function SiteFooter() {
             </Reveal>
             <Reveal variant="rise-blur" delay={90}>
               <h2 className="mt-7 text-3xl font-light leading-[1.15] tracking-tight text-white md:text-4xl">
-                Partnering, investor, and investigator inquiries
+                Partnering, investor, and investigator inquiries welcome
               </h2>
             </Reveal>
           </div>
