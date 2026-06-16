@@ -40,9 +40,9 @@ export default function Home() {
                 className="anim-rise mt-6 max-w-xl text-base leading-relaxed text-body md:text-lg"
                 style={{ animationDelay: "0.3s" }}
               >
-                Advancing a differentiated cardiometabolic therapeutic toward
-                first-in-human studies, powered by CinRx&apos;s centralized
-                development engine.
+                A CinRx portfolio company advancing a best-in-class siRNA
+                (CIN-111) preventing the formation of angiotensinogen (AGT) for
+                the treatment of hypertension.
               </p>
               <div className="anim-rise mt-10" style={{ animationDelay: "0.4s" }}>
                 <a
