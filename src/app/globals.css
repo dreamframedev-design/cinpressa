@@ -209,6 +209,47 @@ p {
     filter 0.9s var(--ease-brand) var(--reveal-delay, 0ms);
 }
 
+/* ---------- SVG chart line draw (ties into the Reveal system) ----------
+   Base state is fully drawn, so the chart is visible without JS and under
+   reduced motion (Reveal never adds .reveal-pending in those cases). */
+
+.chart-line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+[data-reveal].reveal-pending .chart-line {
+  stroke-dashoffset: 1;
+}
+
+[data-reveal].reveal-in .chart-line {
+  animation: chart-dash 1.8s var(--ease-brand) var(--reveal-delay, 0ms) both;
+}
+
+@keyframes chart-dash {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Soft appear for chart markers / fills once the line has drawn */
+[data-reveal].reveal-pending .chart-fade {
+  opacity: 0;
+}
+
+[data-reveal].reveal-in .chart-fade {
+  animation: chart-fade-in 0.7s var(--ease-brand) 1s both;
+}
+
+@keyframes chart-fade-in {
+  to {
+    opacity: 1;
+  }
+}
+
 /* ---------- Nav links ---------- */
 
 .nav-link {
@@ -286,5 +327,15 @@ p {
     opacity: 1;
     transform: none;
     filter: none;
+  }
+
+  .chart-line {
+    stroke-dashoffset: 0 !important;
+    animation: none !important;
+  }
+
+  .chart-fade {
+    opacity: 1 !important;
+    animation: none !important;
   }
 }

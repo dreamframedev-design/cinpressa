@@ -4,20 +4,23 @@ import "./globals.css";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["200", "300", "400", "500", "600"],
   variable: "--font-montserrat",
   display: "swap",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://cinpressa.com"),
-  title: "CinPressa Pharma",
+  title: {
+    default: "CinPressa Pharma — A best-in-class siRNA for hypertension",
+    template: "%s · CinPressa Pharma",
+  },
   description:
-    "CinPressa Pharma is advancing a differentiated cardiometabolic therapeutic toward the clinic, powered by CinRx Pharma's centralized development engine.",
+    "CinPressa Pharma is advancing CIN-111, a best-in-class, long-acting AGT siRNA designed to establish a durable backbone of blood pressure control. A CinRx portfolio company.",
   openGraph: {
     title: "CinPressa Pharma",
     description:
-      "Advancing a differentiated cardiometabolic therapeutic toward the clinic. A CinRx Pharma portfolio company.",
+      "Advancing CIN-111, a best-in-class, long-acting AGT siRNA for hypertension. A CinRx portfolio company.",
     images: ["/cinpressa-logo.png"],
   },
 };

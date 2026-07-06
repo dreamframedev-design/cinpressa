@@ -1,4 +1,25 @@
+import Link from "next/link";
+import { ArrowIcon } from "@/components/arrow-icon";
 import { Reveal } from "@/components/reveal";
+
+const columns = [
+  {
+    heading: "Company",
+    links: [
+      { href: "/about", label: "About" },
+      { href: "/science", label: "Science" },
+      { href: "/pipeline", label: "Pipeline" },
+      { href: "/news", label: "News" },
+    ],
+  },
+  {
+    heading: "Connect",
+    links: [
+      { href: "/home", label: "Home" },
+      { href: "/contact", label: "Contact" },
+    ],
+  },
+] as const;
 
 export function SiteFooter() {
   return (
@@ -6,22 +27,22 @@ export function SiteFooter() {
       {/* Hairline ring motif carried into the footer */}
       <div
         aria-hidden
-        className="anim-orbit pointer-events-none absolute -right-36 -top-36 h-[560px] w-[560px] opacity-60"
+        className="anim-orbit pointer-events-none absolute -right-40 -top-40 h-[620px] w-[620px] opacity-60"
       >
-        <svg viewBox="0 0 560 560" className="h-full w-full">
+        <svg viewBox="0 0 620 620" className="h-full w-full">
           <circle
-            cx="280"
-            cy="280"
-            r="274"
+            cx="310"
+            cy="310"
+            r="304"
             fill="none"
             stroke="rgba(58,174,216,0.25)"
             strokeWidth="1"
             strokeDasharray="1 8"
           />
           <circle
-            cx="280"
-            cy="280"
-            r="206"
+            cx="310"
+            cy="310"
+            r="228"
             fill="none"
             stroke="rgba(255,255,255,0.07)"
             strokeWidth="1"
@@ -29,59 +50,73 @@ export function SiteFooter() {
         </svg>
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-6 pb-12 pt-20 lg:px-10">
-        {/* Partnering band */}
-        <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+      <div className="relative mx-auto max-w-7xl px-6 pb-12 pt-20 lg:px-10 lg:pt-24">
+        {/* Partnering band — the site map's closing call to action */}
+        <div className="flex flex-col gap-10 border-b border-white/10 pb-16 md:flex-row md:items-end md:justify-between">
           <div className="max-w-xl">
             <Reveal variant="draw">
               <span aria-hidden className="block h-px w-12 bg-orange" />
             </Reveal>
             <Reveal variant="rise-blur" delay={90}>
-              <h2 className="mt-7 text-3xl font-light leading-[1.15] tracking-tight text-white md:text-4xl">
-                Partnering, investor, and investigator inquiries welcome
+              <h2 className="mt-7 text-3xl font-light leading-[1.12] tracking-tight text-white md:text-[2.75rem]">
+                Let&rsquo;s advance medicine, together.
               </h2>
             </Reveal>
+            <Reveal variant="fade" delay={180}>
+              <p className="mt-5 max-w-md text-sm leading-relaxed text-white/60">
+                Partner with CinPressa to help move a differentiated AGT siRNA
+                program forward. Partnering, investment, and investigator
+                inquiries are all welcome.
+              </p>
+            </Reveal>
           </div>
+          <Reveal variant="fade" delay={160}>
+            <Link
+              href="/contact"
+              className="group inline-flex items-center gap-2.5 rounded-full bg-white px-7 py-3.5 text-sm font-medium text-deep transition-all duration-300 hover:bg-sky hover:text-white active:translate-y-px"
+            >
+              Contact the team
+              <ArrowIcon className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+            </Link>
+          </Reveal>
         </div>
 
         {/* Link columns */}
         <Reveal
           variant="fade"
           delay={120}
-          className="mt-16 grid gap-12 border-t border-white/10 pt-14 md:grid-cols-[1.4fr_1fr_1fr]"
+          className="mt-16 grid gap-12 md:grid-cols-[1.6fr_1fr_1fr_1fr]"
         >
           <div>
             <p className="text-sm font-light uppercase tracking-[0.3em] text-white">
               CinPressa <span className="text-sky">Pharma</span>
             </p>
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-white/60">
-              Advancing cardiometabolic medicine within the CinRx Pharma
-              portfolio.
+              Advancing a best-in-class, long-acting AGT siRNA (CIN-111) for a
+              durable backbone of blood pressure control.
             </p>
           </div>
-          <div>
-            <p className="text-[0.7rem] font-medium uppercase tracking-[0.18em] text-white/50">
-              Get in touch
-            </p>
-            <ul className="mt-5 space-y-3 text-sm">
-              <li>
-                <a
-                  href="/"
-                  className="link-underline text-white/70 transition-colors hover:text-white"
-                >
-                  Home
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/contact"
-                  className="link-underline text-white/70 transition-colors hover:text-white"
-                >
-                  Contact
-                </a>
-              </li>
-            </ul>
-          </div>
+
+          {columns.map((column) => (
+            <div key={column.heading}>
+              <p className="text-[0.7rem] font-medium uppercase tracking-[0.18em] text-white/50">
+                {column.heading}
+              </p>
+              <ul className="mt-5 space-y-3 text-sm">
+                {column.links.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="link-underline text-white/70 transition-colors hover:text-white"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+
           <div>
             <p className="text-[0.7rem] font-medium uppercase tracking-[0.18em] text-white/50">
               Parent company
