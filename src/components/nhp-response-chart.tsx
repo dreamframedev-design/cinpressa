@@ -158,6 +158,15 @@ export function NhpResponseChart() {
 
           {/* Sustained endpoint marker (Day 119) — the orange accent */}
           <g className="chart-fade">
+            <circle
+              cx={endpoint[0]}
+              cy={endpoint[1]}
+              r="6"
+              fill="none"
+              stroke="#F9A81A"
+              strokeWidth="1.5"
+              className="pulse-ring"
+            />
             <circle cx={endpoint[0]} cy={endpoint[1]} r="6" fill="#F9A81A" stroke="#fff" strokeWidth="2" />
             <text x={endpoint[0]} y={endpoint[1] - 16} textAnchor="end" fontSize="13" fill="#14304f" fontWeight="600">
               88% sustained

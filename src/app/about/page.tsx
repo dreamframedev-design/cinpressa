@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
@@ -74,7 +75,7 @@ export default function AboutPage() {
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
               <Reveal
                 variant="rise"
-                className="rounded-2xl border border-line bg-mist/60 p-8"
+                className="lift rounded-2xl border border-line bg-mist/60 p-8"
               >
                 <p className="text-[clamp(2.5rem,5vw,3.5rem)] font-extralight leading-none tracking-tight text-blue">
                   $1.9B
@@ -87,7 +88,7 @@ export default function AboutPage() {
               <Reveal
                 variant="rise"
                 delay={100}
-                className="rounded-2xl border border-line bg-mist/60 p-8"
+                className="lift rounded-2xl border border-line bg-mist/60 p-8"
               >
                 <p className="text-[clamp(2.5rem,5vw,3.5rem)] font-extralight leading-none tracking-tight text-blue">
                   $300M+
@@ -172,23 +173,29 @@ function CinRxModel() {
   return (
     <div className="rounded-3xl border border-line bg-white p-6 sm:p-8">
       <svg viewBox="0 0 400 300" className="h-auto w-full" role="img" aria-label="CinRx hub-and-spoke portfolio model with CinPressa as a portfolio company.">
-        {/* Spokes */}
-        {nodes.map((n) => (
+        {/* Spokes — draw outward from the hub */}
+        {nodes.map((n, i) => (
           <line
             key={`spoke-${n.label}-${n.x}`}
+            className="spoke"
+            style={{ "--i": i } as CSSProperties}
+            pathLength={1}
             x1="200"
             y1="150"
             x2={n.x}
             y2={n.y}
-            stroke={n.primary ? "#2261AD" : "#DCE7F1"}
+            stroke={n.primary ? "#2261AD" : "#BED7EC"}
             strokeWidth="1"
-            strokeDasharray={n.primary ? undefined : "1 6"}
           />
         ))}
 
-        {/* Outer nodes */}
-        {nodes.map((n) => (
-          <g key={`node-${n.label}-${n.x}`}>
+        {/* Outer nodes — appear after the spokes reach them */}
+        {nodes.map((n, i) => (
+          <g
+            key={`node-${n.label}-${n.x}`}
+            className="model-node"
+            style={{ "--i": i } as CSSProperties}
+          >
             <circle
               cx={n.x}
               cy={n.y}
@@ -211,6 +218,15 @@ function CinRxModel() {
         ))}
 
         {/* Hub */}
+        <circle
+          cx="200"
+          cy="150"
+          r="42"
+          fill="none"
+          stroke="#3AAED8"
+          strokeWidth="1.5"
+          className="pulse-ring"
+        />
         <circle cx="200" cy="150" r="42" fill="#0d2342" />
         <text x="200" y="147" textAnchor="middle" fontSize="13" fontWeight="600" fill="#ffffff">
           CinRx

@@ -70,8 +70,8 @@ export function RaasPathway() {
                 >
                   {node.highlight ? (
                     <>
+                      <span className="pulse-ring-el absolute inset-0 rounded-full border-2 border-orange" />
                       <span className="absolute inset-0 rounded-full border-2 border-orange" />
-                      <span className="absolute -inset-1 rounded-full bg-orange/10" />
                       <span className="h-2 w-2 rounded-full bg-orange" />
                     </>
                   ) : node.outcome ? null : (

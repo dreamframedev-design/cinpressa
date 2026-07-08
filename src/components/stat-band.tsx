@@ -1,4 +1,5 @@
 import { Reveal } from "@/components/reveal";
+import { CountUp } from "@/components/count-up";
 
 export type Stat = {
   value: string;
@@ -25,7 +26,7 @@ export function StatBand({ stats }: { stats: Stat[] }) {
           </dt>
           <dd className="order-1 flex items-baseline gap-1.5">
             <span className="text-[clamp(2.75rem,5vw,3.75rem)] font-extralight leading-none tracking-tight text-blue">
-              {stat.value}
+              <CountUp value={stat.value} />
             </span>
             {stat.unit ? (
               <span className="text-lg font-light text-sky">{stat.unit}</span>

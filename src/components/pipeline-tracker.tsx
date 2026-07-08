@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 type StageStatus = "complete" | "current" | "upcoming";
 
 export type Stage = {
@@ -34,15 +36,15 @@ export function PipelineTracker({ stages = defaultStages }: { stages?: Stage[] }
         />
         <span
           aria-hidden
-          className="absolute top-[10px] block h-px origin-left bg-blue"
+          className="track-progress absolute top-[10px] block h-px origin-left bg-blue"
           style={{ left: `${inset}%`, width: `${progress}%` }}
         />
-        {stages.map((stage) => (
+        {stages.map((stage, i) => (
           <li
             key={stage.name}
             className="relative flex flex-1 flex-col items-center px-2 text-center"
           >
-            <StageDot status={stage.status} />
+            <StageDot status={stage.status} index={i} />
             <StageLabel stage={stage} className="mt-5" />
           </li>
         ))}
@@ -54,9 +56,9 @@ export function PipelineTracker({ stages = defaultStages }: { stages?: Stage[] }
           aria-hidden
           className="absolute left-[10px] top-2 bottom-2 w-px bg-line"
         />
-        {stages.map((stage) => (
+        {stages.map((stage, i) => (
           <li key={stage.name} className="relative flex items-start gap-4">
-            <StageDot status={stage.status} />
+            <StageDot status={stage.status} index={i} />
             <StageLabel stage={stage} />
           </li>
         ))}
@@ -65,10 +67,15 @@ export function PipelineTracker({ stages = defaultStages }: { stages?: Stage[] }
   );
 }
 
-function StageDot({ status }: { status: StageStatus }) {
+function StageDot({ status, index }: { status: StageStatus; index: number }) {
+  const nodeStyle = { "--i": index } as CSSProperties;
+
   if (status === "complete") {
     return (
-      <span className="relative z-10 flex h-[21px] w-[21px] shrink-0 items-center justify-center rounded-full bg-blue ring-4 ring-white">
+      <span
+        className="track-node relative z-10 flex h-[21px] w-[21px] shrink-0 items-center justify-center rounded-full bg-blue ring-4 ring-white"
+        style={nodeStyle}
+      >
         <svg viewBox="0 0 12 12" className="h-3 w-3" aria-hidden>
           <path
             d="M2.5 6.2 5 8.5 9.5 3.5"
@@ -84,15 +91,21 @@ function StageDot({ status }: { status: StageStatus }) {
   }
   if (status === "current") {
     return (
-      <span className="relative z-10 flex h-[21px] w-[21px] shrink-0 items-center justify-center rounded-full bg-white ring-4 ring-white">
+      <span
+        className="track-node relative z-10 flex h-[21px] w-[21px] shrink-0 items-center justify-center rounded-full bg-white ring-4 ring-white"
+        style={nodeStyle}
+      >
+        <span className="pulse-ring-el absolute inset-0 rounded-full border-2 border-orange" />
         <span className="absolute inset-0 rounded-full border-2 border-orange" />
-        <span className="absolute -inset-1 rounded-full bg-orange/10" />
         <span className="h-2 w-2 rounded-full bg-orange" />
       </span>
     );
   }
   return (
-    <span className="relative z-10 h-[21px] w-[21px] shrink-0 rounded-full border border-line bg-white ring-4 ring-white" />
+    <span
+      className="track-node relative z-10 h-[21px] w-[21px] shrink-0 rounded-full border border-line bg-white ring-4 ring-white"
+      style={nodeStyle}
+    />
   );
 }
 
