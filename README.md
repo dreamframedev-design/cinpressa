@@ -21,8 +21,8 @@ A soft "coming soon" lock, not real auth. It keeps the in-progress build private
 
 - Set the password with the `SITE_PASSWORD` environment variable
   (`.env.local` locally; a Vercel Environment Variable in production).
-- The default fallback is `cinpressa2026` — **override it before sharing the
-  preview.** Rotating `SITE_PASSWORD` logs everyone out.
+- The default fallback is `msc123` — **override it with a private value before
+  wide sharing.** Rotating `SITE_PASSWORD` logs everyone out.
 - The typed password is never stored in the browser: a correct entry sets an
   httpOnly cookie holding an opaque token derived from the password.
 - `src/proxy.ts` protects every full-build route and redirects locked visitors

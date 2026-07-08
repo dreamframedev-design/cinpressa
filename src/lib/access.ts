@@ -20,7 +20,7 @@ export const ACCESS_MAX_AGE = 60 * 60 * 24 * 30;
 const encoder = new TextEncoder();
 
 function sitePassword(): string {
-  return process.env.SITE_PASSWORD ?? "cinpressa2026";
+  return process.env.SITE_PASSWORD ?? "msc123";
 }
 
 /** Opaque cookie value derived from the current password. Edge + Node safe. */
