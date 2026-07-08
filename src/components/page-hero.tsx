@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import { Reveal } from "@/components/reveal";
-import { PetalBloom } from "@/components/geometry";
 
 type PageHeroProps = {
   eyebrow: string;
@@ -21,22 +20,30 @@ export function PageHero({ eyebrow, title, subtitle, aside }: PageHeroProps) {
             "radial-gradient(circle, rgba(190,215,236,0.45) 0%, rgba(190,215,236,0) 65%)",
         }}
       />
-      {/* Logo-derived petal bloom, cropped off the top-right corner */}
-      <PetalBloom
-        petals={9}
-        stroke="#BED7EC"
-        tint="#3AAED8"
-        tintOpacity={0.045}
-        spin="slow"
-        className="pointer-events-none absolute -right-40 -top-44 hidden h-[560px] w-[560px] opacity-80 lg:block"
-      />
-      <PetalBloom
-        petals={6}
-        stroke="#DCE7F1"
-        dash
-        spin="slow-rev"
-        className="pointer-events-none absolute -left-28 bottom-[-120px] hidden h-[320px] w-[320px] opacity-70 md:block"
-      />
+      <div
+        aria-hidden
+        className="anim-orbit pointer-events-none absolute -right-32 top-10 hidden h-[520px] w-[520px] opacity-70 lg:block"
+      >
+        <svg viewBox="0 0 520 520" className="h-full w-full">
+          <circle
+            cx="260"
+            cy="260"
+            r="256"
+            fill="none"
+            stroke="#BED7EC"
+            strokeWidth="1"
+            strokeDasharray="1 8"
+          />
+          <circle
+            cx="260"
+            cy="260"
+            r="196"
+            fill="none"
+            stroke="#DCE7F1"
+            strokeWidth="1"
+          />
+        </svg>
+      </div>
 
       <div
         className={`relative mx-auto grid max-w-7xl gap-12 px-6 pb-16 pt-32 lg:px-10 lg:pb-24 lg:pt-44 ${

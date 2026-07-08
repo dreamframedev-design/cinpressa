@@ -8,7 +8,6 @@ import { SectionHeader } from "@/components/section-header";
 import { StatBand } from "@/components/stat-band";
 import { DosingCadence } from "@/components/dosing-cadence";
 import { PipelineTracker } from "@/components/pipeline-tracker";
-import { PetalBloom } from "@/components/geometry";
 import { Reveal } from "@/components/reveal";
 import { ArrowIcon } from "@/components/arrow-icon";
 
@@ -187,18 +186,7 @@ export default function HomePage() {
         </Section>
 
         {/* News */}
-        <Section
-          art={
-            <PetalBloom
-              petals={9}
-              stroke="#BED7EC"
-              tint="#3AAED8"
-              tintOpacity={0.04}
-              spin="slow"
-              className="absolute -right-40 top-1/2 h-[480px] w-[480px] -translate-y-1/2 opacity-70"
-            />
-          }
-        >
+        <Section>
           <div className="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
             <SectionHeader
               eyebrow="News"

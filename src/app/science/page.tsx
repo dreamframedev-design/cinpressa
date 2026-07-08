@@ -5,7 +5,7 @@ import { PageHero } from "@/components/page-hero";
 import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
 import { RaasPathway } from "@/components/raas-pathway";
-import { PetalBloom } from "@/components/geometry";
+import { MarkArt } from "@/components/geometry";
 import { Reveal } from "@/components/reveal";
 
 export const metadata: Metadata = {
@@ -93,13 +93,10 @@ export default function SciencePage() {
         <Section
           tone="mist"
           art={
-            <PetalBloom
-              petals={9}
-              stroke="#BED7EC"
-              tint="#3AAED8"
-              tintOpacity={0.05}
-              spin="slow"
-              className="absolute -right-44 -top-40 h-[560px] w-[560px] opacity-80"
+            <MarkArt
+              variant="outline"
+              color="#2261AD"
+              className="absolute -right-28 -bottom-52 h-[640px] w-auto rotate-[12deg] opacity-[0.09]"
             />
           }
         >

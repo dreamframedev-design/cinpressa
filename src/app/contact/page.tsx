@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { ContactForm } from "@/components/contact-form";
-import { PetalBloom } from "@/components/geometry";
 import { Reveal } from "@/components/reveal";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
@@ -25,14 +24,6 @@ export default function ContactPage() {
               background:
                 "radial-gradient(circle, rgba(190,215,236,0.45) 0%, rgba(190,215,236,0) 65%)",
             }}
-          />
-          <PetalBloom
-            petals={9}
-            stroke="#BED7EC"
-            tint="#3AAED8"
-            tintOpacity={0.045}
-            spin="slow"
-            className="pointer-events-none absolute -right-40 -top-40 hidden h-[540px] w-[540px] opacity-80 lg:block"
           />
           <div className="relative mx-auto grid w-full max-w-7xl gap-14 px-6 pb-24 pt-32 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20 lg:px-10 lg:pt-44">
             <div>
