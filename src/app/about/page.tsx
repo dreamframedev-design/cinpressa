@@ -6,6 +6,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { PageHero } from "@/components/page-hero";
 import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
+import { PetalBloom } from "@/components/geometry";
 import { Reveal } from "@/components/reveal";
 import { ArrowIcon } from "@/components/arrow-icon";
 
@@ -103,7 +104,28 @@ export default function AboutPage() {
         </Section>
 
         {/* How we operate */}
-        <Section tone="mist">
+        <Section
+          tone="mist"
+          art={
+            <>
+              <PetalBloom
+                petals={7}
+                stroke="#BED7EC"
+                tint="#3AAED8"
+                tintOpacity={0.05}
+                spin="slow-rev"
+                className="absolute -left-48 top-1/2 h-[520px] w-[520px] -translate-y-1/2 opacity-75"
+              />
+              <PetalBloom
+                petals={6}
+                stroke="#DCE7F1"
+                dash
+                spin="slow"
+                className="absolute -right-24 -bottom-32 h-[280px] w-[280px] opacity-70"
+              />
+            </>
+          }
+        >
           <SectionHeader
             eyebrow="How we operate"
             title="Focused program. Disciplined execution."

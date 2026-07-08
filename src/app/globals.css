@@ -401,6 +401,16 @@ p {
   animation: soft-pulse 2.8s var(--ease-brand) infinite;
 }
 
+/* Unhurried rotation for background geometry (logo-derived blooms) */
+.spin-slow {
+  animation: orbit 200s linear infinite;
+  transform-origin: center;
+}
+.spin-slow-rev {
+  animation: orbit 260s linear infinite reverse;
+  transform-origin: center;
+}
+
 /* Subtle hover lift for standalone cards */
 .lift {
   transition:
@@ -424,7 +434,9 @@ p {
   .anim-pop,
   .anim-orbit,
   .anim-orbit-dot,
-  .anim-float {
+  .anim-float,
+  .spin-slow,
+  .spin-slow-rev {
     animation: none;
   }
 
