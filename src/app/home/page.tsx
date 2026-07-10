@@ -7,7 +7,6 @@ import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
 import { StatBand } from "@/components/stat-band";
 import { DosingCadence } from "@/components/dosing-cadence";
-import { PipelineTracker } from "@/components/pipeline-tracker";
 import { Reveal } from "@/components/reveal";
 import { ArrowIcon } from "@/components/arrow-icon";
 
@@ -105,19 +104,33 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Lead — the map's Home body */}
+        <Section size="sm">
+          <Reveal variant="fade">
+            <p className="max-w-4xl text-xl leading-relaxed text-body md:text-2xl md:leading-relaxed">
+              Daily oral therapy has been the backbone of hypertension care for
+              decades, yet a large proportion of patients remain uncontrolled or
+              untreated. CinPressa is developing a long-acting AGT siRNA designed
+              to provide durable blood pressure reduction and establish a
+              continuous backbone of blood pressure control independent of daily
+              adherence.
+            </p>
+          </Reveal>
+        </Section>
+
         {/* The challenge */}
         <Section tone="mist">
           <SectionHeader
             eyebrow="The challenge"
             title="Control that lasts remains elusive"
-            subtitle="Hypertension affects approximately 1.4 billion people worldwide, with more than 700 million still uncontrolled or untreated — and around 70 percent of treated patients never reach target blood pressure, despite numerous approved therapies."
+            subtitle="Hypertension affects approximately 1.4 billion people worldwide, with more than 700 million still uncontrolled or untreated. Around 70 percent of treated patients do not achieve target blood pressure levels, despite numerous approved therapies."
           />
           <div className="mt-14">
             <StatBand
               stats={[
                 { value: "1.4", unit: "B", label: "people live with hypertension worldwide" },
                 { value: "700", unit: "M+", label: "remain uncontrolled or untreated" },
-                { value: "~70", unit: "%", label: "of treated patients never reach target blood pressure" },
+                { value: "~70", unit: "%", label: "of treated patients do not achieve target blood pressure levels" },
               ]}
             />
           </div>
@@ -160,9 +173,6 @@ export default function HomePage() {
             title="A focused program. A clear path forward."
             subtitle="Our pipeline is centered on CIN-111, a long-acting AGT siRNA program for hypertension."
           />
-          <Reveal variant="rise" delay={80} className="mt-14 rounded-3xl border border-line bg-white p-7 sm:p-10">
-            <PipelineTracker />
-          </Reveal>
           <div className="mt-12 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
             <Reveal variant="fade" delay={120}>
               <p className="max-w-3xl text-base leading-relaxed text-body">

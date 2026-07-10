@@ -51,7 +51,7 @@ export default function SciencePage() {
                 <p className="text-base leading-relaxed text-body">
                   Approximately 1.4 billion people globally live with
                   hypertension, and more than 700 million remain uncontrolled or
-                  untreated. Around 70 percent of treated patients do not reach
+                  untreated. Around 70 percent of treated patients do not achieve
                   target blood pressure levels. Medication non-adherence is the
                   leading cause of poor control, and because hypertension is
                   largely asymptomatic, long-term persistence is difficult to

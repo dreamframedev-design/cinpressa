@@ -43,18 +43,13 @@ export default function AboutPage() {
         <Section>
           <div className="grid gap-14 lg:grid-cols-[1fr_1fr] lg:gap-20">
             <div>
-              <SectionHeader
-                as="h2"
-                eyebrow="Track record"
-                title="A team that has done this before"
-              />
-              <Reveal variant="fade" delay={120}>
-                <p className="mt-7 text-base leading-relaxed text-body">
+              <Reveal variant="fade">
+                <p className="text-base leading-relaxed text-body">
                   Our cross-functional team spans scientific, technical, and
                   clinical development expertise. The scalable hub-and-spoke
                   CinRx model has put more than $300 million to work across
-                  multiple portfolio companies, with an embedded partnership from
-                  Medpace CRO for operational efficiency and trial quality.
+                  multiple CinCos, with embedded partnership from Medpace CRO for
+                  operational efficiency and trial quality.
                 </p>
               </Reveal>
 
@@ -238,11 +233,8 @@ function CinRxModel() {
           className="pulse-ring"
         />
         <circle cx="200" cy="150" r="42" fill="#0d2342" />
-        <text x="200" y="147" textAnchor="middle" fontSize="13" fontWeight="600" fill="#ffffff">
+        <text x="200" y="155" textAnchor="middle" fontSize="14" fontWeight="600" fill="#ffffff">
           CinRx
-        </text>
-        <text x="200" y="162" textAnchor="middle" fontSize="8.5" fill="#7EAADB" letterSpacing="0.5">
-          SHARED ENGINE
         </text>
       </svg>
       <p className="mt-4 border-t border-line pt-4 text-center text-xs leading-relaxed text-muted">

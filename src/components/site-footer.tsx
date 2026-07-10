@@ -65,8 +65,8 @@ export function SiteFooter() {
             <Reveal variant="fade" delay={180}>
               <p className="mt-5 max-w-md text-sm leading-relaxed text-white/60">
                 Partner with CinPressa to help move a differentiated AGT siRNA
-                program forward. Partnering, investment, and investigator
-                inquiries are all welcome.
+                program forward. For partnering, investment, or general
+                inquiries, connect with the team.
               </p>
             </Reveal>
           </div>

@@ -4,23 +4,14 @@ import { SiteFooter } from "@/components/site-footer";
 import { PageHero } from "@/components/page-hero";
 import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
-import { PipelineTracker } from "@/components/pipeline-tracker";
-import { NhpResponseChart } from "@/components/nhp-response-chart";
 import { Timeline } from "@/components/timeline";
 import { Reveal } from "@/components/reveal";
 
 export const metadata: Metadata = {
   title: "Pipeline",
   description:
-    "CIN-111 is a best-in-class AGT siRNA candidate for hypertension — near-complete, durable AGT knockdown, a ~100-fold therapeutic window, and a planned first-in-human study in fall 2026.",
+    "CIN-111 is a best-in-class AGT siRNA candidate for hypertension — durable AGT knockdown, a ~100-fold therapeutic window, and a planned first-in-human study in fall 2026.",
 };
-
-const nhpFindings = [
-  "Near-complete AGT knockdown by ~1 month, with ~88% sustained at Day 119.",
-  "Systolic blood pressure reduced below 120 mmHg from Day 42, with no significant rebound by Day 119.",
-  "Outperformed Roche's zilebesiran at the same dose.",
-  "~100-fold therapeutic window with an excellent safety profile in GLP toxicology studies.",
-];
 
 const phase1Spec = [
   { label: "Design", value: "Single-dose, single ascending dose (SAD)" },
@@ -47,43 +38,35 @@ export default function PipelinePage() {
           eyebrow="Lead program"
           title={
             <>
-              <span className="text-blue">CIN-111</span> — a best-in-class AGT
+              <span className="text-blue">CIN-111</span> | Best-in-class AGT
               siRNA for hypertension
             </>
           }
           subtitle="CIN-111 is a best-in-class AGT siRNA candidate for hypertension-related indications, with a profile built around durability, depth of AGT knockdown, and safety."
         />
 
-        {/* Program status */}
-        <Section size="sm">
-          <Reveal variant="rise" className="rounded-3xl border border-line bg-white p-7 sm:p-10">
-            <PipelineTracker />
-          </Reveal>
-        </Section>
-
-        {/* Preclinical evidence */}
+        {/* Lead program — the map's body */}
         <Section tone="mist">
-          <SectionHeader
-            eyebrow="Preclinical evidence"
-            title="Deep, durable AGT knockdown"
-            subtitle="In hypertensive non-human primates, CIN-111 achieved nearly 100 percent reduction in AGT protein at one month, sustained near 88 percent at Day 119."
-          />
-          <div className="mt-14 grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:gap-14">
-            <NhpResponseChart />
-            <ul className="space-y-5">
-              {nhpFindings.map((finding, i) => (
-                <Reveal
-                  key={finding}
-                  as="li"
-                  variant="fade"
-                  delay={i * 80}
-                  className="flex gap-3.5 border-b border-line pb-5 last:border-0 last:pb-0"
-                >
-                  <span aria-hidden className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-sky" />
-                  <span className="text-base leading-relaxed text-body">{finding}</span>
-                </Reveal>
-              ))}
-            </ul>
+          <div className="grid gap-6 lg:max-w-4xl">
+            <Reveal variant="fade">
+              <p className="text-lg leading-relaxed text-body">
+                In hypertensive non-human primates, CIN-111 achieved nearly 100
+                percent reduction in AGT protein at one month, sustained with a
+                mean of approximately 88 percent reduction on Day 119. CIN-111
+                reduced systolic blood pressure to below 120 mmHg from Day 42
+                onward, with no significant rebound trend by Day 119, and
+                outperformed Roche&rsquo;s zilebesiran at the same dose.
+              </p>
+            </Reveal>
+            <Reveal variant="fade" delay={100}>
+              <p className="text-lg leading-relaxed text-body">
+                CIN-111 has demonstrated roughly a 100-fold therapeutic window
+                with an excellent safety profile in GLP toxicology studies. These
+                data support the potential for six-month or longer dosing
+                intervals. The IP estate for CIN-111 is global, pending in major
+                markets, with expected expiry in 2044.
+              </p>
+            </Reveal>
           </div>
 
           <dl className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-3">
@@ -130,27 +113,27 @@ export default function PipelinePage() {
         {/* Capital & timeline */}
         <Section tone="mist">
           <SectionHeader
-            eyebrow="Capital & timeline"
+            eyebrow="Capital and timeline"
             title="Funding to Phase 1 and beyond"
-            subtitle="CinPressa has been seeded with $11.5 million from CinRx to license CIN-111 and initiate first-in-human work, and is seeking a $25 million Series A to complete Phase 1."
+            subtitle="CinPressa Pharma has been seeded with $11.5 million from CinRx to license CIN-111 and initiate first-in-human work and is seeking a $25 million Series A to complete Phase 1 studies."
           />
           <div className="mt-14 max-w-3xl">
             <Timeline
               items={[
                 {
-                  marker: "Seeded",
+                  marker: "Seed",
                   title: "$11.5M from CinRx",
-                  body: "Capital to license CIN-111 and initiate first-in-human work.",
+                  body: "To license CIN-111 and initiate first-in-human work.",
                 },
                 {
-                  marker: "In progress",
-                  title: "$25M Series A",
-                  body: "Proceeds are intended to fund through a multi-dose first-in-human study in patients with hypertension and into early 2028.",
+                  marker: "Series A",
+                  title: "$25M — to complete Phase 1",
+                  body: "Proceeds from the Series A are intended to fund through a multi-dose first-in-human study in patients with hypertension and into early 2028.",
                 },
                 {
                   marker: "Beyond",
                   title: "$50M+ to end of Phase 2",
-                  body: "Additional capital expected to reach the end of Phase 2. The plan includes chronic toxicology and reproductive studies, and serial readouts from single- and multiple-dose Phase 1 cohorts to support Phase 2 initiation.",
+                  body: "Additional capital of $50 million or more is expected to be required to reach the end of Phase 2. The development plan includes chronic toxicology and reproductive studies, serial readouts from single- and multiple-dose Phase 1 cohorts, and use of those data to support Phase 2 initiation.",
                 },
               ]}
             />

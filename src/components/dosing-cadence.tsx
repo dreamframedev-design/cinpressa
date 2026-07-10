@@ -24,7 +24,7 @@ export function DosingCadence() {
         className="rounded-2xl border border-line bg-mist/70 p-7 lg:p-9"
       >
         <p className="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-muted">
-          Today — daily oral therapy
+          Daily oral therapy
         </p>
         <div
           aria-hidden
@@ -40,8 +40,8 @@ export function DosingCadence() {
           ))}
         </div>
         <p className="mt-6 text-sm leading-relaxed text-body">
-          <span className="font-medium text-ink">~365 doses a year.</span>{" "}
-          Control that depends on remembering every single one.
+          The backbone of hypertension care for decades &mdash; dependent on
+          daily adherence.
         </p>
       </Reveal>
 
@@ -51,7 +51,7 @@ export function DosingCadence() {
         className="flex flex-col justify-between rounded-2xl border border-blue/20 bg-blue/[0.035] p-7 lg:p-9"
       >
         <p className="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-blue">
-          CIN-111 — long-acting siRNA
+          CIN-111 · long-acting AGT siRNA
         </p>
         <div aria-hidden className="my-8 flex items-center gap-6">
           {yearlyDoses.map((dose, i) => (
@@ -70,8 +70,9 @@ export function DosingCadence() {
           />
         </div>
         <p className="text-sm leading-relaxed text-body">
-          <span className="font-medium text-ink">1&ndash;2 administrations a year.</span>{" "}
-          A continuous backbone of control, independent of daily adherence.
+          <span className="font-medium text-ink">One to two administrations a year</span>{" "}
+          &mdash; a continuous backbone of control, independent of daily
+          adherence.
         </p>
       </Reveal>
     </div>

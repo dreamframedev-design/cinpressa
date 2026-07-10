@@ -6,8 +6,8 @@ import { ArrowIcon } from "@/components/arrow-icon";
 const inquiryTypes = [
   "Partnering",
   "Investment",
-  "Investigator / clinical",
-  "Media",
+  "Business",
+  "General inquiry",
   "Other",
 ] as const;
 
