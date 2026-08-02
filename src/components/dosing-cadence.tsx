@@ -1,4 +1,7 @@
-import type { CSSProperties } from "react";
+"use client";
+
+import { useCallback, useRef } from "react";
+import type { CSSProperties, PointerEvent as ReactPointerEvent } from "react";
 import { Reveal } from "@/components/reveal";
 
 /**
@@ -25,26 +28,69 @@ const TYPE = "text-[clamp(1.25rem,2vw,1.7rem)] leading-snug tracking-tight";
 const LABEL = `${TYPE} font-medium text-ink`;
 const CAPTION = `${TYPE} font-light text-body`;
 const COUNT = "font-medium text-blue";
-const FIELD = "my-7 grid gap-[3px] sm:gap-[5px] lg:gap-[6px]";
+const FIELD = "grid gap-[3px] sm:gap-[5px] lg:gap-[6px]";
 
 const fieldStyle: CSSProperties = {
   gridTemplateColumns: `repeat(${COLUMNS}, minmax(0, 1fr))`,
 };
 
 export function DosingCadence() {
+  const fieldRef = useRef<HTMLDivElement>(null);
+  const frame = useRef(0);
+
+  /**
+   * Feeds pointer position to the spotlight mask as CSS variables. Written
+   * straight to style inside rAF rather than through state: 365 dots should
+   * never re-render because the mouse moved.
+   */
+  const trackPointer = useCallback((e: ReactPointerEvent<HTMLDivElement>) => {
+    const el = fieldRef.current;
+    if (!el) return;
+    const x = e.clientX;
+    const y = e.clientY;
+    if (frame.current) return;
+    frame.current = requestAnimationFrame(() => {
+      frame.current = 0;
+      const box = el.getBoundingClientRect();
+      el.style.setProperty("--mx", `${x - box.left}px`);
+      el.style.setProperty("--my", `${y - box.top}px`);
+    });
+  }, []);
+
   return (
     <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
       <Reveal variant="fade" className={PANEL}>
         <p className={LABEL}>Daily oral therapy</p>
 
-        <div aria-hidden className={FIELD} style={fieldStyle}>
-          {Array.from({ length: DAYS }).map((_, i) => (
-            <span
-              key={i}
-              className="dose-dot aspect-square rounded-full bg-blue"
-              style={{ "--i": i } as CSSProperties}
-            />
-          ))}
+        {/* The spotlight layer is a second copy of the field in cyan, revealed
+            only through a soft mask that follows the pointer. Nothing moves, so
+            the 365-vs-2 comparison stays exact; the dots just catch light. */}
+        <div
+          ref={fieldRef}
+          onPointerMove={trackPointer}
+          className="dot-field relative my-7"
+        >
+          <div aria-hidden className={FIELD} style={fieldStyle}>
+            {Array.from({ length: DAYS }).map((_, i) => (
+              <span
+                key={i}
+                className="dose-dot aspect-square rounded-full bg-blue"
+                style={{ "--i": i } as CSSProperties}
+              />
+            ))}
+          </div>
+          <div
+            aria-hidden
+            className={`dot-spotlight absolute inset-0 ${FIELD}`}
+            style={fieldStyle}
+          >
+            {Array.from({ length: DAYS }).map((_, i) => (
+              <span
+                key={i}
+                className="aspect-square rounded-full bg-cyan shadow-[0_0_10px_rgba(30,174,229,0.9)]"
+              />
+            ))}
+          </div>
         </div>
 
         <p className={CAPTION}>
@@ -57,7 +103,7 @@ export function DosingCadence() {
         <p className={LABEL}>CIN-111 &middot; long-acting AGT siRNA</p>
 
         {/* Same grid, same dots: only two of the 365 cells are filled. */}
-        <div aria-hidden className={FIELD} style={fieldStyle}>
+        <div aria-hidden className={`my-7 ${FIELD}`} style={fieldStyle}>
           {Array.from({ length: DAYS }).map((_, i) => {
             const dose = YEARLY.indexOf(i);
             return dose === -1 ? (

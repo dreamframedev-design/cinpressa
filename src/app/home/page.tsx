@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
@@ -15,6 +16,19 @@ export const metadata: Metadata = {
   description:
     "CinPressa is advancing CIN-111, a best-in-class, long-acting AGT siRNA designed to establish a durable, adherence-independent backbone of blood pressure control.",
 };
+
+/**
+ * Petal colours blooming behind the hero mark. Positions roughly mirror where
+ * each colour sits inside the artwork, so the glow reads as the logo's own
+ * light rather than decoration placed around it. Durations are mismatched so
+ * the four breaths never sync up.
+ */
+const BLOOMS = [
+  { color: "175,219,188", size: 74, x: 2, y: -6, low: 0.4, high: 0.75, dur: 15, delay: 0 },
+  { color: "149,218,248", size: 68, x: 32, y: 4, low: 0.45, high: 0.8, dur: 19, delay: -5 },
+  { color: "34,97,173", size: 54, x: -4, y: 28, low: 0.18, high: 0.34, dur: 17, delay: -9 },
+  { color: "103,113,181", size: 62, x: 34, y: 36, low: 0.2, high: 0.4, dur: 23, delay: -13 },
+];
 
 export default function HomePage() {
   return (
@@ -77,59 +91,32 @@ export default function HomePage() {
               className="anim-rise relative mx-auto flex aspect-square w-[280px] items-center justify-center sm:w-[360px] lg:w-[460px]"
               style={{ animationDelay: "0.22s" }}
             >
-              {/* Orbits. The old rings were #BED7EC hairlines with a 1-on-7
-                  dash, effectively invisible; these carry real weight and
-                  counter-rotate so the field has depth. */}
-              <div aria-hidden className="anim-orbit pointer-events-none absolute inset-0">
-                <svg viewBox="0 0 460 460" className="h-full w-full">
-                  <circle
-                    cx="230"
-                    cy="230"
-                    r="226"
-                    fill="none"
-                    stroke="#6BB2E2"
-                    strokeWidth="1.4"
-                    strokeDasharray="2.5 9"
-                    strokeLinecap="round"
-                    opacity="0.75"
-                  />
-                </svg>
-              </div>
-              <div
-                aria-hidden
-                className="anim-orbit-slow pointer-events-none absolute inset-[9%]"
-              >
-                <svg viewBox="0 0 380 380" className="h-full w-full">
-                  <circle
-                    cx="190"
-                    cy="190"
-                    r="188"
-                    fill="none"
-                    stroke="#AFDBBC"
-                    strokeWidth="1.6"
-                    strokeDasharray="34 300"
-                    strokeLinecap="round"
-                  />
-                  <circle
-                    cx="190"
-                    cy="190"
-                    r="188"
-                    fill="none"
-                    stroke="#BED7EC"
-                    strokeWidth="1.2"
-                  />
-                </svg>
-              </div>
-              <div aria-hidden className="anim-orbit-dot pointer-events-none absolute inset-0">
-                <span className="absolute left-1/2 top-[-0.5%] h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-orange shadow-[0_0_18px_rgba(249,168,26,0.8)]" />
-              </div>
-              <div aria-hidden className="anim-orbit-counter pointer-events-none absolute inset-[9%]">
-                <span className="absolute left-1/2 top-[-1%] h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-indigo/70" />
-              </div>
+              {/* No orbits. The mark's own petal colours bloom outward behind
+                  it, each on its own long breath, so the light reads as coming
+                  off the logo. Positions echo where those petals actually sit. */}
+              {BLOOMS.map((b) => (
+                <span
+                  key={b.color}
+                  aria-hidden
+                  className="bloom"
+                  style={
+                    {
+                      width: `${b.size}%`,
+                      aspectRatio: "1",
+                      left: `${b.x}%`,
+                      top: `${b.y}%`,
+                      background: `radial-gradient(circle, rgba(${b.color},1) 0%, rgba(${b.color},0) 68%)`,
+                      "--bloom-low": b.low,
+                      "--bloom-high": b.high,
+                      "--bloom-dur": `${b.dur}s`,
+                      "--bloom-delay": `${b.delay}s`,
+                    } as CSSProperties
+                  }
+                />
+              ))}
 
-              {/* Float lives in mark-suspend now, so no anim-float here */}
-              <div className="mark-lift relative w-[58%]">
-                <MarkArt variant="brand" animate className="h-auto w-full" />
+              <div className="mark-lift relative w-[66%]">
+                <MarkArt variant="brand" animate tight className="h-auto w-full" />
               </div>
             </div>
           </div>

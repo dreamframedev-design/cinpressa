@@ -505,7 +505,60 @@ p {
 
 /* Depth under the floating mark */
 .mark-lift {
-  filter: drop-shadow(0 28px 34px rgba(34, 97, 173, 0.16));
+  filter: drop-shadow(0 32px 40px rgba(34, 97, 173, 0.18));
+}
+
+/* ---------- Mark bloom ----------
+   The hero previously ringed the mark with orbiting dots. Nothing orbits
+   anything now: instead the mark's own petal colours bloom outward behind it,
+   each breathing on its own long cycle, so the light reads as coming off the
+   logo rather than circling it. */
+
+@keyframes bloom-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: var(--bloom-low, 0.45);
+  }
+  50% {
+    transform: scale(1.16);
+    opacity: var(--bloom-high, 0.8);
+  }
+}
+
+.bloom {
+  position: absolute;
+  border-radius: 9999px;
+  will-change: transform, opacity;
+  animation: bloom-breathe var(--bloom-dur, 16s) ease-in-out
+    var(--bloom-delay, 0s) infinite;
+}
+
+/* ---------- Dot field spotlight ----------
+   A duplicate of the dose field in a brighter accent, revealed only through a
+   soft mask that follows the pointer. The grid never moves, so the 365-vs-2
+   comparison stays exact; the dots just catch the light. */
+
+.dot-spotlight {
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.45s var(--ease-brand);
+  -webkit-mask-image: radial-gradient(
+    circle 120px at var(--mx, -999px) var(--my, -999px),
+    #000 0%,
+    rgba(0, 0, 0, 0.5) 48%,
+    transparent 72%
+  );
+  mask-image: radial-gradient(
+    circle 120px at var(--mx, -999px) var(--my, -999px),
+    #000 0%,
+    rgba(0, 0, 0, 0.5) 48%,
+    transparent 72%
+  );
+}
+
+.dot-field:hover .dot-spotlight {
+  opacity: 1;
 }
 
 /* ---------- Duplex binding ----------
@@ -704,6 +757,7 @@ p {
 
   /* Colour and texture stay; only the motion stops. */
   .mark-suspend,
+  .bloom,
   .track-stripes,
   .track-tip,
   .duplex-halo,
