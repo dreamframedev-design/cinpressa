@@ -3,7 +3,7 @@
  *
  * The public splash lives at `/`. Everything else is held behind a shared
  * password until the site goes live. This is a "coming soon" lock, not a
- * security boundary — it keeps the in-progress build private without standing
+ * security boundary. It keeps the in-progress build private without standing
  * up real auth.
  *
  * The typed password is never stored in the browser. On success we set an

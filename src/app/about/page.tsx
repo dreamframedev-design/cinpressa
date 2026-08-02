@@ -1,14 +1,11 @@
-import Link from "next/link";
-import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { PageHero } from "@/components/page-hero";
 import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
-import { MarkArt } from "@/components/geometry";
+import { TeamGrid } from "@/components/team-grid";
 import { Reveal } from "@/components/reveal";
-import { ArrowIcon } from "@/components/arrow-icon";
 
 export const metadata: Metadata = {
   title: "About",
@@ -16,15 +13,16 @@ export const metadata: Metadata = {
     "CinPressa is powered by CinRx Pharma's development engine and led by the founding team behind CinCor's baxdrostat program and its $1.9B exit to AstraZeneca.",
 };
 
+/** One petal colour per discipline, echoing the mark's overlapping palette. */
 const disciplines = [
-  "Clinical strategy",
-  "Translational science",
-  "Toxicology",
-  "CMC",
-  "Pharmacology",
-  "Data management",
-  "Finance",
-  "Business development",
+  { label: "Clinical strategy", dot: "bg-blue" },
+  { label: "Translational science", dot: "bg-cobalt" },
+  { label: "Toxicology", dot: "bg-azure" },
+  { label: "CMC", dot: "bg-cyan" },
+  { label: "Pharmacology", dot: "bg-green" },
+  { label: "Data management", dot: "bg-periwinkle" },
+  { label: "Finance", dot: "bg-indigo" },
+  { label: "Business development", dot: "bg-sky" },
 ];
 
 export default function AboutPage() {
@@ -56,13 +54,16 @@ export default function AboutPage() {
               <div className="mt-10 grid grid-cols-2 gap-x-10 gap-y-px overflow-hidden">
                 {disciplines.map((d, i) => (
                   <Reveal
-                    key={d}
+                    key={d.label}
                     variant="fade"
                     delay={i * 50}
                     className="flex items-center gap-3 border-t border-line py-3.5"
                   >
-                    <span aria-hidden className="h-1 w-1 rounded-full bg-sky" />
-                    <span className="text-sm text-body">{d}</span>
+                    <span
+                      aria-hidden
+                      className={`h-1.5 w-1.5 rounded-full ${d.dot}`}
+                    />
+                    <span className="text-sm text-body">{d.label}</span>
                   </Reveal>
                 ))}
               </div>
@@ -71,7 +72,7 @@ export default function AboutPage() {
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
               <Reveal
                 variant="rise"
-                className="lift rounded-2xl border border-line bg-mist/60 p-8"
+                className="lift rounded-2xl border border-pale/70 bg-[linear-gradient(150deg,#f4f9fd_0%,#e8f2fb_100%)] p-8"
               >
                 <p className="text-[clamp(2.5rem,5vw,3.5rem)] font-extralight leading-none tracking-tight text-blue">
                   $1.9B
@@ -84,9 +85,9 @@ export default function AboutPage() {
               <Reveal
                 variant="rise"
                 delay={100}
-                className="lift rounded-2xl border border-line bg-mist/60 p-8"
+                className="lift rounded-2xl border border-indigo/25 bg-[linear-gradient(150deg,#f7f8fd_0%,#eceef8_100%)] p-8"
               >
-                <p className="text-[clamp(2.5rem,5vw,3.5rem)] font-extralight leading-none tracking-tight text-blue">
+                <p className="text-[clamp(2.5rem,5vw,3.5rem)] font-extralight leading-none tracking-tight text-indigo">
                   $300M+
                 </p>
                 <p className="mt-4 text-sm leading-relaxed text-body">
@@ -98,148 +99,20 @@ export default function AboutPage() {
           </div>
         </Section>
 
-        {/* How we operate */}
-        <Section
-          tone="mist"
-          art={
-            <MarkArt
-              variant="solid"
-              color="#3AAED8"
-              className="absolute -left-40 top-1/2 h-[660px] w-auto -translate-y-1/2 -rotate-[14deg] opacity-[0.06]"
-            />
-          }
-        >
+        {/* Leadership */}
+        <Section tone="sky">
           <SectionHeader
-            eyebrow="How we operate"
-            title="Focused program. Disciplined execution."
-            subtitle="CinPressa is built to advance a single, high-potential therapeutic program with clarity and discipline."
+            eyebrow="Leadership"
+            title="The people behind the program"
+            subtitle="CinPressa's founding team led CinCor Pharma's baxdrostat program from discovery through its $1.9 billion exit to AstraZeneca."
           />
-          <Reveal variant="fade" delay={120}>
-            <p className="mt-10 max-w-3xl text-base leading-relaxed text-body">
-              We are deliberate in how we design studies, interpret emerging
-              data, and make decisions as CIN-111 progresses from preclinical
-              work into clinical development. The goal is to translate a strong
-              mechanistic rationale and promising non-human primate data into
-              meaningful clinical outcomes for patients with hypertension.
-            </p>
-          </Reveal>
-        </Section>
-
-        {/* CinRx connection */}
-        <Section>
-          <div className="grid gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-20">
-            <div>
-              <SectionHeader
-                eyebrow="CinRx connection"
-                title="A CinRx portfolio company"
-                subtitle="CinPressa Pharma is a CinRx portfolio company, leveraging shared capital, expertise, and infrastructure."
-              />
-              <Reveal variant="fade" delay={120}>
-                <p className="mt-8 max-w-xl text-base leading-relaxed text-body">
-                  This structure allows CinPressa to focus on the science and
-                  development strategy for CIN-111 while drawing on CinRx&rsquo;s
-                  broader operating capabilities and experience accelerating
-                  high-impact medicines.
-                </p>
-              </Reveal>
-              <Reveal variant="fade" delay={160}>
-                <a
-                  href="https://cinrx.com"
-                  className="group mt-8 inline-flex items-center gap-2 text-sm font-medium text-blue transition-colors hover:text-ink"
-                >
-                  <span className="link-underline">Visit CinRx Pharma</span>
-                  <ArrowIcon className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
-                </a>
-              </Reveal>
-            </div>
-
-            <Reveal variant="rise" delay={160}>
-              <CinRxModel />
-            </Reveal>
+          <div className="mt-14">
+            <TeamGrid />
           </div>
         </Section>
       </main>
 
       <SiteFooter />
-    </div>
-  );
-}
-
-/** Compact hub-and-spoke illustration of the CinRx portfolio model. */
-function CinRxModel() {
-  const nodes = [
-    { x: 200, y: 46, label: "CinPressa", primary: true },
-    { x: 309, y: 125, label: "CinCo" },
-    { x: 268, y: 253, label: "CinCo" },
-    { x: 132, y: 253, label: "CinCo" },
-    { x: 91, y: 125, label: "CinCo" },
-  ];
-
-  return (
-    <div className="rounded-3xl border border-line bg-white p-6 sm:p-8">
-      <svg viewBox="0 0 400 300" className="h-auto w-full" role="img" aria-label="CinRx hub-and-spoke portfolio model with CinPressa as a portfolio company.">
-        {/* Spokes — draw outward from the hub */}
-        {nodes.map((n, i) => (
-          <line
-            key={`spoke-${n.label}-${n.x}`}
-            className="spoke"
-            style={{ "--i": i } as CSSProperties}
-            pathLength={1}
-            x1="200"
-            y1="150"
-            x2={n.x}
-            y2={n.y}
-            stroke={n.primary ? "#2261AD" : "#BED7EC"}
-            strokeWidth="1"
-          />
-        ))}
-
-        {/* Outer nodes — appear after the spokes reach them */}
-        {nodes.map((n, i) => (
-          <g
-            key={`node-${n.label}-${n.x}`}
-            className="model-node"
-            style={{ "--i": i } as CSSProperties}
-          >
-            <circle
-              cx={n.x}
-              cy={n.y}
-              r="27"
-              fill={n.primary ? "#2261AD" : "#ffffff"}
-              stroke={n.primary ? "#2261AD" : "#DCE7F1"}
-              strokeWidth="1"
-            />
-            <text
-              x={n.x}
-              y={n.y + 3.5}
-              textAnchor="middle"
-              fontSize={n.primary ? "10" : "9.5"}
-              fontWeight={n.primary ? "600" : "400"}
-              fill={n.primary ? "#ffffff" : "#5b6e83"}
-            >
-              {n.label}
-            </text>
-          </g>
-        ))}
-
-        {/* Hub */}
-        <circle
-          cx="200"
-          cy="150"
-          r="42"
-          fill="none"
-          stroke="#3AAED8"
-          strokeWidth="1.5"
-          className="pulse-ring"
-        />
-        <circle cx="200" cy="150" r="42" fill="#0d2342" />
-        <text x="200" y="155" textAnchor="middle" fontSize="14" fontWeight="600" fill="#ffffff">
-          CinRx
-        </text>
-      </svg>
-      <p className="mt-4 border-t border-line pt-4 text-center text-xs leading-relaxed text-muted">
-        Shared capital, expertise, and infrastructure across the portfolio.
-      </p>
     </div>
   );
 }

@@ -7,6 +7,7 @@ import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
 import { StatBand } from "@/components/stat-band";
 import { DosingCadence } from "@/components/dosing-cadence";
+import { MarkArt } from "@/components/geometry";
 import { Reveal } from "@/components/reveal";
 import { ArrowIcon } from "@/components/arrow-icon";
 
@@ -104,7 +105,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Lead — the map's Home body */}
+        {/* Lead: the map's Home body */}
         <Section size="sm">
           <Reveal variant="fade">
             <p className="max-w-4xl text-xl leading-relaxed text-body md:text-2xl md:leading-relaxed">
@@ -119,7 +120,7 @@ export default function HomePage() {
         </Section>
 
         {/* The challenge */}
-        <Section tone="mist">
+        <Section tone="sky">
           <SectionHeader
             eyebrow="The challenge"
             title="Control that lasts remains elusive"
@@ -139,14 +140,22 @@ export default function HomePage() {
               Medication non-adherence remains the leading cause of poor blood
               pressure control, and hypertension&rsquo;s asymptomatic nature makes
               long-term persistence difficult to sustain. CinPressa is focused on
-              a different model of care — one designed to reduce reliance on daily
+              a different model of care, one designed to reduce reliance on daily
               adherence and support durable control over time.
             </p>
           </Reveal>
         </Section>
 
         {/* Our approach */}
-        <Section>
+        <Section
+          tone="green"
+          art={
+            <MarkArt
+              variant="brand"
+              className="absolute -right-32 -top-40 h-[620px] w-auto rotate-[18deg] opacity-[0.13]"
+            />
+          }
+        >
           <SectionHeader
             eyebrow="Our approach"
             title="Designed to create a backbone of control"
@@ -167,7 +176,7 @@ export default function HomePage() {
         </Section>
 
         {/* Pipeline */}
-        <Section tone="mist">
+        <Section tone="indigo">
           <SectionHeader
             eyebrow="Pipeline"
             title="A focused program. A clear path forward."

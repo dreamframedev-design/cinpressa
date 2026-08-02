@@ -1,7 +1,7 @@
 /**
- * The actual CinPressa mark — its 13 overlapping petals — used as background
- * art. Rendered as a single flat monochrome silhouette ("solid") or as
- * hairline line-art ("outline"), in one brand colour, so it reads as an
+ * The actual CinPressa mark, its 13 overlapping petals, used as background
+ * art. Rendered as a flat monochrome silhouette ("solid"), hairline line-art
+ * ("outline"), or in the mark's own petal colours ("brand"), so it reads as an
  * oversized watermark of the real logo rather than an invented decoration.
  *
  * Meant to be sized large and cropped off an edge via className so each
@@ -25,13 +25,30 @@ const MARK_PATHS = [
   "M201.27,218.99c-22.03,12.2-53.12-.32-75.15-28.21,23.17-15.67,36.76-38.44,36.21-57.63,5.21-2.83,10.36-6.19,15.34-10.03,7.4-5.72,13.83-12.08,19.18-18.75,4.55,5.49,8.76,11.61,12.45,18.29,21.5,38.86,17.91,81.98-8.03,96.33Z",
 ];
 
+/** Per-petal fills, in the same order as MARK_PATHS, taken from the logo file. */
+const MARK_PETALS = [
+  "#b0dbbc",
+  "#faa81a",
+  "#2162ae",
+  "#97dbf8",
+  "#1884c6",
+  "#bed9ef",
+  "#1b96d3",
+  "#6bb2e2",
+  "#abddf7",
+  "#1dade4",
+  "#0374bb",
+  "#7ca9db",
+  "#6772b6",
+];
+
 export function MarkArt({
   className = "",
   variant = "outline",
   color = "#2261AD",
 }: {
   className?: string;
-  variant?: "outline" | "solid";
+  variant?: "outline" | "solid" | "brand";
   color?: string;
 }) {
   return (
@@ -41,10 +58,14 @@ export function MarkArt({
       aria-hidden
       className={className}
     >
-      {MARK_PATHS.map((d, i) =>
-        variant === "solid" ? (
-          <path key={i} d={d} fill={color} />
-        ) : (
+      {MARK_PATHS.map((d, i) => {
+        if (variant === "brand") {
+          return <path key={i} d={d} fill={MARK_PETALS[i]} />;
+        }
+        if (variant === "solid") {
+          return <path key={i} d={d} fill={color} />;
+        }
+        return (
           <path
             key={i}
             d={d}
@@ -52,8 +73,8 @@ export function MarkArt({
             strokeWidth="1"
             vectorEffect="non-scaling-stroke"
           />
-        )
-      )}
+        );
+      })}
     </svg>
   );
 }

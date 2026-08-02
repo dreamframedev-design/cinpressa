@@ -12,7 +12,7 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   metadataBase: new URL("https://cinpressa.com"),
   title: {
-    default: "CinPressa Pharma — A best-in-class siRNA for hypertension",
+    default: "CinPressa Pharma · A best-in-class siRNA for hypertension",
     template: "%s · CinPressa Pharma",
   },
   description:

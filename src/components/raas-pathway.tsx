@@ -3,6 +3,8 @@ import { Reveal } from "@/components/reveal";
 type Node = {
   name: string;
   sub: string;
+  /** Petal colour from the logo ladder; the cascade descends deep blue → violet. */
+  accent: string;
   tag?: { label: string; tone: "primary" | "muted" };
   highlight?: boolean;
   outcome?: boolean;
@@ -13,31 +15,40 @@ const cascade: Node[] = [
     name: "Angiotensinogen (AGT)",
     sub: "The precursor of the entire RAAS cascade, synthesized in the liver.",
     tag: { label: "CIN-111 silences AGT here", tone: "primary" },
+    accent: "#f9a81a",
     highlight: true,
   },
   {
     name: "Angiotensin I",
     sub: "Cleaved from AGT by renin.",
+    accent: "#0473bb",
   },
   {
     name: "Angiotensin II",
     sub: "Converted from angiotensin I by ACE; drives vasoconstriction.",
     tag: { label: "ACE inhibitors · ARBs act here", tone: "muted" },
+    accent: "#1596d4",
   },
   {
     name: "Aldosterone",
     sub: "Released in response to angiotensin II; retains sodium and water.",
+    accent: "#7eaadb",
   },
   {
     name: "Elevated blood pressure",
     sub: "The downstream clinical consequence of RAAS activity.",
+    accent: "#6771b5",
     outcome: true,
   },
 ];
 
+/**
+ * Card stays solid white rather than translucent: the violet outcome heading
+ * needs a known background to clear AA (4.56:1 on white, 4.32:1 over a wash).
+ */
 export function RaasPathway() {
   return (
-    <div className="rounded-3xl border border-line bg-white/60 p-6 sm:p-9">
+    <div className="rounded-3xl border border-line bg-white p-6 sm:p-9">
       <div className="mb-8 flex items-center gap-3">
         <span aria-hidden className="h-px w-8 bg-blue/40" />
         <p className="text-[0.68rem] font-medium uppercase tracking-[0.22em] text-blue">
@@ -63,9 +74,14 @@ export function RaasPathway() {
                   className={
                     node.highlight
                       ? "relative z-10 mt-1 flex h-[22px] w-[22px] items-center justify-center rounded-full"
+                      : "relative z-10 mt-1 h-[22px] w-[22px] rounded-full ring-4 ring-white"
+                  }
+                  style={
+                    node.highlight
+                      ? undefined
                       : node.outcome
-                        ? "relative z-10 mt-1 h-[22px] w-[22px] rounded-full bg-blue ring-4 ring-white"
-                        : "relative z-10 mt-1 h-[22px] w-[22px] rounded-full border border-blue/50 bg-white ring-4 ring-white"
+                        ? { background: node.accent }
+                        : { background: "#fff", border: `1px solid ${node.accent}` }
                   }
                 >
                   {node.highlight ? (
@@ -75,13 +91,19 @@ export function RaasPathway() {
                       <span className="h-2 w-2 rounded-full bg-orange" />
                     </>
                   ) : node.outcome ? null : (
-                    <span className="absolute inset-[6px] rounded-full bg-blue/60" />
+                    <span
+                      className="absolute inset-[6px] rounded-full"
+                      style={{ background: node.accent }}
+                    />
                   )}
                 </span>
                 {!isLast ? (
                   <span
                     aria-hidden
-                    className="w-px flex-1 bg-gradient-to-b from-blue/50 to-sky/40"
+                    className="w-px flex-1"
+                    style={{
+                      background: `linear-gradient(to bottom, ${node.accent}, ${cascade[i + 1].accent})`,
+                    }}
                   />
                 ) : null}
               </div>
@@ -90,9 +112,8 @@ export function RaasPathway() {
               <div className={isLast ? "pb-0" : "pb-9"}>
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
                   <h3
-                    className={`text-lg font-normal tracking-tight ${
-                      node.outcome ? "text-blue" : "text-ink"
-                    }`}
+                    className="text-lg font-normal tracking-tight text-ink"
+                    style={node.outcome ? { color: node.accent } : undefined}
                   >
                     {node.name}
                   </h3>
@@ -130,7 +151,7 @@ export function RaasPathway() {
           </p>
         </div>
         <div className="flex gap-3">
-          <span aria-hidden className="mt-1 h-4 w-1 shrink-0 rounded-full bg-line" />
+          <span aria-hidden className="mt-1 h-4 w-1 shrink-0 rounded-full bg-periwinkle" />
           <p className="text-sm leading-relaxed text-body">
             <span className="font-medium text-ink">Downstream.</span> ACE
             inhibitors and ARBs act late in the pathway, leaving residual

@@ -19,7 +19,7 @@ export default async function SplashPage({
 
   return (
     <div className="flex min-h-[100dvh] flex-col bg-gradient-to-b from-white via-white to-mist">
-      {/* Minimal splash header — the full nav lives behind the gate */}
+      {/* Minimal splash header: the full nav lives behind the gate */}
       <header className="anim-nav relative z-10">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 lg:px-10">
           <Image

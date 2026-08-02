@@ -4,13 +4,14 @@ import { SiteFooter } from "@/components/site-footer";
 import { PageHero } from "@/components/page-hero";
 import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
-import { Timeline } from "@/components/timeline";
+import { EfficacyChart } from "@/components/efficacy-chart";
+import { PipelineDiagram } from "@/components/pipeline-diagram";
 import { Reveal } from "@/components/reveal";
 
 export const metadata: Metadata = {
   title: "Pipeline",
   description:
-    "CIN-111 is a best-in-class AGT siRNA candidate for hypertension — durable AGT knockdown, a ~100-fold therapeutic window, and a planned first-in-human study in fall 2026.",
+    "CIN-111 is a best-in-class AGT siRNA candidate for hypertension: durable AGT knockdown, a ~100-fold therapeutic window, and a planned first-in-human study in fall 2026.",
 };
 
 const phase1Spec = [
@@ -23,9 +24,9 @@ const phase1Spec = [
 ];
 
 const highlights = [
-  { value: "~100×", label: "therapeutic window in GLP toxicology" },
-  { value: "6 mo+", label: "potential dosing interval" },
-  { value: "2044", label: "expected IP expiry — global, pending in major markets" },
+  { value: "~100×", label: "therapeutic window in GLP toxicology", accent: "text-blue", rule: "bg-blue" },
+  { value: "6 mo+", label: "potential dosing interval", accent: "text-cobalt", rule: "bg-cobalt" },
+  { value: "2044", label: "expected IP expiry, global and pending in major markets", accent: "text-indigo", rule: "bg-indigo" },
 ];
 
 export default function PipelinePage() {
@@ -45,8 +46,8 @@ export default function PipelinePage() {
           subtitle="CIN-111 is a best-in-class AGT siRNA candidate for hypertension-related indications, with a profile built around durability, depth of AGT knockdown, and safety."
         />
 
-        {/* Lead program — the map's body */}
-        <Section tone="mist">
+        {/* Lead program: the map's body */}
+        <Section tone="sky">
           <div className="grid gap-6 lg:max-w-4xl">
             <Reveal variant="fade">
               <p className="text-lg leading-relaxed text-body">
@@ -77,17 +78,37 @@ export default function PipelinePage() {
                 delay={i * 90}
                 className="bg-white px-7 py-8"
               >
-                <dd className="text-[clamp(2rem,3.5vw,2.75rem)] font-extralight leading-none tracking-tight text-blue">
+                <span aria-hidden className={`mb-5 block h-px w-10 ${h.rule}`} />
+                <dd
+                  className={`text-[clamp(2rem,3.5vw,2.75rem)] font-extralight leading-none tracking-tight ${h.accent}`}
+                >
                   {h.value}
                 </dd>
                 <dt className="mt-3 text-sm leading-relaxed text-body">{h.label}</dt>
               </Reveal>
             ))}
           </dl>
+
+          {/* The curves behind the two paragraphs above */}
+          <div className="mt-14">
+            <EfficacyChart />
+          </div>
+        </Section>
+
+        {/* Development stage */}
+        <Section>
+          <SectionHeader
+            eyebrow="Pipeline"
+            title="CIN-111 development stage"
+            subtitle="A single, focused program advancing from preclinical work into first-in-human development."
+          />
+          <div className="mt-14">
+            <PipelineDiagram />
+          </div>
         </Section>
 
         {/* Clinical development */}
-        <Section>
+        <Section tone="indigo">
           <SectionHeader
             eyebrow="Clinical development"
             title="From IND to first-in-human"
@@ -110,35 +131,6 @@ export default function PipelinePage() {
           </Reveal>
         </Section>
 
-        {/* Capital & timeline */}
-        <Section tone="mist">
-          <SectionHeader
-            eyebrow="Capital and timeline"
-            title="Funding to Phase 1 and beyond"
-            subtitle="CinPressa Pharma has been seeded with $11.5 million from CinRx to license CIN-111 and initiate first-in-human work and is seeking a $25 million Series A to complete Phase 1 studies."
-          />
-          <div className="mt-14 max-w-3xl">
-            <Timeline
-              items={[
-                {
-                  marker: "Seed",
-                  title: "$11.5M from CinRx",
-                  body: "To license CIN-111 and initiate first-in-human work.",
-                },
-                {
-                  marker: "Series A",
-                  title: "$25M — to complete Phase 1",
-                  body: "Proceeds from the Series A are intended to fund through a multi-dose first-in-human study in patients with hypertension and into early 2028.",
-                },
-                {
-                  marker: "Beyond",
-                  title: "$50M+ to end of Phase 2",
-                  body: "Additional capital of $50 million or more is expected to be required to reach the end of Phase 2. The development plan includes chronic toxicology and reproductive studies, serial readouts from single- and multiple-dose Phase 1 cohorts, and use of those data to support Phase 2 initiation.",
-                },
-              ]}
-            />
-          </div>
-        </Section>
       </main>
 
       <SiteFooter />

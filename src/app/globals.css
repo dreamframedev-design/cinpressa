@@ -1,14 +1,38 @@
 @import "tailwindcss";
 
 @theme {
-  /* CinPressa brand, per the official CINPRESSA Logo Spec Sheet (locked) */
+  /* CinPressa brand, transcribed from the official CINPRESSA Logo Spec Sheet.
+     The sheet defines four CORE colours, a set of named support colours, and
+     the icon/supporting ladder the mark's 13 petals are actually drawn from.
+
+     Contrast notes (on white): blue 6.6:1 and indigo 4.6:1 clear AA for body
+     text. Azure 3.3:1 and ocean 4.1:1 are large-text only. Sky, green, and
+     everything lighter are surface-only, never set them as text on white. */
+
+  /* Core */
+  --color-blue: #2261ad;
+  --color-orange: #f9a81a;
+  --color-green: #afdbbc;
+  --color-indigo: #6771b5;
+
+  /* Named support */
+  --color-sky: #3aaed8;
+  --color-pale: #bed7ec;
+  --color-stone: #a3abae;
+
+  /* Icon + supporting ladder, deepest to lightest */
+  --color-cobalt: #0473bb;
+  --color-ocean: #0783c6;
+  --color-azure: #1596d4;
+  --color-cyan: #1eaee5;
+  --color-periwinkle: #7eaadb;
+  --color-frost: #95daf8;
+  --color-cloud: #aadbf6;
+
+  /* Derived neutrals */
   --color-ink: #14304f;
   --color-body: #46586b;
   --color-muted: #5b6e83;
-  --color-sky: #3aaed8;
-  --color-blue: #2261ad;
-  --color-orange: #f9a81a;
-  --color-pale: #bed7ec;
   --color-mist: #f4f8fc;
   --color-line: #dce7f1;
   --color-deep: #0d2342;
@@ -340,7 +364,7 @@ p {
   }
 }
 
-/* Dosing cadence — a year of daily doses cascading in, calendar order */
+/* Dosing cadence: a year of daily doses cascading in, calendar order */
 [data-reveal].reveal-pending .dose-dot {
   opacity: 0;
   transform: scale(0.4);
@@ -349,7 +373,7 @@ p {
   animation: pop-in 0.5s var(--ease-brand) calc(var(--i) * 3.4ms) both;
 }
 
-/* Dosing cadence — the one/two yearly doses landing after the cascade */
+/* Dosing cadence: the one/two yearly doses landing after the cascade */
 [data-reveal].reveal-pending .year-dot {
   opacity: 0;
   transform: scale(0);
@@ -358,45 +382,138 @@ p {
   animation: pop-in 0.6s var(--ease-brand) calc(var(--i) * 150ms + 620ms) both;
 }
 
-/* Pipeline tracker — progress line draws, nodes pop in sequence */
+/* ---------- Duplex binding ----------
+   Sequence: the mRNA draws in, its bases appear along it, the guide strand
+   docks from below, then the duplex zips closed left to right: hybridisation
+   nucleates and zippers, it does not snap shut all at once. */
+
+.duplex-line,
+.duplex-base {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+[data-reveal].reveal-pending .duplex-line,
+[data-reveal].reveal-pending .duplex-base {
+  stroke-dashoffset: 1;
+}
+
+[data-reveal].reveal-in .duplex-line {
+  animation: chart-dash 1.5s var(--ease-brand) both;
+}
+
+[data-reveal].reveal-in .duplex-base {
+  animation: chart-dash 0.45s var(--ease-brand) calc(var(--i) * 16ms + 0.55s)
+    both;
+}
+
+[data-reveal].reveal-pending .duplex-guide {
+  opacity: 0;
+  transform: translateY(58px);
+}
+
+[data-reveal].reveal-in .duplex-guide {
+  animation: duplex-dock 1.4s var(--ease-brand) 1s both;
+}
+
+@keyframes duplex-dock {
+  from {
+    opacity: 0;
+    transform: translateY(58px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The guide's bases wait for it to arrive, then zip */
+[data-reveal].reveal-in .duplex-guide .duplex-base {
+  animation: chart-dash 0.45s var(--ease-brand) calc(var(--i) * 22ms + 1.9s)
+    both;
+}
+
+[data-reveal].reveal-pending .duplex-halo {
+  opacity: 0;
+}
+
+[data-reveal].reveal-in .duplex-halo {
+  animation: duplex-halo 6s var(--ease-brand) 3.4s infinite;
+}
+
+@keyframes duplex-halo {
+  0%,
+  100% {
+    opacity: 0.16;
+  }
+  50% {
+    opacity: 0.48;
+  }
+}
+
+/* ---------- Pipeline diagram ----------
+   Completed stages read as a solid fill; the in-progress stretch is a
+   different *texture*, not a different shade, so the handoff is a deliberate
+   edge rather than a muddy blend. */
+
 [data-reveal].reveal-pending .track-progress {
   transform: scaleX(0);
 }
 [data-reveal].reveal-in .track-progress {
   animation: grow-x 1.1s var(--ease-brand) 0.25s both;
 }
-[data-reveal].reveal-pending .track-node {
-  opacity: 0;
-  transform: scale(0.4);
-}
-[data-reveal].reveal-in .track-node {
-  animation: pop-in 0.5s var(--ease-brand) calc(var(--i) * 130ms + 0.15s) both;
+
+@keyframes bar-stripes {
+  to {
+    background-position: 28px 0;
+  }
 }
 
-/* CinRx hub-and-spoke — spokes draw from the hub, then nodes appear */
-.spoke {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 0;
-}
-[data-reveal].reveal-pending .spoke {
-  stroke-dashoffset: 1;
-}
-[data-reveal].reveal-in .spoke {
-  animation: chart-dash 0.9s var(--ease-brand) calc(var(--i) * 90ms + 0.15s) both;
-}
-[data-reveal].reveal-pending .model-node {
-  opacity: 0;
-}
-[data-reveal].reveal-in .model-node {
-  animation: chart-fade-in 0.6s var(--ease-brand) calc(var(--i) * 90ms + 0.55s) both;
+.track-stripes {
+  background-image: repeating-linear-gradient(
+    115deg,
+    rgba(255, 255, 255, 0.38) 0px,
+    rgba(255, 255, 255, 0.38) 7px,
+    rgba(255, 255, 255, 0) 7px,
+    rgba(255, 255, 255, 0) 14px
+  );
+  background-size: 28px 100%;
+  animation: bar-stripes 1.1s linear infinite;
 }
 
-/* Continuous focal pulse rings */
-.pulse-ring {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: soft-pulse 2.8s var(--ease-brand) infinite;
+/* Slow specular sweep across the finished stretch */
+@keyframes bar-sheen {
+  0% {
+    transform: translateX(-140%) skewX(-18deg);
+  }
+  55%,
+  100% {
+    transform: translateX(560%) skewX(-18deg);
+  }
 }
+
+.track-sheen {
+  animation: bar-sheen 5.5s var(--ease-brand) 1.2s infinite;
+}
+
+/* Soft halo at the leading edge, "you are here" */
+@keyframes tip-glow {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.35);
+  }
+}
+
+.track-tip {
+  animation: tip-glow 2.6s var(--ease-brand) infinite;
+}
+
+/* Continuous focal pulse ring */
 .pulse-ring-el {
   animation: soft-pulse 2.8s var(--ease-brand) infinite;
 }
@@ -451,18 +568,35 @@ p {
 
   .dose-dot,
   .year-dot,
-  .track-progress,
-  .track-node,
-  .spoke,
-  .model-node {
+  .track-progress {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
+  }
+
+  /* Colour and texture stay; only the motion stops. */
+  .track-stripes,
+  .track-tip,
+  .duplex-halo,
+  .duplex-guide {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  /* The duplex rests bound and fully drawn */
+  .duplex-line,
+  .duplex-base {
+    animation: none !important;
+    opacity: 1 !important;
     stroke-dashoffset: 0 !important;
   }
 
-  .pulse-ring,
-  .pulse-ring-el {
+  .duplex-guide {
+    opacity: 1 !important;
+  }
+
+  .pulse-ring-el,
+  .track-sheen {
     animation: none !important;
     opacity: 0 !important;
   }

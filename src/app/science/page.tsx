@@ -4,6 +4,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { PageHero } from "@/components/page-hero";
 import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
+import { DuplexBinding } from "@/components/duplex-binding";
 import { RaasPathway } from "@/components/raas-pathway";
 import { MarkArt } from "@/components/geometry";
 import { Reveal } from "@/components/reveal";
@@ -39,7 +40,7 @@ export default function SciencePage() {
       <main>
         <PageHero
           eyebrow="Unmet need"
-          title="Blood pressure control still depends on daily adherence"
+          title="Blood pressure control still depends on daily dose adherence"
           subtitle="Hypertension requires lifelong treatment, yet long-term control remains difficult to achieve for a large proportion of patients despite numerous approved therapies."
         />
 
@@ -68,7 +69,7 @@ export default function SciencePage() {
               <div className="mt-6 flex flex-wrap gap-2.5">
                 {complications.map((c, i) => (
                   <Reveal key={c} as="span" variant="fade" delay={i * 50}>
-                    <span className="inline-flex rounded-full border border-line bg-mist px-4 py-2 text-sm text-body">
+                    <span className="inline-flex rounded-full border border-pale/70 bg-pale/25 px-4 py-2 text-sm text-body">
                       {c}
                     </span>
                   </Reveal>
@@ -91,12 +92,11 @@ export default function SciencePage() {
 
         {/* CinPressa solution */}
         <Section
-          tone="mist"
+          tone="green"
           art={
             <MarkArt
-              variant="outline"
-              color="#2261AD"
-              className="absolute -right-28 -bottom-52 h-[640px] w-auto rotate-[12deg] opacity-[0.09]"
+              variant="brand"
+              className="absolute -right-28 -bottom-52 h-[640px] w-auto rotate-[12deg] opacity-[0.14]"
             />
           }
         >
@@ -125,8 +125,20 @@ export default function SciencePage() {
           </div>
         </Section>
 
+        {/* Target engagement */}
+        <Section tone="indigo">
+          <SectionHeader
+            eyebrow="RNA interference"
+            title="How CIN-111 silences AGT"
+            subtitle="The guide strand of CIN-111 is designed to base-pair with a complementary sequence on AGT messenger RNA. Once bound, the transcript is cleaved before angiotensinogen can be translated."
+          />
+          <div className="mt-14">
+            <DuplexBinding />
+          </div>
+        </Section>
+
         {/* Mechanism */}
-        <Section>
+        <Section tone="sky">
           <SectionHeader
             eyebrow="Mechanism"
             title="Targeting AGT and RAAS upstream"
@@ -138,7 +150,7 @@ export default function SciencePage() {
               <Reveal variant="fade">
                 <p className="text-base leading-relaxed text-body">
                   Standard RAAS inhibitors such as ACE inhibitors and ARBs act
-                  downstream and do not completely suppress the pathway — renin
+                  downstream and do not completely suppress the pathway. Renin
                   production increases, and angiotensin II and aldosterone can
                   rebound over time. Residual activity contributes to persistent
                   hypertension and ongoing cardiovascular and renal risk.

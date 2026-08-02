@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ContactForm } from "@/components/contact-form";
+import { HeroField } from "@/components/hero-field";
 import { Reveal } from "@/components/reveal";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
@@ -16,15 +17,9 @@ export default function ContactPage() {
       <SiteNav />
 
       <main>
-        <section className="relative overflow-hidden bg-gradient-to-b from-white via-white to-mist">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute right-[-12%] top-[-10%] h-[640px] w-[640px] rounded-full opacity-55"
-            style={{
-              background:
-                "radial-gradient(circle, rgba(190,215,236,0.45) 0%, rgba(190,215,236,0) 65%)",
-            }}
-          />
+        <section className="relative overflow-hidden bg-white">
+          {/* The form card sits in the right column, so no mark */}
+          <HeroField mark={false} />
           <div className="relative mx-auto grid w-full max-w-7xl gap-14 px-6 pb-24 pt-32 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20 lg:px-10 lg:pt-44">
             <div>
               <Reveal variant="draw">

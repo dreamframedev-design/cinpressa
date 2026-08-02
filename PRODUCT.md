@@ -26,10 +26,11 @@ Precise, calm, confident. Clinical-grade restraint with one moment of warmth (th
 ## Design Principles
 
 1. **The hairline is the brand.** 1px lines, dashed orbits, and rules carry the visual system; never thick decorative borders.
-2. **Palette is locked.** Colors come from the official CINPRESSA Logo Spec Sheet (core blue #2261AD, sky #3AAED8, orange #F9A81A). Never reinterpret; grays are derived support only.
-3. **Orange is punctuation only.** One accent moment per view, never a surface.
-4. **Motion is orbital and unhurried.** Slow rotations, soft rises, exponential ease-outs. Nothing bounces; nothing rushes the reader.
-5. **One asset, one page, one message.** Every element earns its place or gets cut.
+2. **Palette is the spec sheet, in full.** The official CINPRESSA Logo Spec Sheet defines **four** core colors: blue `#2261AD`, orange `#F9A81A`, green `#AFDBBC`, indigo `#6771B5`, plus named support (sky `#3AAED8`, pale `#BED7EC`, stone `#A3ABAE`) and the icon/supporting ladder the mark's 13 petals are drawn from (`#0473BB`, `#0783C6`, `#1596D4`, `#1EAEE5`, `#7EAADB`, `#95DAF8`, `#AADBF6`). All are tokens in `globals.css`. Never invent a color outside the sheet; grays are derived support only.
+3. **Color carries structure, not decoration.** Section washes, figure accents, and diagram ramps pull from the palette so a long page reads as light moving across it. Contrast on white governs use: blue (6.6:1) and indigo (4.6:1) are safe for body text; cobalt (5.0:1) too; azure and ocean are large-text only; **sky, green, and anything lighter are surface-only and must never be text on white.**
+4. **Orange is punctuation only.** One accent moment per view, never a surface.
+5. **Motion is orbital and unhurried.** Slow rotations, soft rises, exponential ease-outs. Nothing bounces; nothing rushes the reader.
+6. **One asset, one page, one message.** Every element earns its place or gets cut.
 
 ## Accessibility & Inclusion
 

@@ -51,7 +51,7 @@ export function SiteFooter() {
       </div>
 
       <div className="relative mx-auto max-w-7xl px-6 pb-12 pt-20 lg:px-10 lg:pt-24">
-        {/* Partnering band — the site map's closing call to action */}
+        {/* Partnering band: the site map's closing call to action */}
         <div className="flex flex-col gap-10 border-b border-white/10 pb-16 md:flex-row md:items-end md:justify-between">
           <div className="max-w-xl">
             <Reveal variant="draw">
