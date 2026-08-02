@@ -63,7 +63,7 @@ export function SiteFooter() {
               </h2>
             </Reveal>
             <Reveal variant="fade" delay={180}>
-              <p className="mt-5 max-w-md text-sm leading-relaxed text-white/60">
+              <p className="mt-5 max-w-md text-[0.95rem] leading-relaxed text-white/80">
                 Partner with CinPressa to help move a differentiated AGT siRNA
                 program forward. For partnering, investment, or general
                 inquiries, connect with the team.
@@ -91,7 +91,7 @@ export function SiteFooter() {
             <p className="text-sm font-light uppercase tracking-[0.3em] text-white">
               CinPressa <span className="text-sky">Pharma</span>
             </p>
-            <p className="mt-5 max-w-xs text-sm leading-relaxed text-white/60">
+            <p className="mt-5 max-w-xs text-[0.95rem] leading-relaxed text-white/80">
               Advancing a best-in-class, long-acting AGT siRNA (CIN-111) for a
               durable backbone of blood pressure control.
             </p>
@@ -99,15 +99,15 @@ export function SiteFooter() {
 
           {columns.map((column) => (
             <div key={column.heading}>
-              <p className="text-[0.7rem] font-medium uppercase tracking-[0.18em] text-white/50">
+              <p className="text-[0.78rem] font-semibold uppercase tracking-[0.16em] text-white/70">
                 {column.heading}
               </p>
-              <ul className="mt-5 space-y-3 text-sm">
+              <ul className="mt-5 space-y-3.5 text-[0.95rem]">
                 {column.links.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="link-underline text-white/70 transition-colors hover:text-white"
+                      className="link-underline text-white/85 transition-colors hover:text-white"
                     >
                       {link.label}
                     </Link>
@@ -118,25 +118,25 @@ export function SiteFooter() {
           ))}
 
           <div>
-            <p className="text-[0.7rem] font-medium uppercase tracking-[0.18em] text-white/50">
+            <p className="text-[0.78rem] font-semibold uppercase tracking-[0.16em] text-white/70">
               Parent company
             </p>
-            <ul className="mt-5 space-y-3 text-sm">
+            <ul className="mt-5 space-y-3.5 text-[0.95rem]">
               <li>
                 <a
                   href="https://cinrx.com"
-                  className="link-underline text-white/70 transition-colors hover:text-white"
+                  className="link-underline text-white/85 transition-colors hover:text-white"
                 >
                   CinRx Pharma
                 </a>
               </li>
-              <li className="text-white/55">Cincinnati, Ohio, USA</li>
+              <li className="text-white/75">Cincinnati, Ohio, USA</li>
             </ul>
           </div>
         </Reveal>
 
         {/* Legal */}
-        <div className="mt-14 flex flex-col gap-2 border-t border-white/10 pt-7 text-xs text-white/55 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-14 flex flex-col gap-2 border-t border-white/10 pt-7 text-sm text-white/75 sm:flex-row sm:items-center sm:justify-between">
           <p>&copy; 2026 CinPressa Pharma. All rights reserved.</p>
           <p>A CinRx Pharma portfolio company</p>
         </div>

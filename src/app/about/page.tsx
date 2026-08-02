@@ -63,7 +63,7 @@ export default function AboutPage() {
                       aria-hidden
                       className={`h-1.5 w-1.5 rounded-full ${d.dot}`}
                     />
-                    <span className="text-sm text-body">{d.label}</span>
+                    <span className="text-[0.95rem] text-body">{d.label}</span>
                   </Reveal>
                 ))}
               </div>
@@ -77,7 +77,7 @@ export default function AboutPage() {
                 <p className="text-[clamp(2.5rem,5vw,3.5rem)] font-extralight leading-none tracking-tight text-blue">
                   $1.9B
                 </p>
-                <p className="mt-4 text-sm leading-relaxed text-body">
+                <p className="mt-4 text-[0.95rem] leading-relaxed text-body">
                   CinCor Pharma&rsquo;s baxdrostat exit to AstraZeneca, led by
                   CinPressa&rsquo;s founding team.
                 </p>
@@ -90,7 +90,7 @@ export default function AboutPage() {
                 <p className="text-[clamp(2.5rem,5vw,3.5rem)] font-extralight leading-none tracking-tight text-indigo">
                   $300M+
                 </p>
-                <p className="mt-4 text-sm leading-relaxed text-body">
+                <p className="mt-4 text-[0.95rem] leading-relaxed text-body">
                   Deployed across multiple CinCos through the scalable
                   hub-and-spoke CinRx model.
                 </p>

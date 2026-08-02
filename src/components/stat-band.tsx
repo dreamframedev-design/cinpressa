@@ -34,7 +34,7 @@ export function StatBand({ stats }: { stats: Stat[] }) {
             delay={i * 90}
             className="flex flex-col justify-between gap-6 bg-white px-7 py-9 lg:px-9 lg:py-11"
           >
-            <dt className="order-2 text-sm leading-relaxed text-body">
+            <dt className="order-2 text-[0.95rem] leading-relaxed text-body">
               {stat.label}
             </dt>
             <dd className="order-1">

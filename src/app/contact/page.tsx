@@ -26,7 +26,7 @@ export default function ContactPage() {
                 <span aria-hidden className="block h-px w-12 bg-orange" />
               </Reveal>
               <Reveal variant="fade" delay={80}>
-                <p className="mt-6 text-[0.72rem] font-medium uppercase tracking-[0.26em] text-blue">
+                <p className="mt-6 text-[0.8rem] font-semibold uppercase tracking-[0.22em] text-blue">
                   Connect
                 </p>
               </Reveal>
@@ -50,10 +50,10 @@ export default function ContactPage() {
               </Reveal>
               <Reveal variant="fade" delay={360}>
                 <div className="mt-10 border-t border-line pt-8">
-                  <p className="text-[0.7rem] font-medium uppercase tracking-[0.18em] text-muted">
+                  <p className="text-[0.78rem] font-semibold uppercase tracking-[0.16em] text-body">
                     Parent company
                   </p>
-                  <p className="mt-2 text-sm text-body">
+                  <p className="mt-2 text-[0.95rem] text-body">
                     CinRx Pharma · Cincinnati, Ohio, USA
                   </p>
                 </div>

@@ -343,11 +343,11 @@ export function EfficacyChart() {
         </div>
 
         <div className="mt-7 flex flex-wrap items-center gap-x-8 gap-y-3 border-t border-line pt-6">
-          <span className="flex items-center gap-2.5 text-sm text-body">
+          <span className="flex items-center gap-2.5 text-[0.95rem] text-body">
             <span aria-hidden className="h-[3px] w-7 rounded-full bg-blue" />
             CIN-111
           </span>
-          <span className="flex items-center gap-2.5 text-sm text-body">
+          <span className="flex items-center gap-2.5 text-[0.95rem] text-body">
             <span
               aria-hidden
               className="h-[3px] w-7 rounded-full"

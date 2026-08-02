@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { SiteNav } from "@/components/site-nav";
@@ -36,7 +35,7 @@ export default function HomePage() {
           <div className="relative mx-auto grid w-full max-w-7xl items-center gap-14 px-6 pb-20 pt-32 lg:grid-cols-[1.08fr_0.92fr] lg:gap-10 lg:px-10 lg:pb-24 lg:pt-40">
             <div>
               <p
-                className="anim-rise flex items-center gap-3 text-[0.72rem] font-medium uppercase tracking-[0.24em] text-blue"
+                className="anim-rise flex items-center gap-3 text-[0.8rem] font-semibold uppercase tracking-[0.22em] text-blue"
                 style={{ animationDelay: "0.02s" }}
               >
                 <span aria-hidden className="h-px w-8 bg-blue/40" />
@@ -61,19 +60,15 @@ export default function HomePage() {
                 className="anim-rise mt-10 flex flex-wrap items-center gap-4"
                 style={{ animationDelay: "0.4s" }}
               >
-                <Link
-                  href="/science"
-                  className="group inline-flex items-center gap-2.5 rounded-full bg-blue px-8 py-4 text-sm font-medium text-white transition-all duration-300 hover:bg-ink hover:shadow-[0_18px_36px_-18px_rgba(34,97,173,0.6)] active:translate-y-px"
-                >
+                <Link href="/science" className="btn-primary group">
                   Explore the science
-                  <ArrowIcon className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+                  <ArrowIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                 </Link>
-                <Link
-                  href="/pipeline"
-                  className="group inline-flex items-center gap-2 text-sm font-medium text-ink transition-colors hover:text-blue"
-                >
-                  <span className="link-underline">View the pipeline</span>
-                  <ArrowIcon className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+                {/* A bordered ghost button, not a text link: the secondary CTA
+                    was reading as body copy. */}
+                <Link href="/pipeline" className="btn-ghost group">
+                  View the pipeline
+                  <ArrowIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                 </Link>
               </div>
             </div>
@@ -82,24 +77,58 @@ export default function HomePage() {
               className="anim-rise relative mx-auto flex aspect-square w-[280px] items-center justify-center sm:w-[360px] lg:w-[460px]"
               style={{ animationDelay: "0.22s" }}
             >
+              {/* Orbits. The old rings were #BED7EC hairlines with a 1-on-7
+                  dash, effectively invisible; these carry real weight and
+                  counter-rotate so the field has depth. */}
               <div aria-hidden className="anim-orbit pointer-events-none absolute inset-0">
                 <svg viewBox="0 0 460 460" className="h-full w-full">
-                  <circle cx="230" cy="230" r="226" fill="none" stroke="#BED7EC" strokeWidth="1" strokeDasharray="1 7" />
-                  <circle cx="230" cy="230" r="180" fill="none" stroke="#DCE7F1" strokeWidth="1" />
+                  <circle
+                    cx="230"
+                    cy="230"
+                    r="226"
+                    fill="none"
+                    stroke="#6BB2E2"
+                    strokeWidth="1.4"
+                    strokeDasharray="2.5 9"
+                    strokeLinecap="round"
+                    opacity="0.75"
+                  />
+                </svg>
+              </div>
+              <div
+                aria-hidden
+                className="anim-orbit-slow pointer-events-none absolute inset-[9%]"
+              >
+                <svg viewBox="0 0 380 380" className="h-full w-full">
+                  <circle
+                    cx="190"
+                    cy="190"
+                    r="188"
+                    fill="none"
+                    stroke="#AFDBBC"
+                    strokeWidth="1.6"
+                    strokeDasharray="34 300"
+                    strokeLinecap="round"
+                  />
+                  <circle
+                    cx="190"
+                    cy="190"
+                    r="188"
+                    fill="none"
+                    stroke="#BED7EC"
+                    strokeWidth="1.2"
+                  />
                 </svg>
               </div>
               <div aria-hidden className="anim-orbit-dot pointer-events-none absolute inset-0">
-                <span className="absolute left-1/2 top-[0.2%] h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-orange shadow-[0_0_12px_rgba(249,168,26,0.55)]" />
+                <span className="absolute left-1/2 top-[-0.5%] h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-orange shadow-[0_0_18px_rgba(249,168,26,0.8)]" />
               </div>
-              <div className="anim-float relative w-[56%]">
-                <Image
-                  src="/cinpressa-mark.svg"
-                  alt=""
-                  width={258}
-                  height={242}
-                  priority
-                  className="h-auto w-full"
-                />
+              <div aria-hidden className="anim-orbit-counter pointer-events-none absolute inset-[9%]">
+                <span className="absolute left-1/2 top-[-1%] h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-indigo/70" />
+              </div>
+
+              <div className="anim-float mark-lift relative w-[58%]">
+                <MarkArt variant="brand" animate className="h-auto w-full" />
               </div>
             </div>
           </div>
@@ -195,10 +224,10 @@ export default function HomePage() {
             <Reveal variant="fade" delay={160}>
               <Link
                 href="/pipeline"
-                className="group inline-flex shrink-0 items-center gap-2 text-sm font-medium text-blue transition-colors hover:text-ink"
+                className="btn-ghost group shrink-0"
               >
-                <span className="link-underline">Visit the pipeline</span>
-                <ArrowIcon className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+                Visit the pipeline
+                <ArrowIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
               </Link>
             </Reveal>
           </div>
@@ -216,10 +245,10 @@ export default function HomePage() {
             <Reveal variant="fade" delay={140}>
               <Link
                 href="/news"
-                className="group inline-flex shrink-0 items-center gap-2 rounded-full border border-line px-6 py-3 text-sm font-medium text-ink transition-all duration-300 hover:border-blue hover:text-blue"
+                className="btn-ghost group shrink-0"
               >
                 Read the latest
-                <ArrowIcon className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+                <ArrowIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
               </Link>
             </Reveal>
           </div>

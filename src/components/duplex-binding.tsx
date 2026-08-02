@@ -213,7 +213,7 @@ export function DuplexBinding() {
           {LEGEND.map((item) => (
             <span
               key={item.label}
-              className="flex items-center gap-2.5 text-sm text-body"
+              className="flex items-center gap-2.5 text-[0.95rem] text-body"
             >
               <span
                 aria-hidden

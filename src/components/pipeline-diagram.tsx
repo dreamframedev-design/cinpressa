@@ -29,13 +29,13 @@ export function PipelineDiagram() {
       <div className="-mx-6 overflow-x-auto px-6 lg:mx-0 lg:px-0">
         <div className="min-w-[36rem] overflow-hidden rounded-2xl border border-line bg-white">
           <div className={`${COLUMNS} border-b border-line bg-mist/70`}>
-            <div className="px-5 py-4 text-[0.68rem] font-medium uppercase tracking-[0.18em] text-muted sm:px-7">
+            <div className="px-5 py-4 text-[0.76rem] font-semibold uppercase tracking-[0.16em] text-body sm:px-7">
               Program
             </div>
             {STAGES.map((stage) => (
               <div
                 key={stage}
-                className="border-l border-line px-3 py-4 text-center text-[0.68rem] font-medium uppercase tracking-[0.18em] text-muted"
+                className="border-l border-line px-3 py-4 text-center text-[0.76rem] font-semibold uppercase tracking-[0.16em] text-body"
               >
                 {stage}
               </div>
@@ -45,7 +45,7 @@ export function PipelineDiagram() {
           <div className={`${COLUMNS} items-center`}>
             <div className="px-5 py-7 sm:px-7">
               <p className="text-base font-medium text-ink">CIN-111</p>
-              <p className="mt-1.5 text-sm leading-relaxed text-body">
+              <p className="mt-1.5 text-[0.95rem] leading-relaxed text-body">
                 AGT siRNA &middot; Hypertension
               </p>
             </div>
@@ -108,7 +108,7 @@ export function PipelineDiagram() {
         {LEGEND.map((item) => (
           <span
             key={item.label}
-            className="flex items-center gap-2.5 text-xs text-muted"
+            className="flex items-center gap-2.5 text-sm text-body"
           >
             <span
               aria-hidden

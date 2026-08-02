@@ -91,11 +91,11 @@ export default function NewsPage() {
                     <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
                       <time
                         dateTime={item.date}
-                        className="text-[0.7rem] font-medium uppercase tracking-[0.16em] text-muted"
+                        className="text-[0.78rem] font-semibold uppercase tracking-[0.15em] text-body"
                       >
                         {dateFormat.format(new Date(item.date))}
                       </time>
-                      <span className="inline-flex rounded-full border border-pale/70 bg-pale/25 px-3 py-1 text-[0.66rem] font-medium uppercase tracking-[0.12em] text-blue">
+                      <span className="inline-flex rounded-full border border-pale/70 bg-pale/25 px-3 py-1 text-[0.74rem] font-semibold uppercase tracking-[0.11em] text-blue">
                         {item.category}
                       </span>
                     </div>
@@ -133,10 +133,10 @@ export default function NewsPage() {
                 </p>
                 <Link
                   href="/contact"
-                  className="group mt-8 inline-flex items-center gap-2 text-sm font-medium text-blue transition-colors hover:text-ink"
+                  className="btn-ghost group mt-9"
                 >
-                  <span className="link-underline">Media enquiries</span>
-                  <ArrowIcon className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+                  Media enquiries
+                  <ArrowIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                 </Link>
               </Reveal>
             )}
@@ -155,10 +155,10 @@ export default function NewsPage() {
           <Reveal variant="fade" delay={140}>
             <Link
               href="/pipeline"
-              className="group mt-10 inline-flex items-center gap-2 text-sm font-medium text-blue transition-colors hover:text-ink"
+              className="btn-ghost group mt-12"
             >
-              <span className="link-underline">See the full pipeline</span>
-              <ArrowIcon className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+              See the full pipeline
+              <ArrowIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
             </Link>
           </Reveal>
         </Section>

@@ -1,8 +1,9 @@
-import Image from "next/image";
 import { cookies } from "next/headers";
 import { ACCESS_COOKIE, hasValidAccess } from "@/lib/access";
 import { AccessGate } from "@/components/access-gate";
 import { ArrowIcon } from "@/components/arrow-icon";
+import { MarkArt } from "@/components/geometry";
+import { SiteLogo } from "@/components/site-logo";
 
 export default async function SplashPage({
   searchParams,
@@ -22,15 +23,8 @@ export default async function SplashPage({
       {/* Minimal splash header: the full nav lives behind the gate */}
       <header className="anim-nav relative z-10">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 lg:px-10">
-          <Image
-            src="/cinpressa-logo.png"
-            alt="CinPressa Pharma"
-            width={768}
-            height={160}
-            priority
-            className="h-7 w-auto md:h-8"
-          />
-          <span className="hidden items-center gap-2.5 text-[0.66rem] font-medium uppercase tracking-[0.22em] text-muted sm:flex">
+          <SiteLogo height={46} />
+          <span className="hidden items-center gap-2.5 text-[0.74rem] font-semibold uppercase tracking-[0.18em] text-body sm:flex">
             <span aria-hidden className="h-px w-6 bg-line" />
             Site in progress
           </span>
@@ -50,7 +44,7 @@ export default async function SplashPage({
         <div className="relative mx-auto grid w-full max-w-7xl items-center gap-14 px-6 pb-24 pt-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:px-10 lg:pb-20">
           <div>
             <p
-              className="anim-rise flex items-center gap-3 text-[0.7rem] font-medium uppercase tracking-[0.24em] text-blue"
+              className="anim-rise flex items-center gap-3 text-[0.78rem] font-semibold uppercase tracking-[0.2em] text-blue"
               style={{ animationDelay: "0.02s" }}
             >
               <span aria-hidden className="h-px w-8 bg-blue/40" />
@@ -77,7 +71,7 @@ export default async function SplashPage({
 
             {bounced ? (
               <p
-                className="anim-rise mt-6 max-w-sm text-sm leading-relaxed text-muted"
+                className="anim-rise mt-6 max-w-sm text-base leading-relaxed text-body"
                 style={{ animationDelay: "0.38s" }}
               >
                 That area is part of the private preview. Enter the access code
@@ -89,10 +83,10 @@ export default async function SplashPage({
               {unlocked ? (
                 <a
                   href={redirectTo}
-                  className="group inline-flex items-center gap-2.5 rounded-full bg-blue px-8 py-4 text-sm font-medium text-white transition-all duration-300 hover:bg-ink hover:shadow-[0_18px_36px_-18px_rgba(34,97,173,0.6)] active:translate-y-px"
+                  className="btn-primary group"
                 >
                   Enter the site
-                  <ArrowIcon className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+                  <ArrowIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                 </a>
               ) : (
                 <AccessGate redirectTo={redirectTo} />
@@ -111,39 +105,51 @@ export default async function SplashPage({
                   cy="220"
                   r="216"
                   fill="none"
-                  stroke="#BED7EC"
-                  strokeWidth="1"
-                  strokeDasharray="1 7"
+                  stroke="#6BB2E2"
+                  strokeWidth="1.4"
+                  strokeDasharray="2.5 9"
+                  strokeLinecap="round"
+                  opacity="0.75"
+                />
+              </svg>
+            </div>
+            <div aria-hidden className="anim-orbit-slow pointer-events-none absolute inset-[10%]">
+              <svg viewBox="0 0 352 352" className="h-full w-full">
+                <circle
+                  cx="176"
+                  cy="176"
+                  r="174"
+                  fill="none"
+                  stroke="#AFDBBC"
+                  strokeWidth="1.6"
+                  strokeDasharray="32 280"
+                  strokeLinecap="round"
                 />
                 <circle
-                  cx="220"
-                  cy="220"
-                  r="172"
+                  cx="176"
+                  cy="176"
+                  r="174"
                   fill="none"
-                  stroke="#DCE7F1"
-                  strokeWidth="1"
+                  stroke="#BED7EC"
+                  strokeWidth="1.2"
                 />
               </svg>
             </div>
             <div aria-hidden className="anim-orbit-dot pointer-events-none absolute inset-0">
-              <span className="absolute left-1/2 top-[0.2%] h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-orange shadow-[0_0_12px_rgba(249,168,26,0.55)]" />
+              <span className="absolute left-1/2 top-[-0.5%] h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-orange shadow-[0_0_18px_rgba(249,168,26,0.8)]" />
             </div>
-            <div className="anim-float relative w-[58%]">
-              <Image
-                src="/cinpressa-mark.svg"
-                alt=""
-                width={258}
-                height={242}
-                priority
-                className="h-auto w-full"
-              />
+            <div aria-hidden className="anim-orbit-counter pointer-events-none absolute inset-[10%]">
+              <span className="absolute left-1/2 top-[-1%] h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-indigo/70" />
+            </div>
+            <div className="anim-float mark-lift relative w-[58%]">
+              <MarkArt variant="brand" animate className="h-auto w-full" />
             </div>
           </div>
         </div>
       </main>
 
       <footer className="relative z-10 border-t border-line/70">
-        <div className="mx-auto flex max-w-7xl flex-col gap-2 px-6 py-6 text-xs text-muted sm:flex-row sm:items-center sm:justify-between lg:px-10">
+        <div className="mx-auto flex max-w-7xl flex-col gap-2 px-6 py-6 text-sm text-body sm:flex-row sm:items-center sm:justify-between lg:px-10">
           <p>&copy; 2026 CinPressa Pharma. All rights reserved.</p>
           <p>A CinRx Pharma portfolio company</p>
         </div>

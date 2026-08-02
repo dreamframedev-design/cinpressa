@@ -161,6 +161,16 @@ p {
   transform-origin: center;
 }
 
+.anim-orbit-slow {
+  animation: orbit 260s linear infinite reverse;
+  transform-origin: center;
+}
+
+.anim-orbit-counter {
+  animation: orbit 110s linear infinite;
+  transform-origin: center;
+}
+
 .anim-float {
   animation: float 9s ease-in-out 1.4s infinite;
 }
@@ -278,9 +288,9 @@ p {
 
 .nav-link {
   position: relative;
-  font-size: 0.82rem;
+  font-size: 0.94rem;
   font-weight: 500;
-  color: var(--color-body);
+  color: var(--color-ink);
   transition: color 0.3s ease;
 }
 
@@ -306,7 +316,83 @@ p {
 }
 
 .nav-link[aria-current] {
+  color: var(--color-blue);
+}
+
+/* ---------- Calls to action ----------
+   Sized as component classes rather than utility strings so every CTA on the
+   site moves together. Previously these were 14px labels in tight pills and
+   read as secondary text. */
+
+.btn-primary,
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  border-radius: 9999px;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  transition:
+    background-color 0.35s var(--ease-brand),
+    border-color 0.35s var(--ease-brand),
+    color 0.35s var(--ease-brand),
+    box-shadow 0.45s var(--ease-brand),
+    transform 0.35s var(--ease-brand);
+}
+
+.btn-primary {
+  background: var(--color-blue);
+  padding: 1.1rem 2.15rem;
+  color: #ffffff;
+  box-shadow: 0 16px 32px -18px rgba(34, 97, 173, 0.7);
+}
+
+.btn-primary:hover {
+  background: var(--color-ink);
+  box-shadow: 0 24px 44px -20px rgba(20, 48, 79, 0.6);
+  transform: translateY(-2px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-ghost {
+  border: 1px solid var(--color-pale);
+  background: rgba(255, 255, 255, 0.72);
+  padding: calc(1.1rem - 1px) calc(1.9rem - 1px);
   color: var(--color-ink);
+}
+
+.btn-ghost:hover {
+  border-color: var(--color-blue);
+  color: var(--color-blue);
+  background: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 20px 38px -24px rgba(34, 97, 173, 0.45);
+}
+
+.btn-ghost:active {
+  transform: translateY(0);
+}
+
+/* Compact variant for the nav bar */
+.btn-primary.btn-sm {
+  padding: 0.78rem 1.5rem;
+  font-size: 0.92rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-primary,
+  .btn-ghost {
+    transition: none;
+  }
+  .btn-primary:hover,
+  .btn-ghost:hover {
+    transform: none;
+  }
 }
 
 /* ---------- Inline / footer link underline ---------- */
@@ -380,6 +466,41 @@ p {
 }
 [data-reveal].reveal-in .year-dot {
   animation: pop-in 0.6s var(--ease-brand) calc(var(--i) * 150ms + 620ms) both;
+}
+
+/* ---------- Living mark ----------
+   The mark is thirteen overlapping translucent petals, so instead of bobbing
+   the whole lockup as one lump, each petal drifts on its own slow cycle. The
+   overlaps shift against each other and the thing reads as suspended in space.
+   Periods are deliberately mismatched so the composition never visibly loops. */
+
+@keyframes petal-drift {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  27% {
+    transform: translate(2.4%, -3%) scale(1.015);
+  }
+  53% {
+    transform: translate(-2.8%, 2.1%) scale(0.988);
+  }
+  78% {
+    transform: translate(1.6%, 2.9%) scale(1.008);
+  }
+}
+
+.petal {
+  transform-box: fill-box;
+  transform-origin: center;
+  will-change: transform;
+  animation: petal-drift var(--petal-dur, 22s) ease-in-out var(--petal-delay, 0s)
+    infinite;
+}
+
+/* Depth under the floating mark */
+.mark-lift {
+  filter: drop-shadow(0 28px 34px rgba(34, 97, 173, 0.16));
 }
 
 /* ---------- Duplex binding ----------
@@ -541,6 +662,8 @@ p {
   .anim-pop,
   .anim-orbit,
   .anim-orbit-dot,
+  .anim-orbit-slow,
+  .anim-orbit-counter,
   .anim-float {
     animation: none;
   }
@@ -575,6 +698,7 @@ p {
   }
 
   /* Colour and texture stay; only the motion stops. */
+  .petal,
   .track-stripes,
   .track-tip,
   .duplex-halo,

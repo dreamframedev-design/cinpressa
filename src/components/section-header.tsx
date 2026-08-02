@@ -33,7 +33,7 @@ export function SectionHeader({
       {eyebrow ? (
         <Reveal variant="fade">
           <p
-            className={`flex items-center gap-3 text-[0.7rem] font-medium uppercase tracking-[0.24em] ${labelColor} ${
+            className={`flex items-center gap-3 text-[0.78rem] font-semibold uppercase tracking-[0.2em] ${labelColor} ${
               align === "center" ? "justify-center" : ""
             }`}
           >

@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { ArrowIcon } from "@/components/arrow-icon";
+import { SiteLogo } from "@/components/site-logo";
 
 const links = [
   { href: "/home", label: "Home" },
@@ -56,25 +56,28 @@ export function SiteNav() {
       <header
         className={`anim-nav fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
           solid
-            ? "border-b border-line bg-white/85 shadow-[0_12px_32px_-24px_rgba(13,35,66,0.25)] backdrop-blur-md"
+            ? "border-b border-line bg-white/88 shadow-[0_12px_32px_-24px_rgba(13,35,66,0.25)] backdrop-blur-md"
             : "border-b border-transparent bg-transparent"
         }`}
       >
+        {/* Scrim: over the hero's colour field the lockup and links had nothing
+            clean to sit on. Fades out once the solid bar takes over. */}
         <div
-          className={`mx-auto flex max-w-7xl items-center justify-between px-6 transition-[height] duration-500 ease-brand lg:px-10 ${
-            scrolled ? "h-[60px]" : "h-[76px]"
+          aria-hidden
+          className={`pointer-events-none absolute inset-x-0 top-0 h-[190%] bg-gradient-to-b from-white/92 via-white/55 to-transparent transition-opacity duration-500 ${
+            solid ? "opacity-0" : "opacity-100"
+          }`}
+        />
+
+        <div
+          className={`relative mx-auto flex max-w-7xl items-center justify-between px-6 transition-[height] duration-500 ease-brand lg:px-10 ${
+            scrolled ? "h-[66px]" : "h-[88px]"
           }`}
         >
           <Link href="/home" aria-label="CinPressa Pharma, home" className="shrink-0">
-            <Image
-              src="/cinpressa-logo.png"
-              alt="CinPressa Pharma"
-              width={768}
-              height={160}
-              priority
-              className={`w-auto transition-all duration-500 ease-brand ${
-                scrolled ? "h-6 md:h-7" : "h-7 md:h-8"
-              }`}
+            <SiteLogo
+              height={scrolled ? 36 : 46}
+              className="transition-[font-size] duration-500 ease-brand"
             />
           </Link>
 
@@ -92,10 +95,10 @@ export function SiteNav() {
             ))}
             <Link
               href="/contact"
-              className="group inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-blue px-5 py-2.5 text-[0.8rem] font-medium text-white transition-all duration-300 hover:bg-ink hover:shadow-[0_14px_28px_-14px_rgba(34,97,173,0.55)] active:translate-y-px"
+              className="btn-primary btn-sm group"
             >
               Partner with us
-              <ArrowIcon className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" />
+              <ArrowIcon className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
             </Link>
           </nav>
 
@@ -168,7 +171,7 @@ export function SiteNav() {
           </ul>
           <Link
             href="/contact"
-            className="mt-6 flex items-center justify-center gap-2 rounded-full bg-blue px-6 py-3.5 text-sm font-medium text-white"
+            className="btn-primary mt-8 w-full justify-center"
           >
             Partner with us
             <ArrowIcon className="h-3.5 w-3.5" />

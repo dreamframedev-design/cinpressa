@@ -36,7 +36,7 @@ export function Timeline({ items }: { items: TimelineItem[] }) {
             <h3 className="mt-2 text-xl font-light tracking-tight text-ink">
               {item.title}
             </h3>
-            <div className="mt-3 max-w-xl text-sm leading-relaxed text-body">
+            <div className="mt-3 max-w-xl text-[0.95rem] leading-relaxed text-body">
               {item.body}
             </div>
           </div>

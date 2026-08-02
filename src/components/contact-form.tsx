@@ -50,7 +50,7 @@ export function ContactForm() {
         <h2 className="mt-7 text-2xl font-light tracking-tight text-ink">
           Thank you, your message is on its way
         </h2>
-        <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-body">
+        <p className="mx-auto mt-4 max-w-md text-[0.95rem] leading-relaxed text-body">
           We&apos;ve received your inquiry and will route it to the right team.
           Expect a reply at the email you provided.
         </p>
@@ -147,7 +147,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="group inline-flex items-center gap-2.5 rounded-full bg-blue px-8 py-4 text-sm font-medium text-white transition-all duration-300 hover:bg-ink hover:shadow-[0_18px_36px_-18px_rgba(34,97,173,0.6)] active:translate-y-px disabled:cursor-not-allowed disabled:opacity-60"
+        className="btn-primary group disabled:cursor-not-allowed disabled:opacity-60"
       >
         {status === "submitting" ? "Sending…" : "Send message"}
         <ArrowIcon className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
@@ -157,7 +157,7 @@ export function ContactForm() {
 }
 
 const inputClass =
-  "w-full rounded-xl border border-line bg-white px-4 py-3 text-sm text-ink shadow-sm outline-none transition-colors placeholder:text-muted/60 focus:border-sky focus:ring-2 focus:ring-sky/30";
+  "w-full rounded-xl border border-line bg-white px-4 py-3.5 text-base text-ink shadow-sm outline-none transition-colors placeholder:text-muted/60 focus:border-sky focus:ring-2 focus:ring-sky/30";
 
 function Field({
   label,
@@ -172,7 +172,7 @@ function Field({
 }) {
   return (
     <label htmlFor={htmlFor} className="block">
-      <span className="mb-2 block text-[0.7rem] font-medium uppercase tracking-[0.18em] text-muted">
+      <span className="mb-2 block text-[0.78rem] font-semibold uppercase tracking-[0.16em] text-body">
         {label}
         {optional ? <span className="ml-1 normal-case text-muted/60">(optional)</span> : null}
       </span>
