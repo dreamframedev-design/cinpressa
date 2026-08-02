@@ -29,3 +29,7 @@ next-env.d.ts
 
 # local agent config
 .claude/
+
+# Font source archive. The build only needs src/fonts/stem-extralight.woff2;
+# the zip also carries redundant ttf/eot/svg copies. Kept on disk, out of git.
+stem-font-source.zip

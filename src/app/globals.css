@@ -49,7 +49,12 @@ html {
 body {
   background: #ffffff;
   color: var(--color-ink);
-  font-family: var(--font-sans);
+  /* Not var(--font-sans): Tailwind v4 tree-shakes theme tokens that no utility
+     class references, and nothing used `font-sans`, so the token was dropped
+     from the output and this silently fell back to the system UI stack. The
+     whole site was rendering in Segoe UI, not Montserrat. Referencing the
+     next/font variable directly cannot be shaken out. */
+  font-family: var(--font-montserrat), "Montserrat", "Gotham", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -468,34 +473,34 @@ p {
   animation: pop-in 0.6s var(--ease-brand) calc(var(--i) * 150ms + 620ms) both;
 }
 
-/* ---------- Living mark ----------
-   The mark is thirteen overlapping translucent petals, so instead of bobbing
-   the whole lockup as one lump, each petal drifts on its own slow cycle. The
-   overlaps shift against each other and the thing reads as suspended in space.
-   Periods are deliberately mismatched so the composition never visibly loops. */
+/* ---------- Suspended mark ----------
+   The mark reads as four overlapping ovals, but the supplied artwork is those
+   ovals already flattened into thirteen boolean fragments. Moving the
+   fragments individually shatters the ovals, so the mark moves as one rigid
+   body: a slow float, a degree or two of drift, a faint breath. Nothing inside
+   the artwork ever distorts. Animating the ovals as ovals needs the layered
+   source file. */
 
-@keyframes petal-drift {
+@keyframes mark-suspend {
   0%,
   100% {
-    transform: translate(0, 0) scale(1);
+    transform: translateY(0) rotate(0deg) scale(1);
   }
   27% {
-    transform: translate(2.4%, -3%) scale(1.015);
+    transform: translateY(-11px) rotate(1.3deg) scale(1.012);
   }
-  53% {
-    transform: translate(-2.8%, 2.1%) scale(0.988);
+  54% {
+    transform: translateY(-3px) rotate(0.1deg) scale(0.995);
   }
-  78% {
-    transform: translate(1.6%, 2.9%) scale(1.008);
+  79% {
+    transform: translateY(-13px) rotate(-1.1deg) scale(1.007);
   }
 }
 
-.petal {
-  transform-box: fill-box;
+.mark-suspend {
   transform-origin: center;
   will-change: transform;
-  animation: petal-drift var(--petal-dur, 22s) ease-in-out var(--petal-delay, 0s)
-    infinite;
+  animation: mark-suspend 19s ease-in-out infinite;
 }
 
 /* Depth under the floating mark */
@@ -698,7 +703,7 @@ p {
   }
 
   /* Colour and texture stay; only the motion stops. */
-  .petal,
+  .mark-suspend,
   .track-stripes,
   .track-tip,
   .duplex-halo,

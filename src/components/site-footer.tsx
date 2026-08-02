@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { ArrowIcon } from "@/components/arrow-icon";
+import { MarkArt } from "@/components/geometry";
 import { Reveal } from "@/components/reveal";
+import { SiteLogo } from "@/components/site-logo";
 
 const columns = [
   {
@@ -24,6 +26,32 @@ const columns = [
 export function SiteFooter() {
   return (
     <footer className="relative overflow-hidden bg-deep text-white">
+      {/* Brand ladder hairline across the top edge: the one place the whole
+          palette appears at once, and it separates the footer from the page
+          without a flat rule. */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,#AFDBBC_0%,#1EAEE5_28%,#2261AD_58%,#6771B5_82%,#F9A81A_100%)] opacity-70"
+      />
+
+      {/* Colour glows, the dark-surface counterpart to the hero field */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -left-40 -top-32 h-[560px] w-[560px] rounded-full"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(34,97,173,0.5) 0%, rgba(34,97,173,0) 68%)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -bottom-56 left-[42%] h-[460px] w-[460px] rounded-full"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(103,113,181,0.3) 0%, rgba(103,113,181,0) 72%)",
+        }}
+      />
+
       {/* Hairline ring motif carried into the footer */}
       <div
         aria-hidden
@@ -35,20 +63,28 @@ export function SiteFooter() {
             cy="310"
             r="304"
             fill="none"
-            stroke="rgba(58,174,216,0.25)"
-            strokeWidth="1"
-            strokeDasharray="1 8"
+            stroke="rgba(58,174,216,0.28)"
+            strokeWidth="1.3"
+            strokeDasharray="2.5 9"
+            strokeLinecap="round"
           />
           <circle
             cx="310"
             cy="310"
             r="228"
             fill="none"
-            stroke="rgba(255,255,255,0.07)"
+            stroke="rgba(255,255,255,0.09)"
             strokeWidth="1"
           />
         </svg>
       </div>
+
+      {/* The mark itself, cropped off the right edge */}
+      <MarkArt
+        variant="brand"
+        tight
+        className="pointer-events-none absolute -bottom-[30%] -right-[9%] hidden h-[118%] w-auto opacity-[0.07] lg:block"
+      />
 
       <div className="relative mx-auto max-w-7xl px-6 pb-12 pt-20 lg:px-10 lg:pt-24">
         {/* Partnering band: the site map's closing call to action */}
@@ -88,10 +124,9 @@ export function SiteFooter() {
           className="mt-16 grid gap-12 md:grid-cols-[1.6fr_1fr_1fr_1fr]"
         >
           <div>
-            <p className="text-sm font-light uppercase tracking-[0.3em] text-white">
-              CinPressa <span className="text-sky">Pharma</span>
-            </p>
-            <p className="mt-5 max-w-xs text-[0.95rem] leading-relaxed text-white/80">
+            {/* The real lockup, reversed for the dark surface */}
+            <SiteLogo height={46} tone="light" />
+            <p className="mt-6 max-w-xs text-[0.95rem] leading-relaxed text-white/80">
               Advancing a best-in-class, long-acting AGT siRNA (CIN-111) for a
               durable backbone of blood pressure control.
             </p>

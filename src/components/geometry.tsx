@@ -1,5 +1,3 @@
-import type { CSSProperties } from "react";
-
 /**
  * The actual CinPressa mark, its 13 overlapping petals, used as background
  * art. Rendered as a flat monochrome silhouette ("solid"), hairline line-art
@@ -44,69 +42,52 @@ const MARK_PETALS = [
   "#6772b6",
 ];
 
-/**
- * Slow, mismatched drift periods per petal. Nothing here is a round number, so
- * the thirteen cycles never line back up and the mark never visibly repeats.
- */
-const PETAL_MOTION = [
-  { dur: 23.5, delay: 0 },
-  { dur: 19.2, delay: -4.1 },
-  { dur: 26.8, delay: -9.7 },
-  { dur: 21.4, delay: -2.3 },
-  { dur: 24.9, delay: -13.5 },
-  { dur: 18.6, delay: -7.2 },
-  { dur: 27.3, delay: -16.8 },
-  { dur: 20.7, delay: -5.9 },
-  { dur: 25.6, delay: -11.4 },
-  { dur: 22.1, delay: -18.2 },
-  { dur: 28.4, delay: -3.6 },
-  { dur: 19.9, delay: -14.9 },
-  { dur: 24.2, delay: -8.5 },
-];
-
 export function MarkArt({
   className = "",
   variant = "outline",
   color = "#2261AD",
   animate = false,
+  tight = false,
 }: {
   className?: string;
   variant?: "outline" | "solid" | "brand";
   color?: string;
-  /** Give each petal its own drift cycle. Only for foreground use. */
+  /**
+   * Suspend the mark: float, a degree or two of drift, a faint breath. Applied
+   * to the whole SVG, never to individual paths.
+   *
+   * MARK_PATHS are NOT thirteen shapes. They are the boolean fragments left
+   * behind when four overlapping ovals were flattened, so each oval is split
+   * across several paths and several paths are shared between ovals. Moving
+   * them individually tears the ovals into shards. Animating the four ovals as
+   * ovals needs the layered source file, not this flattened artwork.
+   */
   animate?: boolean;
+  /**
+   * Crop the viewBox to the artwork. The supplied file's box is 258.82x242.26
+   * but the mark only occupies 186.08x205.04 at an offset of (37.26, 18.61),
+   * so the default box is mostly padding. Sizing that padding is what made the
+   * lockup's mark render small and sit too far from the wordmark.
+   */
+  tight?: boolean;
 }) {
   return (
     <svg
-      viewBox="0 0 258.82 242.26"
+      viewBox={tight ? "37.26 18.61 186.08 205.04" : "0 0 258.82 242.26"}
       fill="none"
       aria-hidden
-      className={className}
+      className={`${animate ? "mark-suspend " : ""}${className}`}
     >
       {MARK_PATHS.map((d, i) => {
-        const motion = animate
-          ? ({
-              "--petal-dur": `${PETAL_MOTION[i].dur}s`,
-              "--petal-delay": `${PETAL_MOTION[i].delay}s`,
-            } as CSSProperties)
-          : undefined;
-        const cls = animate ? "petal" : undefined;
-
         if (variant === "brand") {
-          return (
-            <path key={i} className={cls} style={motion} d={d} fill={MARK_PETALS[i]} />
-          );
+          return <path key={i} d={d} fill={MARK_PETALS[i]} />;
         }
         if (variant === "solid") {
-          return (
-            <path key={i} className={cls} style={motion} d={d} fill={color} />
-          );
+          return <path key={i} d={d} fill={color} />;
         }
         return (
           <path
             key={i}
-            className={cls}
-            style={motion}
             d={d}
             stroke={color}
             strokeWidth="1"

@@ -127,7 +127,8 @@ export default function HomePage() {
                 <span className="absolute left-1/2 top-[-1%] h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-indigo/70" />
               </div>
 
-              <div className="anim-float mark-lift relative w-[58%]">
+              {/* Float lives in mark-suspend now, so no anim-float here */}
+              <div className="mark-lift relative w-[58%]">
                 <MarkArt variant="brand" animate className="h-auto w-full" />
               </div>
             </div>
