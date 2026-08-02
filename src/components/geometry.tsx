@@ -1,3 +1,6 @@
+import { useId } from "react";
+import type { CSSProperties } from "react";
+
 /**
  * The actual CinPressa mark, its 13 overlapping petals, used as background
  * art. Rendered as a flat monochrome silhouette ("solid"), hairline line-art
@@ -9,7 +12,7 @@
  * aria-hidden and non-interactive.
  */
 
-const MARK_PATHS = [
+export const MARK_PATHS = [
   "M196.84,104.36c-20.54-24.74-48.24-36.45-69.31-28.02-7.21-10.94-16.09-19.63-25.42-25.46,3.57-3.63,7.49-7.11,11.73-10.38,34.18-26.41,76.18-29.33,93.8-6.51,13.81,17.88,8.57,46.23-10.79,70.38Z",
   "M127.53,76.34c-1.4.55-2.78,1.21-4.12,1.95-8.92,4.93-15.19,13.26-18.71,23.65-9.21,2.23-18.72,6.17-27.84,11.85-3.63-19.17,5.83-43.23,25.24-62.91,9.33,5.84,18.21,14.52,25.42,25.46Z",
   "M76.87,113.79c-.71.44-1.42.89-2.13,1.35-6.46,4.23-12.2,9.02-17.14,14.13-.89-1.38-1.76-2.79-2.59-4.24-18.06-31.29-15.78-66.43,5.11-78.49,12-6.93,27.53-4.73,41.99,4.34-19.41,19.68-28.87,43.75-25.24,62.91Z",
@@ -26,7 +29,7 @@ const MARK_PATHS = [
 ];
 
 /** Per-petal fills, in the same order as MARK_PATHS, taken from the logo file. */
-const MARK_PETALS = [
+export const MARK_PETALS = [
   "#b0dbbc",
   "#faa81a",
   "#2162ae",
@@ -42,12 +45,63 @@ const MARK_PETALS = [
   "#6772b6",
 ];
 
+/**
+ * The four parent ovals the thirteen fragments were flattened from, recovered
+ * by least-squares conic fits to the fragment boundary arcs (every boundary
+ * arc in the artwork lies on one of these to within a quarter unit). Drawn as
+ * arc-pair paths so CSS animation transforms never fight a transform
+ * attribute. Geometry (centre, semi-axes, tilt) is included for hit-testing.
+ */
+export const MARK_OVALS = [
+  {
+    name: "blue",
+    fill: "#2162ae",
+    cx: 92.73,
+    cy: 103.11,
+    rx: 65.31,
+    ry: 43.63,
+    angle: 60.08,
+    path: "M125.307 159.722A65.312 43.628 60.082 1 1 60.157 46.506A65.312 43.628 60.082 1 1 125.307 159.722Z",
+  },
+  {
+    name: "green",
+    fill: "#b0dbbc",
+    cx: 145.74,
+    cy: 81.82,
+    rx: 78.24,
+    ry: 52.21,
+    angle: -37.71,
+    path: "M207.643 33.972A78.236 52.213 -37.705 1 1 83.847 129.671A78.236 52.213 -37.705 1 1 207.643 33.972Z",
+  },
+  {
+    name: "pale",
+    fill: "#bed9ef",
+    cx: 99.83,
+    cy: 153.35,
+    rx: 68.54,
+    ry: 45.73,
+    angle: -33.25,
+    path: "M157.149 115.772A68.541 45.73 -33.252 1 1 42.513 190.937A68.541 45.73 -33.252 1 1 157.149 115.772Z",
+  },
+  {
+    name: "indigo",
+    fill: "#6772b6",
+    cx: 162.33,
+    cy: 148.62,
+    rx: 80.44,
+    ry: 53.68,
+    angle: 61.03,
+    path: "M201.291 218.996A80.443 53.675 61.029 1 1 123.363 78.243A80.443 53.675 61.029 1 1 201.291 218.996Z",
+  },
+] as const;
+
 export function MarkArt({
   className = "",
   variant = "outline",
   color = "#2261AD",
   animate = false,
   tight = false,
+  light = false,
 }: {
   className?: string;
   variant?: "outline" | "solid" | "brand";
@@ -70,7 +124,20 @@ export function MarkArt({
    * lockup's mark render small and sit too far from the wordmark.
    */
   tight?: boolean;
+  /**
+   * Light making its rounds: a soft sheen pans along each parent oval's major
+   * axis in turn, clockwise around the mark, one pass every 28 seconds. The
+   * band is clipped to the oval (MARK_OVALS geometry) and composited with
+   * soft-light, so it reads as light falling across an arm: pure luminance,
+   * the brand hues untouched. For large background placements of the brand
+   * variant; the whole rig disappears under reduced motion.
+   */
+  light?: boolean;
 }) {
+  const uid = useId().replace(/[^a-zA-Z0-9_-]/g, "");
+  /* Clockwise around the mark: blue (top-left), green (top-right),
+     indigo (bottom-right), pale (bottom-left). Order matches MARK_OVALS. */
+  const LIGHT_DELAYS = [0, 7, 21, 14];
   return (
     <svg
       viewBox={tight ? "37.26 18.61 186.08 205.04" : "0 0 258.82 242.26"}
@@ -95,6 +162,43 @@ export function MarkArt({
           />
         );
       })}
+      {light && variant === "brand" ? (
+        <>
+          <defs>
+            <linearGradient id={`ml-g${uid}`} x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stopColor="#fff" stopOpacity="0" />
+              <stop offset="0.5" stopColor="#fff" stopOpacity="0.85" />
+              <stop offset="1" stopColor="#fff" stopOpacity="0" />
+            </linearGradient>
+            {MARK_OVALS.map((o, i) => (
+              <clipPath key={o.name} id={`ml-c${uid}${i}`}>
+                <path d={o.path} />
+              </clipPath>
+            ))}
+          </defs>
+          {MARK_OVALS.map((o, i) => (
+            <g key={o.name} clipPath={`url(#ml-c${uid}${i})`}>
+              <g transform={`translate(${o.cx} ${o.cy}) rotate(${o.angle})`}>
+                <rect
+                  className="mark-light-band"
+                  x={-55}
+                  y={-(o.ry + 24)}
+                  width={110}
+                  height={2 * o.ry + 48}
+                  fill={`url(#ml-g${uid})`}
+                  style={
+                    {
+                      "--from": `${-(o.rx + 75)}px`,
+                      "--to": `${o.rx + 75}px`,
+                      "--light-delay": `${LIGHT_DELAYS[i]}s`,
+                    } as CSSProperties
+                  }
+                />
+              </g>
+            </g>
+          ))}
+        </>
+      ) : null}
     </svg>
   );
 }

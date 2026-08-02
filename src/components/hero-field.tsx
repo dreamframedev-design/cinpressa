@@ -54,6 +54,7 @@ export function HeroField({ mark = true }: { mark?: boolean }) {
           <MarkArt
             variant="brand"
             animate
+            light
             className="absolute -bottom-[20%] -right-[30%] h-[42%] w-auto opacity-[0.3] lg:-bottom-[34%] lg:-right-[9%] lg:h-[145%] lg:opacity-[0.42]"
           />
         </>

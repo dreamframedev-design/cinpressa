@@ -77,6 +77,7 @@ export function SiteNav() {
           <Link href="/home" aria-label="CinPressa Pharma, home" className="shrink-0">
             <SiteLogo
               height={scrolled ? 36 : 46}
+              mark="live"
               className="transition-[font-size] duration-500 ease-brand"
             />
           </Link>

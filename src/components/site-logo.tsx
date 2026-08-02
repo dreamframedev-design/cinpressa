@@ -1,4 +1,5 @@
-import { MarkArt } from "@/components/geometry";
+import type { CSSProperties } from "react";
+import { MARK_OVALS, MARK_PATHS, MARK_PETALS, MarkArt } from "@/components/geometry";
 
 /**
  * The CinPressa lockup, rebuilt from the real mark artwork plus live text.
@@ -45,12 +46,81 @@ export type PharmaStyle = keyof typeof PHARMA_STYLES;
 /** Change this one word to reskin every lockup on the site. */
 export const DEFAULT_PHARMA: PharmaStyle = "faithful";
 
+/** Tight crop shared with MarkArt: the artwork without the file's padding. */
+const NAV_VIEW_BOX = "37.26 18.61 186.08 205.04";
+
+/**
+ * Fly-in offsets (the last few units of the hero convergence) and hover splay
+ * offsets, both along each oval's radial bearing. Order matches MARK_OVALS.
+ */
+const NAV_MOVES = [
+  { fx: "-11.3px", fy: "-6.5px", fr: "-12deg", delay: "0.55s", sx: "-5.6px", sy: "-3.2px", sr: "-4deg" },
+  { fx: "6px", fy: "-11.5px", fr: "10deg", delay: "0.62s", sx: "3px", sy: "-5.8px", sr: "3.5deg" },
+  { fx: "-8.1px", fy: "10.2px", fr: "9deg", delay: "0.69s", sx: "-4.1px", sy: "5.1px", sr: "3.5deg" },
+  { fx: "10.5px", fy: "7.6px", fr: "-10deg", delay: "0.76s", sx: "5.3px", sy: "3.8px", sr: "-4deg" },
+];
+
+/**
+ * The lockup mark as a miniature of the hero convergence: the four recovered
+ * parent ovals slide into place under the authored artwork on load, and splay
+ * apart, de-ignited, while the lockup is hovered. Pure CSS (see "Nav lockup
+ * mark" in globals.css), so this stays a server component.
+ */
+function NavMark({ className = "" }: { className?: string }) {
+  return (
+    <span className={`nvm relative inline-flex shrink-0 ${className}`}>
+      <svg
+        viewBox={NAV_VIEW_BOX}
+        aria-hidden
+        className="block h-full w-auto overflow-visible"
+        style={{ isolation: "isolate" }}
+      >
+        {MARK_OVALS.map((o, i) => (
+          <g
+            key={o.name}
+            className="nvm-fly"
+            style={
+              {
+                "--fx": NAV_MOVES[i].fx,
+                "--fy": NAV_MOVES[i].fy,
+                "--fr": NAV_MOVES[i].fr,
+                "--nvm-delay": NAV_MOVES[i].delay,
+              } as CSSProperties
+            }
+          >
+            <g
+              className="nvm-splay"
+              style={
+                {
+                  "--sx": NAV_MOVES[i].sx,
+                  "--sy": NAV_MOVES[i].sy,
+                  "--sr": NAV_MOVES[i].sr,
+                } as CSSProperties
+              }
+            >
+              <path d={o.path} fill={o.fill} className="nvm-ink" />
+            </g>
+          </g>
+        ))}
+      </svg>
+      <span className="nvm-art-layer pointer-events-none absolute inset-0">
+        <svg viewBox={NAV_VIEW_BOX} aria-hidden className="nvm-art h-full w-full">
+          {MARK_PATHS.map((d, i) => (
+            <path key={i} d={d} fill={MARK_PETALS[i]} />
+          ))}
+        </svg>
+      </span>
+    </span>
+  );
+}
+
 export function SiteLogo({
   height = 34,
   className = "",
   animate = false,
   pharma = DEFAULT_PHARMA,
   tone = "dark",
+  mark = "static",
 }: {
   /** Lockup height in pixels. */
   height?: number;
@@ -64,20 +134,32 @@ export function SiteLogo({
    * clears 6.2:1 on the deep navy and keeps the brand colour.
    */
   tone?: "dark" | "light";
+  /**
+   * "live" renders the mark as the four recovered ovals: a quick assemble on
+   * mount and a splay-open while the lockup is hovered. Reserve for the nav;
+   * "static" keeps the plain artwork everywhere else.
+   */
+  mark?: "static" | "live";
 }) {
   return (
     <span
-      className={`inline-flex items-center gap-[0.175em] ${className}`}
+      className={`inline-flex items-center gap-[0.175em] ${
+        mark === "live" ? "logo-hover-scope" : ""
+      } ${className}`}
       style={{ fontSize: `${height}px` }}
     >
       {/* tight crops the viewBox to the artwork; without it two thirds of the
           mark's width is empty padding. */}
-      <MarkArt
-        variant="brand"
-        animate={animate}
-        tight
-        className="h-[0.95em] w-auto shrink-0"
-      />
+      {mark === "live" ? (
+        <NavMark className="h-[0.95em]" />
+      ) : (
+        <MarkArt
+          variant="brand"
+          animate={animate}
+          tight
+          className="h-[0.95em] w-auto shrink-0"
+        />
+      )}
       {/* Stem Extra Light on the whole wordmark, both lines. Sizes and tracking
           are measured against the PNG, not guessed. */}
       <span

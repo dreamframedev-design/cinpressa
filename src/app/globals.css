@@ -478,8 +478,9 @@ p {
    ovals already flattened into thirteen boolean fragments. Moving the
    fragments individually shatters the ovals, so the mark moves as one rigid
    body: a slow float, a degree or two of drift, a faint breath. Nothing inside
-   the artwork ever distorts. Animating the ovals as ovals needs the layered
-   source file. */
+   the artwork ever distorts. (The home hero now goes further: ConvergenceMark
+   recovered the four parent ovals from the fragment boundaries and animates
+   them as ovals. See "Convergence" below.) */
 
 @keyframes mark-suspend {
   0%,
@@ -534,31 +535,339 @@ p {
     var(--bloom-delay, 0s) infinite;
 }
 
-/* ---------- Dot field spotlight ----------
-   A duplicate of the dose field in a brighter accent, revealed only through a
-   soft mask that follows the pointer. The grid never moves, so the 365-vs-2
-   comparison stays exact; the dots just catch the light. */
-
-.dot-spotlight {
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.45s var(--ease-brand);
-  -webkit-mask-image: radial-gradient(
-    circle 120px at var(--mx, -999px) var(--my, -999px),
-    #000 0%,
-    rgba(0, 0, 0, 0.5) 48%,
-    transparent 72%
-  );
-  mask-image: radial-gradient(
-    circle 120px at var(--mx, -999px) var(--my, -999px),
-    #000 0%,
-    rgba(0, 0, 0, 0.5) 48%,
-    transparent 72%
-  );
+/* The blooms used to fade in with the hero column's rise; the mark column no
+   longer rises (the convergence is its entrance), so they fade on their own. */
+@keyframes fade-in-soft {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-.dot-field:hover .dot-spotlight {
+.bloom-layer {
+  animation: fade-in-soft 1.3s var(--ease-brand) both;
+}
+
+/* ---------- Mark arm lighting ----------
+   Light making its rounds on the large background marks: a soft white band
+   pans along one parent oval's major axis, then the next, clockwise, one
+   pass every 28 seconds. soft-light compositing lifts luminance only, so
+   the brand colours never shift; the band fades in and out inside its pass
+   so the light arrives and leaves like weather, not like a scanner. */
+
+@keyframes mark-light-sweep {
+  0% {
+    transform: translateX(var(--from, -140px));
+    opacity: 0;
+  }
+  6% {
+    opacity: var(--light-peak, 0.6);
+  }
+  19% {
+    opacity: var(--light-peak, 0.6);
+  }
+  25% {
+    transform: translateX(var(--to, 140px));
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(var(--to, 140px));
+    opacity: 0;
+  }
+}
+
+.mark-light-band {
+  mix-blend-mode: soft-light;
+  animation: mark-light-sweep 28s linear var(--light-delay, 0s) infinite;
+}
+
+/* ---------- Convergence (home hero mark) ----------
+   The mark assembling itself from its four parent ovals. In flight each oval
+   carries its own petal colour and multiplies over the others, so every
+   interior colour is created optically by the overlaps as they form; the
+   core reads as concentrated ink. On the final settle the authored
+   thirteen-colour artwork ignites from that core outward, resolving the ink
+   into the icon ladder, and the orange dose lands as the last beat.
+
+   Timeline: ovals fly 0.12s-1.98s (staggered, expo ease, no bounce; the
+   orbit outlasts the radial approach by 0.2s so each oval's final inches are
+   a pure rotational settle about the mark centre). The expo ease means the
+   assembly READS complete around 1.6s, so ignition begins at 1.55s, right on
+   that beat: the wipe is a wide gradient feather AND the artwork crossfades
+   in globally on a front-loaded ramp, so there is no visible travelling
+   front and no waiting, only light spreading the moment the ovals meet. The
+   dose stamps down at 1.95s like a period, its hairline pulse follows at
+   2.1s, and the suspended idle takes over at 3s. */
+
+@keyframes cvg-orbit-in {
+  from {
+    transform: rotate(var(--orb, 0deg));
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes cvg-petal-in {
+  from {
+    transform: translate(var(--dx, 0px), var(--dy, 0px))
+      rotate(var(--rot, 0deg)) scale(0.94);
+  }
+  to {
+    transform: translate(0px, 0px) rotate(0deg) scale(1);
+  }
+}
+
+/* Opacity and focus resolve early in the flight; the ink is fully present
+   well before it lands. Blur sits on the path itself, never on the groups: a
+   filtered group isolates its children and would break the multiply. */
+@keyframes cvg-ink-in {
+  0% {
+    opacity: 0;
+    filter: blur(9px);
+  }
+  26% {
+    opacity: 1;
+  }
+  62% {
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0px);
+  }
+}
+
+.cvg-orbit {
+  transform-box: view-box;
+  /* The mark centroid (125.2, 121.7) relative to the tight viewBox origin */
+  transform-origin: 87.94px 103.09px;
+  animation: cvg-orbit-in 1.5s var(--ease-brand) var(--cvg-delay, 0s) both;
+}
+
+.cvg-petal {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: cvg-petal-in 1.3s var(--ease-brand) var(--cvg-delay, 0s) both;
+  will-change: transform;
+}
+
+.cvg-ink {
+  mix-blend-mode: multiply;
+  animation: cvg-ink-in 1.3s var(--ease-brand) var(--cvg-delay, 0s) both;
+  will-change: opacity, filter;
+}
+
+/* Ignition: the wipe circle in the artwork's mask grows from the core. The
+   feather is 40% of the radius (gradient fill, no filter), so the final
+   radius overshoots the artwork: 0.6 x 240 covers the farthest corner. The
+   ease has a soft start, not an exponential slam, because this is light
+   spreading, not an object arriving. */
+@keyframes cvg-ignite {
+  from {
+    r: 0px;
+  }
+  to {
+    r: 240px;
+  }
+}
+
+.cvg-wipe {
+  r: 0px;
+  animation: cvg-ignite 0.7s cubic-bezier(0.4, 0.03, 0.25, 1) 1.55s both;
+}
+
+/* The artwork also crossfades in globally, riding the wipe: between the two,
+   the resolve reads as the whole mark gently saturating from the core. */
+@keyframes cvg-art-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.cvg-art {
+  animation: cvg-art-in 0.55s cubic-bezier(0.33, 0.02, 0.2, 1) 1.55s both;
+}
+
+/* ---------- Convergence: hover repulsion ----------
+   After the entrance settles (JS adds .cvg-settled), transitions take over
+   from animations. The rig layer dims under the finished artwork; hovering an
+   oval (JS adds .cvg-open and .is-lifted) de-ignites the artwork back into
+   the physical rig while that oval flees the cursor on a damped rAF follow.
+   The lifted oval's transform lives on .cvg-lift, a group of its own, so the
+   magnetic motion never fights an entrance animation's fill. */
+
+.cvg-rig-layer {
   opacity: 1;
+}
+
+.cvg-settled .cvg-rig-layer {
+  opacity: 0;
+  transition: opacity 0.45s var(--ease-brand) 0.15s;
+}
+
+.cvg-settled.cvg-open .cvg-rig-layer {
+  opacity: 1;
+  transition: opacity 0.16s var(--ease-brand);
+}
+
+.cvg-art-layer {
+  opacity: 1;
+  transition: opacity 0.4s var(--ease-brand) 0.12s;
+}
+
+.cvg-settled.cvg-open .cvg-art-layer {
+  opacity: 0;
+  transition: opacity 0.2s var(--ease-brand);
+}
+
+.cvg-lift {
+  transform-box: fill-box;
+  transform-origin: center;
+  will-change: transform;
+}
+
+/* Contact shadow under a floating oval. Base state transparent; the ink
+   above it keeps its multiply untouched. */
+.cvg-lift-shadow {
+  opacity: 0;
+  transition: opacity 0.35s var(--ease-brand);
+}
+
+.cvg-lift.is-lifted .cvg-lift-shadow {
+  opacity: 0.3;
+  transition: opacity 0.3s var(--ease-brand) 0.08s;
+}
+
+/* The dose: the one fragment no blend of blues can produce. It stamps down
+   into place, a period pressed at the end of the sentence, landing just as
+   the ignition completes. Expo ease: immediate contact, settling grip. */
+@keyframes cvg-dose-in {
+  0% {
+    transform: scale(1.42);
+    opacity: 0;
+  }
+  45% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.cvg-dose {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: cvg-dose-in 0.5s var(--ease-brand) 1.95s both;
+}
+
+/* One hairline pulse emanating from the stamp, just after contact. */
+@keyframes cvg-ring-out {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  14% {
+    opacity: 0.42;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+.cvg-ring {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: cvg-ring-out 0.9s var(--ease-brand) 2.1s both;
+}
+
+/* The idle float waits for the convergence to finish. */
+.mark-suspend-late {
+  animation-delay: 3s;
+}
+
+/* ---------- Nav lockup mark ----------
+   A miniature echo of the hero convergence, quiet enough for chrome: the four
+   ovals slide the last few units into place as the header fades in, then the
+   authored artwork crossfades over them. Hovering the lockup splays the ovals
+   a few units apart and de-ignites the artwork, the same layered-source story
+   at pocket size. Pure CSS; the splay and fly transforms live on separate
+   groups so hover never fights the entrance fill. */
+
+@keyframes nvm-fly-in {
+  0% {
+    transform: translate(var(--fx, 0px), var(--fy, 0px)) rotate(var(--fr, 0deg));
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0px, 0px) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.nvm-fly {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: nvm-fly-in 0.7s var(--ease-brand) var(--nvm-delay, 0s) both;
+}
+
+.nvm-ink {
+  mix-blend-mode: multiply;
+}
+
+@keyframes nvm-art-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.nvm-art {
+  animation: nvm-art-in 0.4s var(--ease-brand) 1.4s both;
+}
+
+.nvm-splay {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.55s var(--ease-brand);
+}
+
+.nvm-art-layer {
+  transition: opacity 0.35s var(--ease-brand) 0.1s;
+}
+
+.logo-hover-scope:hover .nvm-splay {
+  transform: translate(var(--sx, 0px), var(--sy, 0px)) rotate(var(--sr, 0deg));
+  transition-duration: 0.5s;
+}
+
+.logo-hover-scope:hover .nvm-art-layer {
+  opacity: 0;
+  transition: opacity 0.22s var(--ease-brand);
+}
+
+/* ---------- Dose field physics ----------
+   The daily-therapy grid is a particle simulation (see DosingCadence): each
+   dot's core is displaced, scaled, and recoloured by JS on its own spring,
+   while the outer .dose-dot cell keeps the reveal cascade. Splitting the two
+   across elements means the entrance animation and the physics never fight
+   over transform. The stylesheet stays the resting source of truth: settled
+   dots get their inline styles removed entirely. */
+
+.dose-core {
+  will-change: transform;
 }
 
 /* ---------- Duplex binding ----------
@@ -758,12 +1067,77 @@ p {
   /* Colour and texture stay; only the motion stops. */
   .mark-suspend,
   .bloom,
+  .bloom-layer,
   .track-stripes,
   .track-tip,
   .duplex-halo,
   .duplex-guide {
     animation: none !important;
     transform: none !important;
+  }
+
+  /* The convergence resolves instantly: rig gone, artwork lit, dose landed.
+     Hover repulsion is disabled in JS; these make the layers static too. */
+  .cvg-rig-layer {
+    display: none;
+  }
+
+  .cvg-art-layer {
+    opacity: 1 !important;
+    transition: none !important;
+  }
+
+  .cvg-orbit,
+  .cvg-petal,
+  .cvg-lift,
+  .cvg-ink {
+    animation: none !important;
+    transform: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+  }
+
+  .mark-light-band {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+
+  /* Nav mark: assembled and lit, no fly-in, no hover splay. */
+  .nvm-fly,
+  .nvm-art {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .nvm-splay {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .nvm-art-layer {
+    opacity: 1 !important;
+    transition: none !important;
+  }
+
+  .cvg-wipe {
+    animation: none !important;
+    r: 260px;
+  }
+
+  .cvg-art {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+
+  .cvg-dose {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .cvg-ring {
+    display: none;
   }
 
   /* The duplex rests bound and fully drawn */

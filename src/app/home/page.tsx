@@ -8,6 +8,7 @@ import { SectionHeader } from "@/components/section-header";
 import { StatBand } from "@/components/stat-band";
 import { DosingCadence } from "@/components/dosing-cadence";
 import { MarkArt } from "@/components/geometry";
+import { ConvergenceMark } from "@/components/convergence-mark";
 import { Reveal } from "@/components/reveal";
 import { ArrowIcon } from "@/components/arrow-icon";
 
@@ -87,36 +88,35 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div
-              className="anim-rise relative mx-auto flex aspect-square w-[280px] items-center justify-center sm:w-[360px] lg:w-[460px]"
-              style={{ animationDelay: "0.22s" }}
-            >
+            {/* No entrance rise here: the convergence IS the mark's entrance. */}
+            <div className="relative mx-auto flex aspect-square w-[280px] items-center justify-center sm:w-[360px] lg:w-[460px]">
               {/* No orbits. The mark's own petal colours bloom outward behind
                   it, each on its own long breath, so the light reads as coming
                   off the logo. Positions echo where those petals actually sit. */}
-              {BLOOMS.map((b) => (
-                <span
-                  key={b.color}
-                  aria-hidden
-                  className="bloom"
-                  style={
-                    {
-                      width: `${b.size}%`,
-                      aspectRatio: "1",
-                      left: `${b.x}%`,
-                      top: `${b.y}%`,
-                      background: `radial-gradient(circle, rgba(${b.color},1) 0%, rgba(${b.color},0) 68%)`,
-                      "--bloom-low": b.low,
-                      "--bloom-high": b.high,
-                      "--bloom-dur": `${b.dur}s`,
-                      "--bloom-delay": `${b.delay}s`,
-                    } as CSSProperties
-                  }
-                />
-              ))}
+              <div aria-hidden className="bloom-layer pointer-events-none absolute inset-0">
+                {BLOOMS.map((b) => (
+                  <span
+                    key={b.color}
+                    className="bloom"
+                    style={
+                      {
+                        width: `${b.size}%`,
+                        aspectRatio: "1",
+                        left: `${b.x}%`,
+                        top: `${b.y}%`,
+                        background: `radial-gradient(circle, rgba(${b.color},1) 0%, rgba(${b.color},0) 68%)`,
+                        "--bloom-low": b.low,
+                        "--bloom-high": b.high,
+                        "--bloom-dur": `${b.dur}s`,
+                        "--bloom-delay": `${b.delay}s`,
+                      } as CSSProperties
+                    }
+                  />
+                ))}
+              </div>
 
               <div className="mark-lift relative w-[66%]">
-                <MarkArt variant="brand" animate tight className="h-auto w-full" />
+                <ConvergenceMark className="w-full" />
               </div>
             </div>
           </div>
@@ -169,6 +169,7 @@ export default function HomePage() {
           art={
             <MarkArt
               variant="brand"
+              light
               className="absolute -right-32 -top-40 h-[620px] w-auto rotate-[18deg] opacity-[0.13]"
             />
           }
