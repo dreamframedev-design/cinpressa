@@ -69,7 +69,7 @@ export default function SciencePage() {
               <div className="mt-6 flex flex-wrap gap-2.5">
                 {complications.map((c, i) => (
                   <Reveal key={c} as="span" variant="fade" delay={i * 50}>
-                    <span className="inline-flex rounded-full border border-pale/70 bg-pale/25 px-4 py-2 text-[0.95rem] text-body">
+                    <span className="inline-flex rounded-full border border-pale/70 bg-pale/25 px-4 py-2 text-base text-body">
                       {c}
                     </span>
                   </Reveal>
@@ -187,7 +187,7 @@ export default function SciencePage() {
                         />
                       </svg>
                     </span>
-                    <span className="text-[0.95rem] leading-relaxed text-body">
+                    <span className="text-base leading-relaxed text-body">
                       {benefit}
                     </span>
                   </Reveal>

@@ -29,10 +29,16 @@
   --color-frost: #95daf8;
   --color-cloud: #aadbf6;
 
-  /* Derived neutrals */
+  /* Derived neutrals.
+
+     body/muted darkened 2026-08-03: supporting copy across the site read as grey and
+     faint. Both were technically fine for AA, but "passes contrast" and "has presence"
+     are different things, and at the sizes these were being set at they receded.
+     PRODUCT.md calls these derived support, so unlike the spec-sheet colours they are
+     ours to tune. */
   --color-ink: #14304f;
-  --color-body: #46586b;
-  --color-muted: #5b6e83;
+  --color-body: #39485c;
+  --color-muted: #4b5f74;
   --color-mist: #f4f8fc;
   --color-line: #dce7f1;
   --color-deep: #0d2342;
@@ -1017,6 +1023,150 @@ p {
   box-shadow: 0 26px 50px -32px rgba(13, 35, 66, 0.4);
 }
 
+/* ---------- Nav over a dark hero ----------
+   Section-adaptive theming. These only apply while the bar is TRANSPARENT over an
+   inverted hero; scrolling (or opening the mobile menu) makes the bar solid white and
+   the default ink treatment takes over again, so the dark state is scoped to exactly
+   the region that needs it. Declared after .nav-link so the equal-specificity
+   overrides land. */
+
+.nav-link-dark {
+  color: #ffffff;
+}
+
+.nav-link-dark:hover {
+  color: #95daf8;
+}
+
+.nav-link-dark::after,
+.nav-link-dark[aria-current]::after {
+  background: #95daf8;
+}
+
+.nav-link-dark[aria-current] {
+  color: #95daf8;
+}
+
+/* ---------- Glass ----------
+   The contact panel. Glassmorphism only works if there is something with real
+   luminance range behind it; on a flat surface it is a grey rectangle. It sits over the
+   caustic field for exactly that reason.
+
+   Four things separate this from a blurred div:
+     - a real backdrop blur AND a saturation lift, so the colour behind it stays alive
+       through the frost instead of going muddy
+     - a one-pixel top highlight, brightest at the top edge and falling off, which is
+       how light actually catches the lip of a pane
+     - a hairline border that is brighter at the top than the bottom
+     - a deep, wide, soft shadow so the panel is clearly ABOVE the field, not printed
+       onto it */
+
+.glass-panel {
+  position: relative;
+  border-radius: 1.75rem;
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.13) 0%,
+    rgba(255, 255, 255, 0.06) 42%,
+    rgba(255, 255, 255, 0.035) 100%
+  );
+  backdrop-filter: blur(28px) saturate(150%);
+  -webkit-backdrop-filter: blur(28px) saturate(150%);
+  box-shadow:
+    0 40px 90px -30px rgba(0, 0, 0, 0.7),
+    0 8px 26px -14px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.22);
+}
+
+/* Border drawn as a gradient rather than a flat colour: bright along the top lip,
+   fading down the sides, which is what a real edge does. */
+.glass-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.14) 34%,
+    rgba(255, 255, 255, 0.05) 70%,
+    rgba(149, 218, 248, 0.16) 100%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* The nav CTA while the bar sits over a dark hero. Core blue #2261AD is a value chosen
+   against white and reads muddy on the deep ground, so the button inverts instead. */
+.btn-primary.btn-on-dark {
+  background: #ffffff;
+  color: var(--color-deep);
+  box-shadow: 0 16px 32px -18px rgba(0, 0, 0, 0.6);
+}
+
+.btn-primary.btn-on-dark:hover {
+  background: #95daf8;
+  color: var(--color-deep);
+}
+
+/* The CTA sitting on glass. Core blue on a dark translucent panel loses its edge, so
+   the button inverts to a solid light chip. */
+.btn-primary.btn-on-glass {
+  background: #ffffff;
+  color: var(--color-deep);
+  box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.7);
+}
+
+.btn-primary.btn-on-glass:hover {
+  background: var(--color-frost);
+  color: var(--color-deep);
+}
+
+/* ---------- Pipeline beam ----------
+   A specular pass across the arrow. Deliberately TIGHT: the sweep itself lasts under a
+   second and then the track sits still for six. A slow continuous shine reads as a
+   loading bar; a quick one reads as light catching a machined edge, which is the
+   register this chart wants. */
+
+@keyframes pl-beam {
+  0% {
+    transform: translateX(-160%) skewX(-14deg);
+    opacity: 0;
+  }
+  2% {
+    opacity: 1;
+  }
+  11% {
+    transform: translateX(820%) skewX(-14deg);
+    opacity: 1;
+  }
+  13%,
+  100% {
+    transform: translateX(820%) skewX(-14deg);
+    opacity: 0;
+  }
+}
+
+.pl-beam {
+  animation: pl-beam 7s linear infinite;
+  animation-delay: 1.2s;
+}
+
+/* The stage column under the cursor. A tint and a crisp top rule, nothing soft. */
+.pl-stage {
+  transition:
+    background-color 0.25s var(--ease-brand),
+    color 0.25s var(--ease-brand);
+}
+
 /* ---------- Reduced motion ---------- */
 
 @media (prefers-reduced-motion: reduce) {
@@ -1153,7 +1303,8 @@ p {
   }
 
   .pulse-ring-el,
-  .track-sheen {
+  .track-sheen,
+  .pl-beam {
     animation: none !important;
     opacity: 0 !important;
   }

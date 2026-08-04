@@ -99,7 +99,7 @@ export function SiteFooter() {
               </h2>
             </Reveal>
             <Reveal variant="fade" delay={180}>
-              <p className="mt-5 max-w-md text-[0.95rem] leading-relaxed text-white/80">
+              <p className="mt-5 max-w-md text-base leading-relaxed text-white/80">
                 Partner with CinPressa to help move a differentiated AGT siRNA
                 program forward. For partnering, investment, or general
                 inquiries, connect with the team.
@@ -109,7 +109,7 @@ export function SiteFooter() {
           <Reveal variant="fade" delay={160}>
             <Link
               href="/contact"
-              className="group inline-flex items-center gap-2.5 rounded-full bg-white px-7 py-3.5 text-sm font-medium text-deep transition-all duration-300 hover:bg-sky hover:text-white active:translate-y-px"
+              className="group inline-flex items-center gap-2.5 rounded-full bg-white px-7 py-3.5 text-base font-medium text-deep transition-all duration-300 hover:bg-sky hover:text-white active:translate-y-px"
             >
               Contact the team
               <ArrowIcon className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
@@ -126,7 +126,7 @@ export function SiteFooter() {
           <div>
             {/* The real lockup, reversed for the dark surface */}
             <SiteLogo height={46} tone="light" />
-            <p className="mt-6 max-w-xs text-[0.95rem] leading-relaxed text-white/80">
+            <p className="mt-6 max-w-xs text-base leading-relaxed text-white/80">
               Advancing a best-in-class, long-acting AGT siRNA (CIN-111) for a
               durable backbone of blood pressure control.
             </p>
@@ -134,10 +134,10 @@ export function SiteFooter() {
 
           {columns.map((column) => (
             <div key={column.heading}>
-              <p className="text-[0.78rem] font-semibold uppercase tracking-[0.16em] text-white/70">
+              <p className="text-[0.84rem] font-semibold uppercase tracking-[0.16em] text-white/70">
                 {column.heading}
               </p>
-              <ul className="mt-5 space-y-3.5 text-[0.95rem]">
+              <ul className="mt-5 space-y-3.5 text-base">
                 {column.links.map((link) => (
                   <li key={link.href}>
                     <Link
@@ -153,10 +153,10 @@ export function SiteFooter() {
           ))}
 
           <div>
-            <p className="text-[0.78rem] font-semibold uppercase tracking-[0.16em] text-white/70">
+            <p className="text-[0.84rem] font-semibold uppercase tracking-[0.16em] text-white/70">
               Parent company
             </p>
-            <ul className="mt-5 space-y-3.5 text-[0.95rem]">
+            <ul className="mt-5 space-y-3.5 text-base">
               <li>
                 <a
                   href="https://cinrx.com"
@@ -171,7 +171,7 @@ export function SiteFooter() {
         </Reveal>
 
         {/* Legal */}
-        <div className="mt-14 flex flex-col gap-2 border-t border-white/10 pt-7 text-sm text-white/75 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-14 flex flex-col gap-2 border-t border-white/10 pt-7 text-base text-white/75 sm:flex-row sm:items-center sm:justify-between">
           <p>&copy; 2026 CinPressa Pharma. All rights reserved.</p>
           <p>A CinRx Pharma portfolio company</p>
         </div>

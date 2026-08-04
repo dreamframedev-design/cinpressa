@@ -31,7 +31,7 @@ export function PageHero({ eyebrow, title, subtitle, aside }: PageHeroProps) {
             <span aria-hidden className="block h-px w-12 bg-orange" />
           </Reveal>
           <Reveal variant="fade" delay={80}>
-            <p className="mt-6 text-[0.8rem] font-semibold uppercase tracking-[0.22em] text-blue">
+            <p className="mt-6 text-[0.84rem] font-semibold uppercase tracking-[0.22em] text-blue">
               {eyebrow}
             </p>
           </Reveal>

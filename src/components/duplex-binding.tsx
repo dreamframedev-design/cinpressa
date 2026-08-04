@@ -103,13 +103,15 @@ const T = {
   reset: [0.86, 1.0],
 } as const;
 
+/** No dashes of any kind in visible copy. Where one was doing work, the sentence is
+ *  rewritten to carry it instead. */
 const BEATS: Array<{ at: number; text: string }> = [
   { at: 0.0, text: "Guide-loaded RISC scans the transcript" },
-  { at: 0.15, text: "Seed region nucleates — guide nucleotides 2–8" },
+  { at: 0.15, text: "The seed region nucleates at guide nucleotides 2 to 8" },
   { at: 0.23, text: "The duplex zips outward from the seed" },
   { at: 0.44, text: "AGO2 cleaves across from nucleotides 10 and 11" },
   { at: 0.52, text: "The cleaved transcript is released and degraded" },
-  { at: 0.7, text: "RISC is recycled — one guide silences many transcripts" },
+  { at: 0.7, text: "RISC is recycled, so one guide silences many transcripts" },
 ];
 
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
@@ -262,8 +264,8 @@ export function DuplexBinding() {
           </g>
 
           {/* 5' / 3' — the transcript's direction. */}
-          <text x={16} y={MRNA_Y - 26} fontSize={15} fontWeight={600} fill="#5b6e83">5&prime;</text>
-          <text x={VW - 34} y={MRNA_Y - 26} fontSize={15} fontWeight={600} fill="#5b6e83">3&prime;</text>
+          <text x={16} y={MRNA_Y - 26} fontSize={19} fontWeight={700} fill="#39485c">5&prime;</text>
+          <text x={VW - 34} y={MRNA_Y - 26} fontSize={19} fontWeight={700} fill="#39485c">3&prime;</text>
 
           {/* ── The cut: AGO2's scissile position ── */}
           <g data-cut opacity="0">
@@ -280,10 +282,10 @@ export function DuplexBinding() {
             <text
               x={CLEAVE_X}
               y={MRNA_Y - 38}
-              fontSize={13}
-              fontWeight={600}
+              fontSize={17}
+              fontWeight={700}
               textAnchor="middle"
-              fill="#b9770c"
+              fill="#a3660a"
             >
               cleavage
             </text>
@@ -307,11 +309,11 @@ export function DuplexBinding() {
             <text
               x={(guideX0 + guideX1) / 2}
               y={GUIDE_Y + 60}
-              fontSize={14}
-              fontWeight={600}
-              letterSpacing={1.4}
+              fontSize={18}
+              fontWeight={700}
+              letterSpacing={1.6}
               textAnchor="middle"
-              fill="#46586b"
+              fill="#14304f"
             >
               RISC · AGO2
             </text>
@@ -325,8 +327,8 @@ export function DuplexBinding() {
               strokeLinecap="round"
             />
             {/* Antiparallel: the guide's 5' end sits over the transcript's 3' side. */}
-            <text x={guideX1 + 8} y={GUIDE_Y + 26} fontSize={15} fontWeight={600} fill="#5b6e83">5&prime;</text>
-            <text x={guideX0 - 24} y={GUIDE_Y + 26} fontSize={15} fontWeight={600} fill="#5b6e83">3&prime;</text>
+            <text x={guideX1 + 8} y={GUIDE_Y + 26} fontSize={19} fontWeight={700} fill="#39485c">5&prime;</text>
+            <text x={guideX0 - 24} y={GUIDE_Y + 26} fontSize={19} fontWeight={700} fill="#39485c">3&prime;</text>
 
             {/* Seed bracket — where the duplex nucleates. */}
             <path
@@ -339,8 +341,8 @@ export function DuplexBinding() {
             <text
               x={ntX(SEED_MID)}
               y={GUIDE_Y + 54}
-              fontSize={13}
-              fontWeight={600}
+              fontSize={17}
+              fontWeight={700}
               textAnchor="middle"
               fill="#0783c6"
             >
@@ -373,21 +375,25 @@ export function DuplexBinding() {
         </svg>
       </div>
 
-      {/* The beat, named as it happens. A mechanism figure that does not say what it
-          is doing is decoration. */}
-      <div className="mt-7 border-t border-line pt-6">
-        <div className="flex items-start gap-3">
-          <span className="mt-0.5 shrink-0 text-[0.78rem] font-semibold tabular-nums tracking-[0.14em] text-azure">
+      {/* The beat, named as it happens. This was set at 15px in grey and disappeared
+          under the figure, which is backwards: the caption is the part that teaches.
+          It now carries the block. Large, ink, and the step number is a real numeral
+          rather than a footnote. */}
+      <div className="mt-8 border-t border-line pt-7">
+        <div className="flex items-baseline gap-4 sm:gap-6">
+          <span className="shrink-0 text-[1.6rem] font-light tabular-nums leading-none text-azure sm:text-[2rem]">
             {String(beat + 1).padStart(2, "0")}
           </span>
-          <p className="text-[0.98rem] leading-relaxed text-body">{BEATS[beat].text}</p>
+          <p className="text-[1.15rem] font-medium leading-snug tracking-tight text-ink sm:text-[1.45rem]">
+            {BEATS[beat].text}
+          </p>
         </div>
-        <div className="mt-4 flex gap-1.5" aria-hidden>
+        <div className="mt-6 flex gap-2" aria-hidden>
           {BEATS.map((b, i) => (
             <span
               key={b.at}
-              className="h-0.5 flex-1 rounded-full transition-colors duration-500"
-              style={{ background: i <= beat ? GUIDE : "#dce7f1" }}
+              className="h-1 flex-1 rounded-full transition-colors duration-500"
+              style={{ background: i <= beat ? GUIDE : "#cbdceb" }}
             />
           ))}
         </div>

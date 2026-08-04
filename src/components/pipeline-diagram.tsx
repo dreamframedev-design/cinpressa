@@ -1,86 +1,126 @@
+"use client";
+
+import { useState } from "react";
 import { Reveal } from "@/components/reveal";
 
 /**
  * CIN-111 development status.
  *
- * REBUILT after client review. The previous version drew the track as a bar with
- * `rounded-r-full` — a fully rounded cap on a 44px-tall bar — and then painted a soft
- * radial glow haloing that cap. The resulting silhouette was, accurately, not something
- * to put on a pharma site. The note was: make it an arrow tip.
+ * The silhouette was rebuilt once already, after the original drew the track with
+ * `rounded-r-full` on a 44px bar and haloed the cap with a radial glow. The chevron
+ * survived review; this pass is about finish.
  *
- * What changed:
- *   - The cap is a real chevron point. Direction, not termination.
- *   - The tip is a FIXED-SIZE element beside a flexible shaft, not part of a stretched
- *     viewBox. A single SVG scaled with preserveAspectRatio="none" would shear the
- *     point into a spike or a stub depending on how wide the column happened to be;
- *     this way the tip angle is identical at every container size.
- *   - The tail is square. Two identical round ends read as a lozenge; an origin and a
- *     heading read as progress.
- *   - Completed and in-progress are split by TEXTURE, not by a second shape or a
- *     shade-to-shade gradient — a gradient at that seam reads as a rendering artefact,
- *     a texture change reads as a deliberate handover.
- *   - The glow is gone. Nothing haloes the tip.
- *   - The hatch is STATIC. The old build ran it on a 1.1s barber-pole loop plus a 5.5s
- *     specular sweep; at that tempo it reads as a loading bar, which is the wrong idea
- *     entirely — this is a programme, not a progress spinner.
+ * ONE CLIPPED SHAPE, NOT A SHAFT PLUS A TIP. The arrow is a single element wearing a
+ * clip-path polygon whose point is specified in absolute px:
+ *
+ *     polygon(0 0, calc(100% - 26px) 0, 100% 50%, calc(100% - 26px) 100%, 0 100%)
+ *
+ * That keeps the tip angle identical at every container width (the reason the previous
+ * build refused to put the arrow in a stretched viewBox) while letting fills, gradients
+ * and the beam run continuously across the whole form. Two abutting elements could not
+ * share a highlight; this can.
+ *
+ * TIGHT AND CLINICAL, which is a tempo decision as much as a visual one:
+ *   - The beam crosses in under a second and then the track holds still for six. A slow
+ *     continuous shine is a loading bar. A quick one is light catching a machined edge.
+ *   - The hatch is two blues rather than blue and white. White stripes read as caution
+ *     tape; a tight two-tone reads as a survey pattern.
+ *   - Both stretches carry a directional gradient, so the form has depth without any
+ *     glow, blur or shadow anywhere in it.
+ *
+ * INTERACTION THAT INFORMS. Hovering a stage column tints it and prints that stage's
+ * actual status underneath. Every line is drawn from copy already approved on this
+ * page; nothing here invents a milestone. Keyboard users get the same thing on focus,
+ * and with no pointer at all the default line still explains the chart.
  */
 
-const STAGES = ["Preclinical", "Phase 1", "Phase 2", "Phase 3"];
+const BAR_H = 44;
+/** Tip length in px. Absolute, so the point never shears. */
+const TIP_W = 26;
+
+const COMPLETE_A = "#1a4f8f";
+const COMPLETE_B = "#2a6fbf";
+const LIVE_A = "#1596d4";
+const LIVE_B = "#48b4e4";
 
 /**
  * Preclinical is complete: one full stage column, or 25% of a four-stage track. Phase 1
  * is a quarter of the way in, so the arrow reaches 25% + (25% × 0.25) and stops well
- * clear of the Phase 2 boundary at 50%. That is the honest position: Phase 1 has not
- * begun dosing.
+ * clear of the Phase 2 boundary. That is the honest position: Phase 1 has not dosed.
  */
 const PROGRESS = 31.25;
-/** Where the preclinical/Phase 1 handover falls within the arrow's own length. */
 const HANDOFF = (25 / PROGRESS) * 100;
 
 const COLUMNS = "grid grid-cols-[minmax(9rem,1.15fr)_repeat(4,minmax(0,1fr))]";
 
-const BAR_H = 44;
-/** Tip length in px. About 0.6× the bar height — long enough to read as an arrow,
- *  short enough that it does not become a dart. */
-const TIP_W = 26;
+const ARROW_CLIP = `polygon(0 0, calc(100% - ${TIP_W}px) 0, 100% 50%, calc(100% - ${TIP_W}px) 100%, 0 100%)`;
 
-const COMPLETE = "#2261ad";
-const LIVE = "#1596d4";
+/** Two blues, finely pitched. Reads as a survey hatch rather than caution tape. */
+const HATCH = `repeating-linear-gradient(-60deg, ${LIVE_A} 0 5px, ${LIVE_B} 5px 10px)`;
 
-/** Static diagonal hatch. Authored as a gradient rather than an SVG pattern so it
- *  cannot be distorted by any parent scaling. */
-const HATCH = `repeating-linear-gradient(-58deg, ${LIVE} 0 7px, rgba(255,255,255,0.34) 7px 13px)`;
+type Stage = { name: string; status: string; state: "done" | "live" | "todo" };
+
+/** Status lines are restatements of copy already approved on this page. */
+const STAGES: Stage[] = [
+  {
+    name: "Preclinical",
+    state: "done",
+    status:
+      "Complete. Non-human primate studies and GLP toxicology are done, with roughly a 100-fold therapeutic window.",
+  },
+  {
+    name: "Phase 1",
+    state: "live",
+    status:
+      "Underway. A U.S. IND is planned for around mid-2026, with a first-in-human single ascending dose study expected to commence in fall 2026.",
+  },
+  { name: "Phase 2", state: "todo", status: "Not started." },
+  { name: "Phase 3", state: "todo", status: "Not started." },
+];
+
+const DEFAULT_LINE =
+  "A single program. Hover a stage for its current status.";
 
 const LEGEND = [
-  { label: "Complete", swatch: COMPLETE },
-  { label: "In progress", swatch: LIVE },
+  { label: "Complete", swatch: COMPLETE_B },
+  { label: "In progress", swatch: LIVE_A },
   { label: "Not started", swatch: null },
 ];
 
 export function PipelineDiagram() {
+  const [active, setActive] = useState<number | null>(null);
+
   return (
     <Reveal variant="rise">
       {/* Narrow screens scroll the chart rather than compressing the stages. */}
       <div className="-mx-6 overflow-x-auto px-6 lg:mx-0 lg:px-0">
         <div className="min-w-[36rem] overflow-hidden rounded-2xl border border-line bg-white">
           <div className={`${COLUMNS} border-b border-line bg-mist/70`}>
-            <div className="px-5 py-4 text-[0.76rem] font-semibold uppercase tracking-[0.16em] text-body sm:px-7">
+            <div className="px-5 py-4 text-[0.84rem] font-semibold uppercase tracking-[0.16em] text-body sm:px-7">
               Program
             </div>
-            {STAGES.map((stage) => (
-              <div
-                key={stage}
-                className="border-l border-line px-3 py-4 text-center text-[0.76rem] font-semibold uppercase tracking-[0.16em] text-body"
+            {STAGES.map((stage, i) => (
+              <button
+                key={stage.name}
+                type="button"
+                onMouseEnter={() => setActive(i)}
+                onMouseLeave={() => setActive(null)}
+                onFocus={() => setActive(i)}
+                onBlur={() => setActive(null)}
+                aria-label={`${stage.name}: ${stage.status}`}
+                className={`pl-stage border-l border-line px-3 py-4 text-center text-[0.84rem] font-semibold uppercase tracking-[0.16em] outline-none ${
+                  active === i ? "bg-blue/[0.07] text-blue" : "text-body"
+                }`}
               >
-                {stage}
-              </div>
+                {stage.name}
+              </button>
             ))}
           </div>
 
           <div className={`${COLUMNS} items-center`}>
             <div className="px-5 py-7 sm:px-7">
               <p className="text-base font-medium text-ink">CIN-111</p>
-              <p className="mt-1.5 text-[0.95rem] leading-relaxed text-body">
+              <p className="mt-1.5 text-base leading-relaxed text-body">
                 AGT siRNA &middot; Hypertension
               </p>
             </div>
@@ -90,55 +130,61 @@ export function PipelineDiagram() {
               role="img"
               aria-label="CIN-111 development status: preclinical complete, Phase 1 underway, Phase 2 and Phase 3 not yet started."
             >
-              {/* Stage boundaries, aligned to the header columns above. */}
-              {[0, 25, 50, 75].map((left) => (
+              {/* Stage boundaries, aligned to the header columns above. The column
+                  under the cursor tints its full height, so the hover reads down the
+                  chart rather than stopping at the header. */}
+              {STAGES.map((_, i) => (
                 <span
-                  key={left}
+                  key={i}
                   aria-hidden
-                  className="absolute inset-y-0 w-px bg-line"
-                  style={{ left: `${left}%` }}
+                  className="pl-stage absolute inset-y-0 border-l border-line"
+                  style={{
+                    left: `${i * 25}%`,
+                    width: "25%",
+                    backgroundColor:
+                      active === i ? "rgba(34,97,173,0.05)" : "transparent",
+                  }}
                 />
               ))}
 
               <div className="relative flex h-full items-center py-7">
                 <div
-                  className="track-progress relative flex origin-left"
-                  style={{ width: `${PROGRESS}%`, height: `${BAR_H}px` }}
+                  className="track-progress relative origin-left overflow-hidden"
+                  style={{
+                    width: `${PROGRESS}%`,
+                    height: `${BAR_H}px`,
+                    clipPath: ARROW_CLIP,
+                  }}
                 >
-                  {/* Shaft: the live stretch runs the whole length and the completed
-                      stretch is laid over its start, so there is one continuous form
-                      rather than two abutting bars. */}
-                  <div
-                    className="h-full flex-1"
-                    style={{ background: HATCH }}
-                  />
+                  {/* In-progress stretch, running the whole length. */}
+                  <div className="absolute inset-0" style={{ background: HATCH }} />
 
-                  {/* The point. Fixed width, so its angle never changes. */}
-                  <svg
-                    aria-hidden
-                    width={TIP_W}
-                    height={BAR_H}
-                    viewBox={`0 0 ${TIP_W} ${BAR_H}`}
-                    className="block shrink-0"
-                  >
-                    <polygon
-                      points={`0,0 ${TIP_W},${BAR_H / 2} 0,${BAR_H}`}
-                      fill={LIVE}
-                    />
-                  </svg>
-
-                  {/* Completed stretch. */}
+                  {/* Completed stretch, laid over its start. Directional gradient, so
+                      the form has depth with no glow anywhere. */}
                   <div
-                    aria-hidden
                     className="absolute inset-y-0 left-0"
-                    style={{ width: `${HANDOFF}%`, background: COMPLETE }}
+                    style={{
+                      width: `${HANDOFF}%`,
+                      background: `linear-gradient(90deg, ${COMPLETE_A} 0%, #2261ad 58%, ${COMPLETE_B} 100%)`,
+                    }}
                   />
 
                   {/* The handover, stated as an edge. */}
                   <div
                     aria-hidden
-                    className="absolute inset-y-0 w-px bg-white/55"
+                    className="absolute inset-y-0 w-px bg-white/45"
                     style={{ left: `${HANDOFF}%` }}
+                  />
+
+                  {/* The beam. Clipped to the arrow along with everything else, so it
+                      crosses the point rather than stopping at a seam. */}
+                  <div
+                    aria-hidden
+                    className="pl-beam absolute inset-y-0 left-0 w-[14%]"
+                    style={{
+                      background:
+                        "linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0) 100%)",
+                    }}
                   />
                 </div>
               </div>
@@ -147,11 +193,30 @@ export function PipelineDiagram() {
         </div>
       </div>
 
-      <div className="mt-6 flex flex-wrap items-center gap-x-7 gap-y-3">
+      {/* The status line. Live region so the change is announced rather than silent. */}
+      <div className="mt-6 min-h-[3.5rem]">
+        <p
+          aria-live="polite"
+          className="max-w-3xl text-[1.05rem] leading-relaxed text-ink transition-opacity duration-200"
+        >
+          {active === null ? (
+            <span className="text-body">{DEFAULT_LINE}</span>
+          ) : (
+            <>
+              <span className="font-semibold text-blue">
+                {STAGES[active].name}.
+              </span>{" "}
+              {STAGES[active].status}
+            </>
+          )}
+        </p>
+      </div>
+
+      <div className="mt-5 flex flex-wrap items-center gap-x-7 gap-y-3">
         {LEGEND.map((item) => (
           <span
             key={item.label}
-            className="flex items-center gap-2.5 text-sm text-body"
+            className="flex items-center gap-2.5 text-base text-body"
           >
             <span
               aria-hidden

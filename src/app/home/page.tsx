@@ -9,6 +9,7 @@ import { StatBand } from "@/components/stat-band";
 import { DosingCadence } from "@/components/dosing-cadence";
 import { Bleed } from "@/components/bleed";
 import { FocusField } from "@/components/focus-field";
+import { MilestoneStrip } from "@/components/milestone-strip";
 import { MarkArt } from "@/components/geometry";
 import { ConvergenceMark } from "@/components/convergence-mark";
 import { Reveal } from "@/components/reveal";
@@ -52,7 +53,7 @@ export default function HomePage() {
           <div className="relative mx-auto grid w-full max-w-7xl items-center gap-14 px-6 pb-20 pt-32 lg:grid-cols-[1.08fr_0.92fr] lg:gap-10 lg:px-10 lg:pb-24 lg:pt-40">
             <div>
               <p
-                className="anim-rise flex items-center gap-3 text-[0.8rem] font-semibold uppercase tracking-[0.22em] text-blue"
+                className="anim-rise flex items-center gap-3 text-[0.84rem] font-semibold uppercase tracking-[0.22em] text-blue"
                 style={{ animationDelay: "0.02s" }}
               >
                 <span aria-hidden className="h-px w-8 bg-blue/40" />
@@ -255,6 +256,11 @@ export default function HomePage() {
               </Link>
             </Reveal>
           </div>
+          {/* The section was a heading and a button over nothing, because there are no
+              announcements yet and inventing one is not an option. This previews the
+              forward calendar already approved on /news instead. Swap for a real
+              teaser when the first release lands. */}
+          <MilestoneStrip />
         </Section>
       </main>
 

@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 
 /** Heights the lockup is actually used at, in px. */
 const SIZES = [
-  { h: 46, label: "46px — nav, top of page" },
-  { h: 36, label: "36px — nav, scrolled" },
+  { h: 46, label: "46px, nav at top of page" },
+  { h: 36, label: "36px, nav when scrolled" },
   { h: 80, label: "80px" },
   { h: 160, label: "160px" },
 ];
@@ -60,7 +60,7 @@ const PALETTE = [
 
 function Label({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-body">
+    <p className="text-[0.82rem] font-semibold uppercase tracking-[0.18em] text-body">
       {children}
     </p>
   );
@@ -71,7 +71,7 @@ export default function BrandPage() {
     <div className="min-h-[100dvh] bg-white">
       <div className="mx-auto max-w-6xl px-6 py-16 lg:px-10 lg:py-24">
         <header className="border-b border-line pb-10">
-          <p className="text-[0.78rem] font-semibold uppercase tracking-[0.2em] text-blue">
+          <p className="text-[0.84rem] font-semibold uppercase tracking-[0.2em] text-blue">
             Internal reference
           </p>
           <h1 className="mt-5 text-[clamp(2rem,4vw,3rem)] font-light leading-tight tracking-tight text-ink">
@@ -85,9 +85,9 @@ export default function BrandPage() {
         {/* ---- Lockup ---- */}
         <section className="border-b border-line py-14">
           <h2 className="text-2xl font-light tracking-tight text-ink">Lockup</h2>
-          <p className="mt-4 max-w-3xl text-[0.95rem] leading-relaxed text-body">
+          <p className="mt-4 max-w-3xl text-base leading-relaxed text-body">
             Live vector lockup: the mark artwork plus Stem Extra Light. Measured
-            against the original raster at a 768&times;160 reference — mark 152px
+            against the original raster at a 768&times;160 reference: mark 152px
             tall, 28px gap, wordmark 597px wide with an 83px cap height,
             &ldquo;pharma&rdquo; 136px and right-aligned to the wordmark.
           </p>
@@ -111,7 +111,7 @@ export default function BrandPage() {
                   <SiteLogo height={80} />
                 </div>
               </div>
-              <p className="mt-3 text-[0.9rem] leading-relaxed text-body">
+              <p className="mt-3 text-base leading-relaxed text-body">
                 The &ldquo;pharma&rdquo; line is ink, so it disappears on dark.
                 The footer uses type rather than the lockup for that reason. A
                 reversed variant is worth adding if the lockup is ever needed on
@@ -132,7 +132,7 @@ export default function BrandPage() {
               <p className="mt-4 text-xl font-medium text-ink">
                 Stem Extra Light
               </p>
-              <p className="mt-3 text-[0.9rem] leading-relaxed text-body">
+              <p className="mt-3 text-base leading-relaxed text-body">
                 ParaType. Self-hosted from{" "}
                 <code className="rounded bg-mist px-1.5 py-0.5 text-[0.85em]">
                   src/fonts/stem-extralight.woff2
@@ -145,7 +145,7 @@ export default function BrandPage() {
             <div className="bg-white p-8">
               <Label>Everything else</Label>
               <p className="mt-4 text-xl font-medium text-ink">Montserrat</p>
-              <p className="mt-3 text-[0.9rem] leading-relaxed text-body">
+              <p className="mt-3 text-base leading-relaxed text-body">
                 Stand-in for Gotham, which the spec sheet names as the brand
                 face. Headings, body copy and UI. Stem is used for the lockup
                 and nothing else.
@@ -157,7 +157,7 @@ export default function BrandPage() {
         {/* ---- Mark ---- */}
         <section className="border-b border-line py-14">
           <h2 className="text-2xl font-light tracking-tight text-ink">The mark</h2>
-          <p className="mt-4 max-w-3xl text-[0.95rem] leading-relaxed text-body">
+          <p className="mt-4 max-w-3xl text-base leading-relaxed text-body">
             Four overlapping ovals, supplied already flattened into thirteen
             boolean fragments. Because the ovals no longer exist as objects, the
             mark animates as one rigid body rather than per-shape. Animating the
@@ -173,7 +173,7 @@ export default function BrandPage() {
                     className="h-6 w-6 shrink-0 rounded-md border border-line"
                     style={{ background: hex }}
                   />
-                  <span className="font-mono text-[0.85rem] text-body">{hex}</span>
+                  <span className="font-mono text-base text-body">{hex}</span>
                 </div>
               ))}
             </div>
@@ -183,7 +183,7 @@ export default function BrandPage() {
         {/* ---- Palette ---- */}
         <section className="py-14">
           <h2 className="text-2xl font-light tracking-tight text-ink">Palette</h2>
-          <p className="mt-4 max-w-3xl text-[0.95rem] leading-relaxed text-body">
+          <p className="mt-4 max-w-3xl text-base leading-relaxed text-body">
             Transcribed from the official logo spec sheet. Contrast ratios are
             against white; anything marked surface-only must never be set as
             text on a light background.
@@ -194,7 +194,7 @@ export default function BrandPage() {
               <div key={group.group}>
                 <Label>{group.group}</Label>
                 {group.note ? (
-                  <p className="mt-3 max-w-2xl text-[0.9rem] leading-relaxed text-body">
+                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-body">
                     {group.note}
                   </p>
                 ) : null}
@@ -206,13 +206,13 @@ export default function BrandPage() {
                         className="block h-16 w-full rounded-lg border border-line"
                         style={{ background: s.hex }}
                       />
-                      <p className="mt-4 text-[0.95rem] font-medium text-ink">
+                      <p className="mt-4 text-base font-medium text-ink">
                         {s.name}
                       </p>
-                      <p className="mt-1 font-mono text-[0.85rem] text-body">
+                      <p className="mt-1 font-mono text-base text-body">
                         {s.hex}
                       </p>
-                      <p className="mt-2 text-[0.85rem] leading-relaxed text-body">
+                      <p className="mt-2 text-base leading-relaxed text-body">
                         {s.use}
                       </p>
                     </div>

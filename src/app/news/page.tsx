@@ -91,11 +91,11 @@ export default function NewsPage() {
                     <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
                       <time
                         dateTime={item.date}
-                        className="text-[0.78rem] font-semibold uppercase tracking-[0.15em] text-body"
+                        className="text-[0.84rem] font-semibold uppercase tracking-[0.15em] text-body"
                       >
                         {dateFormat.format(new Date(item.date))}
                       </time>
-                      <span className="inline-flex rounded-full border border-pale/70 bg-pale/25 px-3 py-1 text-[0.74rem] font-semibold uppercase tracking-[0.11em] text-blue">
+                      <span className="inline-flex rounded-full border border-pale/70 bg-pale/25 px-3 py-1 text-[0.82rem] font-semibold uppercase tracking-[0.11em] text-blue">
                         {item.category}
                       </span>
                     </div>
@@ -108,7 +108,7 @@ export default function NewsPage() {
                     {item.href ? (
                       <a
                         href={item.href}
-                        className="group mt-5 inline-flex items-center gap-2 text-sm font-medium text-blue transition-colors hover:text-ink"
+                        className="group mt-5 inline-flex items-center gap-2 text-base font-medium text-blue transition-colors hover:text-ink"
                       >
                         <span className="link-underline">Read the release</span>
                         <ArrowIcon className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
