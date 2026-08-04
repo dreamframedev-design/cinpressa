@@ -1,6 +1,7 @@
 # Cinpressa Art Strategy
 
-> **Status:** revised per Dispatch rulings 2026-08-03. Awaiting approve/redirect. No code written.
+> **Status:** BUILT on branch `art/considered-placements`, 2026-08-03. Awaiting review.
+> Not pushed, not deployed. See §9 for what shipped and what deviated.
 > **Reads with:** `ART_CATALOG_CINRX.md` (reference universe) · `ART_AUDIT_CINPRESSA.md` (current state)
 
 ---
@@ -491,6 +492,75 @@ Two of five pieces have no motion at all.
 - `EfficacyChart` placeholder curves · `TeamGrid` names — both flagged in code, both gate
   launch, neither is art scope.
 
-**On approval:** feature branch, build in the order above, verify desktop/tablet/mobile,
-hold the CinRx perf envelope (~30fps, DPR ≤1.5, IO-paused, static frame under reduced
-motion, static on touch), commit per piece. No push to main, no deploy.
+---
+
+## 9. Build log
+
+Branch `art/considered-placements`, one commit per piece, nothing pushed or deployed.
+
+| Piece | Commit | Notes |
+|---|---|---|
+| 4 · The Ground | `3fd4b66` | as specified |
+| 1 · The Held Line | `3b7b5e5` | as specified, five variants |
+| 6 · Nav theming | `c4a0398` | as specified |
+| 3 · The Horizon | `277f045` | as specified |
+| 2 · Four Lenses | `289cd9a` | added a copy-column mask, see below |
+| 5 · Source | `25e29a5` | **moved section**, see below |
+
+**Own code ≈ 23 KB. No new dependencies — the project still ships three.**
+
+### Three deviations from this document
+
+1. **Piece 5 moved from Mechanism to the CinPressa-solution section** (both on
+   /science). Mechanism holds `RaasPathway`, a light-ground diagram that would have
+   needed a full restyle to survive inversion — real risk to something that already
+   works, for no gain. The solution section had no diagram, was already making the
+   suppression claim, and was hosting one of the nine logo crops.
+2. **Framer Motion was not added.** §3 predicted Piece 5 as the genuine interop case.
+   On implementation it isn't: the field paints imperatively to a canvas and never
+   drives React render state, so all that was needed was a scroll position — about ten
+   lines. Adding ~30 KB for that failed the standing rule's own test. Trivial to switch
+   if the library is wanted as standing infrastructure.
+3. **Piece 2 gained a copy-column mask.** Numeric check showed the lens field lands
+   ~972 px wide against a 460 px column, overhanging ~256 px into the copy on the left.
+
+### Verification actually performed
+
+Production build clean and 13/13 pages generating after every piece; TypeScript passes.
+Design tokens confirmed resolving at runtime; seam, nav-dark and horizon CSS confirmed
+in the compiled output; the nav cascade checked functionally in-browser rather than by
+reading source order.
+
+Geometry was validated numerically against the source constants, which caught one real
+error — Piece 5's first tuning silenced 100% of the field at full scroll, losing the
+intended residual and overclaiming the science. Current behaviour: 84–89% of filaments
+silenced with 6–13% surviving, stable across four aspect ratios. Piece 1's five variants
+each flatten 22–24× left to right with nothing escaping the canvas.
+
+### ⚠ Not verified: how any of it looks
+
+**No visual QA was possible in the build session.** The browser pane was not displayed,
+so screenshots failed; the dev-server access gate could not be unlocked either. Every
+claim above is about compilation, computed styles and geometry — none of it is about
+composition, weight, or whether the pieces are beautiful.
+
+Specific things needing eyes:
+
+- **Piece 3 (The Horizon)** — flagged from the start as the piece most likely to read as
+  too quiet. One line in a large dark field.
+- **Piece 5's transitions** — a dark section now sits between two light ones on
+  /science. If that reads as a hole rather than a showpiece, the fix is at its edges.
+- **The dark Pipeline hero** — nav legibility over `#08192F` was verified by computed
+  colour, not by looking at it.
+- **Section seams** — on by default everywhere, including directly under each hero. That
+  may want `seam={false}` in places.
+- **Mobile** — Piece 1 renders a static frame below 768 px and Piece 3 is `lg:` only;
+  neither was seen.
+
+### Logo placements: 9 → 5
+
+Removed: the five interior page headers (one component), the /science solution crop, the
+footer crop, and the home "Our approach" crop. Remaining are the four legitimate uses —
+nav lockup, footer lockup, the home hero `ConvergenceMark`, and the brand page — plus
+the splash gate, which goes away at launch, and a small outline used as the news
+empty-state marker.

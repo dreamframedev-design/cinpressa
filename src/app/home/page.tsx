@@ -6,7 +6,6 @@ import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
 import { StatBand } from "@/components/stat-band";
 import { DosingCadence } from "@/components/dosing-cadence";
-import { MarkArt } from "@/components/geometry";
 import { FourLenses } from "@/components/four-lenses";
 import { ConvergenceMark } from "@/components/convergence-mark";
 import { Reveal } from "@/components/reveal";
@@ -127,17 +126,12 @@ export default function HomePage() {
           </Reveal>
         </Section>
 
-        {/* Our approach */}
-        <Section
-          tone="green"
-          art={
-            <MarkArt
-              variant="brand"
-              light
-              className="absolute -right-32 -top-40 h-[620px] w-auto rotate-[18deg] opacity-[0.13]"
-            />
-          }
-        >
+        {/* Our approach — the last of the nine background logo crops, a 620px mark at
+            0.13 opacity, removed with no replacement. DosingCadence carries this
+            section already: a full year of daily doses against one or two, at the same
+            scale, where the count IS the argument. It is the strongest thing on the
+            site and it does not need a watermark behind it. */}
+        <Section tone="green">
           <SectionHeader
             eyebrow="Our approach"
             title="Designed to create a backbone of control"
