@@ -614,34 +614,15 @@ p {
   filter: drop-shadow(0 32px 40px rgba(34, 97, 173, 0.18));
 }
 
-/* ---------- Mark bloom ----------
-   The hero previously ringed the mark with orbiting dots. Nothing orbits
-   anything now: instead the mark's own petal colours bloom outward behind it,
-   each breathing on its own long cycle, so the light reads as coming off the
-   logo rather than circling it. */
+/* ---------- Lens field ----------
+   The hero once ringed the mark with orbiting dots, and then with four radial blooms
+   breathing on staggered cycles. Neither survives. A soft coloured blob behind a logo
+   is the most generic move available in this medium, and it is what the client saw as
+   washed out.
 
-@keyframes bloom-breathe {
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: var(--bloom-low, 0.45);
-  }
-  50% {
-    transform: scale(1.16);
-    opacity: var(--bloom-high, 0.8);
-  }
-}
-
-.bloom {
-  position: absolute;
-  border-radius: 9999px;
-  will-change: transform, opacity;
-  animation: bloom-breathe var(--bloom-dur, 16s) ease-in-out
-    var(--bloom-delay, 0s) infinite;
-}
-
-/* The blooms used to fade in with the hero column's rise; the mark column no
-   longer rises (the convergence is its entrance), so they fade on their own. */
+   Behind the mark now: FourLenses, the mark's own four parent ovals at 3.2x, hairlined
+   and multiplied, and completely still. The convergence is the motion in that column;
+   the field around it should hold. Only the arrival is animated, and only once. */
 @keyframes fade-in-soft {
   from {
     opacity: 0;
@@ -651,8 +632,8 @@ p {
   }
 }
 
-.bloom-layer {
-  animation: fade-in-soft 1.3s var(--ease-brand) both;
+.lens-layer {
+  animation: fade-in-soft 1.6s var(--ease-brand) 0.25s both;
 }
 
 /* ---------- Mark arm lighting ----------
@@ -1206,8 +1187,7 @@ p {
 
   /* Colour and texture stay; only the motion stops. */
   .mark-suspend,
-  .bloom,
-  .bloom-layer,
+  .lens-layer,
   .track-stripes,
   .track-tip,
   .duplex-halo,

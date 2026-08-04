@@ -1,5 +1,4 @@
 import Link from "next/link";
-import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
@@ -8,6 +7,7 @@ import { SectionHeader } from "@/components/section-header";
 import { StatBand } from "@/components/stat-band";
 import { DosingCadence } from "@/components/dosing-cadence";
 import { MarkArt } from "@/components/geometry";
+import { FourLenses } from "@/components/four-lenses";
 import { ConvergenceMark } from "@/components/convergence-mark";
 import { Reveal } from "@/components/reveal";
 import { ArrowIcon } from "@/components/arrow-icon";
@@ -18,19 +18,6 @@ export const metadata: Metadata = {
     "CinPressa is advancing CIN-111, a best-in-class, long-acting AGT siRNA designed to establish a durable, adherence-independent backbone of blood pressure control.",
 };
 
-/**
- * Petal colours blooming behind the hero mark. Positions roughly mirror where
- * each colour sits inside the artwork, so the glow reads as the logo's own
- * light rather than decoration placed around it. Durations are mismatched so
- * the four breaths never sync up.
- */
-const BLOOMS = [
-  { color: "175,219,188", size: 74, x: 2, y: -6, low: 0.4, high: 0.75, dur: 15, delay: 0 },
-  { color: "149,218,248", size: 68, x: 32, y: 4, low: 0.45, high: 0.8, dur: 19, delay: -5 },
-  { color: "34,97,173", size: 54, x: -4, y: 28, low: 0.18, high: 0.34, dur: 17, delay: -9 },
-  { color: "103,113,181", size: 62, x: 34, y: 36, low: 0.2, high: 0.4, dur: 23, delay: -13 },
-];
-
 export default function HomePage() {
   return (
     <div id="top">
@@ -38,15 +25,10 @@ export default function HomePage() {
 
       <main>
         {/* Hero */}
+        {/* The large pale radial that used to sit off the right edge is gone with the
+            blooms: it was the same soft-wash move, just bigger. The lens field is the
+            only thing behind the mark now. */}
         <section className="relative flex min-h-[92vh] items-center overflow-hidden bg-gradient-to-b from-white via-white to-mist">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute right-[-10%] top-1/2 h-[680px] w-[680px] -translate-y-1/2 rounded-full opacity-55"
-            style={{
-              background:
-                "radial-gradient(circle, rgba(190,215,236,0.5) 0%, rgba(190,215,236,0) 65%)",
-            }}
-          />
           <div className="relative mx-auto grid w-full max-w-7xl items-center gap-14 px-6 pb-20 pt-32 lg:grid-cols-[1.08fr_0.92fr] lg:gap-10 lg:px-10 lg:pb-24 lg:pt-40">
             <div>
               <p
@@ -90,30 +72,12 @@ export default function HomePage() {
 
             {/* No entrance rise here: the convergence IS the mark's entrance. */}
             <div className="relative mx-auto flex aspect-square w-[280px] items-center justify-center sm:w-[360px] lg:w-[460px]">
-              {/* No orbits. The mark's own petal colours bloom outward behind
-                  it, each on its own long breath, so the light reads as coming
-                  off the logo. Positions echo where those petals actually sit. */}
-              <div aria-hidden className="bloom-layer pointer-events-none absolute inset-0">
-                {BLOOMS.map((b) => (
-                  <span
-                    key={b.color}
-                    className="bloom"
-                    style={
-                      {
-                        width: `${b.size}%`,
-                        aspectRatio: "1",
-                        left: `${b.x}%`,
-                        top: `${b.y}%`,
-                        background: `radial-gradient(circle, rgba(${b.color},1) 0%, rgba(${b.color},0) 68%)`,
-                        "--bloom-low": b.low,
-                        "--bloom-high": b.high,
-                        "--bloom-dur": `${b.dur}s`,
-                        "--bloom-delay": `${b.delay}s`,
-                      } as CSSProperties
-                    }
-                  />
-                ))}
-              </div>
+              {/* Piece 2, Four Lenses. The mark's own four parent ovals at 3.2x, so the
+                  logo reads as the core of a larger optical system rather than as a
+                  logo on a wash. The inset matches the component's SCALE; changing one
+                  without the other breaks the alignment with the mark. Static by
+                  design - the convergence is already the motion in this column. */}
+              <FourLenses className="lens-layer absolute inset-[-110%]" />
 
               <div className="mark-lift relative w-[66%]">
                 <ConvergenceMark className="w-full" />
