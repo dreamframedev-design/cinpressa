@@ -1,27 +1,62 @@
 import { Reveal } from "@/components/reveal";
 
+/**
+ * CIN-111 development status.
+ *
+ * REBUILT after client review. The previous version drew the track as a bar with
+ * `rounded-r-full` — a fully rounded cap on a 44px-tall bar — and then painted a soft
+ * radial glow haloing that cap. The resulting silhouette was, accurately, not something
+ * to put on a pharma site. The note was: make it an arrow tip.
+ *
+ * What changed:
+ *   - The cap is a real chevron point. Direction, not termination.
+ *   - The tip is a FIXED-SIZE element beside a flexible shaft, not part of a stretched
+ *     viewBox. A single SVG scaled with preserveAspectRatio="none" would shear the
+ *     point into a spike or a stub depending on how wide the column happened to be;
+ *     this way the tip angle is identical at every container size.
+ *   - The tail is square. Two identical round ends read as a lozenge; an origin and a
+ *     heading read as progress.
+ *   - Completed and in-progress are split by TEXTURE, not by a second shape or a
+ *     shade-to-shade gradient — a gradient at that seam reads as a rendering artefact,
+ *     a texture change reads as a deliberate handover.
+ *   - The glow is gone. Nothing haloes the tip.
+ *   - The hatch is STATIC. The old build ran it on a 1.1s barber-pole loop plus a 5.5s
+ *     specular sweep; at that tempo it reads as a loading bar, which is the wrong idea
+ *     entirely — this is a programme, not a progress spinner.
+ */
+
 const STAGES = ["Preclinical", "Phase 1", "Phase 2", "Phase 3"];
 
 /**
- * Preclinical is complete: one full stage column, or 25% of a four-stage
- * track. Phase 1 is a quarter of the way in, so the bar stops at
- * 25% + (25% × 0.25), leaving it well clear of the Phase 2 boundary at 50%.
+ * Preclinical is complete: one full stage column, or 25% of a four-stage track. Phase 1
+ * is a quarter of the way in, so the arrow reaches 25% + (25% × 0.25) and stops well
+ * clear of the Phase 2 boundary at 50%. That is the honest position: Phase 1 has not
+ * begun dosing.
  */
 const PROGRESS = 31.25;
-
-/** Where the preclinical/Phase 1 handoff falls within the bar's own width. */
+/** Where the preclinical/Phase 1 handover falls within the arrow's own length. */
 const HANDOFF = (25 / PROGRESS) * 100;
 
-/** Label column plus the four equal stage columns, shared by header and row. */
 const COLUMNS = "grid grid-cols-[minmax(9rem,1.15fr)_repeat(4,minmax(0,1fr))]";
 
+const BAR_H = 44;
+/** Tip length in px. About 0.6× the bar height — long enough to read as an arrow,
+ *  short enough that it does not become a dart. */
+const TIP_W = 26;
+
+const COMPLETE = "#2261ad";
+const LIVE = "#1596d4";
+
+/** Static diagonal hatch. Authored as a gradient rather than an SVG pattern so it
+ *  cannot be distorted by any parent scaling. */
+const HATCH = `repeating-linear-gradient(-58deg, ${LIVE} 0 7px, rgba(255,255,255,0.34) 7px 13px)`;
+
 const LEGEND = [
-  { label: "Complete", swatch: "bg-blue" },
-  { label: "In progress", swatch: "bg-sky" },
-  { label: "Not started", swatch: "border border-line bg-white" },
+  { label: "Complete", swatch: COMPLETE },
+  { label: "In progress", swatch: LIVE },
+  { label: "Not started", swatch: null },
 ];
 
-/** Traditional four-stage development chart for the CIN-111 program. */
 export function PipelineDiagram() {
   return (
     <Reveal variant="rise">
@@ -66,37 +101,45 @@ export function PipelineDiagram() {
               ))}
 
               <div className="relative flex h-full items-center py-7">
-                {/* Leading edge, painted before the bar so it haloes the cap
-                    instead of washing over it */}
-                <span
-                  aria-hidden
-                  className="track-tip absolute top-1/2 h-20 w-20 -translate-x-1/2 -translate-y-1/2 rounded-full"
-                  style={{
-                    left: `${PROGRESS}%`,
-                    background:
-                      "radial-gradient(circle, rgba(30,174,229,0.42) 0%, rgba(30,174,229,0) 68%)",
-                  }}
-                />
                 <div
-                  className="track-progress relative h-11 origin-left overflow-hidden rounded-r-full shadow-[0_10px_26px_-14px_rgba(34,97,173,0.8)]"
-                  style={{ width: `${PROGRESS}%` }}
+                  className="track-progress relative flex origin-left"
+                  style={{ width: `${PROGRESS}%`, height: `${BAR_H}px` }}
                 >
-                  {/* Complete: solid core blue */}
-                  <span
-                    className="absolute inset-y-0 left-0 bg-blue"
-                    style={{ width: `${HANDOFF}%` }}
+                  {/* Shaft: the live stretch runs the whole length and the completed
+                      stretch is laid over its start, so there is one continuous form
+                      rather than two abutting bars. */}
+                  <div
+                    className="h-full flex-1"
+                    style={{ background: HATCH }}
                   />
-                  {/* In progress: same colour family, different *texture*, so
-                      the stage boundary is a deliberate edge rather than the
-                      muddy blend a shade-to-shade gradient produces. */}
-                  <span
-                    className="absolute inset-y-0 right-0 bg-azure"
-                    style={{ width: `${100 - HANDOFF}%` }}
+
+                  {/* The point. Fixed width, so its angle never changes. */}
+                  <svg
+                    aria-hidden
+                    width={TIP_W}
+                    height={BAR_H}
+                    viewBox={`0 0 ${TIP_W} ${BAR_H}`}
+                    className="block shrink-0"
                   >
-                    <span className="track-stripes absolute inset-0" />
-                  </span>
-                  {/* Specular sweep across the finished stretch */}
-                  <span className="track-sheen absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-transparent via-white/50 to-transparent" />
+                    <polygon
+                      points={`0,0 ${TIP_W},${BAR_H / 2} 0,${BAR_H}`}
+                      fill={LIVE}
+                    />
+                  </svg>
+
+                  {/* Completed stretch. */}
+                  <div
+                    aria-hidden
+                    className="absolute inset-y-0 left-0"
+                    style={{ width: `${HANDOFF}%`, background: COMPLETE }}
+                  />
+
+                  {/* The handover, stated as an edge. */}
+                  <div
+                    aria-hidden
+                    className="absolute inset-y-0 w-px bg-white/55"
+                    style={{ left: `${HANDOFF}%` }}
+                  />
                 </div>
               </div>
             </div>
@@ -112,7 +155,12 @@ export function PipelineDiagram() {
           >
             <span
               aria-hidden
-              className={`h-2.5 w-6 rounded-full ${item.swatch}`}
+              className="h-2.5 w-6 rounded-full"
+              style={
+                item.swatch
+                  ? { background: item.swatch }
+                  : { border: "1px solid var(--color-line)", background: "#fff" }
+              }
             />
             {item.label}
           </span>

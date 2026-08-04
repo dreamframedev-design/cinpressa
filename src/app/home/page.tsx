@@ -8,6 +8,7 @@ import { SectionHeader } from "@/components/section-header";
 import { StatBand } from "@/components/stat-band";
 import { DosingCadence } from "@/components/dosing-cadence";
 import { Bleed } from "@/components/bleed";
+import { FocusField } from "@/components/focus-field";
 import { MarkArt } from "@/components/geometry";
 import { ConvergenceMark } from "@/components/convergence-mark";
 import { Reveal } from "@/components/reveal";
@@ -198,8 +199,16 @@ export default function HomePage() {
           </Reveal>
         </Section>
 
-        {/* Pipeline */}
-        <Section tone="indigo">
+        {/* Pipeline. The art is FOCUS itself rather than a preview of the pipeline:
+            a one-programme pipeline shown small reads as "we have one thing" instead
+            of "we are concentrated on one thing". Weighted to the right, where the
+            copy is not. */}
+        <Section
+          tone="indigo"
+          art={
+            <FocusField className="absolute inset-y-0 right-0 hidden w-[62%] lg:block" />
+          }
+        >
           <SectionHeader
             eyebrow="Pipeline"
             title="A focused program. A clear path forward."
