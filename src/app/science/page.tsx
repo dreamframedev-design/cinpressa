@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { PageHero } from "@/components/page-hero";
+import { HeroBloom } from "@/components/hero-fields";
 import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
 import { DuplexBinding } from "@/components/duplex-binding";
@@ -38,7 +39,9 @@ export default function SciencePage() {
       <SiteNav />
 
       <main>
+        {/* Bloom: masses opening out of dense cores and dissolving as they spread. Growth, not travel, which is the right figure for a molecule distributing and taking effect. */}
         <PageHero
+          field={<HeroBloom className="absolute inset-0" />}
           eyebrow="Unmet need"
           title="Blood pressure control still depends on daily dose adherence"
           subtitle="Hypertension requires lifelong treatment, yet long-term control remains difficult to achieve for a large proportion of patients despite numerous approved therapies."

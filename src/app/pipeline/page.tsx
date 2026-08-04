@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { PageHero } from "@/components/page-hero";
+import { HeroChurn } from "@/components/hero-fields";
 import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
 import { EfficacyChart } from "@/components/efficacy-chart";
@@ -35,7 +36,9 @@ export default function PipelinePage() {
       <SiteNav />
 
       <main>
+        {/* Churn: layered colour being stirred. Every sample is displaced by a rotating warp, so the bands curl and fold instead of sliding. */}
         <PageHero
+          field={<HeroChurn className="absolute inset-0" />}
           eyebrow="Lead program"
           title={
             <>
