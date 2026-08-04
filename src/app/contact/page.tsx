@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ContactForm } from "@/components/contact-form";
-import { Caustics } from "@/components/caustics";
+import { WaveLines } from "@/components/wave-lines";
 import { Reveal } from "@/components/reveal";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
@@ -14,33 +14,41 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <div id="top">
-      {/* The hero is on the deep ground, so the bar carries the dark treatment
-          until the visitor scrolls past it. */}
-      <SiteNav tone="dark" />
+      <SiteNav />
 
       <main>
-        {/* The page inverts onto the deep ground. Not for drama: a frosted panel needs
-            real luminance range behind it or it is a grey rectangle, and the caustic
-            field only has range on dark. The artwork and the glass are one decision. */}
-        <section className="relative overflow-hidden bg-deep">
-          <Caustics className="pointer-events-none absolute inset-0" />
-          {/* Two washes over the field. The first sinks the left column so the copy
-              has a quiet ground to sit on; the second darkens the extremes so the
-              caustics read as depth rather than as a busy edge-to-edge texture. */}
+        {/* Daylight, as the brand asks for. The previous pass took this page dark to
+            make the glass work, which fixed the panel and broke everything else: bright
+            filigree on deep navy is a swimming pool. The field is line-work now, so it
+            needs white under it rather than black behind it. */}
+        <section className="relative overflow-hidden bg-white">
+          <WaveLines className="absolute inset-0" />
+          {/* One wash, weighted left. The copy column gets clean paper; the field is
+              left alone on the right where it can be seen properly. */}
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0"
             style={{
               background:
-                "linear-gradient(100deg, rgba(8,25,47,0.94) 0%, rgba(8,25,47,0.86) 28%, rgba(8,25,47,0.5) 52%, rgba(8,25,47,0.34) 74%, rgba(8,25,47,0.62) 100%)",
+                "linear-gradient(100deg, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.92) 26%, rgba(255,255,255,0.55) 48%, rgba(255,255,255,0.2) 72%, rgba(255,255,255,0.45) 100%)",
+            }}
+          />
+          {/* Feather the top and bottom edges so the field arrives and leaves rather
+              than being cropped by the section boundary. */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-0 h-40"
+            style={{
+              background:
+                "linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0) 100%)",
             }}
           />
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-0"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-40"
             style={{
               background:
-                "radial-gradient(120% 90% at 62% 42%, rgba(8,25,47,0) 0%, rgba(8,25,47,0.35) 62%, rgba(8,25,47,0.85) 100%)",
+                "linear-gradient(0deg, #ffffff 0%, rgba(255,255,255,0) 100%)",
             }}
           />
 
@@ -50,26 +58,26 @@ export default function ContactPage() {
                 <span
                   aria-hidden
                   className="block h-px w-12"
-                  style={{ background: "var(--color-accent-dark, #95daf8)" }}
+                  style={{ background: "var(--color-accent, #6771b5)" }}
                 />
               </Reveal>
               <Reveal variant="fade" delay={80}>
-                <p className="mt-6 text-[0.84rem] font-semibold uppercase tracking-[0.22em] text-frost">
+                <p className="mt-6 text-[0.84rem] font-semibold uppercase tracking-[0.22em] text-blue">
                   Connect
                 </p>
               </Reveal>
               <Reveal variant="rise-blur" delay={140}>
-                <h1 className="mt-5 text-[clamp(2.25rem,5vw,3.5rem)] font-light leading-[1.06] tracking-tight text-white">
+                <h1 className="mt-5 text-[clamp(2.25rem,5vw,3.5rem)] font-light leading-[1.06] tracking-tight text-ink">
                   Contact CinPressa
                 </h1>
               </Reveal>
               <Reveal variant="fade" delay={220}>
-                <p className="mt-7 max-w-md text-lg leading-relaxed text-white/80">
+                <p className="mt-7 max-w-md text-lg leading-relaxed text-body">
                   Start a conversation with the team.
                 </p>
               </Reveal>
               <Reveal variant="fade" delay={300}>
-                <p className="mt-5 max-w-md text-base leading-relaxed text-white/70">
+                <p className="mt-5 max-w-md text-base leading-relaxed text-body">
                   For business, partnering, or general inquiries, please reach
                   out through the contact form. CinPressa welcomes discussions
                   with partners interested in advancing a differentiated
@@ -77,11 +85,11 @@ export default function ContactPage() {
                 </p>
               </Reveal>
               <Reveal variant="fade" delay={360}>
-                <div className="mt-10 border-t border-white/15 pt-8">
-                  <p className="text-[0.84rem] font-semibold uppercase tracking-[0.16em] text-frost/80">
+                <div className="mt-10 border-t border-line pt-8">
+                  <p className="text-[0.84rem] font-semibold uppercase tracking-[0.16em] text-body">
                     Parent company
                   </p>
-                  <p className="mt-2 text-base text-white/80">
+                  <p className="mt-2 text-base text-body">
                     CinRx Pharma · Cincinnati, Ohio, USA
                   </p>
                 </div>

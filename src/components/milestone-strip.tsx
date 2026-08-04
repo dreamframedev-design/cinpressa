@@ -1,96 +1,161 @@
 import { Reveal } from "@/components/reveal";
 
 /**
- * The homepage news section was empty. Not sparse: empty. A heading, a sentence and a
- * button, over nothing.
+ * The forward calendar for the homepage news section.
  *
- * The reason is legitimate. CinPressa has issued no announcements yet, so the news
- * archive is an empty state by design and there was nothing to preview. Inventing a
- * headline to fill the hole is not an option on a pharma site.
+ * FIRST VERSION WAS BROKEN. The spine was absolutely positioned at top:7px while the
+ * date sat at the top of the same block, so the rule ran straight through the type. It
+ * also had no construction to speak of: a line and two dots is not a design.
  *
- * What DOES exist is a forward calendar, already written and already approved on
- * /news under "What's ahead". So the section previews that instead: not what has been
- * said, but what is about to be. Every line below is a restatement of copy already on
- * that page, and both are framed as plans because that is what they are.
+ * This is drafted instead. The axis is a real measured rule with a minor-tick scale,
+ * two stations marked as ring-and-core constructions, and a drop line from each station
+ * down to its entry. Content hangs BELOW the axis, so nothing can collide with it. The
+ * scale is not decoration: it gives the two dates a span to sit on, which is what makes
+ * "Mid-2026" and "Fall 2026" read as points in a programme rather than as two headings.
  *
- * When the first release lands, this is the component to swap for a real teaser.
+ * The axis runs past the last station and dissolves, because the programme continues
+ * past the part we can currently put a date on. The ticks thin out as it goes for the
+ * same reason.
  *
- * The design carries the section on structure rather than decoration: a spine, two
- * marked stations, and dates set large enough to be the thing you see first. The spine
- * runs past the last station and dissolves, because the programme continues past the
- * part we can currently name.
+ * Content note: CinPressa has issued no announcements, so there is no news to preview
+ * and inventing one is not an option. Both entries below restate copy already approved
+ * on /news under "What's ahead", and both stay framed as plans. Swap this for a real
+ * teaser when the first release lands.
  */
 
 type Milestone = {
   when: string;
   title: string;
   body: string;
+  /** Position along the axis, as a percentage. Matches the grid column starts. */
+  at: number;
 };
 
 const MILESTONES: Milestone[] = [
   {
+    at: 0,
     when: "Mid-2026",
     title: "U.S. IND submission",
     body: "CinPressa plans to submit a U.S. Investigational New Drug application for CIN-111.",
   },
   {
+    at: 50,
     when: "Fall 2026",
     title: "First-in-human study",
     body: "A U.S. single-dose, single ascending dose study in patients with mild-to-moderate hypertension is expected to commence.",
   },
 ];
 
+/** Minor divisions on the scale. Fine, evenly pitched, thinning toward the open end. */
+const TICKS = Array.from({ length: 41 }, (_, i) => i);
+
 export function MilestoneStrip() {
   return (
-    <div className="mt-14">
+    <div className="mt-16">
       <Reveal variant="fade">
         <p className="text-[0.84rem] font-semibold uppercase tracking-[0.2em] text-blue">
           What&rsquo;s ahead
         </p>
       </Reveal>
 
-      <div className="relative mt-9">
-        {/* The spine. Solid through the named stations, then dissolving: the programme
-            continues past the part we can currently put a date on. */}
-        <div
-          aria-hidden
-          className="absolute left-0 right-0 top-[7px] h-px"
-          style={{
-            background:
-              "linear-gradient(90deg, #2261ad 0%, #1596d4 38%, #1eaee5 62%, rgba(30,174,229,0) 100%)",
-          }}
-        />
+      {/* ── The axis ─────────────────────────────────────────────────────────
+          Its own band, so nothing below can ever intersect it. */}
+      <Reveal variant="fade" delay={90}>
+        <div className="relative mt-10 h-9">
+          <svg
+            aria-hidden
+            viewBox="0 0 1000 36"
+            preserveAspectRatio="none"
+            className="absolute inset-0 h-full w-full"
+          >
+            <defs>
+              <linearGradient id="ms-axis" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor="#2261ad" />
+                <stop offset="42%" stopColor="#1596d4" />
+                <stop offset="68%" stopColor="#1eaee5" />
+                <stop offset="100%" stopColor="#1eaee5" stopOpacity="0" />
+              </linearGradient>
+            </defs>
 
-        <div className="grid gap-12 sm:grid-cols-2 sm:gap-10">
+            {/* Minor scale. Full height at the near end, shortening and fading toward
+                the open end where the calendar stops being nameable. */}
+            {TICKS.map((i) => {
+              const f = i / (TICKS.length - 1);
+              const major = i % 5 === 0;
+              const len = (major ? 9 : 5) * (1 - f * 0.55);
+              return (
+                <line
+                  key={i}
+                  x1={f * 1000}
+                  y1={18}
+                  x2={f * 1000}
+                  y2={18 + len}
+                  stroke="#1596d4"
+                  strokeOpacity={(major ? 0.5 : 0.28) * (1 - f * 0.8)}
+                  strokeWidth={1}
+                  vectorEffect="non-scaling-stroke"
+                />
+              );
+            })}
+
+            <line
+              x1="0"
+              y1="18"
+              x2="1000"
+              y2="18"
+              stroke="url(#ms-axis)"
+              strokeWidth={1.5}
+              vectorEffect="non-scaling-stroke"
+            />
+          </svg>
+
+          {/* Stations. Ring, core, and a drop line down to the entry below. */}
           {MILESTONES.map((m, i) => (
-            <Reveal key={m.when} variant="rise" delay={i * 120} className="relative">
-              {/* Station. Ring plus core, so it reads as a marked point on a line
-                  rather than a bullet. */}
+            <span
+              key={m.when}
+              aria-hidden
+              className="absolute top-1/2 block"
+              style={{ left: `${m.at}%`, transform: "translateY(-50%)" }}
+            >
               <span
-                aria-hidden
-                className="absolute left-0 top-0 block h-[15px] w-[15px] rounded-full border-2 bg-white"
+                className="relative block h-[17px] w-[17px] rounded-full border-[1.5px] bg-white"
                 style={{ borderColor: i === 0 ? "#2261ad" : "#1596d4" }}
-              />
+              >
+                <span
+                  className="absolute left-1/2 top-1/2 block h-[7px] w-[7px] -translate-x-1/2 -translate-y-1/2 rounded-full"
+                  style={{ background: i === 0 ? "#2261ad" : "#1596d4" }}
+                />
+              </span>
+              {/* Drop line to the entry. */}
               <span
-                aria-hidden
-                className="absolute left-[4.5px] top-[4.5px] block h-1.5 w-1.5 rounded-full"
-                style={{ background: i === 0 ? "#2261ad" : "#1596d4" }}
+                className="absolute left-1/2 top-[17px] block w-px"
+                style={{
+                  height: "34px",
+                  background: `linear-gradient(180deg, ${
+                    i === 0 ? "#2261ad" : "#1596d4"
+                  } 0%, rgba(21,150,212,0) 100%)`,
+                }}
               />
-
-              <div className="pl-8">
-                <p className="text-[1.6rem] font-light leading-none tracking-tight text-ink sm:text-[1.9rem]">
-                  {m.when}
-                </p>
-                <p className="mt-3 text-[1.1rem] font-semibold leading-snug text-blue">
-                  {m.title}
-                </p>
-                <p className="mt-3 max-w-md text-base leading-relaxed text-body">
-                  {m.body}
-                </p>
-              </div>
-            </Reveal>
+            </span>
           ))}
         </div>
+      </Reveal>
+
+      {/* ── The entries ──────────────────────────────────────────────────── */}
+      <div className="mt-9 grid gap-12 sm:grid-cols-2 sm:gap-10">
+        {MILESTONES.map((m, i) => (
+          <Reveal key={m.when} variant="rise" delay={140 + i * 120}>
+            <p className="text-[1.75rem] font-light leading-none tracking-tight text-ink sm:text-[2.1rem]">
+              {m.when}
+            </p>
+            <p className="mt-4 text-[1.1rem] font-semibold leading-snug text-blue">
+              {m.title}
+            </p>
+            <p className="mt-3 max-w-md text-base leading-relaxed text-body">
+              {m.body}
+            </p>
+          </Reveal>
+        ))}
       </div>
     </div>
   );

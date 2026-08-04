@@ -45,19 +45,19 @@ export function ContactForm() {
 
   if (status === "success") {
     return (
-      <div className="rounded-2xl border border-white/15 bg-white/[0.06] px-8 py-12 text-center backdrop-blur-sm">
-        <span aria-hidden className="mx-auto block h-px w-12 bg-frost" />
-        <h2 className="mt-7 text-2xl font-light tracking-tight text-white">
+      <div className="rounded-2xl border border-line bg-white/70 px-8 py-12 text-center backdrop-blur-sm">
+        <span aria-hidden className="mx-auto block h-px w-12 bg-sky" />
+        <h2 className="mt-7 text-2xl font-light tracking-tight text-ink">
           Thank you, your message is on its way
         </h2>
-        <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-white/70">
+        <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-body">
           We&apos;ve received your inquiry and will route it to the right team.
           Expect a reply at the email you provided.
         </p>
         <button
           type="button"
           onClick={() => setStatus("idle")}
-          className="mt-8 text-base font-medium text-frost transition-colors hover:text-white"
+          className="mt-8 text-base font-medium text-blue transition-colors hover:text-ink"
         >
           <span className="link-underline">Send another message</span>
         </button>
@@ -112,7 +112,7 @@ export function ContactForm() {
             className={`${inputClass} appearance-none bg-[length:1rem] bg-[right_0.9rem_center] bg-no-repeat pr-10`}
             style={{
               backgroundImage:
-                "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='none' stroke='%2395daf8' stroke-width='1.5' d='M1 1.5 6 6.5 11 1.5'/%3E%3C/svg%3E\")",
+                "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='none' stroke='%235b6e83' stroke-width='1.5' d='M1 1.5 6 6.5 11 1.5'/%3E%3C/svg%3E\")",
             }}
           >
             <option value="" disabled>
@@ -147,7 +147,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="btn-primary btn-on-glass group disabled:cursor-not-allowed disabled:opacity-60"
+        className="btn-primary group disabled:cursor-not-allowed disabled:opacity-60"
       >
         {status === "submitting" ? "Sending…" : "Send message"}
         <ArrowIcon className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
@@ -157,7 +157,7 @@ export function ContactForm() {
 }
 
 const inputClass =
-  "w-full rounded-xl border border-white/15 bg-white/[0.06] px-4 py-3.5 text-base text-white outline-none backdrop-blur-sm transition-[border-color,background-color,box-shadow] duration-300 placeholder:text-white/35 hover:border-white/25 hover:bg-white/[0.09] focus:border-frost/70 focus:bg-white/[0.1] focus:ring-2 focus:ring-frost/25";
+  "w-full rounded-xl border border-line bg-white/70 px-4 py-3.5 text-base text-ink outline-none backdrop-blur-sm transition-[border-color,background-color,box-shadow] duration-300 placeholder:text-muted/70 hover:border-periwinkle hover:bg-white/85 focus:border-sky focus:bg-white focus:ring-2 focus:ring-sky/25";
 
 function Field({
   label,
@@ -172,9 +172,9 @@ function Field({
 }) {
   return (
     <label htmlFor={htmlFor} className="block">
-      <span className="mb-2 block text-[0.84rem] font-semibold uppercase tracking-[0.16em] text-frost/85">
+      <span className="mb-2 block text-[0.84rem] font-semibold uppercase tracking-[0.16em] text-body">
         {label}
-        {optional ? <span className="ml-1 normal-case text-white/40">(optional)</span> : null}
+        {optional ? <span className="ml-1 normal-case text-muted/70">(optional)</span> : null}
       </span>
       {children}
     </label>
