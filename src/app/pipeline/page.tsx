@@ -35,11 +35,18 @@ export default function PipelinePage() {
       <SiteNav />
 
       <main>
+        {/* The dark showpiece. Pipeline is the lead-programme page, so it carries the
+            one inverted hero on the site, and `interval` cuts the band into stages -
+            time as measured intervals rather than as a continuum. */}
         <PageHero
+          variant="interval"
+          tone="dark"
           eyebrow="Lead program"
           title={
+            /* Cyan rather than blue: #2261AD is a 6.6:1 colour chosen for white, and
+               on the deep ground it all but disappears. */
             <>
-              <span className="text-blue">CIN-111</span> | Best-in-class AGT
+              <span className="text-cyan">CIN-111</span> | Best-in-class AGT
               siRNA for hypertension
             </>
           }

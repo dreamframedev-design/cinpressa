@@ -38,7 +38,11 @@ export default function SciencePage() {
       <SiteNav />
 
       <main>
+        {/* `source`: the strata all issue from one point and fan out already settling.
+            The page's argument is that CIN-111 acts upstream, at the source, so the
+            composition states that before the copy does. */}
         <PageHero
+          variant="source"
           eyebrow="Unmet need"
           title="Blood pressure control still depends on daily dose adherence"
           subtitle="Hypertension requires lifelong treatment, yet long-term control remains difficult to achieve for a large proportion of patients despite numerous approved therapies."

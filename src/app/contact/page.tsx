@@ -18,12 +18,20 @@ export default function ContactPage() {
 
       <main>
         <section className="relative overflow-hidden bg-white">
-          {/* The form card sits in the right column, so no mark */}
-          <HeroField mark={false} />
+          {/* The form card occupies the right column, where the other variants put
+              their structure, so this page carries the quietest one: a single line in
+              mostly empty space, settling behind the copy. */}
+          <HeroField variant="open" />
           <div className="relative mx-auto grid w-full max-w-7xl gap-14 px-6 pb-24 pt-32 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20 lg:px-10 lg:pt-44">
             <div>
               <Reveal variant="draw">
-                <span aria-hidden className="block h-px w-12 bg-orange" />
+                {/* Indigo, not orange: ambient chrome rather than dose semantics or a
+                    quotation of the mark. See ART_STRATEGY.md section 4. */}
+                <span
+                  aria-hidden
+                  className="block h-px w-12"
+                  style={{ background: "var(--color-accent)" }}
+                />
               </Reveal>
               <Reveal variant="fade" delay={80}>
                 <p className="mt-6 text-[0.8rem] font-semibold uppercase tracking-[0.22em] text-blue">
