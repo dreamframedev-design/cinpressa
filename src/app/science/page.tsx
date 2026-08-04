@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { PageHero } from "@/components/page-hero";
+import { HeroDispersion } from "@/components/hero-fields";
 import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
 import { DuplexBinding } from "@/components/duplex-binding";
@@ -38,7 +39,11 @@ export default function SciencePage() {
       <SiteNav />
 
       <main>
+        {/* Dispersion: a stippled field concentrating and thinning as slow waves of
+            availability move through it. Points, because the page is about a molecule
+            distributing through tissue. */}
         <PageHero
+          field={<HeroDispersion className="absolute inset-0" />}
           eyebrow="Unmet need"
           title="Blood pressure control still depends on daily dose adherence"
           subtitle="Hypertension requires lifelong treatment, yet long-term control remains difficult to achieve for a large proportion of patients despite numerous approved therapies."
