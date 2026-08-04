@@ -80,13 +80,19 @@ type Band = {
  * the indigo is lowest and least saturated so it anchors without competing. Alphas run
  * 0.38–0.55 against the 0.07–0.14 this site's art had been sitting at.
  */
+/* Retimed after review: the field wanted more life. Flow periods came down to roughly
+   0.7× (crests now travel about 21 to 70 px/s at a wide viewport, from 15 to 49), and
+   the vertical bob is both larger and quicker. The bob matters more than the flow for
+   how alive this reads, because it is what opens and closes the overlaps, and the
+   overlaps are where the deep colour is made. Still nothing here is fast; the slowest
+   band takes just under a minute to travel one wavelength. */
 const BANDS: Band[] = [
-  { top: 150, rise: -26, weight: 116, amp: 34, lambda: 0.82, phase: 0.0, color: [175, 219, 188], alpha: 0.5, blur: 22, flow: 63, bob: 16, bobPeriod: 71, breathe: 0.22, breathePeriod: 54 },
-  { top: 196, rise: 34, weight: 148, amp: 41, lambda: 0.66, phase: 2.2, color: [4, 115, 187], alpha: 0.42, blur: 22, flow: -84, bob: 21, bobPeriod: 58, breathe: 0.26, breathePeriod: 67 },
-  { top: 232, rise: -18, weight: 84, amp: 29, lambda: 0.9, phase: 4.1, color: [21, 150, 212], alpha: 0.5, blur: 0, flow: 48, bob: 13, bobPeriod: 83, breathe: 0.2, breathePeriod: 45 },
-  { top: 286, rise: 22, weight: 104, amp: 33, lambda: 0.72, phase: 1.3, color: [30, 174, 229], alpha: 0.44, blur: 0, flow: -57, bob: 18, bobPeriod: 64, breathe: 0.24, breathePeriod: 76 },
-  { top: 176, rise: -12, weight: 52, amp: 24, lambda: 1.05, phase: 5.4, color: [149, 218, 248], alpha: 0.55, blur: 7, flow: 41, bob: 11, bobPeriod: 92, breathe: 0.3, breathePeriod: 38 },
-  { top: 338, rise: 16, weight: 122, amp: 27, lambda: 0.78, phase: 3.0, color: [103, 113, 181], alpha: 0.38, blur: 7, flow: -72, bob: 15, bobPeriod: 49, breathe: 0.18, breathePeriod: 61 },
+  { top: 150, rise: -26, weight: 116, amp: 34, lambda: 0.82, phase: 0.0, color: [175, 219, 188], alpha: 0.5, blur: 22, flow: 44, bob: 23, bobPeriod: 47, breathe: 0.26, breathePeriod: 37 },
+  { top: 196, rise: 34, weight: 148, amp: 41, lambda: 0.66, phase: 2.2, color: [4, 115, 187], alpha: 0.42, blur: 22, flow: -59, bob: 29, bobPeriod: 39, breathe: 0.3, breathePeriod: 45 },
+  { top: 232, rise: -18, weight: 84, amp: 29, lambda: 0.9, phase: 4.1, color: [21, 150, 212], alpha: 0.5, blur: 0, flow: 34, bob: 19, bobPeriod: 55, breathe: 0.24, breathePeriod: 31 },
+  { top: 286, rise: 22, weight: 104, amp: 33, lambda: 0.72, phase: 1.3, color: [30, 174, 229], alpha: 0.44, blur: 0, flow: -40, bob: 25, bobPeriod: 43, breathe: 0.28, breathePeriod: 51 },
+  { top: 176, rise: -12, weight: 52, amp: 24, lambda: 1.05, phase: 5.4, color: [149, 218, 248], alpha: 0.55, blur: 7, flow: 29, bob: 16, bobPeriod: 61, breathe: 0.34, breathePeriod: 26 },
+  { top: 338, rise: 16, weight: 122, amp: 27, lambda: 0.78, phase: 3.0, color: [103, 113, 181], alpha: 0.38, blur: 7, flow: -50, bob: 21, bobPeriod: 33, breathe: 0.22, breathePeriod: 41 },
 ];
 
 /** Centre line of a band at horizontal fraction f and time t (seconds). */

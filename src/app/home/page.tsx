@@ -129,7 +129,11 @@ export default function HomePage() {
             Bleed runs full-bleed rather than inside the container - it is a piece,
             not a figure, and gutters would make it read as an illustration sitting
             in a slot. */}
-        <Section size="sm">
+        {/* Padding is trimmed hard on both sides of the field. The lead keeps its top
+            rhythm but hands off almost immediately, and the section below opens tighter
+            than default, so the piece sits close to the copy it belongs to instead of
+            costing a screen of scrolling to get past. */}
+        <Section size="sm" className="pb-4! lg:pb-6!">
           <Reveal variant="fade">
             <p className="max-w-4xl text-xl leading-relaxed text-body md:text-2xl md:leading-relaxed">
               Daily oral therapy has been the backbone of hypertension care for
@@ -141,10 +145,10 @@ export default function HomePage() {
             </p>
           </Reveal>
         </Section>
-        <Bleed className="h-[260px] w-full sm:h-[340px] lg:h-[440px]" />
+        <Bleed className="h-[190px] w-full sm:h-[250px] lg:h-[330px]" />
 
         {/* The challenge */}
-        <Section tone="sky">
+        <Section tone="sky" className="pt-12! lg:pt-16!">
           <SectionHeader
             eyebrow="The challenge"
             title="Control that lasts remains elusive"
