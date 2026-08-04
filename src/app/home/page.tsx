@@ -7,6 +7,7 @@ import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
 import { StatBand } from "@/components/stat-band";
 import { DosingCadence } from "@/components/dosing-cadence";
+import { AdherenceProfile } from "@/components/adherence-profile";
 import { MarkArt } from "@/components/geometry";
 import { ConvergenceMark } from "@/components/convergence-mark";
 import { Reveal } from "@/components/reveal";
@@ -122,8 +123,11 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Lead: the map's Home body */}
-        <Section size="sm">
+        {/* Lead: the map's Home body, with the argument drawn underneath it.
+            AdherenceProfile is the paragraph and nothing else - daily therapy
+            climbing and falling between doses and hitting the floor when one is
+            missed, against a long-acting profile that rises once and holds. */}
+        <Section>
           <Reveal variant="fade">
             <p className="max-w-4xl text-xl leading-relaxed text-body md:text-2xl md:leading-relaxed">
               Daily oral therapy has been the backbone of hypertension care for
@@ -134,6 +138,9 @@ export default function HomePage() {
               adherence.
             </p>
           </Reveal>
+          <div className="mt-16 lg:mt-20">
+            <AdherenceProfile />
+          </div>
         </Section>
 
         {/* The challenge */}
