@@ -170,7 +170,15 @@ function draw(ctx: CanvasRenderingContext2D, w: number, h: number, t: number) {
   const feather = Math.min(w, h) * FEATHER;
 
   for (const c of CAPSULES) {
-    const p = ((t / c.life) + c.offset) % 1;
+    /**
+     * Normalised to [0, 1) with the extra `+ 1) % 1`, which is not defensive padding:
+     * JavaScript's % keeps the sign of the dividend, so a negative `t` yields a
+     * negative p, and `Math.pow(negative, 1.5)` is NaN. That NaN reaches
+     * createLinearGradient, which throws, and because the throw escapes the rAF
+     * callback the loop never reschedules itself and the whole field freezes after one
+     * frame. See the elapsed-time clamp in the effect for why t could be negative.
+     */
+    const p = ((((t / c.life) + c.offset) % 1) + 1) % 1;
 
     // Distance closes with an accelerating profile: unhurried out at the edge, drawn
     // in faster as it converges. The field reads as pulled toward the point rather
@@ -268,7 +276,12 @@ export function FocusField({ className = "" }: { className?: string }) {
     const loop = (now: number) => {
       if (inView && w > 0 && now - last > FRAME_MS) {
         last = now;
-        draw(ctx, w, h, (now - start) / 1000);
+        // Clamped at zero deliberately. requestAnimationFrame reports the timestamp of
+        // the START of the frame, which can predate a performance.now() captured while
+        // that same frame's script is still running, so the first callback can arrive
+        // with `now` slightly BEFORE `start`. A negative elapsed time is what took this
+        // field down once already.
+        draw(ctx, w, h, Math.max(0, now - start) / 1000);
       }
       rafId = requestAnimationFrame(loop);
     };

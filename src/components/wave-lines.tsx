@@ -207,7 +207,7 @@ export function WaveLines({ className = "" }: { className?: string }) {
     const loop = (now: number) => {
       if (inView && w > 0 && now - last > FRAME_MS) {
         last = now;
-        draw(ctx, w, h, (now - start) / 1000);
+        draw(ctx, w, h, Math.max(0, now - start) / 1000);
       }
       rafId = requestAnimationFrame(loop);
     };

@@ -190,7 +190,7 @@ export function DuplexBinding() {
 
     const loop = (now: number) => {
       if (inView) {
-        const t = (((now - start) / 1000) % CYCLE_S) / CYCLE_S;
+        const t = ((Math.max(0, now - start) / 1000) % CYCLE_S) / CYCLE_S;
         apply(t);
         let b = 0;
         for (let i = 0; i < BEATS.length; i++) if (t >= BEATS[i].at) b = i;

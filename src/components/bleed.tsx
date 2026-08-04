@@ -286,7 +286,7 @@ export function Bleed({ className = "" }: { className?: string }) {
         cur.fx += (wantX - cur.fx) * kp;
         cur.fy += (wantY - cur.fy) * kp;
         cur.strength += (wantStrength - cur.strength) * ks;
-        draw(ctx, w, h, (now - start) / 1000, cur);
+        draw(ctx, w, h, Math.max(0, now - start) / 1000, cur);
       }
       rafId = requestAnimationFrame(loop);
     };
