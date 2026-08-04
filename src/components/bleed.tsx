@@ -30,8 +30,9 @@ import { useEffect, useRef } from "react";
  *   4. SKEW      the secondary swell runs at its own rate against the primary, so the
  *                two never resolve into a clean repeating sine.
  *
- * Nothing pulses, nothing rotates, nothing tracks the cursor. Every period is between
- * 34 and 96 seconds — this should read as weather, not as an animation.
+ * Nothing pulses and nothing rotates. Every period sits between 26 and 61 seconds, so
+ * this reads as weather rather than as an animation. There is one input: the cursor
+ * gathers the bands gently toward it, described at CURSOR_PULL below.
  *
  * Depth is per-layer blur: heavy behind, none in the middle, slight in front. Without
  * it, six translucent shapes read as six stickers on one plane.
@@ -95,20 +96,42 @@ const BANDS: Band[] = [
   { top: 338, rise: 16, weight: 122, amp: 27, lambda: 0.78, phase: 3.0, color: [103, 113, 181], alpha: 0.38, blur: 7, flow: -50, bob: 21, bobPeriod: 33, breathe: 0.22, breathePeriod: 41 },
 ];
 
+/**
+ * Cursor influence.
+ *
+ * A gaussian centred on the pointer's horizontal position draws nearby band centres a
+ * fraction of the way toward its vertical position, so the stack gathers gently under
+ * the cursor and relaxes as it leaves. Bands further from the pointer are untouched.
+ *
+ * Deliberately understated: a sixth of the distance at the very peak, over a soft
+ * window, on top of motion that is already running. The colour should look like it
+ * noticed you, not like it is following the mouse. Because bands move by different
+ * amounts depending on where they already are, the overlaps deform as it passes, which
+ * means the deep colour shifts too rather than the whole stack sliding as one.
+ */
+type Cursor = { fx: number; fy: number; strength: number };
+
+const CURSOR_SIGMA = 0.17;
+const CURSOR_PULL = 0.17;
+
 /** Centre line of a band at horizontal fraction f and time t (seconds). */
-function centre(b: Band, f: number, t: number) {
+function centre(b: Band, f: number, t: number, cur: Cursor) {
   const bob = b.bob * Math.sin((TAU * t) / b.bobPeriod + b.phase);
   const amp = b.amp * (1 + b.breathe * Math.sin((TAU * t) / b.breathePeriod + b.phase * 0.7));
   const travel = (TAU * t) / b.flow;
-  return (
+  const y =
     b.top +
     b.rise * f +
     bob +
     amp * Math.sin(TAU * (f / b.lambda) - travel + b.phase) +
     // The secondary swell runs at its own rate against the primary, so the sum never
     // settles into a clean repeating wave.
-    amp * 0.34 * Math.sin(TAU * (f / (b.lambda * 0.41)) - travel * 0.63 + b.phase * 1.7)
-  );
+    amp * 0.34 * Math.sin(TAU * (f / (b.lambda * 0.41)) - travel * 0.63 + b.phase * 1.7);
+
+  if (cur.strength <= 0.003) return y;
+  const dx = f - cur.fx;
+  const g = Math.exp(-(dx * dx) / (2 * CURSOR_SIGMA * CURSOR_SIGMA));
+  return y + (cur.fy * VH - y) * CURSOR_PULL * g * cur.strength;
 }
 
 const STEPS = 56;
@@ -119,6 +142,7 @@ function traceBand(
   w: number,
   h: number,
   t: number,
+  cur: Cursor,
 ) {
   const sx = w / VW;
   const sy = h / VH;
@@ -130,20 +154,26 @@ function traceBand(
   for (let i = 0; i <= STEPS; i++) {
     const f = i / STEPS;
     const x = x0 + (x1 - x0) * f;
-    const y = centre(b, f, t) - b.weight / 2;
+    const y = centre(b, f, t, cur) - b.weight / 2;
     if (i === 0) ctx.moveTo(x * sx, y * sy);
     else ctx.lineTo(x * sx, y * sy);
   }
   for (let i = STEPS; i >= 0; i--) {
     const f = i / STEPS;
     const x = x0 + (x1 - x0) * f;
-    const y = centre(b, f, t) + b.weight / 2;
+    const y = centre(b, f, t, cur) + b.weight / 2;
     ctx.lineTo(x * sx, y * sy);
   }
   ctx.closePath();
 }
 
-function draw(ctx: CanvasRenderingContext2D, w: number, h: number, t: number) {
+function draw(
+  ctx: CanvasRenderingContext2D,
+  w: number,
+  h: number,
+  t: number,
+  cur: Cursor,
+) {
   // Multiply needs something to multiply into. The section is white, so the field is.
   ctx.globalCompositeOperation = "source-over";
   ctx.filter = "none";
@@ -166,7 +196,7 @@ function draw(ctx: CanvasRenderingContext2D, w: number, h: number, t: number) {
 
     ctx.filter = b.blur > 0 ? `blur(${(b.blur * blurScale).toFixed(1)}px)` : "none";
     ctx.fillStyle = grad;
-    traceBand(ctx, b, w, h, t);
+    traceBand(ctx, b, w, h, t, cur);
     ctx.fill();
   }
 
@@ -186,9 +216,18 @@ export function Bleed({ className = "" }: { className?: string }) {
     if (!ctx) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const coarse = window.matchMedia("(hover: none), (pointer: coarse)").matches;
 
     let w = 0;
     let h = 0;
+
+    /** Eased cursor state. `strength` rises while the pointer is over the field and
+     *  falls away when it leaves, so the influence arrives and releases rather than
+     *  switching on. */
+    const cur: Cursor = { fx: 0.5, fy: 0.5, strength: 0 };
+    let wantX = 0.5;
+    let wantY = 0.5;
+    let wantStrength = 0;
 
     const resize = () => {
       const rect = wrap.getBoundingClientRect();
@@ -203,7 +242,7 @@ export function Bleed({ className = "" }: { className?: string }) {
       canvas.height = h;
       // A fixed offset rather than 0, so the still frame is a composed moment
       // rather than every band sitting at its start phase.
-      draw(ctx, w, h, reduced ? 19 : 0);
+      draw(ctx, w, h, reduced ? 19 : 0, cur);
     };
     resize();
 
@@ -212,6 +251,25 @@ export function Bleed({ className = "" }: { className?: string }) {
 
     if (reduced) return () => ro.disconnect();
 
+    const onMove = (e: MouseEvent) => {
+      const rect = wrap.getBoundingClientRect();
+      if (rect.width === 0) return;
+      const mx = (e.clientX - rect.left) / rect.width;
+      const my = (e.clientY - rect.top) / rect.height;
+      // The band is short, so allow a little vertical latitude either side: the
+      // influence should begin just before the pointer reaches the colour.
+      if (mx < -0.1 || mx > 1.1 || my < -0.9 || my > 1.9) {
+        wantStrength = 0;
+        return;
+      }
+      wantX = mx;
+      wantY = Math.max(0, Math.min(1, my));
+      wantStrength = 1;
+    };
+    const onLeave = () => {
+      wantStrength = 0;
+    };
+
     let rafId = 0;
     let inView = true;
     let last = 0;
@@ -219,8 +277,16 @@ export function Bleed({ className = "" }: { className?: string }) {
 
     const loop = (now: number) => {
       if (inView && w > 0 && now - last > FRAME_MS) {
+        const dt = Math.min(0.1, (now - last) / 1000);
         last = now;
-        draw(ctx, w, h, (now - start) / 1000);
+        // Frame-rate independent damping. Position follows quickly enough to feel
+        // connected; strength eases in and out more slowly so nothing snaps.
+        const kp = 1 - Math.exp(-dt * 6);
+        const ks = 1 - Math.exp(-dt * 2.6);
+        cur.fx += (wantX - cur.fx) * kp;
+        cur.fy += (wantY - cur.fy) * kp;
+        cur.strength += (wantStrength - cur.strength) * ks;
+        draw(ctx, w, h, (now - start) / 1000, cur);
       }
       rafId = requestAnimationFrame(loop);
     };
@@ -231,10 +297,17 @@ export function Bleed({ className = "" }: { className?: string }) {
     });
     io.observe(wrap);
 
+    if (!coarse) {
+      window.addEventListener("mousemove", onMove, { passive: true });
+      window.addEventListener("mouseleave", onLeave);
+    }
+
     return () => {
       cancelAnimationFrame(rafId);
       ro.disconnect();
       io.disconnect();
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseleave", onLeave);
     };
   }, []);
 
