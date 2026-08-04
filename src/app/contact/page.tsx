@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ContactForm } from "@/components/contact-form";
 import { HeroField } from "@/components/hero-field";
+import { SignalField } from "@/components/signal-field";
 import { Reveal } from "@/components/reveal";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
@@ -20,6 +21,11 @@ export default function ContactPage() {
         <section className="relative overflow-hidden bg-white">
           {/* The form card sits in the right column, so no mark */}
           <HeroField mark={false} />
+          {/* SignalField: bands emitted from behind the form card and travelling
+              outward. The origin sits under the card, which is opaque, so nothing is
+              lost behind it and the artwork reads as coming from where the visitor is
+              actually typing. */}
+          <SignalField className="absolute inset-0" />
           <div className="relative mx-auto grid w-full max-w-7xl gap-14 px-6 pb-24 pt-32 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20 lg:px-10 lg:pt-44">
             <div>
               <Reveal variant="draw">
