@@ -11,6 +11,12 @@ type SectionHeaderProps = {
   className?: string;
   /** Render the title as an <h2> (default) or a plain heading level. */
   as?: "h2" | "h3";
+  /**
+   * Invert for a section on the deep ground. Blue #2261AD and sky #3AAED8 are contrast
+   * values chosen against white; on #08192F the eyebrow and heading need to come up,
+   * not down.
+   */
+  onDark?: boolean;
 };
 
 export function SectionHeader({
@@ -21,10 +27,19 @@ export function SectionHeader({
   tone = "blue",
   className = "",
   as = "h2",
+  onDark = false,
 }: SectionHeaderProps) {
   const Heading = as;
-  const labelColor = tone === "sky" ? "text-sky" : "text-blue";
-  const lineColor = tone === "sky" ? "bg-sky/40" : "bg-blue/40";
+  const labelColor = onDark
+    ? "text-frost"
+    : tone === "sky"
+      ? "text-sky"
+      : "text-blue";
+  const lineColor = onDark
+    ? "bg-frost/45"
+    : tone === "sky"
+      ? "bg-sky/40"
+      : "bg-blue/40";
 
   return (
     <div
@@ -44,14 +59,24 @@ export function SectionHeader({
       ) : null}
 
       <Reveal variant="rise-blur" delay={eyebrow ? 90 : 0}>
-        <Heading className="mt-6 text-[clamp(1.9rem,3.6vw,2.85rem)] font-light leading-[1.12] tracking-tight text-ink">
+        <Heading
+          className={`mt-6 text-[clamp(1.9rem,3.6vw,2.85rem)] font-light leading-[1.12] tracking-tight ${
+            onDark ? "text-white" : "text-ink"
+          }`}
+        >
           {title}
         </Heading>
       </Reveal>
 
       {subtitle ? (
         <Reveal variant="fade" delay={180}>
-          <p className="mt-6 text-lg leading-relaxed text-body">{subtitle}</p>
+          <p
+            className={`mt-6 text-lg leading-relaxed ${
+              onDark ? "text-white/75" : "text-body"
+            }`}
+          >
+            {subtitle}
+          </p>
         </Reveal>
       ) : null}
     </div>

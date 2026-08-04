@@ -6,7 +6,7 @@ import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
 import { DuplexBinding } from "@/components/duplex-binding";
 import { RaasPathway } from "@/components/raas-pathway";
-import { MarkArt } from "@/components/geometry";
+import { SuppressionField } from "@/components/suppression-field";
 import { Reveal } from "@/components/reveal";
 
 export const metadata: Metadata = {
@@ -94,24 +94,27 @@ export default function SciencePage() {
           </div>
         </Section>
 
-        {/* CinPressa solution */}
-        <Section
-          tone="green"
-          art={
-            <MarkArt
-              variant="brand"
-              className="absolute -right-28 -bottom-52 h-[640px] w-auto rotate-[12deg] opacity-[0.14]"
-            />
-          }
-        >
+        {/* CinPressa solution — Piece 5, Source. The second dark showpiece.
+            This section carried another crop of the logo at 0.14 opacity; that is
+            gone, and the section inverts onto the deep ground so the field has
+            somewhere to go quiet.
+
+            Placement note: ART_STRATEGY.md put this on the Mechanism section below.
+            It moved here because Mechanism holds RaasPathway, a light-ground diagram
+            that would have needed a full restyle to survive inversion — real risk to
+            a piece that already works, for no gain. This section had no diagram, was
+            already making the suppression claim, and was hosting one of the nine
+            repeated marks. */}
+        <Section tone="deep" art={<SuppressionField className="absolute inset-0" />}>
           <SectionHeader
+            onDark
             eyebrow="CinPressa solution"
             title="A continuous backbone of blood pressure control"
             subtitle="CinPressa is developing a long-acting AGT siRNA designed to provide durable blood pressure reduction with one to two administrations per year."
           />
           <div className="mt-10 grid max-w-4xl gap-6 md:grid-cols-2">
             <Reveal variant="fade">
-              <p className="text-base leading-relaxed text-body">
+              <p className="text-base leading-relaxed text-white/75">
                 By shifting hypertension management from daily patient behavior
                 to infrequent, provider-administered treatment, CinPressa is
                 pursuing a model designed for durability, consistency, and
@@ -119,7 +122,7 @@ export default function SciencePage() {
               </p>
             </Reveal>
             <Reveal variant="fade" delay={100}>
-              <p className="text-base leading-relaxed text-body">
+              <p className="text-base leading-relaxed text-white/75">
                 Meaningful baseline reduction may be sufficient for many patients
                 as monotherapy. For those who require additional control,
                 complementary agents can be layered onto an already-controlled
