@@ -114,15 +114,44 @@ function surface(li: number, fx: number, t: number) {
   return base + d;
 }
 
+/** Alpha stops sampled along each line to carry the density tone. */
+const TONE_STOPS = 16;
+
+/**
+ * ONE STROKE PER LINE. This matters and it is not a micro-optimisation.
+ *
+ * The first build drew every line as STEPS separate segments, each with its own
+ * beginPath, stroke and round cap. Two independent strokes that share an endpoint
+ * composite twice over the pixels where their caps overlap, so every segment boundary
+ * became a slightly darker dot. And because the boundaries are at i / STEPS, they land
+ * at the SAME x on all 52 lines, so those dots stacked into faint vertical bands
+ * running through the whole field: a regular grid artefact with no business being in a
+ * piece about flowing surfaces.
+ *
+ * The fix is to stroke each line as a single continuous path. The tone that the
+ * per-segment alpha was carrying moves into a horizontal gradient on the stroke, which
+ * varies alpha along the line without ever splitting it. Line width becomes one value
+ * per line, since a single stroke cannot taper; the tone was doing nearly all the work
+ * anyway.
+ *
+ * It is also about seventy times fewer draw calls per frame, which is a fair by-product.
+ */
 function draw(ctx: CanvasRenderingContext2D, w: number, h: number, t: number) {
   ctx.clearRect(0, 0, w, h);
-  ctx.lineCap = "round";
+  ctx.lineCap = "butt";
   ctx.lineJoin = "round";
 
   const sx = w / VW;
 
   // Nominal spacing between lines, used to judge whether a region has crowded.
   const nominal = BASE_SPAN / (LINES - 1);
+
+  /** Local crowding at horizontal fraction f: 1 where lines converge, 0 where they open. */
+  const crowdAt = (li: number, f: number) => {
+    const gap =
+      li < LINES - 1 ? surface(li + 1, f, t) - surface(li, f, t) : nominal;
+    return Math.max(0, Math.min(1.4, nominal / Math.max(gap, 1e-4))) / 1.4;
+  };
 
   for (let li = 0; li < LINES; li++) {
     const fy = li / (LINES - 1);
@@ -134,32 +163,39 @@ function draw(ctx: CanvasRenderingContext2D, w: number, h: number, t: number) {
         ? mix(COBALT, CYAN, fy / 0.55)
         : mix(CYAN, PALE, (fy - 0.55) / 0.45);
 
-    // The field is quietest at the left, where the copy sits, and fullest on the
-    // right. Same quiet-under-copy rule the rest of the site uses.
-    for (let i = 0; i < STEPS; i++) {
-      const f0 = i / STEPS;
-      const f1 = (i + 1) / STEPS;
-
-      const y0 = surface(li, f0, t) * h;
-      const y1 = surface(li, f1, t) * h;
-
-      // Local spacing to the next line: the whole tonal structure comes from this.
-      const gap =
-        li < LINES - 1 ? surface(li + 1, f0, t) - surface(li, f0, t) : nominal;
-      // 1 when crowded, 0 when spread.
-      const crowd = Math.max(0, Math.min(1.4, nominal / Math.max(gap, 1e-4))) / 1.4;
-
-      const fade = 0.1 + 0.9 * Math.min(1, Math.max(0, (f0 - 0.02) / 0.42));
+    // Tone along the line, as a gradient rather than as segments. The field is also
+    // quietest at the left, where the copy sits, and fullest on the right: the same
+    // quiet-under-copy rule the rest of the site uses.
+    const grad = ctx.createLinearGradient(0, 0, w, 0);
+    let widthSum = 0;
+    let peak = 0;
+    for (let k = 0; k <= TONE_STOPS; k++) {
+      const f = k / TONE_STOPS;
+      const crowd = crowdAt(li, f);
+      const fade = 0.1 + 0.9 * Math.min(1, Math.max(0, (f - 0.02) / 0.42));
       const alpha = (0.1 + crowd * 0.62) * fade;
-      if (alpha < 0.012) continue;
-
-      ctx.strokeStyle = `rgba(${col[0]},${col[1]},${col[2]},${alpha.toFixed(3)})`;
-      ctx.lineWidth = (0.7 + crowd * 0.75) * Math.min(sx, 1.5);
-      ctx.beginPath();
-      ctx.moveTo(f0 * w, y0);
-      ctx.lineTo(f1 * w, y1);
-      ctx.stroke();
+      if (alpha > peak) peak = alpha;
+      widthSum += 0.7 + crowd * 0.75;
+      grad.addColorStop(
+        f,
+        `rgba(${col[0]},${col[1]},${col[2]},${alpha.toFixed(3)})`,
+      );
     }
+    // Nothing to see on this line at all.
+    if (peak < 0.012) continue;
+
+    ctx.strokeStyle = grad;
+    ctx.lineWidth =
+      (widthSum / (TONE_STOPS + 1)) * Math.min(sx, 1.5);
+
+    ctx.beginPath();
+    for (let i = 0; i <= STEPS; i++) {
+      const f = i / STEPS;
+      const y = surface(li, f, t) * h;
+      if (i === 0) ctx.moveTo(f * w, y);
+      else ctx.lineTo(f * w, y);
+    }
+    ctx.stroke();
   }
 }
 
