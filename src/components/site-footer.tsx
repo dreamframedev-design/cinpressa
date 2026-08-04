@@ -7,8 +7,8 @@ import { SiteLogo } from "@/components/site-logo";
 const columns = [
   {
     heading: "Company",
+    /** /about is hidden from navigation. See the note in site-nav.tsx. */
     links: [
-      { href: "/about", label: "About" },
       { href: "/science", label: "Science" },
       { href: "/pipeline", label: "Pipeline" },
       { href: "/news", label: "News" },

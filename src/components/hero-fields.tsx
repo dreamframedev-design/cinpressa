@@ -3,7 +3,11 @@
 import { HeroCanvas, TAU, smooth } from "@/components/hero-canvas";
 
 /**
- * Three interior hero fields: /science, /pipeline, /news. /about keeps its own.
+ * Interior hero fields for /science and /pipeline.
+ *
+ * /about and /news both use the default treatment in hero-field.tsx. A third field
+ * lived here for /news and was removed when that page was pointed at the default; it
+ * is recoverable from history if it is ever wanted.
  *
  * WHAT THE PREVIOUS ATTEMPT GOT WRONG, since it is the reason these are built the way
  * they are. That set was points, arcs and a weave, and I argued they were separated by
@@ -24,7 +28,6 @@ import { HeroCanvas, TAU, smooth } from "@/components/hero-canvas";
  *
  *   Bloom   /science   masses expand out of dense cores and dissolve as they spread
  *   Churn   /pipeline  the field is stirred; bands curl and fold through a rotating warp
- *   Part    /news      the field opens and closes, mass drawing apart and rejoining
  *
  * Shared: canvas, multiply compositing so overlaps produce the deep tones rather than
  * anyone picking them, spec-sheet colour only, selective blur for depth, and everything
@@ -225,106 +228,4 @@ function renderChurn(
 
 export function HeroChurn({ className = "" }: { className?: string }) {
   return <HeroCanvas render={renderChurn} className={className} stillAt={7} />;
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   NEWS — Part
-
-   The field opens and closes. Two bodies of colour draw apart to leave a widening
-   channel of clean paper between them, then close again, on a long uneven cycle so it
-   never reads as a pulse. The gap is the subject, which makes this the only field on
-   the site whose main event is the absence of colour.
-   ═══════════════════════════════════════════════════════════════════════════ */
-
-type Half = {
-  /** -1 draws upward, +1 downward. */
-  dir: -1 | 1;
-  /** Resting edge of the body, fraction of height from the centre line. */
-  edge: number;
-  weight: number;
-  color: [number, number, number];
-  alpha: number;
-  blur: number;
-  /** Wave along the edge, so the channel is never a straight gap. */
-  amp: number;
-  lambda: number;
-  drift: number;
-  phase: number;
-};
-
-const HALVES: Half[] = [
-  { dir: -1, edge: 0.04, weight: 0.4, color: [4, 115, 187], alpha: 0.42, blur: 0, amp: 0.05, lambda: 0.8, drift: 41, phase: 0.0 },
-  { dir: -1, edge: 0.14, weight: 0.34, color: [175, 219, 188], alpha: 0.38, blur: 18, amp: 0.06, lambda: 0.62, drift: -57, phase: 2.1 },
-  { dir: -1, edge: 0.01, weight: 0.16, color: [149, 218, 248], alpha: 0.48, blur: 5, amp: 0.04, lambda: 1.05, drift: 34, phase: 4.3 },
-  { dir: 1, edge: 0.05, weight: 0.42, color: [21, 150, 212], alpha: 0.44, blur: 0, amp: 0.055, lambda: 0.73, drift: -46, phase: 1.2 },
-  { dir: 1, edge: 0.16, weight: 0.36, color: [103, 113, 181], alpha: 0.36, blur: 20, amp: 0.05, lambda: 0.9, drift: 63, phase: 3.4 },
-  { dir: 1, edge: 0.02, weight: 0.18, color: [30, 174, 229], alpha: 0.46, blur: 6, amp: 0.045, lambda: 1.15, drift: -38, phase: 5.5 },
-];
-
-/** Seconds for one full open-and-close. Long and uneven against the edge waves. */
-const PART_PERIOD = 34;
-/** How far the two bodies separate at full opening, as a fraction of height. */
-const PART_TRAVEL = 0.3;
-
-const PART_STEPS = 56;
-
-function renderPart(
-  ctx: CanvasRenderingContext2D,
-  w: number,
-  h: number,
-  t: number,
-) {
-  ctx.globalCompositeOperation = "source-over";
-  ctx.filter = "none";
-  ctx.fillStyle = "#ffffff";
-  ctx.fillRect(0, 0, w, h);
-  ctx.globalCompositeOperation = "multiply";
-
-  const blurScale = Math.min(w / 1400, 1.3);
-  // Eased at both extremes, so it lingers open and lingers closed rather than
-  // sweeping through a sine.
-  const raw = (Math.sin(TAU * (t / PART_PERIOD)) + 1) * 0.5;
-  const open = smooth(smooth(raw)) * PART_TRAVEL;
-
-  for (const s of HALVES) {
-    const [cr, cg, cb] = s.color;
-    const grad = ctx.createLinearGradient(0, 0, w, 0);
-    for (let k = 0; k <= 8; k++) {
-      const fx = k / 8;
-      const a = s.alpha * copyFade(fx) * (0.6 + 0.4 * Math.sin(Math.PI * fx));
-      grad.addColorStop(fx, `rgba(${cr},${cg},${cb},${a.toFixed(3)})`);
-    }
-
-    ctx.filter = s.blur > 0 ? `blur(${(s.blur * blurScale).toFixed(1)}px)` : "none";
-    ctx.fillStyle = grad;
-
-    ctx.beginPath();
-    // Inner edge: the one that forms the channel.
-    for (let i = 0; i <= PART_STEPS; i++) {
-      const fx = -0.06 + (1.12 * i) / PART_STEPS;
-      const wave =
-        s.amp * Math.sin(TAU * (fx / s.lambda - t / s.drift) + s.phase) +
-        s.amp * 0.4 * Math.sin(TAU * (fx / (s.lambda * 0.45) + t / (s.drift * 1.7)));
-      const y = 0.5 + s.dir * (s.edge + open) + wave;
-      if (i === 0) ctx.moveTo(fx * w, y * h);
-      else ctx.lineTo(fx * w, y * h);
-    }
-    // Outer edge, pushed off-frame so the body never shows a far side.
-    for (let i = PART_STEPS; i >= 0; i--) {
-      const fx = -0.06 + (1.12 * i) / PART_STEPS;
-      const wave =
-        s.amp * 0.5 * Math.sin(TAU * (fx / (s.lambda * 1.3) + t / s.drift) + s.phase);
-      const y = 0.5 + s.dir * (s.edge + open + s.weight) + wave;
-      ctx.lineTo(fx * w, y * h);
-    }
-    ctx.closePath();
-    ctx.fill();
-  }
-
-  ctx.filter = "none";
-  ctx.globalCompositeOperation = "source-over";
-}
-
-export function HeroPart({ className = "" }: { className?: string }) {
-  return <HeroCanvas render={renderPart} className={className} stillAt={9} />;
 }

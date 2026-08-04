@@ -6,9 +6,13 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowIcon } from "@/components/arrow-icon";
 import { SiteLogo } from "@/components/site-logo";
 
+/**
+ * /about is deliberately absent. The route still exists and still renders, so any
+ * link already out in the world keeps working; it is just no longer offered in the
+ * navigation. Restoring it is one line here and one in the footer.
+ */
 const links = [
   { href: "/home", label: "Home" },
-  { href: "/about", label: "About" },
   { href: "/science", label: "Science" },
   { href: "/pipeline", label: "Pipeline" },
   { href: "/news", label: "News" },

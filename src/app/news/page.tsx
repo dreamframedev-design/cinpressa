@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { PageHero } from "@/components/page-hero";
-import { HeroPart } from "@/components/hero-fields";
 import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
 import { Timeline } from "@/components/timeline";
@@ -65,9 +64,8 @@ export default function NewsPage() {
       <SiteNav />
 
       <main>
-        {/* Part: the field opens and closes, two bodies of colour drawing apart to leave a channel of clean paper and closing again. */}
+        {/* Uses the default header treatment, the same one /about carries. */}
         <PageHero
-          field={<HeroPart className="absolute inset-0" />}
           eyebrow="Updates"
           title="News from CinPressa"
           subtitle="Follow CinPressa's progress as CIN-111 advances through development."
