@@ -1122,6 +1122,41 @@ p {
   box-shadow: 0 26px 50px -32px rgba(13, 35, 66, 0.4);
 }
 
+/* ---------- Horizon (footer) ----------
+   One pass of light travelling the held line, then a long rest in the dark. The hold
+   at the end is deliberate: continuous motion would read as a scanner, and what this
+   should feel like is weather - light arriving, crossing, and leaving.
+
+   transform-box: view-box puts translateX into SVG user units, so the distance below
+   is in viewBox coordinates (1600 wide) rather than CSS pixels. */
+
+@keyframes horizon-sweep {
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  6% {
+    opacity: 1;
+  }
+  62% {
+    opacity: 1;
+  }
+  72% {
+    transform: translateX(1980px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(1980px);
+    opacity: 0;
+  }
+}
+
+.horizon-sweep {
+  transform-box: view-box;
+  will-change: transform, opacity;
+  animation: horizon-sweep 34s linear infinite;
+}
+
 /* ---------- Reduced motion ---------- */
 
 @media (prefers-reduced-motion: reduce) {
@@ -1203,6 +1238,12 @@ p {
   }
 
   .mark-light-band {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+
+  /* The horizon stays; only the light stops crossing it. */
+  .horizon-sweep {
     animation: none !important;
     opacity: 0 !important;
   }
