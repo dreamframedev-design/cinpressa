@@ -32,7 +32,9 @@ const highlights = [
 export default function PipelinePage() {
   return (
     <div id="top">
-      <SiteNav />
+      {/* This page opens on the deep ground, so the bar carries the dark treatment
+          until the visitor scrolls past the hero. */}
+      <SiteNav tone="dark" />
 
       <main>
         {/* The dark showpiece. Pipeline is the lead-programme page, so it carries the

@@ -390,6 +390,31 @@ p {
   color: var(--color-blue);
 }
 
+/* ---------- Nav over a dark hero ----------
+   Section-adaptive theming, the same idea CinRx's SiteNav uses. These only apply
+   while the bar is TRANSPARENT over an inverted hero; scrolling (or opening the
+   mobile menu) makes the bar solid white and the default ink treatment takes over
+   again, so the dark state is scoped to exactly the region that needs it.
+
+   Declared after .nav-link so the equal-specificity overrides land. */
+
+.nav-link-dark {
+  color: #ffffff;
+}
+
+.nav-link-dark:hover {
+  color: #95daf8;
+}
+
+.nav-link-dark::after,
+.nav-link-dark[aria-current]::after {
+  background: #95daf8;
+}
+
+.nav-link-dark[aria-current] {
+  color: #95daf8;
+}
+
 /* ---------- Calls to action ----------
    Sized as component classes rather than utility strings so every CTA on the
    site moves together. Previously these were 14px labels in tight pills and
@@ -453,6 +478,20 @@ p {
 .btn-primary.btn-sm {
   padding: 0.78rem 1.5rem;
   font-size: 0.92rem;
+}
+
+/* The nav CTA while the bar sits over a dark hero. Core blue #2261AD is a value
+   chosen against white and reads muddy on the deep ground, so the button inverts
+   instead. Declared after .btn-primary to win the background. */
+.btn-primary.btn-on-dark {
+  background: #ffffff;
+  color: var(--color-deep);
+  box-shadow: 0 16px 32px -18px rgba(0, 0, 0, 0.6);
+}
+
+.btn-primary.btn-on-dark:hover {
+  background: #95daf8;
+  color: var(--color-deep);
 }
 
 @media (prefers-reduced-motion: reduce) {
