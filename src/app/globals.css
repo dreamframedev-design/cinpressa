@@ -29,17 +29,83 @@
   --color-frost: #95daf8;
   --color-cloud: #aadbf6;
 
-  /* Derived neutrals */
-  --color-ink: #14304f;
+  /* Derived neutrals.
+
+     Revised 2026-08-03 (ART_STRATEGY.md §2, "Tier A"). These are the only colour
+     tokens we own outright: PRODUCT.md calls them "derived support only", so unlike
+     the spec-sheet colours above they can be tuned. The brief was that the site reads
+     washed out, and these four were the cause more than the palette was.
+
+       ink   #14304F -> #0E2440  headline ink read hazy against white
+       line  #DCE7F1 -> #CBDCEB  "the hairline is the brand", but at #DCE7F1 on white
+                                 the hairline was effectively invisible. Highest-
+                                 leverage value in the file.
+       mist  #F4F8FC -> #EDF4FA  was indistinguishable from #ffffff
+       deep  #0D2342 -> #08192F  the dark ground. The showpiece sections need contrast
+                                 headroom the old value did not give them.
+
+     body/muted are unchanged: their contrast was already good. */
+  --color-ink: #0e2440;
   --color-body: #46586b;
   --color-muted: #5b6e83;
-  --color-mist: #f4f8fc;
-  --color-line: #dce7f1;
-  --color-deep: #0d2342;
+  --color-mist: #edf4fa;
+  --color-line: #cbdceb;
+  --color-deep: #08192f;
 
   --font-sans: var(--font-montserrat), "Montserrat", "Gotham", system-ui, sans-serif;
 
   --ease-brand: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---------- Art system tokens ----------
+   Declared in :root, NOT in @theme, deliberately. Tailwind v4 tree-shakes any theme
+   token no utility class references, and these are consumed through var() in inline
+   styles and canvas code rather than through utilities, so @theme would drop them.
+   (Same trap the font-family comment below documents the hard way.)
+
+   ACCENT: indigo governs site-wide art. Orange #F9A81A is reserved for two cases only
+   - dose semantics, and direct quotation of the mark's petal set (it is physically
+   MARK_PETALS[1], so suppressing it while drawing the mark would misrepresent the
+   artwork). Ambient art, wave gradients and section seams are indigo. See
+   ART_STRATEGY.md §4. Swapping these two lines reverses that ruling site-wide. */
+:root {
+  --color-accent: #6771b5;
+  /* On the deep ground indigo has too little separation to punctuate, so dark
+     surfaces take frost instead. Still in-family, bright enough to read as a mark. */
+  --color-accent-dark: #95daf8;
+}
+
+/* ---------- Section seam ----------
+   PRODUCT.md principle 1 is "the hairline is the brand", but the site had hard colour
+   seams between sections and no rules at all. This is that hairline, at every section
+   boundary. It fades at both extremes rather than running edge to edge: a rule that
+   simply stops reads as a box edge, one that resolves reads as drafted.
+
+   Hexes are literal, not var(--color-line): this must not depend on whether a
+   `border-line` utility happens to survive tree-shaking somewhere else in the app. */
+.section-seam {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(203, 220, 235, 0) 0%,
+    #cbdceb 14%,
+    #cbdceb 86%,
+    rgba(203, 220, 235, 0) 100%
+  );
+}
+
+/* On the deep ground the same seam inverts to a faint frost line. */
+.section-seam-dark {
+  background: linear-gradient(
+    90deg,
+    rgba(149, 218, 248, 0) 0%,
+    rgba(149, 218, 248, 0.22) 14%,
+    rgba(149, 218, 248, 0.22) 86%,
+    rgba(149, 218, 248, 0) 100%
+  );
 }
 
 html {
