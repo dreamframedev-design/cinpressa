@@ -64,11 +64,7 @@ export default function NewsPage() {
       <SiteNav />
 
       <main>
-        {/* `cadence`: the line is already held, and carries discrete event marks along
-            it. The programme is the stable thing; announcements are what happens
-            against it. */}
         <PageHero
-          variant="cadence"
           eyebrow="Updates"
           title="News from CinPressa"
           subtitle="Follow CinPressa's progress as CIN-111 advances through development."

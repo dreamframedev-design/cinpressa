@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowIcon } from "@/components/arrow-icon";
-import { Horizon } from "@/components/horizon";
+import { MarkArt } from "@/components/geometry";
 import { Reveal } from "@/components/reveal";
 import { SiteLogo } from "@/components/site-logo";
 
@@ -34,30 +34,64 @@ export function SiteFooter() {
         className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,#AFDBBC_0%,#1EAEE5_28%,#2261AD_58%,#6771B5_82%,#F9A81A_100%)] opacity-70"
       />
 
-      {/* Piece 3, The Horizon. What used to be here: an orbiting hairline ring, two
-          large radial glows, and a crop of the mark at 0.07 opacity - the site's only
-          dark surface spent on things not actually visible, and one more repetition of
-          the logo. All of it is gone.
+      {/* Colour glows, the dark-surface counterpart to the hero field */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -left-40 -top-32 h-[560px] w-[560px] rounded-full"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(34,97,173,0.5) 0%, rgba(34,97,173,0) 68%)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -bottom-56 left-[42%] h-[460px] w-[460px] rounded-full"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(103,113,181,0.3) 0%, rgba(103,113,181,0) 72%)",
+        }}
+      />
 
-          What replaces it is one line, held, and a great deal of empty ground. The
-          glows went with the rest because a soft radial bloom is the same
-          gradient-as-bandage move this pass is removing everywhere else; the field
-          should be flat and the line should be the only event in it. */}
-      <Horizon className="absolute inset-x-0 bottom-[6.5rem] hidden h-16 lg:block" />
+      {/* Hairline ring motif carried into the footer */}
+      <div
+        aria-hidden
+        className="anim-orbit pointer-events-none absolute -right-40 -top-40 h-[620px] w-[620px] opacity-60"
+      >
+        <svg viewBox="0 0 620 620" className="h-full w-full">
+          <circle
+            cx="310"
+            cy="310"
+            r="304"
+            fill="none"
+            stroke="rgba(58,174,216,0.28)"
+            strokeWidth="1.3"
+            strokeDasharray="2.5 9"
+            strokeLinecap="round"
+          />
+          <circle
+            cx="310"
+            cy="310"
+            r="228"
+            fill="none"
+            stroke="rgba(255,255,255,0.09)"
+            strokeWidth="1"
+          />
+        </svg>
+      </div>
+
+      {/* The mark itself, cropped off the right edge */}
+      <MarkArt
+        variant="brand"
+        tight
+        className="pointer-events-none absolute -bottom-[30%] -right-[9%] hidden h-[118%] w-auto opacity-[0.07] lg:block"
+      />
 
       <div className="relative mx-auto max-w-7xl px-6 pb-12 pt-20 lg:px-10 lg:pt-24">
         {/* Partnering band: the site map's closing call to action */}
         <div className="flex flex-col gap-10 border-b border-white/10 pb-16 md:flex-row md:items-end md:justify-between">
           <div className="max-w-xl">
             <Reveal variant="draw">
-              {/* Frost, not orange: ambient chrome on the deep ground. Orange is
-                  reserved for dose semantics and quotations of the mark's petals.
-                  See ART_STRATEGY.md section 4. */}
-              <span
-                aria-hidden
-                className="block h-px w-12"
-                style={{ background: "var(--color-accent-dark)" }}
-              />
+              <span aria-hidden className="block h-px w-12 bg-orange" />
             </Reveal>
             <Reveal variant="rise-blur" delay={90}>
               <h2 className="mt-7 text-3xl font-light leading-[1.12] tracking-tight text-white md:text-[2.75rem]">

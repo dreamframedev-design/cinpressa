@@ -31,11 +31,7 @@ export default function AboutPage() {
       <SiteNav />
 
       <main>
-        {/* `lineage`: two families of strata enter independently and interleave into
-            one stave. The page's argument is that this team and the CinRx engine are
-            carried forward together. */}
         <PageHero
-          variant="lineage"
           eyebrow="CinPressa leadership"
           title="The team behind CIN-111"
           subtitle="CinPressa is powered by CinRx Pharma's proven development engine and led by the founding team behind CinCor Pharma's baxdrostat program and its $1.9 billion exit to AstraZeneca."

@@ -6,7 +6,7 @@ import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
 import { DuplexBinding } from "@/components/duplex-binding";
 import { RaasPathway } from "@/components/raas-pathway";
-import { SuppressionField } from "@/components/suppression-field";
+import { MarkArt } from "@/components/geometry";
 import { Reveal } from "@/components/reveal";
 
 export const metadata: Metadata = {
@@ -38,11 +38,7 @@ export default function SciencePage() {
       <SiteNav />
 
       <main>
-        {/* `source`: the strata all issue from one point and fan out already settling.
-            The page's argument is that CIN-111 acts upstream, at the source, so the
-            composition states that before the copy does. */}
         <PageHero
-          variant="source"
           eyebrow="Unmet need"
           title="Blood pressure control still depends on daily dose adherence"
           subtitle="Hypertension requires lifelong treatment, yet long-term control remains difficult to achieve for a large proportion of patients despite numerous approved therapies."
@@ -94,27 +90,24 @@ export default function SciencePage() {
           </div>
         </Section>
 
-        {/* CinPressa solution — Piece 5, Source. The second dark showpiece.
-            This section carried another crop of the logo at 0.14 opacity; that is
-            gone, and the section inverts onto the deep ground so the field has
-            somewhere to go quiet.
-
-            Placement note: ART_STRATEGY.md put this on the Mechanism section below.
-            It moved here because Mechanism holds RaasPathway, a light-ground diagram
-            that would have needed a full restyle to survive inversion — real risk to
-            a piece that already works, for no gain. This section had no diagram, was
-            already making the suppression claim, and was hosting one of the nine
-            repeated marks. */}
-        <Section tone="deep" art={<SuppressionField className="absolute inset-0" />}>
+        {/* CinPressa solution */}
+        <Section
+          tone="green"
+          art={
+            <MarkArt
+              variant="brand"
+              className="absolute -right-28 -bottom-52 h-[640px] w-auto rotate-[12deg] opacity-[0.14]"
+            />
+          }
+        >
           <SectionHeader
-            onDark
             eyebrow="CinPressa solution"
             title="A continuous backbone of blood pressure control"
             subtitle="CinPressa is developing a long-acting AGT siRNA designed to provide durable blood pressure reduction with one to two administrations per year."
           />
           <div className="mt-10 grid max-w-4xl gap-6 md:grid-cols-2">
             <Reveal variant="fade">
-              <p className="text-base leading-relaxed text-white/75">
+              <p className="text-base leading-relaxed text-body">
                 By shifting hypertension management from daily patient behavior
                 to infrequent, provider-administered treatment, CinPressa is
                 pursuing a model designed for durability, consistency, and
@@ -122,7 +115,7 @@ export default function SciencePage() {
               </p>
             </Reveal>
             <Reveal variant="fade" delay={100}>
-              <p className="text-base leading-relaxed text-white/75">
+              <p className="text-base leading-relaxed text-body">
                 Meaningful baseline reduction may be sufficient for many patients
                 as monotherapy. For those who require additional control,
                 complementary agents can be layered onto an already-controlled
