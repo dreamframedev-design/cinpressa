@@ -8,46 +8,13 @@ type PageHeroProps = {
   subtitle?: ReactNode;
   /** Optional element rendered to the right of the copy on large screens. */
   aside?: ReactNode;
-  /**
-   * The backdrop for this page's header.
-   *
-   * Omit it and the page keeps the original treatment: the pale wash with the mark
-   * cropped into the lower right. /about still uses that and is deliberately left
-   * alone. /science, /pipeline and /news each pass their own field instead, because
-   * one backdrop repeated across every interior page was the note that started all of
-   * this. See hero-fields.tsx for how the three are kept distinct.
-   */
-  field?: ReactNode;
 };
 
-export function PageHero({
-  eyebrow,
-  title,
-  subtitle,
-  aside,
-  field,
-}: PageHeroProps) {
+export function PageHero({ eyebrow, title, subtitle, aside }: PageHeroProps) {
   return (
     <section className="relative overflow-hidden bg-white">
-      {field ? (
-        <>
-          {field}
-          {/* Feather into the section below. The canvas fields run to their own edge,
-              and a hard horizontal cut at the section boundary would undo the work
-              every one of them does to avoid a visible frame. */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-32 lg:h-44"
-            style={{
-              background:
-                "linear-gradient(0deg, #ffffff 0%, rgba(255,255,255,0) 100%)",
-            }}
-          />
-        </>
-      ) : (
-        /* An aside occupies the right column, so the mark would collide with it */
-        <HeroField mark={!aside} />
-      )}
+      {/* An aside occupies the right column, so the mark would collide with it */}
+      <HeroField mark={!aside} />
 
       {/* Fixed min-height so every interior header is the same size and the
           mark reads at one consistent scale across pages. content-start keeps

@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { PageHero } from "@/components/page-hero";
-import { HeroInterleave } from "@/components/hero-fields";
 import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
 import { Timeline } from "@/components/timeline";
@@ -65,11 +64,7 @@ export default function NewsPage() {
       <SiteNav />
 
       <main>
-        {/* Interleave: two families of soft bands crossing at opposite diagonals,
-            multiplying where they meet so a lattice of deeper colour travels through
-            the field. Separate threads, one fabric. */}
         <PageHero
-          field={<HeroInterleave className="absolute inset-0" />}
           eyebrow="Updates"
           title="News from CinPressa"
           subtitle="Follow CinPressa's progress as CIN-111 advances through development."

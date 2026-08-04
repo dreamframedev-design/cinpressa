@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { PageHero } from "@/components/page-hero";
-import { HeroAdvance } from "@/components/hero-fields";
 import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
 import { EfficacyChart } from "@/components/efficacy-chart";
@@ -36,12 +35,7 @@ export default function PipelinePage() {
       <SiteNav />
 
       <main>
-        {/* Advance: long shallow fronts sweeping across and passing. Arcs, because
-            this page is one programme moving through stages and the field should have
-            a direction. The centre sits well off-frame so the curvature stays gentle
-            and it never reads as concentric rings. */}
         <PageHero
-          field={<HeroAdvance className="absolute inset-0" />}
           eyebrow="Lead program"
           title={
             <>
