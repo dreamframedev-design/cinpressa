@@ -7,7 +7,7 @@ import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
 import { StatBand } from "@/components/stat-band";
 import { DosingCadence } from "@/components/dosing-cadence";
-import { AdherenceProfile } from "@/components/adherence-profile";
+import { Bleed } from "@/components/bleed";
 import { MarkArt } from "@/components/geometry";
 import { ConvergenceMark } from "@/components/convergence-mark";
 import { Reveal } from "@/components/reveal";
@@ -123,11 +123,11 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Lead: the map's Home body, with the argument drawn underneath it.
-            AdherenceProfile is the paragraph and nothing else - daily therapy
-            climbing and falling between doses and hitting the floor when one is
-            missed, against a long-acting profile that rises once and holds. */}
-        <Section>
+        {/* Lead: the map's Home body, closing into the colour field.
+            Bleed runs full-bleed rather than inside the container - it is a piece,
+            not a figure, and gutters would make it read as an illustration sitting
+            in a slot. */}
+        <Section size="sm">
           <Reveal variant="fade">
             <p className="max-w-4xl text-xl leading-relaxed text-body md:text-2xl md:leading-relaxed">
               Daily oral therapy has been the backbone of hypertension care for
@@ -138,10 +138,8 @@ export default function HomePage() {
               adherence.
             </p>
           </Reveal>
-          <div className="mt-16 lg:mt-20">
-            <AdherenceProfile />
-          </div>
         </Section>
+        <Bleed className="h-[260px] w-full sm:h-[340px] lg:h-[440px]" />
 
         {/* The challenge */}
         <Section tone="sky">

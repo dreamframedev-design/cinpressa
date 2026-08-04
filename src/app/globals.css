@@ -1017,6 +1017,29 @@ p {
   box-shadow: 0 26px 50px -32px rgba(13, 35, 66, 0.4);
 }
 
+/* ---------- Bleed (layered colour field) ----------
+   Each band drifts laterally on its own long period, so the layers separate and
+   re-gather and the crossings — which is where the deep colour lives — are never in
+   quite the same place twice. Long and linear on purpose: an ease would give the
+   motion a beat, and this should read as weather, not as a loop. transform-box:
+   view-box puts the travel into SVG user units. */
+
+@keyframes bleed-drift {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(var(--bleed-travel, 40px));
+  }
+}
+
+.bleed-drift {
+  transform-box: view-box;
+  will-change: transform;
+  animation: bleed-drift var(--bleed-dur, 72s) ease-in-out infinite;
+}
+
 /* ---------- Reduced motion ---------- */
 
 @media (prefers-reduced-motion: reduce) {
@@ -1065,6 +1088,8 @@ p {
   }
 
   /* Colour and texture stay; only the motion stops. */
+  /* The field stays; it just stops drifting. It is a still image either way. */
+  .bleed-drift,
   .mark-suspend,
   .bloom,
   .bloom-layer,
