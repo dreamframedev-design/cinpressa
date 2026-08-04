@@ -24,7 +24,7 @@ export default async function SplashPage({
       <header className="anim-nav relative z-10">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 lg:px-10">
           <SiteLogo height={46} />
-          <span className="hidden items-center gap-2.5 text-[0.74rem] font-semibold uppercase tracking-[0.18em] text-body sm:flex">
+          <span className="hidden items-center gap-2.5 text-[0.82rem] font-semibold uppercase tracking-[0.18em] text-body sm:flex">
             <span aria-hidden className="h-px w-6 bg-line" />
             Site in progress
           </span>
@@ -44,7 +44,7 @@ export default async function SplashPage({
         <div className="relative mx-auto grid w-full max-w-7xl items-center gap-14 px-6 pb-24 pt-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:px-10 lg:pb-20">
           <div>
             <p
-              className="anim-rise flex items-center gap-3 text-[0.78rem] font-semibold uppercase tracking-[0.2em] text-blue"
+              className="anim-rise flex items-center gap-3 text-[0.84rem] font-semibold uppercase tracking-[0.2em] text-blue"
               style={{ animationDelay: "0.02s" }}
             >
               <span aria-hidden className="h-px w-8 bg-blue/40" />
@@ -149,7 +149,7 @@ export default async function SplashPage({
       </main>
 
       <footer className="relative z-10 border-t border-line/70">
-        <div className="mx-auto flex max-w-7xl flex-col gap-2 px-6 py-6 text-sm text-body sm:flex-row sm:items-center sm:justify-between lg:px-10">
+        <div className="mx-auto flex max-w-7xl flex-col gap-2 px-6 py-6 text-base text-body sm:flex-row sm:items-center sm:justify-between lg:px-10">
           <p>&copy; 2026 CinPressa Pharma. All rights reserved.</p>
           <p>A CinRx Pharma portfolio company</p>
         </div>

@@ -7,6 +7,9 @@ import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
 import { StatBand } from "@/components/stat-band";
 import { DosingCadence } from "@/components/dosing-cadence";
+import { Bleed } from "@/components/bleed";
+import { FocusField } from "@/components/focus-field";
+import { MilestoneStrip } from "@/components/milestone-strip";
 import { MarkArt } from "@/components/geometry";
 import { ConvergenceMark } from "@/components/convergence-mark";
 import { Reveal } from "@/components/reveal";
@@ -50,7 +53,7 @@ export default function HomePage() {
           <div className="relative mx-auto grid w-full max-w-7xl items-center gap-14 px-6 pb-20 pt-32 lg:grid-cols-[1.08fr_0.92fr] lg:gap-10 lg:px-10 lg:pb-24 lg:pt-40">
             <div>
               <p
-                className="anim-rise flex items-center gap-3 text-[0.8rem] font-semibold uppercase tracking-[0.22em] text-blue"
+                className="anim-rise flex items-center gap-3 text-[0.84rem] font-semibold uppercase tracking-[0.22em] text-blue"
                 style={{ animationDelay: "0.02s" }}
               >
                 <span aria-hidden className="h-px w-8 bg-blue/40" />
@@ -122,8 +125,15 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Lead: the map's Home body */}
-        <Section size="sm">
+        {/* Lead: the map's Home body, closing into the colour field.
+            Bleed runs full-bleed rather than inside the container - it is a piece,
+            not a figure, and gutters would make it read as an illustration sitting
+            in a slot. */}
+        {/* Padding is trimmed hard on both sides of the field. The lead keeps its top
+            rhythm but hands off almost immediately, and the section below opens tighter
+            than default, so the piece sits close to the copy it belongs to instead of
+            costing a screen of scrolling to get past. */}
+        <Section size="sm" className="pb-4! lg:pb-6!">
           <Reveal variant="fade">
             <p className="max-w-4xl text-xl leading-relaxed text-body md:text-2xl md:leading-relaxed">
               Daily oral therapy has been the backbone of hypertension care for
@@ -135,9 +145,10 @@ export default function HomePage() {
             </p>
           </Reveal>
         </Section>
+        <Bleed className="h-[190px] w-full sm:h-[250px] lg:h-[330px]" />
 
         {/* The challenge */}
-        <Section tone="sky">
+        <Section tone="sky" className="pt-12! lg:pt-16!">
           <SectionHeader
             eyebrow="The challenge"
             title="Control that lasts remains elusive"
@@ -193,8 +204,16 @@ export default function HomePage() {
           </Reveal>
         </Section>
 
-        {/* Pipeline */}
-        <Section tone="indigo">
+        {/* Pipeline. The art is FOCUS itself rather than a preview of the pipeline:
+            a one-programme pipeline shown small reads as "we have one thing" instead
+            of "we are concentrated on one thing". Weighted to the right, where the
+            copy is not. */}
+        <Section
+          tone="indigo"
+          art={
+            <FocusField className="absolute inset-y-0 right-0 hidden w-[62%] lg:block" />
+          }
+        >
           <SectionHeader
             eyebrow="Pipeline"
             title="A focused program. A clear path forward."
@@ -241,6 +260,11 @@ export default function HomePage() {
               </Link>
             </Reveal>
           </div>
+          {/* The section was a heading and a button over nothing, because there are no
+              announcements yet and inventing one is not an option. This previews the
+              forward calendar already approved on /news instead. Swap for a real
+              teaser when the first release lands. */}
+          <MilestoneStrip />
         </Section>
       </main>
 

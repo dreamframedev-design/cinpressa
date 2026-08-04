@@ -45,19 +45,19 @@ export function ContactForm() {
 
   if (status === "success") {
     return (
-      <div className="rounded-2xl border border-line bg-mist px-8 py-12 text-center">
-        <span aria-hidden className="mx-auto block h-px w-12 bg-orange" />
+      <div className="rounded-2xl border border-line bg-white/70 px-8 py-12 text-center backdrop-blur-sm">
+        <span aria-hidden className="mx-auto block h-px w-12 bg-sky" />
         <h2 className="mt-7 text-2xl font-light tracking-tight text-ink">
           Thank you, your message is on its way
         </h2>
-        <p className="mx-auto mt-4 max-w-md text-[0.95rem] leading-relaxed text-body">
+        <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-body">
           We&apos;ve received your inquiry and will route it to the right team.
           Expect a reply at the email you provided.
         </p>
         <button
           type="button"
           onClick={() => setStatus("idle")}
-          className="mt-8 text-sm font-medium text-blue transition-colors hover:text-ink"
+          className="mt-8 text-base font-medium text-blue transition-colors hover:text-ink"
         >
           <span className="link-underline">Send another message</span>
         </button>
@@ -139,7 +139,7 @@ export function ContactForm() {
       </Field>
 
       {error ? (
-        <p className="text-sm text-orange" role="alert">
+        <p className="text-base font-medium text-orange" role="alert">
           {error}
         </p>
       ) : null}
@@ -157,7 +157,7 @@ export function ContactForm() {
 }
 
 const inputClass =
-  "w-full rounded-xl border border-line bg-white px-4 py-3.5 text-base text-ink shadow-sm outline-none transition-colors placeholder:text-muted/60 focus:border-sky focus:ring-2 focus:ring-sky/30";
+  "w-full rounded-xl border border-line bg-white/70 px-4 py-3.5 text-base text-ink outline-none backdrop-blur-sm transition-[border-color,background-color,box-shadow] duration-300 placeholder:text-muted/70 hover:border-periwinkle hover:bg-white/85 focus:border-sky focus:bg-white focus:ring-2 focus:ring-sky/25";
 
 function Field({
   label,
@@ -172,9 +172,9 @@ function Field({
 }) {
   return (
     <label htmlFor={htmlFor} className="block">
-      <span className="mb-2 block text-[0.78rem] font-semibold uppercase tracking-[0.16em] text-body">
+      <span className="mb-2 block text-[0.84rem] font-semibold uppercase tracking-[0.16em] text-body">
         {label}
-        {optional ? <span className="ml-1 normal-case text-muted/60">(optional)</span> : null}
+        {optional ? <span className="ml-1 normal-case text-muted/70">(optional)</span> : null}
       </span>
       {children}
     </label>

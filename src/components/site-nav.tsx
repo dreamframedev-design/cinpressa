@@ -6,16 +6,29 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowIcon } from "@/components/arrow-icon";
 import { SiteLogo } from "@/components/site-logo";
 
+/**
+ * /about is deliberately absent. The route still exists and still renders, so any
+ * link already out in the world keeps working; it is just no longer offered in the
+ * navigation. Restoring it is one line here and one in the footer.
+ */
 const links = [
   { href: "/home", label: "Home" },
-  { href: "/about", label: "About" },
   { href: "/science", label: "Science" },
   { href: "/pipeline", label: "Pipeline" },
   { href: "/news", label: "News" },
   { href: "/contact", label: "Contact" },
 ] as const;
 
-export function SiteNav() {
+/**
+ * The site header.
+ *
+ * `tone="dark"` adapts the bar to a page whose hero sits on the deep ground. It only
+ * takes effect while the bar is TRANSPARENT: scrolling past the hero, or opening the
+ * mobile menu, makes the bar solid white, at which point the default ink treatment is
+ * correct again. So the dark state is scoped to exactly the region that needs it and
+ * nothing else has to know about it.
+ */
+export function SiteNav({ tone = "light" }: { tone?: "light" | "dark" }) {
   const pathname = usePathname();
   const sentinelRef = useRef<HTMLDivElement>(null);
   const [scrolled, setScrolled] = useState(false);
@@ -49,6 +62,8 @@ export function SiteNav() {
     pathname === href || (href !== "/home" && pathname.startsWith(`${href}/`));
 
   const solid = scrolled || menuOpen;
+  // Dark treatment applies only over the hero. Once solid, the bar is white again.
+  const onDark = tone === "dark" && !solid;
 
   return (
     <>
@@ -64,9 +79,11 @@ export function SiteNav() {
             clean to sit on. Fades out once the solid bar takes over. */}
         <div
           aria-hidden
-          className={`pointer-events-none absolute inset-x-0 top-0 h-[190%] bg-gradient-to-b from-white/92 via-white/55 to-transparent transition-opacity duration-500 ${
-            solid ? "opacity-0" : "opacity-100"
-          }`}
+          className={`pointer-events-none absolute inset-x-0 top-0 h-[190%] bg-gradient-to-b transition-opacity duration-500 ${
+            onDark
+              ? "from-deep/95 via-deep/55 to-transparent"
+              : "from-white/92 via-white/55 to-transparent"
+          } ${solid ? "opacity-0" : "opacity-100"}`}
         />
 
         <div
@@ -78,6 +95,7 @@ export function SiteNav() {
             <SiteLogo
               height={scrolled ? 36 : 46}
               mark="live"
+              tone={onDark ? "light" : "dark"}
               className="transition-[font-size] duration-500 ease-brand"
             />
           </Link>
@@ -88,7 +106,7 @@ export function SiteNav() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="nav-link"
+                className={`nav-link ${onDark ? "nav-link-dark" : ""}`}
                 aria-current={isActive(link.href) ? "page" : undefined}
               >
                 {link.label}
@@ -96,7 +114,7 @@ export function SiteNav() {
             ))}
             <Link
               href="/contact"
-              className="btn-primary btn-sm group"
+              className={`btn-primary btn-sm group ${onDark ? "btn-on-dark" : ""}`}
             >
               Partner with us
               <ArrowIcon className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
@@ -115,14 +133,14 @@ export function SiteNav() {
             <span className="sr-only">Menu</span>
             <div className="flex w-5 flex-col items-end gap-[5px]">
               <span
-                className={`h-px w-5 origin-right bg-ink transition-all duration-300 ${
-                  menuOpen ? "translate-y-[3px] -rotate-45" : ""
-                }`}
+                className={`h-px w-5 origin-right transition-all duration-300 ${
+                  onDark ? "bg-white" : "bg-ink"
+                } ${menuOpen ? "translate-y-[3px] -rotate-45" : ""}`}
               />
               <span
-                className={`h-px bg-ink transition-all duration-300 ${
-                  menuOpen ? "w-5 -translate-y-[3px] rotate-45" : "w-3.5"
-                }`}
+                className={`h-px transition-all duration-300 ${
+                  onDark ? "bg-white" : "bg-ink"
+                } ${menuOpen ? "w-5 -translate-y-[3px] rotate-45" : "w-3.5"}`}
               />
             </div>
           </button>

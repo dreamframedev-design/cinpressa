@@ -30,13 +30,13 @@ export function Timeline({ items }: { items: TimelineItem[] }) {
             <span className="absolute inset-[3px] rounded-full bg-blue" />
           </span>
           <div className="-mt-1">
-            <p className="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-sky">
+            <p className="text-[0.82rem] font-medium uppercase tracking-[0.2em] text-sky">
               {item.marker}
             </p>
             <h3 className="mt-2 text-xl font-light tracking-tight text-ink">
               {item.title}
             </h3>
-            <div className="mt-3 max-w-xl text-[0.95rem] leading-relaxed text-body">
+            <div className="mt-3 max-w-xl text-base leading-relaxed text-body">
               {item.body}
             </div>
           </div>

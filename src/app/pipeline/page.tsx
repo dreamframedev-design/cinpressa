@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { PageHero } from "@/components/page-hero";
+import { HeroChurn } from "@/components/hero-fields";
 import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
 import { EfficacyChart } from "@/components/efficacy-chart";
@@ -35,7 +36,9 @@ export default function PipelinePage() {
       <SiteNav />
 
       <main>
+        {/* Churn: layered colour being stirred. Every sample is displaced by a rotating warp, so the bands curl and fold instead of sliding. */}
         <PageHero
+          field={<HeroChurn className="absolute inset-0" />}
           eyebrow="Lead program"
           title={
             <>
@@ -84,7 +87,7 @@ export default function PipelinePage() {
                 >
                   {h.value}
                 </dd>
-                <dt className="mt-3 text-[0.95rem] leading-relaxed text-body">{h.label}</dt>
+                <dt className="mt-3 text-base leading-relaxed text-body">{h.label}</dt>
               </Reveal>
             ))}
           </dl>
@@ -121,7 +124,7 @@ export default function PipelinePage() {
                   key={row.label}
                   className="grid grid-cols-1 gap-1 border-b border-line px-6 py-5 last:border-0 sm:grid-cols-[180px_1fr] sm:gap-6 sm:px-8"
                 >
-                  <dt className="text-[0.78rem] font-semibold uppercase tracking-[0.15em] text-blue sm:pt-0.5">
+                  <dt className="text-[0.84rem] font-semibold uppercase tracking-[0.15em] text-blue sm:pt-0.5">
                     {row.label}
                   </dt>
                   <dd className="text-base leading-relaxed text-body">{row.value}</dd>

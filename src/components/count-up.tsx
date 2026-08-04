@@ -35,7 +35,7 @@ export function CountUp({ value }: { value: string }) {
 
     const tick = (now: number) => {
       if (!start) start = now;
-      const p = Math.min((now - start) / duration, 1);
+      const p = Math.min(Math.max(0, now - start) / duration, 1);
       // Exponential ease-out, matching --ease-brand.
       const eased = 1 - Math.pow(1 - p, 3);
       setDisplay(format(target * eased));

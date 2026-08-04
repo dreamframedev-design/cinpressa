@@ -51,7 +51,7 @@ export function RaasPathway() {
     <div className="rounded-3xl border border-line bg-white p-6 sm:p-9">
       <div className="mb-8 flex items-center gap-3">
         <span aria-hidden className="h-px w-8 bg-blue/40" />
-        <p className="text-[0.76rem] font-semibold uppercase tracking-[0.19em] text-blue">
+        <p className="text-[0.84rem] font-semibold uppercase tracking-[0.19em] text-blue">
           The RAAS cascade
         </p>
       </div>
@@ -121,8 +121,8 @@ export function RaasPathway() {
                     <span
                       className={
                         node.tag.tone === "primary"
-                          ? "inline-flex items-center gap-1.5 rounded-full border border-orange/30 bg-orange/10 px-3 py-1 text-[0.68rem] font-medium uppercase tracking-[0.12em] text-[#b06f00]"
-                          : "inline-flex items-center gap-1.5 rounded-full border border-line bg-mist px-3 py-1 text-[0.74rem] font-semibold uppercase tracking-[0.11em] text-body"
+                          ? "inline-flex items-center gap-1.5 rounded-full border border-orange/30 bg-orange/10 px-3 py-1 text-[0.8rem] font-medium uppercase tracking-[0.12em] text-[#b06f00]"
+                          : "inline-flex items-center gap-1.5 rounded-full border border-line bg-mist px-3 py-1 text-[0.82rem] font-semibold uppercase tracking-[0.11em] text-body"
                       }
                     >
                       {node.tag.tone === "primary" ? (
@@ -132,7 +132,7 @@ export function RaasPathway() {
                     </span>
                   ) : null}
                 </div>
-                <p className="mt-2 max-w-md text-[0.95rem] leading-relaxed text-body">
+                <p className="mt-2 max-w-md text-base leading-relaxed text-body">
                   {node.sub}
                 </p>
               </div>
@@ -144,7 +144,7 @@ export function RaasPathway() {
       <div className="mt-4 grid gap-4 border-t border-line pt-7 sm:grid-cols-2">
         <div className="flex gap-3">
           <span aria-hidden className="mt-1 h-4 w-1 shrink-0 rounded-full bg-orange" />
-          <p className="text-[0.95rem] leading-relaxed text-body">
+          <p className="text-base leading-relaxed text-body">
             <span className="font-medium text-ink">Upstream.</span> CIN-111
             suppresses AGT production in the liver, shutting the cascade off at
             its source.
@@ -152,7 +152,7 @@ export function RaasPathway() {
         </div>
         <div className="flex gap-3">
           <span aria-hidden className="mt-1 h-4 w-1 shrink-0 rounded-full bg-periwinkle" />
-          <p className="text-[0.95rem] leading-relaxed text-body">
+          <p className="text-base leading-relaxed text-body">
             <span className="font-medium text-ink">Downstream.</span> ACE
             inhibitors and ARBs act late in the pathway, leaving residual
             activity and rebound over time.
