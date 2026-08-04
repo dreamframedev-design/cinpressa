@@ -504,7 +504,7 @@ Branch `art/considered-placements`, one commit per piece, nothing pushed or depl
 | 1 · The Held Line | `3b7b5e5` | as specified, five variants |
 | 6 · Nav theming | `c4a0398` | as specified |
 | 3 · The Horizon | `277f045` | as specified |
-| 2 · Four Lenses | `289cd9a` | added a copy-column mask, see below |
+| 2 · Four Lenses | `289cd9a`, reverted | **KILLED on review.** See below. |
 | 5 · Source | `25e29a5` | **moved section**, see below |
 
 **Own code ≈ 23 KB. No new dependencies — the project still ships three.**
@@ -521,8 +521,20 @@ Branch `art/considered-placements`, one commit per piece, nothing pushed or depl
    drives React render state, so all that was needed was a scroll position — about ten
    lines. Adding ~30 KB for that failed the standing rule's own test. Trivial to switch
    if the library is wanted as standing infrastructure.
-3. **Piece 2 gained a copy-column mask.** Numeric check showed the lens field lands
-   ~972 px wide against a 460 px column, overhanging ~256 px into the copy on the left.
+3. **Piece 2 was killed on first review, and the hero now has nothing behind the mark.**
+   The idea was that the mark's own oversized parent ovals would read as the optical
+   system the logo is the core of. On screen it read as what it literally is: a second,
+   huge, faint logo sitting behind the real logo. That is precisely the complaint this
+   entire pass exists to answer — *the only art we have is the same repeated logo over
+   and over* — reproduced in a new form. Being derived from the real geometry made it
+   defensible on paper and no better to look at.
+
+   The component is deleted rather than left unused. Orbiting dots, breathing blooms,
+   and the lens field have now all occupied that space and all failed; the note in
+   `globals.css` records that so it doesn't get filled a fourth time. `ConvergenceMark`
+   carries the column alone, which is what it should have been doing.
+
+   **Four pieces shipped, not five.**
 
 ### Verification actually performed
 

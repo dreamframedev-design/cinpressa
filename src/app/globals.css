@@ -614,27 +614,14 @@ p {
   filter: drop-shadow(0 32px 40px rgba(34, 97, 173, 0.18));
 }
 
-/* ---------- Lens field ----------
-   The hero once ringed the mark with orbiting dots, and then with four radial blooms
-   breathing on staggered cycles. Neither survives. A soft coloured blob behind a logo
-   is the most generic move available in this medium, and it is what the client saw as
-   washed out.
+/* ---------- Behind the hero mark ----------
+   Nothing. Three things have occupied this space - orbiting dots, four breathing
+   radial blooms, and an oversized field built from the mark's own parent ovals - and
+   the last was the worst of them: a huge faint mark behind the real mark is still the
+   logo twice, which is the exact complaint this pass exists to fix.
 
-   Behind the mark now: FourLenses, the mark's own four parent ovals at 3.2x, hairlined
-   and multiplied, and completely still. The convergence is the motion in that column;
-   the field around it should hold. Only the arrival is animated, and only once. */
-@keyframes fade-in-soft {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.lens-layer {
-  animation: fade-in-soft 1.6s var(--ease-brand) 0.25s both;
-}
+   The convergence carries the column by itself. Kept as a note so the space does not
+   get filled a fourth time. */
 
 /* ---------- Mark arm lighting ----------
    Light making its rounds on the large background marks: a soft white band
@@ -1187,7 +1174,6 @@ p {
 
   /* Colour and texture stay; only the motion stops. */
   .mark-suspend,
-  .lens-layer,
   .track-stripes,
   .track-tip,
   .duplex-halo,

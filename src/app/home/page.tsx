@@ -6,7 +6,6 @@ import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
 import { StatBand } from "@/components/stat-band";
 import { DosingCadence } from "@/components/dosing-cadence";
-import { FourLenses } from "@/components/four-lenses";
 import { ConvergenceMark } from "@/components/convergence-mark";
 import { Reveal } from "@/components/reveal";
 import { ArrowIcon } from "@/components/arrow-icon";
@@ -69,15 +68,16 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* No entrance rise here: the convergence IS the mark's entrance. */}
-            <div className="relative mx-auto flex aspect-square w-[280px] items-center justify-center sm:w-[360px] lg:w-[460px]">
-              {/* Piece 2, Four Lenses. The mark's own four parent ovals at 3.2x, so the
-                  logo reads as the core of a larger optical system rather than as a
-                  logo on a wash. The inset matches the component's SCALE; changing one
-                  without the other breaks the alignment with the mark. Static by
-                  design - the convergence is already the motion in this column. */}
-              <FourLenses className="lens-layer absolute inset-[-110%]" />
+            {/* Nothing behind the mark. Orbiting dots, then breathing blooms, then an
+                oversized lens field built from the mark's own parent ovals - each was an
+                attempt to fill this column, and the lens field was the worst of them
+                because a huge faint mark behind the real mark is still the logo twice.
+                That is the exact complaint this whole pass exists to fix.
 
+                The convergence is the piece. It assembles from four ovals, the overlaps
+                create their own colour, and it earns the space on its own. No entrance
+                rise here either: the convergence IS the mark's entrance. */}
+            <div className="relative mx-auto flex aspect-square w-[280px] items-center justify-center sm:w-[360px] lg:w-[460px]">
               <div className="mark-lift relative w-[66%]">
                 <ConvergenceMark className="w-full" />
               </div>
