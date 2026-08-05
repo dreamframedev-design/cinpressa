@@ -2,12 +2,11 @@ import type { Metadata } from "next";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { PageHero } from "@/components/page-hero";
-import { HeroLobule } from "@/components/hero-lobule";
+import { HeroPulse } from "@/components/hero-pulse";
+import { HeroLaminar } from "@/components/hero-laminar";
 import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
-import { DuplexBinding } from "@/components/duplex-binding";
 import { RaasPathway } from "@/components/raas-pathway";
-import { MarkArt } from "@/components/geometry";
 import { Reveal } from "@/components/reveal";
 
 export const metadata: Metadata = {
@@ -39,9 +38,11 @@ export default function SciencePage() {
       <SiteNav />
 
       <main>
-        {/* Bloom: masses opening out of dense cores and dissolving as they spread. Growth, not travel, which is the right figure for a molecule distributing and taking effect. */}
+        {/* Pressure traces: many quarrelling daily readings on the left,
+            funnelling into one calm synchronised braid. The page's own subject,
+            stated before a word is read. See hero-pulse.tsx. */}
         <PageHero
-          field={<HeroLobule className="absolute inset-0" />}
+          field={<HeroPulse className="absolute inset-0" />}
           eyebrow="Unmet need"
           title="Blood pressure control still depends on daily dose adherence"
           subtitle="Hypertension requires lifelong treatment, yet long-term control remains difficult to achieve for a large proportion of patients despite numerous approved therapies."
@@ -93,13 +94,21 @@ export default function SciencePage() {
           </div>
         </Section>
 
-        {/* CinPressa solution */}
+        {/* CinPressa solution. The backdrop is the laminar field: flow that
+            holds its line unbroken past an obstruction, which is what "a
+            continuous backbone" looks like. It sits behind the copy as
+            atmosphere rather than inline as a figure, so it reads without
+            asking to be decoded and costs the section no height. */}
         <Section
           tone="green"
           art={
-            <MarkArt
-              variant="brand"
-              className="absolute -right-28 -bottom-52 h-[640px] w-auto rotate-[12deg] opacity-[0.14]"
+            /* Watermark register, not hero register. The mark this replaced sat
+               at 0.14; a full field of hairlines carries more ink than a mark,
+               so it lands a little above that and no higher — the copy crosses
+               it and must win. */
+            <HeroLaminar
+              transparent
+              className="absolute inset-0 opacity-[0.3]"
             />
           }
         >
@@ -125,18 +134,6 @@ export default function SciencePage() {
                 foundation.
               </p>
             </Reveal>
-          </div>
-        </Section>
-
-        {/* Target engagement */}
-        <Section tone="indigo">
-          <SectionHeader
-            eyebrow="RNA interference"
-            title="How CIN-111 silences AGT"
-            subtitle="The guide strand of CIN-111 is designed to base-pair with a complementary sequence on AGT messenger RNA. Once bound, the transcript is cleaved before angiotensinogen can be translated."
-          />
-          <div className="mt-14">
-            <DuplexBinding />
           </div>
         </Section>
 

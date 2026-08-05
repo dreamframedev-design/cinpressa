@@ -35,6 +35,15 @@ export function HeroCanvas({
   /** The moment to hold under prefers-reduced-motion. Never zero: at zero every
    *  system in a field sits at its start phase, which is rarely the composed one. */
   stillAt = 17,
+  /** Render above device resolution and let the browser downscale-average. On
+   *  standard-density displays this is the only way a near-horizontal hairline
+   *  escapes single-pixel stair-stepping; soft fields leave it at 1. */
+  superSample = 1,
+  /** Fraction of the canvas that must be visible before frames run. Ambient
+   *  fields leave this at 0; a narrative piece that re-anchors its story to
+   *  visibility raises it, so the story cannot start while the piece is still
+   *  a sliver at the fold. */
+  ioThreshold = 0,
 }: {
   render: HeroRender;
   className?: string;
@@ -42,6 +51,8 @@ export function HeroCanvas({
   maxDpr?: number;
   frameMs?: number;
   stillAt?: number;
+  superSample?: number;
+  ioThreshold?: number;
 }) {
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -65,7 +76,7 @@ export function HeroCanvas({
       const rect = wrap.getBoundingClientRect();
       if (rect.width === 0 || rect.height === 0) return;
       const scale = Math.min(
-        Math.min(window.devicePixelRatio || 1, maxDpr),
+        Math.min((window.devicePixelRatio || 1) * superSample, maxDpr),
         maxWidth / rect.width,
       );
       w = Math.round(rect.width * scale);
@@ -95,9 +106,12 @@ export function HeroCanvas({
     };
     rafId = requestAnimationFrame(loop);
 
-    const io = new IntersectionObserver(([e]) => {
-      inView = e.isIntersecting;
-    });
+    const io = new IntersectionObserver(
+      ([e]) => {
+        inView = e.isIntersecting;
+      },
+      { threshold: ioThreshold },
+    );
     io.observe(wrap);
 
     return () => {
@@ -105,7 +119,7 @@ export function HeroCanvas({
       ro.disconnect();
       io.disconnect();
     };
-  }, [maxWidth, maxDpr, frameMs, stillAt]);
+  }, [maxWidth, maxDpr, frameMs, stillAt, superSample, ioThreshold]);
 
   return (
     <div ref={wrapRef} aria-hidden className={`pointer-events-none ${className}`}>
@@ -132,3 +146,61 @@ export const smooth = (v: number) => {
  */
 export const copyFade = (fx: number) =>
   0.06 + 0.94 * smooth((fx - 0.06) / 0.46);
+
+/**
+ * The standard washes for a hairline field, composited over the finished ink.
+ * White over ink equals alpha falloff toward a white page, but perfectly
+ * continuous — no per-chunk alpha steps, which read as dashes on a hairline.
+ *
+ * Three layers: a horizontal fade under the copy column, an elliptical guard
+ * centred on the headline block (the horizontal fade alone leaves the right
+ * edge of a three-line title sitting against mid-strength ink), and a short
+ * top strip so the field never fights the nav.
+ */
+export function drawHeroWashes(
+  ctx: CanvasRenderingContext2D,
+  w: number,
+  h: number,
+  fade: (fx: number) => number,
+  /**
+   * Set when the canvas is transparent so a coloured surface shows through it.
+   * White would blot that surface out with an opaque band, so the washes erase
+   * ink with destination-out instead of painting over it. The visible result
+   * is identical on white and correct everywhere else.
+   */
+  transparent = false,
+) {
+  ctx.globalCompositeOperation = transparent ? "destination-out" : "source-over";
+  const ink = transparent ? "0,0,0" : "255,255,255";
+
+  const wash = ctx.createLinearGradient(0, 0, w, 0);
+  for (let s = 0; s <= 8; s++) {
+    const fx = (0.72 * s) / 8;
+    wash.addColorStop(fx, `rgba(${ink},${(1 - fade(fx)).toFixed(3)})`);
+  }
+  wash.addColorStop(1, `rgba(${ink},0)`);
+  ctx.fillStyle = wash;
+  ctx.fillRect(0, 0, w, h);
+
+  const gx = 0.23 * w;
+  const gy = 0.4 * h;
+  const squash = 0.72;
+  ctx.save();
+  ctx.translate(gx, gy);
+  ctx.scale(1, squash);
+  const guard = ctx.createRadialGradient(0, 0, 0, 0, 0, 0.46 * w);
+  guard.addColorStop(0, `rgba(${ink},0.72)`);
+  guard.addColorStop(0.55, `rgba(${ink},0.38)`);
+  guard.addColorStop(1, `rgba(${ink},0)`);
+  ctx.fillStyle = guard;
+  ctx.fillRect(-gx, -gy / squash, w, h / squash);
+  ctx.restore();
+
+  const top = ctx.createLinearGradient(0, 0, 0, h * 0.14);
+  top.addColorStop(0, `rgba(${ink},0.45)`);
+  top.addColorStop(1, `rgba(${ink},0)`);
+  ctx.fillStyle = top;
+  ctx.fillRect(0, 0, w, h * 0.14);
+
+  ctx.globalCompositeOperation = "source-over";
+}

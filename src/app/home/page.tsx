@@ -6,10 +6,11 @@ import { SiteFooter } from "@/components/site-footer";
 import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
 import { StatBand } from "@/components/stat-band";
-import { DosingCadence } from "@/components/dosing-cadence";
+import { DoseMigration } from "@/components/dose-migration";
 import { Bleed } from "@/components/bleed";
 import { FocusField } from "@/components/focus-field";
 import { MilestoneStrip } from "@/components/milestone-strip";
+import { NewsHorizon } from "@/components/news-horizon";
 import { MarkArt } from "@/components/geometry";
 import { ConvergenceMark } from "@/components/convergence-mark";
 import { Reveal } from "@/components/reveal";
@@ -92,7 +93,7 @@ export default function HomePage() {
             </div>
 
             {/* No entrance rise here: the convergence IS the mark's entrance. */}
-            <div className="relative mx-auto flex aspect-square w-[280px] items-center justify-center sm:w-[360px] lg:w-[460px]">
+            <div className="relative mx-auto flex aspect-square w-[300px] items-center justify-center sm:w-[390px] lg:w-[500px]">
               {/* No orbits. The mark's own petal colours bloom outward behind
                   it, each on its own long breath, so the light reads as coming
                   off the logo. Positions echo where those petals actually sit. */}
@@ -118,7 +119,7 @@ export default function HomePage() {
                 ))}
               </div>
 
-              <div className="mark-lift relative w-[66%]">
+              <div className="mark-lift relative w-[68%]">
                 <ConvergenceMark className="w-full" />
               </div>
             </div>
@@ -190,8 +191,11 @@ export default function HomePage() {
             title="Designed to create a backbone of control"
             subtitle="CinPressa is advancing a long-acting AGT siRNA designed to provide durable blood pressure reduction with one to two administrations per year."
           />
+          {/* The year draining into two doses. Both of the pictures the note
+              asked for — the box emptying, the dots becoming two — are this one
+              event seen at its two ends; see dose-migration.tsx. */}
           <div className="mt-14">
-            <DosingCadence />
+            <DoseMigration />
           </div>
           <Reveal variant="fade" delay={120}>
             <p className="mt-12 max-w-3xl text-base leading-relaxed text-body">
@@ -241,8 +245,11 @@ export default function HomePage() {
           </div>
         </Section>
 
-        {/* News */}
-        <Section>
+        {/* News. The page used to end on a white box. The backdrop extends the
+            milestone axis's own logic — dated work near, the open calendar
+            ahead — as a field rather than a figure, so it costs the section no
+            height and asks to be read as atmosphere. See news-horizon.tsx. */}
+        <Section art={<NewsHorizon className="absolute inset-0" />}>
           <div className="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
             <SectionHeader
               eyebrow="News"
