@@ -154,8 +154,8 @@ export function RaasPathway() {
           <span aria-hidden className="mt-1 h-4 w-1 shrink-0 rounded-full bg-periwinkle" />
           <p className="text-base leading-relaxed text-body">
             <span className="font-medium text-ink">Downstream.</span> ACE
-            inhibitors and ARBs act late in the pathway, leaving residual
-            activity and rebound over time.
+            inhibitors and ARBs act late in the pathway and do not completely
+            suppress it, leaving residual activity.
           </p>
         </div>
       </div>

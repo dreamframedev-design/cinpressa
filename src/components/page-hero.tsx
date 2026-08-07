@@ -5,6 +5,11 @@ import { Reveal } from "@/components/reveal";
 type PageHeroProps = {
   eyebrow: string;
   title: ReactNode;
+  /**
+   * The site map's "subheadline": a short, emphatic deck line under the headline.
+   * `subtitle` remains for pages whose subheadline is a full sentence in prose.
+   */
+  deck?: ReactNode;
   subtitle?: ReactNode;
   /** Optional element rendered to the right of the copy on large screens. */
   aside?: ReactNode;
@@ -19,6 +24,7 @@ type PageHeroProps = {
 export function PageHero({
   eyebrow,
   title,
+  deck,
   subtitle,
   aside,
   field,
@@ -68,9 +74,21 @@ export function PageHero({
               {title}
             </h1>
           </Reveal>
+          {deck ? (
+            <Reveal variant="fade" delay={220}>
+              <p className="mt-7 max-w-2xl text-xl font-medium leading-snug tracking-tight text-ink md:text-2xl">
+                {deck}
+              </p>
+            </Reveal>
+          ) : null}
+
           {subtitle ? (
-            <Reveal variant="fade" delay={240}>
-              <p className="mt-7 max-w-2xl text-lg leading-relaxed text-body md:text-xl">
+            <Reveal variant="fade" delay={deck ? 300 : 240}>
+              <p
+                className={`max-w-2xl text-lg leading-relaxed text-body md:text-xl ${
+                  deck ? "mt-5" : "mt-7"
+                }`}
+              >
                 {subtitle}
               </p>
             </Reveal>

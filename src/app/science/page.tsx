@@ -25,11 +25,16 @@ const complications = [
   "Vascular dementia",
 ];
 
+/**
+ * Every line is a clause of the site map's Mechanism body. The previous set
+ * carried compensatory-renin-rebound and RAAS-escape claims that the updated
+ * copy no longer makes, so they are gone rather than restated.
+ */
 const upstreamBenefits = [
-  "Prolonged duration of action from liver-specific AGT suppression",
-  "Consistent, durable blood pressure reduction with infrequent dosing",
-  "Reduced risk of compensatory renin rebound",
-  "Potential to overcome RAAS escape through sustained upstream suppression",
+  "Prolonged duration of action",
+  "Durable blood pressure reduction",
+  "Residual pathway activity addressed at the source rather than downstream",
+  "Differentiated from standard RAAS blockade",
 ];
 
 export default function SciencePage() {
@@ -44,8 +49,8 @@ export default function SciencePage() {
         <PageHero
           field={<HeroPulse className="absolute inset-0" />}
           eyebrow="Unmet need"
-          title="Blood pressure control still depends on daily dose adherence"
-          subtitle="Hypertension requires lifelong treatment, yet long-term control remains difficult to achieve for a large proportion of patients despite numerous approved therapies."
+          title="Blood pressure control still depends on daily adherence"
+          deck="The challenge is persistence"
         />
 
         {/* The burden */}
@@ -54,20 +59,16 @@ export default function SciencePage() {
             <div>
               <Reveal variant="fade">
                 <p className="text-base leading-relaxed text-body">
-                  Approximately 1.4 billion people globally live with
-                  hypertension, and more than 700 million remain uncontrolled or
-                  untreated. Around 70 percent of treated patients do not achieve
-                  target blood pressure levels. Medication non-adherence is the
-                  leading cause of poor control, and because hypertension is
-                  largely asymptomatic, long-term persistence is difficult to
-                  sustain over time.
+                  Medication non-adherence is the leading cause of poor blood
+                  pressure control, and hypertension is largely asymptomatic,
+                  resulting in poor long-term adherence and treatment
+                  persistence.
                 </p>
               </Reveal>
               <Reveal variant="fade" delay={100}>
                 <p className="mt-6 text-base leading-relaxed text-body">
                   Persistent uncontrolled blood pressure substantially increases
-                  the risk of serious cardiovascular, renal, and neurological
-                  complications:
+                  the risk of serious complications:
                 </p>
               </Reveal>
               <div className="mt-6 flex flex-wrap gap-2.5">
@@ -85,8 +86,8 @@ export default function SciencePage() {
             <Reveal variant="rise-blur" delay={120} className="lg:pt-4">
               <blockquote className="border-l-2 border-blue pl-7">
                 <p className="text-[clamp(1.5rem,2.6vw,2.05rem)] font-light leading-[1.25] tracking-tight text-ink">
-                  The challenge is not simply whether blood pressure can be
-                  lowered. It is whether it can remain{" "}
+                  In hypertension, the challenge is not simply whether blood
+                  pressure can be lowered. The challenge is whether it can remain{" "}
                   <span className="text-blue">controlled over time.</span>
                 </p>
               </blockquote>
@@ -114,24 +115,24 @@ export default function SciencePage() {
         >
           <SectionHeader
             eyebrow="CinPressa solution"
-            title="A continuous backbone of blood pressure control"
-            subtitle="CinPressa is developing a long-acting AGT siRNA designed to provide durable blood pressure reduction with one to two administrations per year."
+            title="A new treatment paradigm"
+            deck="Long-acting control with infrequent dosing"
           />
           <div className="mt-10 grid max-w-4xl gap-6 md:grid-cols-2">
             <Reveal variant="fade">
               <p className="text-base leading-relaxed text-body">
-                By shifting hypertension management from daily patient behavior
-                to infrequent, provider-administered treatment, CinPressa is
-                pursuing a model designed for durability, consistency, and
-                real-world persistence.
+                CinPressa is developing a treatment model that shifts
+                hypertension management from daily patient behavior to
+                infrequent provider-administered therapy.
               </p>
             </Reveal>
             <Reveal variant="fade" delay={100}>
               <p className="text-base leading-relaxed text-body">
-                Meaningful baseline reduction may be sufficient for many patients
-                as monotherapy. For those who require additional control,
-                complementary agents can be layered onto an already-controlled
-                foundation.
+                Rather than relying on daily oral dosing, the aim is to deliver
+                durable blood pressure control with long-acting AGT silencing,
+                while still allowing complementary antihypertensive agents to be
+                layered onto an already controlled foundation for patients who
+                require additional reduction.
               </p>
             </Reveal>
           </div>
@@ -141,25 +142,23 @@ export default function SciencePage() {
         <Section tone="sky">
           <SectionHeader
             eyebrow="Mechanism"
-            title="Targeting AGT and RAAS upstream"
-            subtitle="Angiotensinogen is the precursor in the RAAS pathway and is crucial for blood pressure regulation."
+            title="Targeting AGT upstream"
+            deck="RAAS modulation at the source"
           />
 
           <div className="mt-14 grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
             <div>
               <Reveal variant="fade">
                 <p className="text-base leading-relaxed text-body">
-                  Standard RAAS inhibitors such as ACE inhibitors and ARBs act
-                  downstream and do not completely suppress the pathway. Renin
-                  production increases, and angiotensin II and aldosterone can
-                  rebound over time. Residual activity contributes to persistent
-                  hypertension and ongoing cardiovascular and renal risk.
+                  AGT is the precursor in the RAAS pathway and is crucial for
+                  blood pressure regulation. Standard RAAS inhibitors act
+                  downstream and do not completely suppress the RAAS pathway.
                 </p>
               </Reveal>
               <Reveal variant="fade" delay={100}>
                 <p className="mt-6 text-base leading-relaxed text-body">
                   By targeting AGT synthesis in the liver via RNA interference,
-                  CIN-111 is designed to block the RAAS cascade at its source:
+                  CIN-111 is designed to block the RAAS cascade upstream:
                 </p>
               </Reveal>
 

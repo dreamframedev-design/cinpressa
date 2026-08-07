@@ -48,7 +48,7 @@ export default async function SplashPage({
               style={{ animationDelay: "0.02s" }}
             >
               <span aria-hidden className="h-px w-8 bg-blue/40" />
-              A CinRx Portfolio Company
+              A CinRx company
             </p>
 
             <h1 className="mt-6 text-sky">
@@ -64,9 +64,9 @@ export default async function SplashPage({
               className="anim-rise mt-6 max-w-xl text-base leading-relaxed text-body md:text-lg"
               style={{ animationDelay: "0.3s" }}
             >
-              A CinRx portfolio company advancing a best-in-class siRNA
-              (CIN-111) preventing the formation of angiotensinogen (AGT) for
-              the treatment of hypertension.
+              CinPressa is advancing CIN-111, a best-in-class AGT siRNA for the
+              treatment of hypertension, designed to prevent the formation of
+              angiotensinogen and deliver long-acting blood pressure control.
             </p>
 
             {bounced ? (

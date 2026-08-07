@@ -68,16 +68,11 @@ export default function ContactPage() {
               </Reveal>
               <Reveal variant="rise-blur" delay={140}>
                 <h1 className="mt-5 text-[clamp(2.25rem,5vw,3.5rem)] font-light leading-[1.06] tracking-tight text-ink">
-                  Contact CinPressa
+                  Start a conversation
                 </h1>
               </Reveal>
               <Reveal variant="fade" delay={220}>
                 <p className="mt-7 max-w-md text-lg leading-relaxed text-body">
-                  Start a conversation with the team.
-                </p>
-              </Reveal>
-              <Reveal variant="fade" delay={300}>
-                <p className="mt-5 max-w-md text-base leading-relaxed text-body">
                   For business, partnering, or general inquiries, please reach
                   out through the contact form. CinPressa welcomes discussions
                   with partners interested in advancing a differentiated

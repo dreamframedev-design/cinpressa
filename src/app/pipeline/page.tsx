@@ -26,7 +26,11 @@ const phase1Spec = [
 
 const highlights = [
   { value: "~100×", label: "therapeutic window in GLP toxicology", accent: "text-blue", rule: "bg-blue" },
-  { value: "6 mo+", label: "potential dosing interval", accent: "text-cobalt", rule: "bg-cobalt" },
+  /* Was "6 mo+ / potential dosing interval". The updated copy states a
+     long-acting profile with infrequent administration and no longer claims a
+     six-month interval, so the tile now carries the NHP durability figure the
+     body does support. */
+  { value: "~88%", label: "mean AGT reduction sustained to Day 119 in hypertensive NHPs", accent: "text-cobalt", rule: "bg-cobalt" },
   { value: "2044", label: "expected IP expiry, global and pending in major markets", accent: "text-indigo", rule: "bg-indigo" },
 ];
 
@@ -46,7 +50,7 @@ export default function PipelinePage() {
               siRNA for hypertension
             </>
           }
-          subtitle="CIN-111 is a best-in-class AGT siRNA candidate for hypertension-related indications, with a profile built around durability, depth of AGT knockdown, and safety."
+          deck="Depth of knockdown and safety"
         />
 
         {/* Lead program: the map's body */}
@@ -54,21 +58,24 @@ export default function PipelinePage() {
           <div className="grid gap-6 lg:max-w-4xl">
             <Reveal variant="fade">
               <p className="text-lg leading-relaxed text-body">
-                In hypertensive non-human primates, CIN-111 achieved nearly 100
-                percent reduction in AGT protein at one month, sustained with a
-                mean of approximately 88 percent reduction on Day 119. CIN-111
-                reduced systolic blood pressure to below 120 mmHg from Day 42
-                onward, with no significant rebound trend by Day 119, and
-                outperformed Roche&rsquo;s zilebesiran at the same dose.
+                CIN-111 is a best-in-class AGT siRNA candidate for
+                hypertension-related indications, with a profile built around
+                durability, depth of AGT knockdown, and safety. In hypertensive
+                non-human primates, CIN-111 achieved nearly 100 percent reduction
+                in AGT protein at one month, sustained with a mean of
+                approximately 88 percent reduction on Day 119. CIN-111 reduced
+                systolic blood pressure to below 120 mmHg from Day 42 onward,
+                with no significant rebound trend by Day 119, and outperformed
+                Roche&rsquo;s zilebesiran at the same dose.
               </p>
             </Reveal>
             <Reveal variant="fade" delay={100}>
               <p className="text-lg leading-relaxed text-body">
                 CIN-111 has demonstrated roughly a 100-fold therapeutic window
-                with an excellent safety profile in GLP toxicology studies. These
-                data support the potential for six-month or longer dosing
-                intervals. The IP estate for CIN-111 is global, pending in major
-                markets, with expected expiry in 2044.
+                with an excellent safety profile in GLP toxicology studies.
+                Together, these data support a long-acting profile with
+                infrequent administration. The IP estate for CIN-111 is global,
+                pending in major markets, with expected expiry in 2044.
               </p>
             </Reveal>
           </div>

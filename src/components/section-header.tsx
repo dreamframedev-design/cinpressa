@@ -4,6 +4,12 @@ import { Reveal } from "@/components/reveal";
 type SectionHeaderProps = {
   eyebrow?: string;
   title: ReactNode;
+  /**
+   * The site map's "section subheadline": a short, emphatic deck line that sits
+   * between the headline and the body. Distinct from `subtitle`, which carries a
+   * full sentence in prose weight.
+   */
+  deck?: ReactNode;
   subtitle?: ReactNode;
   align?: "left" | "center";
   /** Tone of the eyebrow hairline + label. */
@@ -16,6 +22,7 @@ type SectionHeaderProps = {
 export function SectionHeader({
   eyebrow,
   title,
+  deck,
   subtitle,
   align = "left",
   tone = "blue",
@@ -49,9 +56,19 @@ export function SectionHeader({
         </Heading>
       </Reveal>
 
+      {deck ? (
+        <Reveal variant="fade" delay={160}>
+          <p className="mt-5 text-lg font-medium leading-snug tracking-tight text-ink md:text-xl">
+            {deck}
+          </p>
+        </Reveal>
+      ) : null}
+
       {subtitle ? (
-        <Reveal variant="fade" delay={180}>
-          <p className="mt-6 text-lg leading-relaxed text-body">{subtitle}</p>
+        <Reveal variant="fade" delay={deck ? 220 : 180}>
+          <p className={`text-lg leading-relaxed text-body ${deck ? "mt-4" : "mt-6"}`}>
+            {subtitle}
+          </p>
         </Reveal>
       ) : null}
     </div>

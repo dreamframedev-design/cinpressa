@@ -98,11 +98,19 @@ export function SiteFooter() {
                 Let&rsquo;s advance medicine, together.
               </h2>
             </Reveal>
-            <Reveal variant="fade" delay={180}>
-              <p className="mt-5 max-w-md text-base leading-relaxed text-white/80">
-                Partner with CinPressa to help move a differentiated AGT siRNA
-                program forward. For partnering, investment, or general
-                inquiries, connect with the team.
+            <Reveal variant="fade" delay={160}>
+              <p className="mt-5 text-lg font-medium leading-snug tracking-tight text-white md:text-xl">
+                Stay connected with CinPressa
+              </p>
+            </Reveal>
+            <Reveal variant="fade" delay={220}>
+              <p className="mt-4 max-w-md text-base leading-relaxed text-white/80">
+                For partnering, investment, or general inquiries, connect with
+                the team through our{" "}
+                <Link href="/contact" className="link-underline text-white">
+                  Contact page
+                </Link>
+                .
               </p>
             </Reveal>
           </div>

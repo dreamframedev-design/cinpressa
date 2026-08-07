@@ -58,7 +58,7 @@ export default function HomePage() {
                 style={{ animationDelay: "0.02s" }}
               >
                 <span aria-hidden className="h-px w-8 bg-blue/40" />
-                A CinRx Company
+                A CinRx company
               </p>
               <h1
                 className="anim-rise mt-7 text-[clamp(2.4rem,5.4vw,4.25rem)] font-light leading-[1.04] tracking-tight text-ink"
@@ -71,9 +71,10 @@ export default function HomePage() {
                 className="anim-rise mt-7 max-w-xl text-lg leading-relaxed text-body"
                 style={{ animationDelay: "0.28s" }}
               >
-                CinPressa is advancing a best-in-class siRNA (CIN-111) preventing
-                the formation of angiotensinogen (AGT) for the treatment of
-                hypertension.
+                CinPressa is advancing CIN-111, a best-in-class AGT siRNA for
+                the treatment of hypertension, designed to prevent the formation
+                of angiotensinogen and deliver long-acting blood pressure
+                control.
               </p>
               <div
                 className="anim-rise mt-10 flex flex-wrap items-center gap-4"
@@ -139,10 +140,8 @@ export default function HomePage() {
             <p className="max-w-4xl text-xl leading-relaxed text-body md:text-2xl md:leading-relaxed">
               Daily oral therapy has been the backbone of hypertension care for
               decades, yet a large proportion of patients remain uncontrolled or
-              untreated. CinPressa is developing a long-acting AGT siRNA designed
-              to provide durable blood pressure reduction and establish a
-              continuous backbone of blood pressure control independent of daily
-              adherence.
+              untreated. The unmet need in hypertension is not efficacy. It is{" "}
+              <span className="text-blue">persistence.</span>
             </p>
           </Reveal>
         </Section>
@@ -153,24 +152,26 @@ export default function HomePage() {
           <SectionHeader
             eyebrow="The challenge"
             title="Control that lasts remains elusive"
-            subtitle="Hypertension affects approximately 1.4 billion people worldwide, with more than 700 million still uncontrolled or untreated. Around 70 percent of treated patients do not achieve target blood pressure levels, despite numerous approved therapies."
+            deck="Global burden and treatment gap"
           />
           <div className="mt-14">
             <StatBand
               stats={[
                 { value: "1.4", unit: "B", label: "people live with hypertension worldwide" },
                 { value: "700", unit: "M+", label: "remain uncontrolled or untreated" },
-                { value: "~70", unit: "%", label: "of treated patients do not achieve target blood pressure levels" },
+                { value: "70", unit: "%", label: "of treated patients do not achieve target blood pressure levels" },
               ]}
             />
           </div>
           <Reveal variant="fade" delay={120}>
             <p className="mt-12 max-w-3xl text-base leading-relaxed text-body">
-              Medication non-adherence remains the leading cause of poor blood
-              pressure control, and hypertension&rsquo;s asymptomatic nature makes
-              long-term persistence difficult to sustain. CinPressa is focused on
-              a different model of care, one designed to reduce reliance on daily
-              adherence and support durable control over time.
+              1.4 billion people globally live with hypertension, and more than
+              700 million remain uncontrolled or untreated. Seventy percent of
+              treated patients do not achieve target blood pressure levels,
+              despite numerous approved therapies. Medication non-adherence is
+              the leading cause of poor blood pressure control, and hypertension
+              is largely asymptomatic, resulting in poor long-term adherence and
+              treatment persistence.
             </p>
           </Reveal>
         </Section>
@@ -189,7 +190,7 @@ export default function HomePage() {
           <SectionHeader
             eyebrow="Our approach"
             title="Designed to create a backbone of control"
-            subtitle="CinPressa is advancing a long-acting AGT siRNA designed to provide durable blood pressure reduction with one to two administrations per year."
+            deck="Long-acting AGT silencing"
           />
           {/* The year draining into two doses. Both of the pictures the note
               asked for — the box emptying, the dots becoming two — are this one
@@ -199,11 +200,14 @@ export default function HomePage() {
           </div>
           <Reveal variant="fade" delay={120}>
             <p className="mt-12 max-w-3xl text-base leading-relaxed text-body">
-              The goal is a continuous backbone of blood pressure control,
-              independent of daily adherence. Meaningful baseline reduction may be
-              sufficient for many patients as monotherapy, while additional
-              antihypertensive agents can be layered onto an already-controlled
-              foundation when needed.
+              CinPressa is advancing a long-acting AGT siRNA designed to provide
+              durable blood pressure reduction with one to two administrations
+              per year. The goal is to establish a continuous backbone of blood
+              pressure control independent of daily patient adherence. Meaningful
+              baseline BP reduction may be sufficient for many patients to
+              achieve treatment goals as monotherapy, with complementary
+              antihypertensive agents layered onto an already controlled
+              foundation for patients requiring additional control.
             </p>
           </Reveal>
         </Section>
@@ -220,17 +224,18 @@ export default function HomePage() {
         >
           <SectionHeader
             eyebrow="Pipeline"
-            title="A focused program. A clear path forward."
-            subtitle="Our pipeline is centered on CIN-111, a long-acting AGT siRNA program for hypertension."
+            title="A focused program"
+            deck="CIN-111 at the center"
           />
           <div className="mt-12 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
             <Reveal variant="fade" delay={120}>
               <p className="max-w-3xl text-base leading-relaxed text-body">
-                In hypertensive non-human primate studies, CIN-111 achieved
-                near-complete reductions in AGT and substantial, sustained
-                reductions in systolic blood pressure, with effects maintained for
-                more than three months. These data support the potential for
-                dosing intervals of six months or longer.
+                Our pipeline is centered on CIN-111, a long-acting AGT siRNA
+                program for hypertension. In hypertensive non-human primate
+                studies, CIN-111 has achieved near complete reductions in AGT and
+                substantial, sustained reductions in systolic blood pressure,
+                with effects maintained for more than three months. These data
+                support a long-acting profile with infrequent administration.
               </p>
             </Reveal>
             <Reveal variant="fade" delay={160}>
@@ -238,7 +243,7 @@ export default function HomePage() {
                 href="/pipeline"
                 className="btn-ghost group shrink-0"
               >
-                Visit the pipeline
+                Visit Pipeline
                 <ArrowIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
               </Link>
             </Reveal>
