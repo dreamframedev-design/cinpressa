@@ -295,6 +295,48 @@ p {
   }
 }
 
+
+/* ---------- Contact bloom ----------
+   The mark's ovals at architectural scale (contact-bloom.tsx). Entrance and
+   drift live on NESTED groups because both animate transform; transform-box
+   keeps every motion about the oval's own centre, not the SVG origin. */
+
+@keyframes cb-enter {
+  from {
+    opacity: 0;
+    transform: translate(var(--ex, 0px), var(--ey, 0px)) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.cb-enter {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: cb-enter 1.5s var(--ease-brand) var(--d, 0s) both;
+}
+
+/* The breath: out along the drift vector and back with a gentle scale flex,
+   on a period no two ovals share, so the overlap pools continuously deepen
+   and thin without the composition ever repeating or hurrying. */
+@keyframes cb-drift {
+  from {
+    transform: none;
+  }
+  to {
+    transform: translate(var(--dx, 0px), var(--dy, 0px)) rotate(var(--dr, 0deg))
+      scale(var(--ds, 1));
+  }
+}
+
+.cb-drift {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: cb-drift var(--dur, 60s) ease-in-out infinite alternate;
+}
+
 /* ---------- Nav links ---------- */
 
 .nav-link {
@@ -579,15 +621,24 @@ p {
    thirteen-colour artwork ignites from that core outward, resolving the ink
    into the icon ladder, and the orange dose lands as the last beat.
 
-   Timeline: ovals fly 0.12s-1.98s (staggered, expo ease, no bounce; the
-   orbit outlasts the radial approach by 0.2s so each oval's final inches are
-   a pure rotational settle about the mark centre). The expo ease means the
-   assembly READS complete around 1.6s, so ignition begins at 1.55s, right on
-   that beat: the wipe is a wide gradient feather AND the artwork crossfades
-   in globally on a front-loaded ramp, so there is no visible travelling
-   front and no waiting, only light spreading the moment the ovals meet. The
-   dose stamps down at 1.95s like a period, its hairline pulse follows at
-   2.1s, and the suspended idle takes over at 3s. */
+   ONE SHARED SPIN. The first cut gave each oval a small orbit of its own,
+   two clockwise and two counter, and the note it earned was "boring": four
+   small mixed wiggles read as drifting into place, not as choreography.
+   Every oval now sweeps the SAME direction on a large arc (-122° to -172°),
+   later petals sweeping farther in the same time so they visibly chase the
+   leaders, and each petal unwinds its own counter-rotation as it locks — a
+   pinwheel tightening into the mark. Arrival delays compress (0.08, 0.24,
+   0.36, 0.44) so the locks land as an accelerating drumroll.
+
+   Timeline: ovals wheel 0.08s-2.14s (expo ease, no bounce; the orbit
+   outlasts the radial approach by 0.2s so each oval's final inches are a
+   pure rotational settle about the mark centre). The expo ease means the
+   assembly READS complete around 1.85s, so ignition begins at 1.8s, right
+   on that beat: the wipe is a wide gradient feather AND the artwork
+   crossfades in globally on a front-loaded ramp, so there is no visible
+   travelling front and no waiting, only light spreading the moment the
+   ovals meet. The dose stamps down at 2.2s like a period, its hairline
+   pulse follows at 2.35s, and the suspended idle takes over at 3.4s. */
 
 @keyframes cvg-orbit-in {
   from {
@@ -599,9 +650,11 @@ p {
 }
 
 @keyframes cvg-petal-in {
+  /* Loose and large in flight, compressing as it locks: the system arrives
+     under tension rather than inflating into place. */
   from {
     transform: translate(var(--dx, 0px), var(--dy, 0px))
-      rotate(var(--rot, 0deg)) scale(0.94);
+      rotate(var(--rot, 0deg)) scale(1.08);
   }
   to {
     transform: translate(0px, 0px) rotate(0deg) scale(1);
@@ -632,19 +685,19 @@ p {
   transform-box: view-box;
   /* The mark centroid (125.2, 121.7) relative to the tight viewBox origin */
   transform-origin: 87.94px 103.09px;
-  animation: cvg-orbit-in 1.5s var(--ease-brand) var(--cvg-delay, 0s) both;
+  animation: cvg-orbit-in 1.9s var(--ease-brand) var(--cvg-delay, 0s) both;
 }
 
 .cvg-petal {
   transform-box: fill-box;
   transform-origin: center;
-  animation: cvg-petal-in 1.3s var(--ease-brand) var(--cvg-delay, 0s) both;
+  animation: cvg-petal-in 1.7s var(--ease-brand) var(--cvg-delay, 0s) both;
   will-change: transform;
 }
 
 .cvg-ink {
   mix-blend-mode: multiply;
-  animation: cvg-ink-in 1.3s var(--ease-brand) var(--cvg-delay, 0s) both;
+  animation: cvg-ink-in 1.5s var(--ease-brand) var(--cvg-delay, 0s) both;
   will-change: opacity, filter;
 }
 
@@ -664,7 +717,7 @@ p {
 
 .cvg-wipe {
   r: 0px;
-  animation: cvg-ignite 0.7s cubic-bezier(0.4, 0.03, 0.25, 1) 1.55s both;
+  animation: cvg-ignite 0.7s cubic-bezier(0.4, 0.03, 0.25, 1) 1.8s both;
 }
 
 /* The artwork also crossfades in globally, riding the wipe: between the two,
@@ -679,16 +732,22 @@ p {
 }
 
 .cvg-art {
-  animation: cvg-art-in 0.55s cubic-bezier(0.33, 0.02, 0.2, 1) 1.55s both;
+  animation: cvg-art-in 0.55s cubic-bezier(0.33, 0.02, 0.2, 1) 1.8s both;
 }
 
-/* ---------- Convergence: hover repulsion ----------
+/* ---------- Convergence: hover exploded hold ----------
    After the entrance settles (JS adds .cvg-settled), transitions take over
-   from animations. The rig layer dims under the finished artwork; hovering an
-   oval (JS adds .cvg-open and .is-lifted) de-ignites the artwork back into
-   the physical rig while that oval flees the cursor on a damped rAF follow.
-   The lifted oval's transform lives on .cvg-lift, a group of its own, so the
-   magnetic motion never fights an entrance animation's fill. */
+   from animations. The rig layer dims under the finished artwork; hovering
+   the mark (JS adds .cvg-open and .is-lifted on every oval) de-ignites the
+   artwork back into the physical rig while ALL FOUR ovals unscrew open in a
+   quick ripple — lifting, separating, fanning to a held exploded pose — and
+   stay there until the pointer leaves the component (open is a latch, not a
+   per-move containment test — moving inside the pose can never retract it),
+   when they screw back simultaneously and faster than they opened. Driven
+   by per-oval critically-damped springs on a rAF, stiffer shut than open;
+   the loop stops while the pose holds.
+   Each oval's transform lives on .cvg-lift, a group of its own, so the
+   bloom never fights an entrance animation's fill. */
 
 .cvg-rig-layer {
   opacity: 1;
@@ -752,7 +811,7 @@ p {
 .cvg-dose {
   transform-box: fill-box;
   transform-origin: center;
-  animation: cvg-dose-in 0.5s var(--ease-brand) 1.95s both;
+  animation: cvg-dose-in 0.5s var(--ease-brand) 2.2s both;
 }
 
 /* One hairline pulse emanating from the stamp, just after contact. */
@@ -773,12 +832,12 @@ p {
 .cvg-ring {
   transform-box: fill-box;
   transform-origin: center;
-  animation: cvg-ring-out 0.9s var(--ease-brand) 2.1s both;
+  animation: cvg-ring-out 0.9s var(--ease-brand) 2.35s both;
 }
 
 /* The idle float waits for the convergence to finish. */
 .mark-suspend-late {
-  animation-delay: 3s;
+  animation-delay: 3.4s;
 }
 
 /* ---------- Nav lockup mark ----------
@@ -1108,6 +1167,14 @@ p {
   .chart-fade {
     opacity: 1 !important;
     animation: none !important;
+  }
+
+  /* Contact bloom: the full composition, still. */
+  .cb-enter,
+  .cb-drift {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 
   .track-progress {

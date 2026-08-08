@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ContactForm } from "@/components/contact-form";
-import { WaveLines } from "@/components/wave-lines";
+import { ContactBloom } from "@/components/contact-bloom";
 import { Reveal } from "@/components/reveal";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
@@ -17,40 +17,15 @@ export default function ContactPage() {
       <SiteNav />
 
       <main>
-        {/* Daylight, as the brand asks for. The previous pass took this page dark to
-            make the glass work, which fixed the panel and broke everything else: bright
-            filigree on deep navy is a swimming pool. The field is line-work now, so it
-            needs white under it rather than black behind it. */}
+        {/* Two hairline fields in a row died on this page: drafted restraint
+            reads as a blank page here. This is the opposite pole of the same
+            brand — the mark's own ovals at architectural scale, multiply
+            overlaps pooling into new colour the way the logo makes every
+            interior colour it has. Bold ink, no washes over it: the white
+            veils that quieted the old fields are exactly what made them
+            invisible, so the colour runs to every edge. See contact-bloom.tsx. */}
         <section className="relative overflow-hidden bg-white">
-          <WaveLines className="absolute inset-0" />
-          {/* One wash, weighted left. The copy column gets clean paper; the field is
-              left alone on the right where it can be seen properly. */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(100deg, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.92) 26%, rgba(255,255,255,0.55) 48%, rgba(255,255,255,0.2) 72%, rgba(255,255,255,0.45) 100%)",
-            }}
-          />
-          {/* Feather the top and bottom edges so the field arrives and leaves rather
-              than being cropped by the section boundary. */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-0 h-40"
-            style={{
-              background:
-                "linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0) 100%)",
-            }}
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-40"
-            style={{
-              background:
-                "linear-gradient(0deg, #ffffff 0%, rgba(255,255,255,0) 100%)",
-            }}
-          />
+          <ContactBloom className="absolute inset-0" />
 
           <div className="relative mx-auto grid w-full max-w-7xl gap-14 px-6 pb-24 pt-32 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20 lg:px-10 lg:pt-44">
             <div>

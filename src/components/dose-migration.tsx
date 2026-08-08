@@ -1,33 +1,50 @@
 "use client";
 
+import { useRef } from "react";
+import type { HeroRender } from "@/components/hero-canvas";
 import { HeroCanvas, TAU, clamp01, smooth } from "@/components/hero-canvas";
-import { Reveal } from "@/components/reveal";
+import { CountUp } from "@/components/count-up";
 
 /**
- * Dose migration — a year of daily doses becoming two.
+ * Dose migration — a year of daily doses becoming two, in a frame.
  *
- * The two-panel comparison this replaces showed 365 dots beside 2 dots and
- * asked the reader to infer the relationship. This piece performs it: the
+ * The original cut of this piece performed the argument in open space: the
  * calendar drains in day order, every dose flies a bundled stream across the
- * frame, and the two annual doses on the right visibly grow as they absorb the
- * year. Each departed day leaves a pale ghost ring in its slot, so by the end
- * the left side is an emptied calendar of outlines standing against two full
- * marks — the receipt of the argument. Then the year quietly refills and the
- * cycle breathes again. Both of the pictures asked for — the box draining, the
- * dots becoming two — are the same event seen at its two ends.
+ * frame, and the two annual doses visibly grow as they absorb the year. That
+ * motion was right — continuous, always mid-story, spectacle worth a pause —
+ * but it floated on the section wash with nothing saying what a dot was a
+ * unit OF, and the notes it earned were about exactly that: container,
+ * frame, colour. A calendar-grid replacement fixed the frame and lost the
+ * life. This cut keeps both:
  *
- * STRUCTURE IS MEANING here in three places: departure order is calendar
- * order, top-left first, so the drain reads as time passing; the first half of
- * the year flows to the first dose and the second half to the second, because
+ *   – the flight animation, unchanged in structure: drain in calendar
+ *     order, comet streams, ghost rings left in emptied slots, the two
+ *     doses growing as they absorb their halves of the year, then the
+ *     quiet refill and the cycle breathing again (~9s loop, motion
+ *     continuous throughout);
+ *   – inside an instrument card: hairline border, white ground, a DAY
+ *     readout ticking with the drain like a chart recorder, and the two
+ *     figure captions seated in a legend row directly beneath the side of
+ *     the canvas they describe;
+ *   – recoloured: the seated year is periwinkle from the icon ladder, not
+ *     the old solid brand blue — the burden recedes. The airborne days are
+ *     cyan. The two annual doses are ORANGE inside their blue hairline
+ *     orbits, the same pairing as the orange dose in the mark itself, and
+ *     the page's single moment of orange punctuation.
+ *
+ * STRUCTURE IS MEANING in three places: departure order is calendar order,
+ * top-left first, so the drain reads as time passing; the first half of the
+ * year flows to the first dose and the second half to the second, because
  * that is literally what one-to-two administrations a year covers; and the
  * second stream dips beneath the first dose on its way — the same
  * parting-around-a-mass figure the science hero draws.
  *
- * Everything is a pure function of t (a ~23s loop), rendered on the shared
- * HeroCanvas scaffold with the house rules: hairline rails, single-alpha
- * strokes, supersampled store, preallocated everything, no allocation in the
- * frame loop. The canvas is transparent — the piece sits directly on the
- * section wash, not in a panel.
+ * Everything is a pure function of t, rendered on the shared HeroCanvas
+ * scaffold with the house rules: hairline rails, single-alpha strokes,
+ * supersampled store, preallocated everything, no allocation in the frame
+ * loop. The DAY readout rides the same loop — the render writes the current
+ * phase to a module variable and the component's draw wrapper mirrors it
+ * into the DOM only when the day changes.
  */
 
 const DAYS = 365;
@@ -49,10 +66,10 @@ const REFILL_SPAN = 1.6;
 const REFILL_RAMP = 0.35;
 
 const BLUE = "34,97,173";
-const DEEP = "4,115,187";
-const SKY = "58,174,216";
+const PERI = "126,170,219";
 const OCEAN = "30,174,229";
 const PALE = "190,215,236";
+const ORANGE = "249,168,26";
 
 /** Deterministic per-day jitter. The piece must survive a resize unchanged. */
 function hash(i: number, salt: number) {
@@ -90,6 +107,8 @@ const reduced =
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 let anchor = -1;
 let lastLoopT = -1;
+/** The phase of the most recent frame, mirrored into the DAY readout. */
+let currentPhase = 0;
 
 function render(
   ctx: CanvasRenderingContext2D,
@@ -111,6 +130,7 @@ function render(
     lastLoopT = t;
     phase = (t - anchor) % CYCLE;
   }
+  currentPhase = phase;
 
   // ── Layout.
   const cell = Math.min((0.46 * w) / COLS, (0.86 * h) / ROWS);
@@ -165,6 +185,7 @@ function render(
   }
 
   // ── The calendar: seated days, ghost rings of departed days, refill.
+  //    Periwinkle, not the old solid blue: the burden should recede.
   const refillP = clamp01((phase - REFILL_START) / REFILL_SPAN);
   for (let i = 0; i < DAYS; i++) {
     const p = slot(i);
@@ -174,7 +195,7 @@ function render(
     const seated = phase < depart ? 1 : back;
 
     if (seated > 0.002) {
-      ctx.fillStyle = `rgba(${BLUE},${(0.85 * seated).toFixed(3)})`;
+      ctx.fillStyle = `rgba(${PERI},${(0.95 * seated).toFixed(3)})`;
       ctx.beginPath();
       ctx.arc(p.x, p.y, dotR * (0.6 + 0.4 * seated), 0, TAU);
       ctx.fill();
@@ -206,7 +227,7 @@ function render(
       const a = (k === 0 ? 0.9 : 0.34 - 0.06 * k) * (1 - sink);
       if (a < 0.02) continue;
       const r = dotR * (k === 0 ? 1 : 0.82 - 0.1 * k) * (1 - 0.6 * sink);
-      ctx.fillStyle = `rgba(${k === 0 ? BLUE : OCEAN},${a.toFixed(3)})`;
+      ctx.fillStyle = `rgba(${OCEAN},${a.toFixed(3)})`;
       ctx.beginPath();
       ctx.arc(pos.x, pos.y, Math.max(r, 0.6), 0, TAU);
       ctx.fill();
@@ -214,6 +235,8 @@ function render(
   }
 
   // ── The two annual doses, growing as they absorb their halves of the year.
+  //    Orange inside a blue hairline orbit: the same pairing as the dose in
+  //    the mark itself, and the page's one moment of orange punctuation.
   const arrived = clamp01((phase - FLIGHT) / DEPART_SPAN) * DAYS;
   for (const half of [0, 1] as const) {
     const target = half === 0 ? d0 : d1;
@@ -234,14 +257,14 @@ function render(
       target.y,
       r * 2.6,
     );
-    halo.addColorStop(0, `rgba(${SKY},0.22)`);
-    halo.addColorStop(1, `rgba(${SKY},0)`);
+    halo.addColorStop(0, `rgba(${ORANGE},0.2)`);
+    halo.addColorStop(1, `rgba(${ORANGE},0)`);
     ctx.fillStyle = halo;
     ctx.beginPath();
     ctx.arc(target.x, target.y, r * 2.6, 0, TAU);
     ctx.fill();
 
-    ctx.fillStyle = `rgba(${DEEP},0.92)`;
+    ctx.fillStyle = `rgba(${ORANGE},0.95)`;
     ctx.beginPath();
     ctx.arc(target.x, target.y, r, 0, TAU);
     ctx.fill();
@@ -261,11 +284,37 @@ function render(
 }
 
 export function DoseMigration() {
+  const counterRef = useRef<HTMLSpanElement | null>(null);
+  const lastDayRef = useRef(-1);
+
+  /** The canvas render, plus the DAY readout riding the same frame loop:
+   *  spins up with the drain, rests at 365 through the hold, rewinds with
+   *  the refill. Under reduced motion the readout keeps its SSR value. */
+  const draw: HeroRender = (ctx, w, h, t) => {
+    render(ctx, w, h, t);
+    const el = counterRef.current;
+    if (!el || reduced) return;
+    const phase = currentPhase;
+    let day: number;
+    if (phase < DEPART_SPAN) {
+      day = Math.round(clamp01(phase / DEPART_SPAN) * DAYS);
+    } else if (phase < REFILL_START) {
+      day = DAYS;
+    } else {
+      day = Math.round(DAYS * (1 - clamp01((phase - REFILL_START) / REFILL_SPAN)));
+    }
+    day = Math.max(1, day);
+    if (day !== lastDayRef.current) {
+      lastDayRef.current = day;
+      el.textContent = `DAY ${String(day).padStart(3, "0")}`;
+    }
+  };
+
   return (
-    <div>
-      <div className="relative h-[280px] sm:h-[360px] lg:h-[430px]">
+    <div className="relative overflow-hidden rounded-3xl border border-line bg-white shadow-[0_36px_72px_-44px_rgba(13,35,66,0.3)]">
+      <div className="relative h-[280px] sm:h-[340px] lg:h-[400px]">
         <HeroCanvas
-          render={render}
+          render={draw}
           className="absolute inset-0"
           superSample={1.4}
           maxWidth={3200}
@@ -276,21 +325,43 @@ export function DoseMigration() {
              piece is still a sliver at the fold. */
           ioThreshold={0.45}
         />
+
+        {/* The chart-recorder readout, ticking with the drain. */}
+        <div
+          aria-hidden
+          className="absolute right-5 top-5 flex items-center gap-2.5 sm:right-8 sm:top-6"
+        >
+          <span className="h-px w-6 bg-line" />
+          <span
+            ref={counterRef}
+            className="text-[0.68rem] font-semibold tracking-[0.18em] text-muted tabular-nums"
+          >
+            DAY 365
+          </span>
+        </div>
       </div>
 
-      <div className="mt-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end sm:gap-8">
-        <Reveal variant="fade">
-          <p className="max-w-sm text-[clamp(1.1rem,1.6vw,1.35rem)] font-light leading-snug text-body">
-            <span className="font-medium text-blue">365 doses a year</span> of
-            daily oral therapy, dependent on adherence.
+      {/* Legend row: each caption seated under the side of the canvas it
+          describes — the year on the left, the two doses on the right. */}
+      <div className="grid gap-7 border-t border-line px-6 py-7 sm:grid-cols-2 sm:px-10 sm:py-8">
+        <div>
+          <span aria-hidden className="mb-4 block h-px w-10 bg-stone/70" />
+          <p className="text-[clamp(2rem,3vw,2.6rem)] font-extralight leading-none tracking-tight text-ink">
+            <CountUp value="365" />
           </p>
-        </Reveal>
-        <Reveal variant="fade" delay={120}>
-          <p className="max-w-sm text-[clamp(1.1rem,1.6vw,1.35rem)] font-light leading-snug text-body sm:text-right">
-            <span className="font-medium text-blue">1&ndash;2 doses a year</span>{" "}
-            of CIN-111, independent of daily adherence.
+          <p className="mt-2.5 max-w-[30ch] text-base leading-relaxed text-body">
+            doses a year of daily oral therapy, dependent on adherence.
           </p>
-        </Reveal>
+        </div>
+        <div className="sm:text-right">
+          <span aria-hidden className="mb-4 block h-px w-10 bg-orange sm:ml-auto" />
+          <p className="text-[clamp(2rem,3vw,2.6rem)] font-extralight leading-none tracking-tight text-blue">
+            1–2
+          </p>
+          <p className="mt-2.5 max-w-[30ch] text-base leading-relaxed text-body sm:ml-auto">
+            doses a year of CIN-111, independent of daily adherence.
+          </p>
+        </div>
       </div>
     </div>
   );

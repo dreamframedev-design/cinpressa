@@ -11,7 +11,6 @@ import { Bleed } from "@/components/bleed";
 import { FocusField } from "@/components/focus-field";
 import { MilestoneStrip } from "@/components/milestone-strip";
 import { NewsHorizon } from "@/components/news-horizon";
-import { MarkArt } from "@/components/geometry";
 import { ConvergenceMark } from "@/components/convergence-mark";
 import { Reveal } from "@/components/reveal";
 import { ArrowIcon } from "@/components/arrow-icon";
@@ -176,27 +175,21 @@ export default function HomePage() {
           </Reveal>
         </Section>
 
-        {/* Our approach */}
-        <Section
-          tone="green"
-          art={
-            <MarkArt
-              variant="brand"
-              light
-              className="absolute -right-32 -top-40 h-[620px] w-auto rotate-[18deg] opacity-[0.13]"
-            />
-          }
-        >
+        {/* Our approach. White ground, no wash, no watermark: the note on the
+            old treatment was that the dots floated in space over a green field.
+            The year-draining-into-two-doses flight now runs inside a framed
+            instrument card — the card IS the container — and it wants clean
+            paper behind it, not atmosphere. See dose-migration.tsx. */}
+        <Section>
           <SectionHeader
             eyebrow="Our approach"
             title="Designed to create a backbone of control"
             deck="Long-acting AGT silencing"
           />
-          {/* The year draining into two doses. Both of the pictures the note
-              asked for — the box emptying, the dots becoming two — are this one
-              event seen at its two ends; see dose-migration.tsx. */}
           <div className="mt-14">
-            <DoseMigration />
+            <Reveal variant="rise">
+              <DoseMigration />
+            </Reveal>
           </div>
           <Reveal variant="fade" delay={120}>
             <p className="mt-12 max-w-3xl text-base leading-relaxed text-body">
