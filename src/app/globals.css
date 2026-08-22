@@ -906,65 +906,16 @@ p {
 }
 
 /* ---------- Pipeline diagram ----------
-   Completed stages read as a solid fill; the in-progress stretch is a
-   different *texture*, not a different shade, so the handoff is a deliberate
-   edge rather than a muddy blend. */
+   The bar fills from the left as the chart arrives: the programme advancing
+   along the track, not a box appearing. The hatch, sheen and tip-glow helpers
+   that used to live here went with the textured chevron the chart no longer
+   draws. */
 
 [data-reveal].reveal-pending .track-progress {
   transform: scaleX(0);
 }
 [data-reveal].reveal-in .track-progress {
   animation: grow-x 1.1s var(--ease-brand) 0.25s both;
-}
-
-@keyframes bar-stripes {
-  to {
-    background-position: 28px 0;
-  }
-}
-
-.track-stripes {
-  background-image: repeating-linear-gradient(
-    115deg,
-    rgba(255, 255, 255, 0.38) 0px,
-    rgba(255, 255, 255, 0.38) 7px,
-    rgba(255, 255, 255, 0) 7px,
-    rgba(255, 255, 255, 0) 14px
-  );
-  background-size: 28px 100%;
-  animation: bar-stripes 1.1s linear infinite;
-}
-
-/* Slow specular sweep across the finished stretch */
-@keyframes bar-sheen {
-  0% {
-    transform: translateX(-140%) skewX(-18deg);
-  }
-  55%,
-  100% {
-    transform: translateX(560%) skewX(-18deg);
-  }
-}
-
-.track-sheen {
-  animation: bar-sheen 5.5s var(--ease-brand) 1.2s infinite;
-}
-
-/* Soft halo at the leading edge, "you are here" */
-@keyframes tip-glow {
-  0%,
-  100% {
-    opacity: 0.35;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.85;
-    transform: scale(1.35);
-  }
-}
-
-.track-tip {
-  animation: tip-glow 2.6s var(--ease-brand) infinite;
 }
 
 /* Continuous focal pulse ring */
@@ -1094,33 +1045,28 @@ p {
 }
 
 /* ---------- Pipeline beam ----------
-   A specular pass across the arrow. Deliberately TIGHT: the sweep itself lasts under a
-   second and then the track sits still for six. A slow continuous shine reads as a
-   loading bar; a quick one reads as light catching a machined edge, which is the
-   register this chart wants. */
+   One specular pass along the bar, then five seconds of stillness.
+
+   No opacity keyframes: the beam's own gradient is transparent at both ends and
+   the bar clips it, so it resolves out of the left edge and dissolves into the
+   right on geometry alone. Every keyframe declares the transform, so the whole
+   crossing is a single eased interval — it gathers pace, glides, and settles,
+   rather than switching speed at a keyframe seam. */
 
 @keyframes pl-beam {
   0% {
-    transform: translateX(-160%) skewX(-14deg);
-    opacity: 0;
+    transform: translateX(-115%) skewX(-12deg);
   }
-  2% {
-    opacity: 1;
+  20% {
+    transform: translateX(400%) skewX(-12deg);
   }
-  11% {
-    transform: translateX(820%) skewX(-14deg);
-    opacity: 1;
-  }
-  13%,
   100% {
-    transform: translateX(820%) skewX(-14deg);
-    opacity: 0;
+    transform: translateX(400%) skewX(-12deg);
   }
 }
 
 .pl-beam {
-  animation: pl-beam 7s linear infinite;
-  animation-delay: 1.2s;
+  animation: pl-beam 6.5s cubic-bezier(0.65, 0, 0.35, 1) 1.4s infinite;
 }
 
 /* The stage column under the cursor. A tint and a crisp top rule, nothing soft. */
@@ -1186,9 +1132,7 @@ p {
   /* Colour and texture stay; only the motion stops. */
   .mark-suspend,
   .bloom,
-  .bloom-layer,
-  .track-stripes,
-  .track-tip {
+  .bloom-layer {
     animation: none !important;
     transform: none !important;
   }
@@ -1258,7 +1202,6 @@ p {
   }
 
   .pulse-ring-el,
-  .track-sheen,
   .pl-beam {
     animation: none !important;
     opacity: 0 !important;

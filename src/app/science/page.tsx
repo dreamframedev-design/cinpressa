@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { PageHero } from "@/components/page-hero";
-import { HeroPulse } from "@/components/hero-pulse";
-import { HeroLaminar } from "@/components/hero-laminar";
+import { FlowField } from "@/components/flow-field";
 import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
 import { RaasPathway } from "@/components/raas-pathway";
@@ -25,29 +24,18 @@ const complications = [
   "Vascular dementia",
 ];
 
-/**
- * Every line is a clause of the site map's Mechanism body. The previous set
- * carried compensatory-renin-rebound and RAAS-escape claims that the updated
- * copy no longer makes, so they are gone rather than restated.
- */
-const upstreamBenefits = [
-  "Prolonged duration of action",
-  "Durable blood pressure reduction",
-  "Residual pathway activity addressed at the source rather than downstream",
-  "Differentiated from standard RAAS blockade",
-];
-
 export default function SciencePage() {
   return (
     <div id="top">
       <SiteNav />
 
       <main>
-        {/* Pressure traces: many quarrelling daily readings on the left,
-            funnelling into one calm synchronised braid. The page's own subject,
-            stated before a word is read. See hero-pulse.tsx. */}
+        {/* Flow held and then released — the page's own subject, stated in mass
+            before a word is read. The forty-two hairline pressure traces that
+            used to sit here made the same argument in a language this brand
+            does not speak. See flow-field.tsx. */}
         <PageHero
-          field={<HeroPulse className="absolute inset-0" />}
+          field={<FlowField className="absolute inset-0" />}
           eyebrow="Unmet need"
           title="Blood pressure control still depends on daily adherence"
           deck="The challenge is persistence"
@@ -95,21 +83,20 @@ export default function SciencePage() {
           </div>
         </Section>
 
-        {/* CinPressa solution. The backdrop is the laminar field: flow that
-            holds its line unbroken past an obstruction, which is what "a
-            continuous backbone" looks like. It sits behind the copy as
-            atmosphere rather than inline as a figure, so it reads without
-            asking to be decoded and costs the section no height. */}
+        {/* CinPressa solution. The same field as the header, at watermark
+            strength and seeded to a different moment so the two are siblings
+            rather than the same picture twice. It sits behind the copy as
+            atmosphere, so it reads without asking to be decoded and costs the
+            section no height. */}
         <Section
           tone="green"
           art={
-            /* Watermark register, not hero register. The mark this replaced sat
-               at 0.14; a full field of hairlines carries more ink than a mark,
-               so it lands a little above that and no higher — the copy crosses
-               it and must win. */
-            <HeroLaminar
+            <FlowField
+              variant="ambient"
               transparent
-              className="absolute inset-0 opacity-[0.3]"
+              seed={2.6}
+              strength={0.34}
+              className="absolute inset-0"
             />
           }
         >
@@ -146,58 +133,31 @@ export default function SciencePage() {
             deck="RAAS modulation at the source"
           />
 
-          <div className="mt-14 grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
-            <div>
-              <Reveal variant="fade">
-                <p className="text-base leading-relaxed text-body">
-                  AGT is the precursor in the RAAS pathway and is crucial for
-                  blood pressure regulation. Standard RAAS inhibitors act
-                  downstream and do not completely suppress the RAAS pathway.
-                </p>
-              </Reveal>
-              <Reveal variant="fade" delay={100}>
-                <p className="mt-6 text-base leading-relaxed text-body">
-                  By targeting AGT synthesis in the liver via RNA interference,
-                  CIN-111 is designed to block the RAAS cascade upstream:
-                </p>
-              </Reveal>
-
-              <ul className="mt-7 space-y-4">
-                {upstreamBenefits.map((benefit, i) => (
-                  <Reveal
-                    key={benefit}
-                    as="li"
-                    variant="fade"
-                    delay={i * 70}
-                    className="flex gap-3.5"
-                  >
-                    <span
-                      aria-hidden
-                      className="mt-1.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-blue/10"
-                    >
-                      <svg viewBox="0 0 12 12" className="h-2.5 w-2.5" aria-hidden>
-                        <path
-                          d="M2.5 6.2 5 8.5 9.5 3.5"
-                          fill="none"
-                          stroke="#2261AD"
-                          strokeWidth="1.6"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </span>
-                    <span className="text-base leading-relaxed text-body">
-                      {benefit}
-                    </span>
-                  </Reveal>
-                ))}
-              </ul>
-            </div>
-
-            <Reveal variant="rise" delay={120}>
-              <RaasPathway />
+          {/* One column, per the site map revision. The two paragraphs used to
+              sit in a left-hand column opposite the diagram; they now open the
+              section above it, so the argument is made once, in order, and the
+              cascade is read as its conclusion rather than as a sidebar.
+              Prose keeps a reading measure while the diagram steps out wider —
+              the same column, set to the width each thing actually wants. */}
+          <div className="mt-10 max-w-3xl space-y-6">
+            <Reveal variant="fade">
+              <p className="text-lg leading-relaxed text-body">
+                AGT is the precursor in the RAAS pathway and is crucial for
+                blood pressure regulation. Standard RAAS inhibitors act
+                downstream and do not completely suppress the RAAS pathway.
+              </p>
+            </Reveal>
+            <Reveal variant="fade" delay={100}>
+              <p className="text-lg leading-relaxed text-body">
+                By targeting AGT synthesis in the liver via RNA interference,
+                CIN-111 is designed to block the RAAS cascade upstream.
+              </p>
             </Reveal>
           </div>
+
+          <Reveal variant="rise" delay={140} className="mt-14 max-w-5xl">
+            <RaasPathway />
+          </Reveal>
         </Section>
       </main>
 

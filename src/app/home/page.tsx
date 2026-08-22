@@ -8,9 +8,8 @@ import { SectionHeader } from "@/components/section-header";
 import { StatBand } from "@/components/stat-band";
 import { DoseMigration } from "@/components/dose-migration";
 import { Bleed } from "@/components/bleed";
-import { FocusField } from "@/components/focus-field";
+import { FlowField } from "@/components/flow-field";
 import { MilestoneStrip } from "@/components/milestone-strip";
-import { NewsHorizon } from "@/components/news-horizon";
 import { ConvergenceMark } from "@/components/convergence-mark";
 import { Reveal } from "@/components/reveal";
 import { ArrowIcon } from "@/components/arrow-icon";
@@ -205,14 +204,21 @@ export default function HomePage() {
           </Reveal>
         </Section>
 
-        {/* Pipeline. The art is FOCUS itself rather than a preview of the pipeline:
-            a one-programme pipeline shown small reads as "we have one thing" instead
-            of "we are concentrated on one thing". Weighted to the right, where the
-            copy is not. */}
+        {/* Pipeline. The capsules that used to stream to a focal point here were
+            called abstract, and rightly: focus-as-a-concept is a harder read than
+            it looked. This takes the shared flow field instead, weighted to the
+            right where the copy is not. */}
         <Section
           tone="indigo"
           art={
-            <FocusField className="absolute inset-y-0 right-0 hidden w-[62%] lg:block" />
+            <FlowField
+              variant="ambient"
+              transparent
+              seed={4.1}
+              strength={0.5}
+              gate={0.26}
+              className="absolute inset-y-0 right-0 hidden w-[62%] lg:block"
+            />
           }
         >
           <SectionHeader
@@ -243,11 +249,12 @@ export default function HomePage() {
           </div>
         </Section>
 
-        {/* News. The page used to end on a white box. The backdrop extends the
-            milestone axis's own logic — dated work near, the open calendar
-            ahead — as a field rather than a figure, so it costs the section no
-            height and asks to be read as atmosphere. See news-horizon.tsx. */}
-        <Section art={<NewsHorizon className="absolute inset-0" />}>
+        {/* News. NO BACKDROP, on purpose. This section had a field behind it and
+            the note it earned was that the same picture was now running in four
+            places — at which point it had stopped being a choice. A closing
+            section carrying two dates does not need atmosphere; it needs to be
+            legible and to stop. White ground, type hierarchy, two rules. */}
+        <Section>
           <div className="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
             <SectionHeader
               eyebrow="News"

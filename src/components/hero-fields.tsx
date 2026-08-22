@@ -6,10 +6,10 @@ import { HeroCanvas, TAU, smooth, drawHeroWashes } from "@/components/hero-canva
  * Churn, the /pipeline hero field.
  *
  * The other interior pages: /about and /news use the default treatment in
- * hero-field.tsx, and /science uses the pressure traces in hero-pulse.tsx (with
- * the laminar field from hero-laminar.tsx behind its solution section). Other
- * fields lived in this file and were removed when their pages changed; all are
- * recoverable from history.
+ * hero-field.tsx, and /science now takes the shared ribbon field in
+ * flow-field.tsx. The hairline fields that used to sit on /science and on two
+ * home sections were retired with that change; all are recoverable from
+ * history.
  *
  * THE CONCEPT (kept on request): layered brand-colour ribbons continuously
  * STIRRED by a rotating warp — they curl, fold back on themselves and pinch
