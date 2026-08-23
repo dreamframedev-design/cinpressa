@@ -10,7 +10,7 @@ import { DoseMigration } from "@/components/dose-migration";
 import { Bleed } from "@/components/bleed";
 import { FlowField } from "@/components/flow-field";
 import { MilestoneStrip } from "@/components/milestone-strip";
-import { ConvergenceMark } from "@/components/convergence-mark";
+import { MarkPreview } from "@/components/mark-preview";
 import { Reveal } from "@/components/reveal";
 import { ArrowIcon } from "@/components/arrow-icon";
 
@@ -118,8 +118,11 @@ export default function HomePage() {
                 ))}
               </div>
 
+              {/* REVIEW SCAFFOLDING: the entrance picker. Swap back to a plain
+                  <ConvergenceMark variant="…" className="w-full" /> once one is
+                  chosen, and delete mark-preview.tsx. */}
               <div className="mark-lift relative w-[68%]">
-                <ConvergenceMark className="w-full" />
+                <MarkPreview className="w-full" />
               </div>
             </div>
           </div>

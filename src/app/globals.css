@@ -701,6 +701,20 @@ p {
   will-change: opacity, filter;
 }
 
+/* ── Entrance beats, parameterised ───────────────────────────────────────
+   The four ovals arriving is only the first movement; ignition, the dose
+   stamp, the ring and the idle float all hang off when that movement ENDS.
+   Entrances of different lengths therefore have to be able to move the rest
+   of the score with them, so the downstream delays are variables set on the
+   root and every variant below retunes them together. */
+
+.cvg {
+  --ignite-at: 1.8s;
+  --dose-at: 2.2s;
+  --ring-at: 2.35s;
+  --idle-at: 3.4s;
+}
+
 /* Ignition: the wipe circle in the artwork's mask grows from the core. The
    feather is 40% of the radius (gradient fill, no filter), so the final
    radius overshoots the artwork: 0.6 x 240 covers the farthest corner. The
@@ -717,7 +731,7 @@ p {
 
 .cvg-wipe {
   r: 0px;
-  animation: cvg-ignite 0.7s cubic-bezier(0.4, 0.03, 0.25, 1) 1.8s both;
+  animation: cvg-ignite 0.7s cubic-bezier(0.4, 0.03, 0.25, 1) var(--ignite-at) both;
 }
 
 /* The artwork also crossfades in globally, riding the wipe: between the two,
@@ -732,7 +746,501 @@ p {
 }
 
 .cvg-art {
-  animation: cvg-art-in 0.55s cubic-bezier(0.33, 0.02, 0.2, 1) 1.8s both;
+  animation: cvg-art-in 0.55s cubic-bezier(0.33, 0.02, 0.2, 1) var(--ignite-at) both;
+}
+
+/* ---------- Convergence: alternative entrances ----------
+   The original arrival wheeled all four ovals in on a shared spiral. It was
+   read as dated — flying, spinning objects that assemble is Flash-era
+   grammar — so what follows are four entrances built on the opposite
+   instinct. Three of them move the ovals barely at all or not at all; the
+   mark is REVEALED or RESOLVED rather than flown in. Each retunes the
+   downstream beats above so ignition lands on its own last frame.
+
+   Every one of them still ends in exactly the same state, so the hover
+   explode, the idle float and the artwork crossfade are untouched. Only the
+   first movement is swapped. Selection is a class on the root. */
+
+/* ── 1. Bloom ────────────────────────────────────────────────────────────
+   Nothing travels. Each oval is in its final position from the first frame
+   and simply saturates outward, out of focus and into focus, with a swell so
+   slight it reads as ink wicking rather than as a shape growing. Staggered,
+   so the overlaps form one at a time and the multiply deepens in steps — the
+   deep colour is BUILT in front of you, which is the mark's whole idea.
+   This is the home wave's own metaphor: pigment spreading on wet paper. */
+
+@keyframes cvg-bloom-petal {
+  from {
+    transform: scale(0.952);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes cvg-bloom-ink {
+  0% {
+    opacity: 0;
+    filter: blur(17px);
+  }
+  55% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0px);
+  }
+}
+
+.cvg-v-bloom {
+  --ignite-at: 1.54s;
+  --dose-at: 1.84s;
+  --ring-at: 1.98s;
+  --idle-at: 2.54s;
+}
+
+.cvg-v-bloom .cvg-orbit {
+  animation: none;
+}
+
+.cvg-v-bloom .cvg-petal {
+  animation: cvg-bloom-petal 1.5s cubic-bezier(0.22, 1, 0.36, 1)
+    var(--cvg-delay, 0s) both;
+}
+
+.cvg-v-bloom .cvg-ink {
+  animation: cvg-bloom-ink 1.4s cubic-bezier(0.33, 0, 0.2, 1)
+    var(--cvg-delay, 0s) both;
+}
+
+/* ── 2. Register ─────────────────────────────────────────────────────────
+   A press coming into register. The four inks land a few units out of true,
+   each in its own direction, at full strength and dead sharp — so you SEE
+   the misregistration — and then close the last millimetres onto the mark.
+   No rotation, no blur, no fade to hide behind. It is the fastest of the
+   four by a wide margin, and the confidence is the point: this is a mark
+   being PRINTED, and a press does not drift into position. */
+
+@keyframes cvg-register-petal {
+  from {
+    transform: translate(var(--rx, 0px), var(--ry, 0px)) scale(1.016);
+  }
+  to {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+@keyframes cvg-register-ink {
+  0% {
+    opacity: 0;
+  }
+  24% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.cvg-v-register {
+  --ignite-at: 0.63s;
+  --dose-at: 0.93s;
+  --ring-at: 1.07s;
+  --idle-at: 1.63s;
+}
+
+.cvg-v-register .cvg-orbit {
+  animation: none;
+}
+
+.cvg-v-register .cvg-petal {
+  animation: cvg-register-petal 0.85s cubic-bezier(0.16, 1, 0.3, 1)
+    var(--cvg-delay, 0s) both;
+}
+
+.cvg-v-register .cvg-ink {
+  animation: cvg-register-ink 0.5s linear var(--cvg-delay, 0s) both;
+}
+
+/* ── 3. Aperture ─────────────────────────────────────────────────────────
+   The mark is not assembled at all. It is already whole, and an iris opens
+   from its core outward to uncover it — so the overlaps arrive already
+   formed rather than being built, and the only thing that happens is that
+   there is more of it. The body carries a single slow counter-scale so the
+   reveal has weight behind it instead of being a flat wipe.
+
+   The iris is a mask on the rig, feathered by the same gradient trick the
+   ignition uses: a soft band 40% of the radius, so the opening front never
+   reads as an edge and nothing re-convolves per frame. */
+
+@keyframes cvg-iris-open {
+  from {
+    r: 0px;
+  }
+  to {
+    r: 215px;
+  }
+}
+
+@keyframes cvg-aperture-body {
+  from {
+    transform: scale(1.05);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes cvg-aperture-ink {
+  0% {
+    opacity: 0;
+  }
+  14% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.cvg-v-aperture {
+  --ignite-at: 1.04s;
+  --dose-at: 1.34s;
+  --ring-at: 1.48s;
+  --idle-at: 2.04s;
+}
+
+.cvg-iris {
+  r: 0px;
+  animation: cvg-iris-open 1.25s cubic-bezier(0.36, 0.02, 0.22, 1) both;
+}
+
+.cvg-v-aperture .cvg-orbit {
+  animation: cvg-aperture-body 1.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.cvg-v-aperture .cvg-petal {
+  animation: none;
+}
+
+.cvg-v-aperture .cvg-ink {
+  animation: cvg-aperture-ink 0.5s linear both;
+}
+
+/* ── 4. Depth ────────────────────────────────────────────────────────────
+   Four sheets of coloured glass at different distances, settling into one
+   plane. Two ovals start large and far behind, two small and close in
+   front, every one concentric on the mark's centre so nothing slides
+   sideways — the only axis in play is the one toward the viewer. Blur is
+   depth of field, not decoration: each sheet is out of focus in proportion
+   to how far out of plane it is, and comes sharp exactly as it lands.
+
+   The scale rides .cvg-orbit rather than .cvg-petal deliberately: that group
+   already pivots on the mark centroid, and scaling about each oval's own
+   centre would make four shapes grow in place instead of one stack
+   converging. */
+
+@keyframes cvg-depth-orbit {
+  from {
+    transform: scale(var(--z, 1));
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes cvg-depth-ink {
+  0% {
+    opacity: 0;
+    filter: blur(var(--zb, 12px));
+  }
+  38% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0px);
+  }
+}
+
+.cvg-v-depth {
+  --ignite-at: 1.1s;
+  --dose-at: 1.4s;
+  --ring-at: 1.54s;
+  --idle-at: 2.1s;
+}
+
+.cvg-v-depth .cvg-orbit {
+  animation: cvg-depth-orbit 1.5s cubic-bezier(0.16, 1, 0.3, 1)
+    var(--cvg-delay, 0s) both;
+}
+
+.cvg-v-depth .cvg-petal {
+  animation: none;
+}
+
+.cvg-v-depth .cvg-ink {
+  animation: cvg-depth-ink 1.45s cubic-bezier(0.33, 0, 0.2, 1)
+    var(--cvg-delay, 0s) both;
+}
+
+/* ---------- Convergence: refined orbital entrances ----------
+   The rotation was never the problem. The original stacked FIVE tells on top
+   of each other and the sum is what read as dated:
+
+     1. a 122-172deg turn of the whole group — a third of a revolution
+     2. 88-110px of travel on a 186-unit frame — over half the frame crossed
+     3. 43-60deg of per-petal counter-spin — everything rotating independently
+     4. a 1.08 scale overshoot — arriving large and shrinking to fit
+     5. 9px of motion blur on the flight
+
+   Take four of those away and the fifth is just a rotation, which is a
+   perfectly good idea and the one thing about the mark that is genuinely
+   its own: four ovals sharing a pivot. So every variant below rotates about
+   the centroid and does NOTHING ELSE. No travel, no counter-spin, no scale,
+   no blur. What separates them is the angle, whether the ovals share it,
+   and how the turn is timed.
+
+   The ink fades on a plain opacity ramp in all four — a blurred fade during
+   a rotation is what makes a turn read as a whoosh. */
+
+@keyframes cvg-turn {
+  from {
+    transform: rotate(var(--orb, 0deg));
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes cvg-turn-ink {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.cvg-v-seat .cvg-petal,
+.cvg-v-fan .cvg-petal,
+.cvg-v-counter .cvg-petal,
+.cvg-v-sweep .cvg-petal {
+  animation: none;
+}
+
+.cvg-v-seat .cvg-ink,
+.cvg-v-fan .cvg-ink,
+.cvg-v-counter .cvg-ink,
+.cvg-v-sweep .cvg-ink {
+  animation: cvg-turn-ink 0.75s linear var(--cvg-delay, 0s) both;
+}
+
+/* ── 5. Seat ─────────────────────────────────────────────────────────────
+   The finished mark, sixteen degrees off true, turning onto its axis as one
+   rigid body. Nothing deforms — the overlaps are already exactly right and
+   stay right — so the only event is alignment. A precision component seating
+   into its mount. The most restrained reading of an orbit there is. */
+
+.cvg-v-seat {
+  --ignite-at: 0.86s;
+  --dose-at: 1.16s;
+  --ring-at: 1.3s;
+  --idle-at: 1.86s;
+}
+
+.cvg-v-seat .cvg-orbit {
+  animation: cvg-turn 1.45s cubic-bezier(0.34, 0.9, 0.2, 1) both;
+}
+
+/* ── 6. Fan ──────────────────────────────────────────────────────────────
+   Differential angles: the ovals start fanned across twenty-odd degrees and
+   close onto true TOGETHER, no stagger, so they arrive like the blades of an
+   aperture shutting. Because the angles differ, the overlaps genuinely sweep
+   closed and the deep core is made at the instant of closure rather than
+   being carried in pre-formed. Of the four this is the one that uses the
+   mark's own construction — four ovals on a shared pivot — as the motion.
+   Eased in and out, because a mechanism accelerates and decelerates. */
+
+.cvg-v-fan {
+  --ignite-at: 1.22s;
+  --dose-at: 1.52s;
+  --ring-at: 1.66s;
+  --idle-at: 2.22s;
+}
+
+.cvg-v-fan .cvg-orbit {
+  animation: cvg-turn 1.5s cubic-bezier(0.5, 0, 0.15, 1) both;
+}
+
+/* ── 7. Counter ──────────────────────────────────────────────────────────
+   Two ovals turn one way, two the other, eighteen degrees each, closing at
+   the same moment. The opposed pairs make the overlaps open and shut
+   symmetrically on the way in, so the mark breathes once and settles. More
+   alive than Seat without going anywhere near the original's spin. */
+
+.cvg-v-counter {
+  --ignite-at: 1.16s;
+  --dose-at: 1.46s;
+  --ring-at: 1.6s;
+  --idle-at: 2.16s;
+}
+
+.cvg-v-counter .cvg-orbit {
+  animation: cvg-turn 1.4s cubic-bezier(0.45, 0, 0.2, 1) both;
+}
+
+/* ── 8. Sweep ────────────────────────────────────────────────────────────
+   The bold one, kept honest. A real quarter-turn-and-a-bit — fifty-five
+   degrees, visibly an orbit — but as ONE clean move with none of the
+   accessories: the group turns, and that is the entire event. Timed long and
+   even with a soft finish rather than an exponential slam, so it reads as a
+   turntable coming to rest, not as something thrown into place. Proof that
+   an orbit can be large and still not be cheap; what was cheap was the
+   spinning, the flying and the blur that used to ride along with it. */
+
+.cvg-v-sweep {
+  --ignite-at: 1.34s;
+  --dose-at: 1.64s;
+  --ring-at: 1.78s;
+  --idle-at: 2.34s;
+}
+
+.cvg-v-sweep .cvg-orbit {
+  animation: cvg-turn 1.9s cubic-bezier(0.22, 0.55, 0.15, 1) both;
+}
+
+.cvg-v-sweep .cvg-ink {
+  animation: cvg-turn-ink 1s linear var(--cvg-delay, 0s) both;
+}
+
+/* ── 9. Unfurl ───────────────────────────────────────────────────────────
+   A hand of cards being fanned open with the thumb.
+ *
+   WHY THE OTHERS FELT STATIC. Every orbital variant above CLOSES a spread —
+   the ovals start apart and converge onto true — and a rigid sweep does not
+   change the arrangement at all. The mark's finished state is ALREADY a fan:
+   the four oval centres sit at bearings roughly ninety degrees apart around
+   the centroid (green, indigo, pale, blue going round). So an entrance that
+   converges is a fan shutting, and one that rotates rigidly is a fan being
+   carried across the table. Neither of them unfurls, which is why they read
+   as arriving rather than opening.
+
+   This one runs the other way. The hand starts COMPRESSED to about seventy
+   per cent of its true spread and opens to full, anchored at green — the
+   bottom card, which barely moves — with each card further round travelling
+   further, blue at the top of the fan sweeping the furthest by a wide
+   margin. The spread grows the whole way, so at every frame the hand is
+   visibly wider than it was, which is the entire difference between opening
+   and moving.
+
+   Peel order is the fan's own order, not the array's, on a short stagger, so
+   the cards break away one after another and land as a run rather than a
+   thud. Still rotation only: no travel, no counter-spin, no scale, no blur.
+   The angles are large on the trailing card and that is fine — what dated the
+   original was four ovals doing the SAME large turn in lockstep with a spin
+   and a blur riding along. Four cards doing DIFFERENT turns is a fan. */
+
+.cvg-v-unfurl {
+  --ignite-at: 1.2s;
+  --dose-at: 1.5s;
+  --ring-at: 1.64s;
+  --idle-at: 2.2s;
+}
+
+.cvg-v-unfurl .cvg-orbit {
+  animation: cvg-turn 1.6s cubic-bezier(0.2, 0.7, 0.15, 1) var(--cvg-delay, 0s)
+    both;
+}
+
+.cvg-v-unfurl .cvg-petal {
+  animation: none;
+}
+
+.cvg-v-unfurl .cvg-ink {
+  animation: cvg-turn-ink 0.8s linear var(--cvg-delay, 0s) both;
+}
+
+/* ── 10-12. The rest of the unfurl family ────────────────────────────────
+   Four ways to open the same hand. Two axes separate them: WHERE the hand is
+   compressed, and whether the cards break away together or one at a time.
+
+   Compressing toward the bottom card (Unfurl, Cascade) is the literal thumb
+   fan — the bottom card barely moves and the top card sweeps the furthest.
+   Compressing toward the MIDDLE (Splay, Riffle) spreads from both ends at
+   once, and it is the better trade by a distance: Splay opens from 45% of
+   true spread against Unfurl's 70%, a far more dramatic unfurl, and does it
+   with a smaller maximum turn (77deg against 94deg) because the work is
+   shared across both ends instead of dumped on one card.
+
+   Stagger is the other axis. Cascade peels on a long 0.16s step so four
+   distinct cards are read; Riffle uses 0.05s so the hand opens as one fast
+   motion. Both follow the fan's own order — green, indigo, pale, blue — not
+   the array's. */
+
+/* Splay — two-handed spread. The widest opening in the set. */
+.cvg-v-splay {
+  --ignite-at: 1s;
+  --dose-at: 1.3s;
+  --ring-at: 1.44s;
+  --idle-at: 2s;
+}
+
+.cvg-v-splay .cvg-orbit {
+  animation: cvg-turn 1.5s cubic-bezier(0.3, 0.75, 0.2, 1) both;
+}
+
+.cvg-v-splay .cvg-petal {
+  animation: none;
+}
+
+.cvg-v-splay .cvg-ink {
+  animation: cvg-turn-ink 0.7s linear both;
+}
+
+/* Cascade — dealt. The long stagger is the point: four cards, not one hand. */
+.cvg-v-cascade {
+  --ignite-at: 1.25s;
+  --dose-at: 1.55s;
+  --ring-at: 1.69s;
+  --idle-at: 2.25s;
+}
+
+.cvg-v-cascade .cvg-orbit {
+  animation: cvg-turn 1.15s cubic-bezier(0.25, 0.8, 0.25, 1)
+    var(--cvg-delay, 0s) both;
+}
+
+.cvg-v-cascade .cvg-petal {
+  animation: none;
+}
+
+.cvg-v-cascade .cvg-ink {
+  animation: cvg-turn-ink 0.5s linear var(--cvg-delay, 0s) both;
+}
+
+/* Riffle — the fast one. Opens and is done before you have finished looking. */
+.cvg-v-riffle {
+  --ignite-at: 0.77s;
+  --dose-at: 1.07s;
+  --ring-at: 1.21s;
+  --idle-at: 1.77s;
+}
+
+.cvg-v-riffle .cvg-orbit {
+  animation: cvg-turn 0.9s cubic-bezier(0.3, 0.85, 0.3, 1) var(--cvg-delay, 0s)
+    both;
+}
+
+.cvg-v-riffle .cvg-petal {
+  animation: none;
+}
+
+.cvg-v-riffle .cvg-ink {
+  animation: cvg-turn-ink 0.42s linear var(--cvg-delay, 0s) both;
 }
 
 /* ---------- Convergence: hover exploded hold ----------
@@ -811,7 +1319,7 @@ p {
 .cvg-dose {
   transform-box: fill-box;
   transform-origin: center;
-  animation: cvg-dose-in 0.5s var(--ease-brand) 2.2s both;
+  animation: cvg-dose-in 0.5s var(--ease-brand) var(--dose-at) both;
 }
 
 /* One hairline pulse emanating from the stamp, just after contact. */
@@ -832,12 +1340,12 @@ p {
 .cvg-ring {
   transform-box: fill-box;
   transform-origin: center;
-  animation: cvg-ring-out 0.9s var(--ease-brand) 2.35s both;
+  animation: cvg-ring-out 0.9s var(--ease-brand) var(--ring-at) both;
 }
 
 /* The idle float waits for the convergence to finish. */
 .mark-suspend-late {
-  animation-delay: 3.4s;
+  animation-delay: var(--idle-at, 3.4s);
 }
 
 /* ---------- Nav lockup mark ----------
@@ -1156,6 +1664,13 @@ p {
     transform: none !important;
     filter: none !important;
     opacity: 1 !important;
+  }
+
+  /* The iris holds fully open, so the aperture entrance resolves to the
+     same still mark every other variant does. */
+  .cvg-iris {
+    animation: none !important;
+    r: 215px;
   }
 
   .mark-light-band {

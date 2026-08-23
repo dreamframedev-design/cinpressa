@@ -94,9 +94,235 @@ const FLIGHTS = [
   { orb: "-172deg", dx: "95px", dy: "68px", rot: "60deg", delay: "0.44s" },
 ];
 
-/** Entrance duration before hover unlocks (the ring finishes on its own at
-    ~3.25s; the mark is lit and at rest from ~2.75s). */
-const SETTLE_MS = 2750;
+/**
+ * THE FOUR REPLACEMENT ENTRANCES.
+ *
+ * The orbit above was called dated, and the diagnosis is right: objects that
+ * fly and spin into formation is Flash-era grammar. These are built on the
+ * opposite instinct — three of them barely move the ovals at all, and the
+ * mark is revealed or resolved rather than assembled. The keyframes live in
+ * globals.css under "Convergence: alternative entrances"; what is here is the
+ * per-oval data each one needs and how long it runs before hover unlocks.
+ *
+ *   bloom     ink wicking into wet paper; nothing travels
+ *   register  a press closing the last millimetres onto true
+ *   aperture  an iris opening on a mark that is already whole
+ *   depth     four sheets of glass settling into one plane
+ *   orbit     the original, kept only so the two can be compared
+ *
+ * Every one ends in an identical state, so the hover explode, the idle float
+ * and the artwork crossfade are untouched by the choice.
+ */
+export type MarkVariant =
+  | "unfurl"
+  | "splay"
+  | "cascade"
+  | "riffle"
+  | "seat"
+  | "fan"
+  | "counter"
+  | "sweep"
+  | "bloom"
+  | "register"
+  | "aperture"
+  | "depth"
+  | "orbit";
+
+export const MARK_VARIANTS: {
+  id: MarkVariant;
+  label: string;
+  note: string;
+  group: "orbital" | "still";
+}[] = [
+  { id: "splay", label: "Splay", note: "Spread from the middle — opens 45% → 100%", group: "orbital" },
+  { id: "unfurl", label: "Unfurl", note: "Thumb fan, anchored at the bottom card", group: "orbital" },
+  { id: "cascade", label: "Cascade", note: "Dealt — four cards peel one at a time", group: "orbital" },
+  { id: "riffle", label: "Riffle", note: "Riffled open, fast", group: "orbital" },
+  { id: "seat", label: "Seat", note: "16° as one rigid body, onto its axis", group: "orbital" },
+  { id: "fan", label: "Fan", note: "Fanned angles closing like aperture blades", group: "orbital" },
+  { id: "counter", label: "Counter", note: "Opposed pairs, the overlaps breathe shut", group: "orbital" },
+  { id: "sweep", label: "Sweep", note: "A real 55° turn, stripped of everything else", group: "orbital" },
+  { id: "orbit", label: "Orbit (original)", note: "The rejected one, for comparison", group: "orbital" },
+  { id: "bloom", label: "Bloom", note: "Ink wicking into wet paper", group: "still" },
+  { id: "register", label: "Register", note: "A press closing onto true", group: "still" },
+  { id: "aperture", label: "Aperture", note: "An iris opening on a whole mark", group: "still" },
+  { id: "depth", label: "Depth", note: "Sheets of glass settling into plane", group: "still" },
+];
+
+type Entrance = {
+  /** Time before hover unlocks: the last downstream beat, plus a breath. */
+  settle: number;
+  /** Per-oval stagger, keyed to MARK_OVALS order. */
+  delays: string[];
+  /** Per-oval custom properties the variant's keyframes read. */
+  vars?: Array<Record<string, string>>;
+};
+
+const ENTRANCES: Record<MarkVariant, Entrance> = {
+  /**
+   * Unfurl. Derived from the mark's own geometry rather than picked by eye.
+   *
+   * Each oval centre's bearing from the centroid, measured off the artwork:
+   *
+   *     green   -62.7deg   the bottom card, the anchor
+   *     indigo   35.9deg   +98.6 round from green
+   *     pale    128.7deg   +191.4
+   *     blue    209.9deg   +272.6, the top card
+   *
+   * Starting offsets are 30% of each card's distance round the fan, so the
+   * hand opens from ~70% of its true spread, plus a shared 12deg so even the
+   * anchor turns. Delays follow the fan's order — green, indigo, pale, blue —
+   * which is NOT the array order, so they are set per index by hand.
+   */
+  /* Compressed toward the MIDDLE of the fan: both ends travel, so the hand
+     opens from 45% of true spread — the widest opening here — on a smaller
+     maximum turn than the anchored versions manage. No stagger; a two-handed
+     spread happens all at once. */
+  splay: {
+    settle: 1940,
+    delays: ["0s", "0s", "0s", "0s"],
+    vars: [
+      { "--orb": "-72.6deg" },
+      { "--orb": "77.4deg" },
+      { "--orb": "-27.9deg" },
+      { "--orb": "23.1deg" },
+    ],
+  },
+  /* Anchored, long stagger, biggest travel on the top card: cards are dealt
+     off the hand one at a time rather than spreading as one motion. */
+  cascade: {
+    settle: 2190,
+    delays: ["0.48s", "0s", "0.32s", "0.16s"],
+    vars: [
+      { "--orb": "-102.7deg" },
+      { "--orb": "-10deg" },
+      { "--orb": "-75.1deg" },
+      { "--orb": "-43.5deg" },
+    ],
+  },
+  /* Symmetric and quick, tight stagger — the hand riffles open in under a
+     second and the colour is already filling in. */
+  riffle: {
+    settle: 1710,
+    delays: ["0.15s", "0s", "0.1s", "0.05s"],
+    vars: [
+      { "--orb": "-59.4deg" },
+      { "--orb": "63.3deg" },
+      { "--orb": "-22.8deg" },
+      { "--orb": "18.9deg" },
+    ],
+  },
+  unfurl: {
+    settle: 2140,
+    /* indices are [blue, green, pale, indigo] */
+    delays: ["0.15s", "0s", "0.1s", "0.05s"],
+    vars: [
+      { "--orb": "-93.8deg" },
+      { "--orb": "-12deg" },
+      { "--orb": "-69.4deg" },
+      { "--orb": "-41.6deg" },
+    ],
+  },
+  /* ── The refined orbits. Every one of these rotates about the centroid and
+     does nothing else; --orb is the only variable any of them reads. Angles
+     are small enough to be an alignment rather than a journey — except
+     Sweep, which is deliberately large to prove the size was never the
+     problem. None of them stagger: these are assemblies closing, and a
+     stagger would turn a mechanism back into a drumroll. */
+  seat: {
+    settle: 1800,
+    delays: ["0s", "0s", "0s", "0s"],
+    vars: [
+      { "--orb": "-16deg" },
+      { "--orb": "-16deg" },
+      { "--orb": "-16deg" },
+      { "--orb": "-16deg" },
+    ],
+  },
+  fan: {
+    settle: 2160,
+    delays: ["0s", "0s", "0s", "0s"],
+    vars: [
+      { "--orb": "-26deg" },
+      { "--orb": "-19deg" },
+      { "--orb": "-12deg" },
+      { "--orb": "-5deg" },
+    ],
+  },
+  counter: {
+    settle: 2100,
+    delays: ["0s", "0s", "0s", "0s"],
+    vars: [
+      { "--orb": "-18deg" },
+      { "--orb": "18deg" },
+      { "--orb": "18deg" },
+      { "--orb": "-18deg" },
+    ],
+  },
+  sweep: {
+    settle: 2280,
+    delays: ["0s", "0s", "0s", "0s"],
+    vars: [
+      { "--orb": "-55deg" },
+      { "--orb": "-55deg" },
+      { "--orb": "-55deg" },
+      { "--orb": "-55deg" },
+    ],
+  },
+
+  /* Staggered widely: the whole point is watching four overlaps form one at
+     a time, which needs the arrivals separated enough to read as separate. */
+  bloom: {
+    settle: 2480,
+    delays: ["0s", "0.13s", "0.26s", "0.39s"],
+  },
+  /* Tight, because a press is not a drumroll: the plates land almost
+     together and the eye reads one correction, not four. Offsets are in
+     viewBox units on a 186-unit crop — about 5%, far enough to be
+     unmistakably out of true and near enough to be a registration error
+     rather than a journey. Directions are deliberately unalike. */
+  register: {
+    settle: 1570,
+    delays: ["0s", "0.05s", "0.1s", "0.15s"],
+    vars: [
+      { "--rx": "-11px", "--ry": "7px" },
+      { "--rx": "9px", "--ry": "-12px" },
+      { "--rx": "13px", "--ry": "8px" },
+      { "--rx": "-8px", "--ry": "-11px" },
+    ],
+  },
+  /* No stagger at all. The iris is one event and the mark is behind it
+     whole; delaying the ovals against each other would betray that. */
+  aperture: {
+    settle: 1980,
+    delays: ["0s", "0s", "0s", "0s"],
+  },
+  /* Alternating far/near so the stack has real depth either side of the
+     plane rather than all arriving from behind, and blur in proportion to
+     how far out of plane each sheet starts. */
+  depth: {
+    settle: 2040,
+    delays: ["0s", "0.1s", "0.2s", "0.3s"],
+    vars: [
+      { "--z": "1.45", "--zb": "18px" },
+      { "--z": "0.7", "--zb": "14px" },
+      { "--z": "1.28", "--zb": "11px" },
+      { "--z": "0.82", "--zb": "8px" },
+    ],
+  },
+  /* The original: the ring finishes on its own at ~3.25s, the mark is lit
+     and at rest from ~2.75s. */
+  orbit: {
+    settle: 2750,
+    delays: FLIGHTS.map((f) => f.delay),
+    vars: FLIGHTS.map((f) => ({
+      "--orb": f.orb,
+      "--dx": f.dx,
+      "--dy": f.dy,
+      "--rot": f.rot,
+    })),
+  },
+};
 
 /** The exploded hold. Opening ripples through the ovals on these delays;
  *  closing ignores them and returns everyone at once. The group unscrews
@@ -142,7 +368,14 @@ function normRadius(
   return Math.hypot(lx / o.rx, ly / o.ry);
 }
 
-export function ConvergenceMark({ className = "" }: { className?: string }) {
+export function ConvergenceMark({
+  className = "",
+  variant = "splay",
+}: {
+  className?: string;
+  variant?: MarkVariant;
+}) {
+  const entrance = ENTRANCES[variant];
   const [run, setRun] = useState(0);
   const [settled, setSettled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -151,6 +384,8 @@ export function ConvergenceMark({ className = "" }: { className?: string }) {
   const maskId = `cvg-m${uid}`;
   const softId = `cvg-s${uid}`;
   const shadowId = `cvg-sh${uid}`;
+  const irisId = `cvg-i${uid}`;
+  const irisSoftId = `cvg-is${uid}`;
 
   const rigRef = useRef<SVGSVGElement | null>(null);
   const liftEls = useRef<Array<SVGGElement | null>>([]);
@@ -178,10 +413,10 @@ export function ConvergenceMark({ className = "" }: { className?: string }) {
         setSettled(true);
         settledRef.current = true;
       },
-      reduced.current ? 0 : SETTLE_MS
+      reduced.current ? 0 : entrance.settle
     );
     return () => clearTimeout(t);
-  }, [run]);
+  }, [run, entrance.settle]);
 
   useEffect(() => () => cancelAnimationFrame(raf.current), []);
 
@@ -336,7 +571,7 @@ export function ConvergenceMark({ className = "" }: { className?: string }) {
       onClick={replay}
       onPointerMove={onPointerMove}
       onPointerLeave={() => setExploded(false)}
-      className={`cvg mark-suspend mark-suspend-late relative ${
+      className={`cvg cvg-v-${variant} mark-suspend mark-suspend-late relative ${
         settled ? "cvg-settled" : ""
       } ${open ? "cvg-open" : ""} ${className}`}
     >
@@ -357,6 +592,35 @@ export function ConvergenceMark({ className = "" }: { className?: string }) {
             </filter>
             {/* The lit-glass fills, one per petal: deep heart leaning toward
                 the mark centre, the oval's own pastel at the rim. */}
+            {/* The aperture's iris. Feathered by the same gradient trick the
+                ignition uses — a soft band 40% of the radius — so the opening
+                front is never an edge and nothing re-convolves per frame. */}
+            {variant === "aperture" ? (
+              <>
+                <radialGradient id={irisSoftId}>
+                  <stop offset="0" stopColor="#fff" />
+                  <stop offset="0.6" stopColor="#fff" />
+                  <stop offset="1" stopColor="#fff" stopOpacity="0" />
+                </radialGradient>
+                <mask
+                  id={irisId}
+                  maskUnits="userSpaceOnUse"
+                  x="0"
+                  y="0"
+                  width="258.82"
+                  height="242.26"
+                >
+                  <rect x="0" y="0" width="258.82" height="242.26" fill="#000" />
+                  <circle
+                    className="cvg-iris"
+                    cx={CENTER.x}
+                    cy={CENTER.y}
+                    r="0"
+                    fill={`url(#${irisSoftId})`}
+                  />
+                </mask>
+              </>
+            ) : null}
             {VIVID.map((v, i) => (
               <radialGradient
                 key={i}
@@ -393,17 +657,19 @@ export function ConvergenceMark({ className = "" }: { className?: string }) {
             />
           ))}
 
+          {/* The masked body. All four ovals sit inside one group so the iris
+              uncovers them together and their multiply still resolves against
+              each other; the leaders and the nucleus stay outside it, since
+              those belong to the hover pose, not the entrance. */}
+          <g mask={variant === "aperture" ? `url(#${irisId})` : undefined}>
           {MARK_OVALS.map((o, i) => (
             <g
               key={o.name}
               className="cvg-orbit"
               style={
                 {
-                  "--orb": FLIGHTS[i].orb,
-                  "--dx": FLIGHTS[i].dx,
-                  "--dy": FLIGHTS[i].dy,
-                  "--rot": FLIGHTS[i].rot,
-                  "--cvg-delay": FLIGHTS[i].delay,
+                  ...(entrance.vars?.[i] ?? {}),
+                  "--cvg-delay": entrance.delays[i],
                 } as CSSProperties
               }
             >
@@ -443,6 +709,7 @@ export function ConvergenceMark({ className = "" }: { className?: string }) {
               </g>
             </g>
           ))}
+          </g>
 
           {/* The nucleus: the dose revealed as the petals part, exactly where
               the artwork keeps it, inside a dashed hairline halo. The art
