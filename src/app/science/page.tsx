@@ -3,7 +3,7 @@ import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { PageHero } from "@/components/page-hero";
 import { FlowField } from "@/components/flow-field";
-import { CadenceField } from "@/components/cadence-field";
+import { ControlModel } from "@/components/control-model";
 import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
 import { RaasPathway } from "@/components/raas-pathway";
@@ -84,16 +84,12 @@ export default function SciencePage() {
           </div>
         </Section>
 
-        {/* CinPressa solution. NOT the header's field again. This section
-            argues that control stops arriving in daily peaks and troughs and
-            becomes one sustained level, so the backdrop is built from gaps:
-            separate lobes on the left that broaden, overlap and close into an
-            unbroken level by the right. Same brand language, a silhouette
-            nothing else on the site has. See cadence-field.tsx. */}
-        <Section
-          tone="green"
-          art={<CadenceField className="absolute inset-0" />}
-        >
+        {/* CinPressa solution. NO BACKDROP. This section had a wash, then a
+            better wash, and both were the wrong instrument: its argument is
+            structural — a foundation with optional courses laid on it — and a
+            wash cannot state a structure. It carries a figure instead. See
+            control-model.tsx. */}
+        <Section tone="green">
           <SectionHeader
             eyebrow="CinPressa solution"
             title="A new treatment paradigm"
@@ -117,6 +113,10 @@ export default function SciencePage() {
               </p>
             </Reveal>
           </div>
+
+          <Reveal variant="rise" delay={140} className="mt-14 max-w-5xl">
+            <ControlModel />
+          </Reveal>
         </Section>
 
         {/* Mechanism */}
