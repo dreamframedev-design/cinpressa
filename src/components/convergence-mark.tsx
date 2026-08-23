@@ -129,22 +129,12 @@ export type MarkVariant =
   | "orbit";
 
 export const MARK_VARIANTS: { id: MarkVariant; label: string }[] = [
-  /* Review order, set by hand: the three under active consideration lead and
-     everything else trails as reference. Not grouped — a flat list keeps the
-     control small, which is the point of a control that sits on the hero. */
+  /* The three under review. The other entrances still exist in ENTRANCES and
+     in globals.css — inert, and recoverable by adding a line back here — but
+     they are not offered. */
   { id: "cascade", label: "Cascade" },
   { id: "bloom", label: "Bloom" },
   { id: "orbit", label: "Orbit (original)" },
-  { id: "splay", label: "Splay" },
-  { id: "unfurl", label: "Unfurl" },
-  { id: "riffle", label: "Riffle" },
-  { id: "seat", label: "Seat" },
-  { id: "fan", label: "Fan" },
-  { id: "counter", label: "Counter" },
-  { id: "sweep", label: "Sweep" },
-  { id: "register", label: "Register" },
-  { id: "aperture", label: "Aperture" },
-  { id: "depth", label: "Depth" },
 ];
 
 type Entrance = {
