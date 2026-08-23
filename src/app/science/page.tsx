@@ -3,6 +3,7 @@ import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { PageHero } from "@/components/page-hero";
 import { FlowField } from "@/components/flow-field";
+import { CadenceField } from "@/components/cadence-field";
 import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
 import { RaasPathway } from "@/components/raas-pathway";
@@ -83,22 +84,15 @@ export default function SciencePage() {
           </div>
         </Section>
 
-        {/* CinPressa solution. The same field as the header, at watermark
-            strength and seeded to a different moment so the two are siblings
-            rather than the same picture twice. It sits behind the copy as
-            atmosphere, so it reads without asking to be decoded and costs the
-            section no height. */}
+        {/* CinPressa solution. NOT the header's field again. This section
+            argues that control stops arriving in daily peaks and troughs and
+            becomes one sustained level, so the backdrop is built from gaps:
+            separate lobes on the left that broaden, overlap and close into an
+            unbroken level by the right. Same brand language, a silhouette
+            nothing else on the site has. See cadence-field.tsx. */}
         <Section
           tone="green"
-          art={
-            <FlowField
-              variant="ambient"
-              transparent
-              seed={2.6}
-              strength={0.34}
-              className="absolute inset-0"
-            />
-          }
+          art={<CadenceField className="absolute inset-0" />}
         >
           <SectionHeader
             eyebrow="CinPressa solution"
