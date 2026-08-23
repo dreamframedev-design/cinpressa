@@ -214,13 +214,19 @@ export default function HomePage() {
         <Section
           tone="indigo"
           art={
+            /* 85% wide, not 62: the tail was dissolving at the canvas edge a
+               third of the way across the section, well short of the deck
+               line. At this width the intake begins under "CIN-111 at the
+               center" and the pinch sits in the open middle, opening
+               rightward; the ambient damp keeps the field's left third faint
+               enough that the paragraph below never fights it. */
             <FlowField
               variant="ambient"
               transparent
               seed={4.1}
               strength={0.5}
               gate={0.26}
-              className="absolute inset-y-0 right-0 hidden w-[62%] lg:block"
+              className="absolute inset-y-0 right-0 hidden w-[85%] lg:block"
             />
           }
         >
