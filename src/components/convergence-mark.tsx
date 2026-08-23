@@ -128,25 +128,23 @@ export type MarkVariant =
   | "depth"
   | "orbit";
 
-export const MARK_VARIANTS: {
-  id: MarkVariant;
-  label: string;
-  note: string;
-  group: "orbital" | "still";
-}[] = [
-  { id: "splay", label: "Splay", note: "Spread from the middle — opens 45% → 100%", group: "orbital" },
-  { id: "unfurl", label: "Unfurl", note: "Thumb fan, anchored at the bottom card", group: "orbital" },
-  { id: "cascade", label: "Cascade", note: "Dealt — four cards peel one at a time", group: "orbital" },
-  { id: "riffle", label: "Riffle", note: "Riffled open, fast", group: "orbital" },
-  { id: "seat", label: "Seat", note: "16° as one rigid body, onto its axis", group: "orbital" },
-  { id: "fan", label: "Fan", note: "Fanned angles closing like aperture blades", group: "orbital" },
-  { id: "counter", label: "Counter", note: "Opposed pairs, the overlaps breathe shut", group: "orbital" },
-  { id: "sweep", label: "Sweep", note: "A real 55° turn, stripped of everything else", group: "orbital" },
-  { id: "orbit", label: "Orbit (original)", note: "The rejected one, for comparison", group: "orbital" },
-  { id: "bloom", label: "Bloom", note: "Ink wicking into wet paper", group: "still" },
-  { id: "register", label: "Register", note: "A press closing onto true", group: "still" },
-  { id: "aperture", label: "Aperture", note: "An iris opening on a whole mark", group: "still" },
-  { id: "depth", label: "Depth", note: "Sheets of glass settling into plane", group: "still" },
+export const MARK_VARIANTS: { id: MarkVariant; label: string }[] = [
+  /* Review order, set by hand: the three under active consideration lead and
+     everything else trails as reference. Not grouped — a flat list keeps the
+     control small, which is the point of a control that sits on the hero. */
+  { id: "cascade", label: "Cascade" },
+  { id: "bloom", label: "Bloom" },
+  { id: "orbit", label: "Orbit (original)" },
+  { id: "splay", label: "Splay" },
+  { id: "unfurl", label: "Unfurl" },
+  { id: "riffle", label: "Riffle" },
+  { id: "seat", label: "Seat" },
+  { id: "fan", label: "Fan" },
+  { id: "counter", label: "Counter" },
+  { id: "sweep", label: "Sweep" },
+  { id: "register", label: "Register" },
+  { id: "aperture", label: "Aperture" },
+  { id: "depth", label: "Depth" },
 ];
 
 type Entrance = {
@@ -370,7 +368,7 @@ function normRadius(
 
 export function ConvergenceMark({
   className = "",
-  variant = "splay",
+  variant = "cascade",
 }: {
   className?: string;
   variant?: MarkVariant;

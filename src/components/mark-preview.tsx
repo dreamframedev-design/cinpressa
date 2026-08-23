@@ -8,73 +8,57 @@ import type { MarkVariant } from "@/components/convergence-mark";
  * REVIEW SCAFFOLDING — temporary. Delete this file once an entrance is chosen,
  * and put `<ConvergenceMark variant="…" />` back on the hero directly.
  *
- * Four candidate entrances plus the original, switchable in place so they can
- * be compared against each other on the real hero at real size rather than in
- * isolation. Selecting one remounts the mark, so every switch plays the
- * entrance from its first frame; the mark itself also replays on click, which
- * is how to watch the same one twice.
+ * Candidate entrances switchable in place, so they can be compared on the real
+ * hero at real size rather than in isolation. Selecting one remounts the mark,
+ * so every switch plays from the first frame; the mark also replays on click.
  *
- * The picker is deliberately plain and slightly apart from the composition —
- * it is a control panel, not a design element, and it should be obvious that
- * it is not part of the page.
+ * Kept deliberately quiet. It sits on a hero that is being judged, so it has
+ * to be legible enough to use and faint enough to ignore: a hairline rule
+ * instead of a panel, no fill, no backdrop blur, labels at the smallest size
+ * the ramp goes to, and only the selected one carrying any colour.
  */
 export function MarkPreview({ className = "" }: { className?: string }) {
-  const [variant, setVariant] = useState<MarkVariant>("splay");
+  const [variant, setVariant] = useState<MarkVariant>("cascade");
   const [run, setRun] = useState(0);
-
-  const active = MARK_VARIANTS.find((v) => v.id === variant);
 
   return (
     <div className={className}>
-      <ConvergenceMark key={`${variant}-${run}`} className="w-full" variant={variant} />
+      <ConvergenceMark
+        key={`${variant}-${run}`}
+        className="w-full"
+        variant={variant}
+      />
 
-      <div className="mt-8 rounded-2xl border border-line bg-white/85 p-4 backdrop-blur-sm">
-        <div className="flex items-center justify-between gap-3">
-          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-muted">
-            Entrance preview
-          </p>
+      <div className="mt-6 border-t border-line/70 pt-3">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          {MARK_VARIANTS.map((v) => (
+            <button
+              key={v.id}
+              type="button"
+              onClick={() => {
+                setVariant(v.id);
+                setRun((r) => r + 1);
+              }}
+              className={
+                v.id === variant
+                  ? "text-[0.68rem] font-semibold tracking-[0.04em] text-blue underline decoration-blue/40 underline-offset-4"
+                  : "text-[0.68rem] tracking-[0.04em] text-stone transition-colors hover:text-body"
+              }
+            >
+              {v.label}
+            </button>
+          ))}
+
+          <span aria-hidden className="h-2.5 w-px bg-line" />
+
           <button
             type="button"
             onClick={() => setRun((r) => r + 1)}
-            className="rounded-full border border-line px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.12em] text-body transition-colors hover:border-blue hover:text-blue"
+            className="text-[0.68rem] tracking-[0.04em] text-stone transition-colors hover:text-body"
           >
             Replay
           </button>
         </div>
-
-        {/* Grouped, because nine unlabelled pills is a wall. The orbital set
-            leads: that is the family under review. */}
-        {(["orbital", "still"] as const).map((g) => (
-          <div key={g} className="mt-3">
-            <p className="text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-stone">
-              {g === "orbital" ? "Rotational" : "No rotation"}
-            </p>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {MARK_VARIANTS.filter((v) => v.group === g).map((v) => (
-                <button
-                  key={v.id}
-                  type="button"
-                  onClick={() => {
-                    setVariant(v.id);
-                    setRun((r) => r + 1);
-                  }}
-                  className={
-                    v.id === variant
-                      ? "rounded-full border border-blue bg-blue px-3.5 py-1.5 text-[0.78rem] font-semibold text-white"
-                      : "rounded-full border border-line px-3.5 py-1.5 text-[0.78rem] font-medium text-body transition-colors hover:border-blue hover:text-blue"
-                  }
-                >
-                  {v.label}
-                </button>
-              ))}
-            </div>
-          </div>
-        ))}
-
-        <p className="mt-3 text-[0.82rem] leading-relaxed text-muted">
-          {active?.note}
-          <span className="text-stone"> · click the mark to replay</span>
-        </p>
       </div>
     </div>
   );
