@@ -1584,6 +1584,111 @@ p {
     color 0.25s var(--ease-brand);
 }
 
+/* ---------- Control model (science solution figure) ----------
+   The figure's living layer. A twelve-second cycle, two administrations per
+   cycle (the second offset by half), each one a cause-and-effect sentence:
+
+     the mark on the year line PINGS  ->  an orange charge RISES off it  ->
+     it is absorbed at the foundation's underside  ->  cool light BLOOMS
+     through the block from that point.
+
+   The dose is orange and the bloom is frost blue on purpose: the same
+   pairing as the mark itself — the orange dose becoming blue control.
+   Alongside this, the current inside the block (foundation-flow.tsx) never
+   stops, so the figure is alive between charges too, which is the word the
+   section leans on: continuous. */
+
+@keyframes cm-ping {
+  0% {
+    transform: scale(0.55);
+    opacity: 0.55;
+  }
+  8% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+.cm-ping {
+  animation: cm-ping 12s linear var(--cm-delay, 0s) infinite;
+}
+
+@keyframes cm-orb {
+  0% {
+    transform: translate(-50%, 0) scale(0.45);
+    opacity: 0;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.6, 1);
+  }
+  2.5% {
+    transform: translate(-50%, -7px) scale(1);
+    opacity: 1;
+    animation-timing-function: cubic-bezier(0.3, 0, 0.4, 1);
+  }
+  9% {
+    transform: translate(-50%, -40px) scale(1);
+    opacity: 1;
+  }
+  11.5% {
+    transform: translate(-50%, -50px) scale(0.35);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50px) scale(0.35);
+    opacity: 0;
+  }
+}
+
+.cm-orb {
+  animation: cm-orb 12s linear var(--cm-delay, 0s) infinite;
+}
+
+/* The absorption: cool light spreading through the block from the point of
+   entry. Bottom-anchored so it wells up rather than flashing on. */
+@keyframes cm-bloom {
+  0%,
+  9% {
+    transform: translateX(-50%) scale(0.4);
+    opacity: 0;
+  }
+  13% {
+    transform: translateX(-50%) scale(1);
+    opacity: 0.8;
+  }
+  32% {
+    transform: translateX(-50%) scale(2.2);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(-50%) scale(2.2);
+    opacity: 0;
+  }
+}
+
+.cm-bloom {
+  transform-origin: 50% 100%;
+  animation: cm-bloom 12s linear var(--cm-delay, 0s) infinite;
+}
+
+/* The optional course rides just off the foundation — a slow hover, because
+   it is additive and not load-bearing. It settles, it never presses. */
+@keyframes cm-hover {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+.cm-hover {
+  animation: cm-hover 9s ease-in-out infinite;
+}
+
 /* ---------- Reduced motion ---------- */
 
 @media (prefers-reduced-motion: reduce) {
@@ -1717,9 +1822,17 @@ p {
   }
 
   .pulse-ring-el,
-  .pl-beam {
+  .pl-beam,
+  .cm-ping,
+  .cm-orb,
+  .cm-bloom {
     animation: none !important;
     opacity: 0 !important;
+  }
+
+  .cm-hover {
+    animation: none !important;
+    transform: none !important;
   }
 
   .lift {

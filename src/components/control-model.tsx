@@ -1,4 +1,11 @@
+import type { CSSProperties } from "react";
 import { Reveal } from "@/components/reveal";
+import { FoundationFlow } from "@/components/foundation-flow";
+
+/** Where the two administrations sit on the year line, percent across. */
+const DOSES = [18, 62];
+/** The recharge cycle: 12s, one dose at 0s, the other half a cycle later. */
+const DELAYS = ["0s", "6s"];
 
 /**
  * The control model — the foundation, and what can be built on it.
@@ -28,6 +35,16 @@ import { Reveal } from "@/components/reveal";
  * No axis, no numbers, no magnitudes: this is a model, not a result, and
  * implying a quantity here would be a claim the programme has not made. Every
  * line of text is a restatement of copy already approved on this page.
+ *
+ * AND IT LIVES. The first cut froze after its entrance, which undersold the
+ * one word the section leans on: continuous. Three motions now run for as
+ * long as the figure is on screen — a laminar current drifting through the
+ * foundation (foundation-flow.tsx), a recharge cycle in which each
+ * administration mark pings, lofts an orange charge into the block's
+ * underside and blooms cool light through it (the orange dose becoming blue
+ * control, the mark's own pairing), and the optional course hovering just
+ * off the foundation because it is additive, not load-bearing. Choreography
+ * lives in globals.css under "Control model".
  */
 export function ControlModel() {
   return (
@@ -41,7 +58,7 @@ export function ControlModel() {
 
       {/* ── 3. The optional course, laid on top ─────────────────────────── */}
       <Reveal variant="fade" delay={520}>
-        <div className="mx-auto w-[86%] rounded-t-2xl border border-b-0 border-dashed border-blue/35 bg-blue/[0.045] px-5 py-5 sm:w-[78%] sm:px-7">
+        <div className="cm-hover mx-auto w-[86%] rounded-t-2xl border border-b-0 border-dashed border-blue/35 bg-blue/[0.045] px-5 py-5 sm:w-[78%] sm:px-7">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
             <span
               aria-hidden
@@ -70,6 +87,25 @@ export function ControlModel() {
             aria-hidden
             className="track-progress absolute inset-0 origin-left bg-[linear-gradient(105deg,#14304f_0%,#2261ad_58%,#2f7ac9_100%)]"
           />
+          {/* The current. Endless, one direction, calm: continuous control. */}
+          <FoundationFlow className="absolute inset-0" />
+          {/* Absorption blooms, one over each administration. Under the copy,
+              which stays the brightest thing on the block. */}
+          {DOSES.map((at, i) => (
+            <span
+              key={at}
+              aria-hidden
+              className="cm-bloom absolute bottom-[-30%] h-[150%] w-72"
+              style={
+                {
+                  left: `${at}%`,
+                  background:
+                    "radial-gradient(ellipse 50% 65% at 50% 100%, rgba(149,218,248,0.6) 0%, rgba(149,218,248,0.18) 48%, rgba(149,218,248,0) 72%)",
+                  "--cm-delay": DELAYS[i],
+                } as CSSProperties
+              }
+            />
+          ))}
           <div className="relative px-6 py-7 sm:px-8 sm:py-8">
             <p className="text-[1.05rem] font-medium text-white">
               CIN-111 &middot; long-acting AGT silencing
@@ -90,14 +126,20 @@ export function ControlModel() {
               aria-hidden
               className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-line"
             />
-            {[18, 62].map((at) => (
+            {DOSES.map((at, i) => (
               <span
                 key={at}
                 aria-hidden
                 className="absolute top-1/2 flex h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white"
-                style={{ left: `${at}%` }}
+                style={{ left: `${at}%`, "--cm-delay": DELAYS[i] } as CSSProperties}
               >
+                <span className="cm-ping absolute inset-0 rounded-full border-2 border-orange" />
                 <span className="h-2.5 w-2.5 rounded-full bg-orange" />
+                {/* The charge: risen off the mark, absorbed at the block's
+                    underside; the bloom above takes over at contact. */}
+                <span
+                  className="cm-orb absolute left-1/2 top-1/2 -mt-[5px] h-2.5 w-2.5 rounded-full bg-[radial-gradient(circle,#ffe2a8_0%,#f9a81a_65%)] shadow-[0_0_8px_2px_rgba(249,168,26,0.45)] opacity-0"
+                />
               </span>
             ))}
           </div>
