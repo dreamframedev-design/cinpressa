@@ -768,71 +768,109 @@ p {
   animation: cb-drift var(--dur, 60s) ease-in-out infinite alternate;
 }
 
-/* ---------- Pipeline colour field ----------
-   Three architectural crops from the contact-page language. Their centres sit
-   beyond the section edge, so the visible composition reads as atmosphere and
-   depth rather than a reconstructed logo. */
+/* ---------- Program spec (home, "the pipeline") ----------
+   The section's findings, stated as findings. Rows divided by hairlines, the
+   label small above its value — a spec sheet, which is the artifact a partner
+   reading a pipeline heading is actually looking for. See program-spec.tsx for
+   why this replaced a decorative field. */
 
-.pipeline-field-shell {
-  position: absolute;
-  right: -8%;
-  bottom: -12%;
-  width: min(58vw, 920px);
-  height: 96%;
-  opacity: 0.82;
-  -webkit-mask-image: linear-gradient(
-    135deg,
-    transparent 0%,
-    rgba(0, 0, 0, 0.08) 22%,
-    #000 52%
-  );
-  mask-image: linear-gradient(
-    135deg,
-    transparent 0%,
-    rgba(0, 0, 0, 0.08) 22%,
-    #000 52%
-  );
+.program-spec-source {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-blue);
 }
 
-@keyframes pipeline-field-drift {
-  from {
-    transform: none;
-  }
-  to {
-    transform: translate(
-        var(--pipeline-field-dx, 0px),
-        var(--pipeline-field-dy, 0px)
-      )
-      rotate(var(--pipeline-field-dr, 0deg))
-      scale(var(--pipeline-field-scale, 1));
+.program-spec {
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--color-pale);
+}
+
+.program-spec-row {
+  border-bottom: 1px solid var(--color-pale);
+  padding-block: 1.15rem;
+}
+
+.program-spec-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* A step up from body copy and set light, so the findings read as figures
+   without borrowing the numerals' weight from the challenge rail — two
+   different instruments, one family. */
+.program-spec-value {
+  margin-top: 0.5rem;
+  font-size: clamp(1.3rem, 2vw, 1.6rem);
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+}
+
+/* The one differentiator in the section gets the section's one accent. */
+.program-spec-value-accent {
+  color: var(--color-blue);
+}
+
+/* ---------- News feed (home) ----------
+   A dated list, which is what a News heading promises. Date column, headline,
+   one line of detail, hairline between entries. No hover: the rows are not
+   links. See news-feed.tsx. */
+
+.news-feed {
+  border-top: 1px solid var(--color-pale);
+}
+
+.news-entry {
+  display: grid;
+  gap: 0.5rem 2.5rem;
+  border-bottom: 1px solid var(--color-pale);
+  padding-block: 1.85rem;
+}
+
+@media (min-width: 768px) {
+  .news-entry {
+    grid-template-columns: 9rem minmax(0, 1fr);
+    align-items: start;
   }
 }
 
-.pipeline-field-drift {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: pipeline-field-drift var(--pipeline-field-duration, 38s) ease-in-out
-    var(--pipeline-field-delay, 0s) infinite alternate;
+.news-when {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-blue);
 }
 
-@media (max-width: 1023px) {
-  .pipeline-field-shell {
-    right: -48%;
-    bottom: -10%;
-    width: 125%;
-    height: 54%;
-    opacity: 0.56;
+@media (min-width: 768px) {
+  /* Optically aligned to the headline's cap height rather than its line box. */
+  .news-when {
+    padding-top: 0.35rem;
   }
 }
 
-@media (max-width: 639px) {
-  .pipeline-field-shell {
-    right: -72%;
-    bottom: -8%;
-    width: 175%;
-    height: 44%;
-    opacity: 0.44;
-  }
+.news-title {
+  font-size: clamp(1.15rem, 1.7vw, 1.35rem);
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  color: var(--color-ink);
+}
+
+.news-body {
+  margin-top: 0.6rem;
+  /* A reading measure, but not so short that each entry leaves half its row
+     empty — at 46ch the two-line deks looked stranded beside their headlines. */
+  max-width: 58ch;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--color-body);
 }
 
 /* ---------- Nav links ---------- */
@@ -2279,11 +2317,6 @@ p {
     transform: none !important;
   }
 
-  .pipeline-field-drift {
-    animation: none !important;
-    transform: none !important;
-  }
-
   .track-progress {
     animation: none !important;
     opacity: 1 !important;
@@ -2406,3 +2439,4 @@ p {
     box-shadow: none !important;
   }
 }
+

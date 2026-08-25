@@ -8,11 +8,11 @@ import { SectionHeader } from "@/components/section-header";
 import { BurdenRail } from "@/components/burden-rail";
 import { DoseMigration } from "@/components/dose-migration";
 import { Bleed } from "@/components/bleed";
-import { MilestoneStrip } from "@/components/milestone-strip";
+import { NewsFeed } from "@/components/news-feed";
 import { MarkPreview } from "@/components/mark-preview";
 import { Reveal } from "@/components/reveal";
 import { ArrowIcon } from "@/components/arrow-icon";
-import { PipelineField } from "@/components/pipeline-field";
+import { ProgramSpec } from "@/components/program-spec";
 
 export const metadata: Metadata = {
   title: "Advancing a best-in-class siRNA for hypertension",
@@ -249,64 +249,87 @@ export default function HomePage() {
           </Reveal>
         </Section>
 
-        {/* Pipeline. NO ART, and that is the whole brief. The field that ran
-            behind this section pinched its ribbons through a gate before
-            releasing them, which is a picture of pressure — the one thing a
-            hypertension brand must not draw. It went, and nothing replaced it,
-            because a section whose job is to point at another page does not
-            need a picture to do it. What it needed was to stop being three
-            things arranged around one.
+        {/* Pipeline.
 
-            So: one column, one edge, in the order you read it — label,
-            headline, deck, the paragraph, the way through. The button used to
-            float at the far right on the paragraph's last baseline, which put
-            the only interactive thing in the section as far from the sentence
-            that earned it as the container allowed. It sits under the copy now.
+            The section was a headline, a deck, one paragraph and a decorative
+            colour field in the corner — a section called "Pipeline" that told a
+            reader nothing about the pipeline. The field kept getting tuned, and
+            tuning was never going to fix it: art was standing in for content
+            that had gone missing.
 
-            The pipeline uses a cropped contact-page colour field: broad forms,
-            deliberately asymmetric, with no radial logo construction. */}
-        <Section tone="indigo" art={<PipelineField />}>
-          <SectionHeader
-            eyebrow="Pipeline"
-            title="A focused program"
-            deck="CIN-111 at the center"
-          />
-          <Reveal variant="fade" delay={120}>
-            <p className="mt-10 max-w-3xl text-base leading-relaxed text-body">
-              Our pipeline is centered on CIN-111, a long-acting AGT siRNA
-              program for hypertension. In hypertensive non-human primate
-              studies, CIN-111 has achieved near complete reductions in AGT and
-              substantial, sustained reductions in systolic blood pressure, with
-              effects maintained for more than three months. These data support a
-              long-acting profile with infrequent administration.
-            </p>
-          </Reveal>
-          <Reveal variant="fade" delay={180}>
-            <Link href="/pipeline" className="btn-ghost group mt-10 inline-flex">
-              Visit Pipeline
-              <ArrowIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-            </Link>
-          </Reveal>
+            It had not gone missing, it was buried. The map's body for this
+            section is context, then three preclinical findings, then a
+            conclusion — and set as one paragraph the findings are a subordinate
+            clause nobody stops on. The paragraph keeps its first sentence and
+            its last; the middle one becomes the spec beside it. Same body, same
+            words, redistributed into the shape each part wanted.
+
+            A spread rather than a stack, because that is what the width is for:
+            the argument reads down the left, the evidence stands on the right,
+            and both start on the same line. See program-spec.tsx. */}
+        <Section tone="indigo">
+          <div className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-start lg:gap-16">
+            <div>
+              <SectionHeader
+                eyebrow="Pipeline"
+                title="A focused program"
+                deck="CIN-111 at the center"
+                className="max-w-none"
+              />
+              <Reveal variant="fade" delay={120}>
+                <p className="mt-9 text-base leading-relaxed text-body">
+                  Our pipeline is centered on CIN-111, a long-acting AGT siRNA
+                  program for hypertension.
+                </p>
+              </Reveal>
+              <Reveal variant="fade" delay={180}>
+                <p className="mt-5 text-base leading-relaxed text-body">
+                  These data support a long-acting profile with infrequent
+                  administration.
+                </p>
+              </Reveal>
+              <Reveal variant="fade" delay={240}>
+                <Link href="/pipeline" className="btn-ghost group mt-10 inline-flex">
+                  Visit Pipeline
+                  <ArrowIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                </Link>
+              </Reveal>
+            </div>
+
+            <ProgramSpec
+              className="lg:pt-2"
+              source="In hypertensive non-human primate studies"
+              findings={[
+                { label: "AGT reduction", value: "Near complete" },
+                {
+                  label: "Systolic blood pressure",
+                  value: "Substantial, sustained",
+                },
+                {
+                  label: "Effect maintained",
+                  value: "More than three months",
+                  accent: true,
+                },
+              ]}
+            />
+          </div>
         </Section>
 
-        {/* News is a forward calendar until the first announcement exists. The
-            year anchors the composition; the two approved milestones remain a
-            chronological list rather than pretending to be news cards. */}
+        {/* News. Back to the map's own heading and subhead, and back to the
+            format a News heading promises: a dated list. What was here was a
+            bespoke forward calendar — good-looking, and it made a reader work
+            out the layout before they could read it. See news-feed.tsx. */}
         <Section id="news" tone="sky">
           <SectionHeader
             eyebrow="News"
-            title="What’s ahead for CIN-111"
-            subtitle="Two planned milestones mark the program’s transition into clinical development."
+            title="What’s new at CinPressa"
+            subtitle="Recent updates, key milestones, and the latest news from the company."
           />
-          {/* The section was a heading and a button over nothing, because there are no
-              announcements yet and inventing one is not an option. This previews the
-              forward calendar already approved on /news instead. Swap for a real
-              teaser when the first release lands. */}
-          <MilestoneStrip />
-          <Reveal variant="fade" delay={140} className="mt-8 flex justify-end">
+          <NewsFeed className="mt-12" />
+          <Reveal variant="fade" delay={260}>
             <Link
               href="/news"
-              className="group inline-flex min-h-11 items-center gap-2 text-base font-medium text-blue transition-colors hover:text-ink"
+              className="group mt-10 inline-flex min-h-11 items-center gap-2 text-base font-medium text-blue transition-colors hover:text-ink"
             >
               <span className="link-underline">Read the latest</span>
               <ArrowIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
