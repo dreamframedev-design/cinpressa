@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { PageHero } from "@/components/page-hero";
-import { FlowField } from "@/components/flow-field";
+import { OpenFlow } from "@/components/open-flow";
 import { ControlModel } from "@/components/control-model";
 import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
@@ -31,90 +31,135 @@ export default function SciencePage() {
       <SiteNav />
 
       <main>
-        {/* Flow held and then released — the page's own subject, stated in mass
-            before a word is read. The forty-two hairline pressure traces that
-            used to sit here made the same argument in a language this brand
-            does not speak. See flow-field.tsx. */}
+        {/* Open flow, stated in mass before a word is read. What was here before
+            pinched the ribbons through a gate and released them — a good picture
+            of pressure, which is precisely why it was wrong: a hypertension
+            brand cannot open on a bundle being squeezed. Nothing in this field
+            narrows anywhere. See open-flow.tsx. */}
         <PageHero
-          field={<FlowField className="absolute inset-0" />}
+          field={<OpenFlow className="absolute inset-0" />}
           eyebrow="Unmet need"
           title="Blood pressure control still depends on daily adherence"
           deck="The challenge is persistence"
         />
 
-        {/* The burden */}
-        <Section>
-          <div className="grid gap-14 lg:grid-cols-[1fr_0.85fr] lg:gap-20">
-            <div>
-              <Reveal variant="fade">
-                <p className="text-base leading-relaxed text-body">
-                  Medication non-adherence is the leading cause of poor blood
-                  pressure control, and hypertension is largely asymptomatic,
-                  resulting in poor long-term adherence and treatment
-                  persistence.
-                </p>
-              </Reveal>
-              <Reveal variant="fade" delay={100}>
-                <p className="mt-6 text-base leading-relaxed text-body">
-                  Persistent uncontrolled blood pressure substantially increases
-                  the risk of serious complications:
-                </p>
-              </Reveal>
-              <div className="mt-6 flex flex-wrap gap-2.5">
-                {complications.map((c, i) => (
-                  <Reveal key={c} as="span" variant="fade" delay={i * 50}>
-                    <span className="inline-flex rounded-full border border-pale/70 bg-pale/25 px-4 py-2 text-base text-body">
-                      {c}
-                    </span>
-                  </Reveal>
-                ))}
-              </div>
-            </div>
+        {/* The burden.
 
-            {/* Pull quote */}
-            <Reveal variant="rise-blur" delay={120} className="lg:pt-4">
-              <blockquote className="border-l-2 border-blue pl-7">
-                <p className="text-[clamp(1.5rem,2.6vw,2.05rem)] font-light leading-[1.25] tracking-tight text-ink">
-                  In hypertension, the challenge is not simply whether blood
-                  pressure can be lowered. The challenge is whether it can remain{" "}
-                  <span className="text-blue">controlled over time.</span>
-                </p>
-              </blockquote>
-            </Reveal>
-          </div>
+            THE PROBLEM WAS THAT IT WAS A WALL. Set as one four-line block of
+            display type, the statement had no shape — every line the same size,
+            the same weight, the same colour, so there was nothing to read except
+            length. Two rounds of moving it around the page did not help, because
+            the arrangement was never the fault.
+
+            SO IT IS NOT A BLOCK ANY MORE, IT IS A CRESCENDO. The sentence
+            already has three parts and they are not equal, so they are not set
+            equal: the qualifier is small and grey, the turn is mid-sized and
+            ink, and the point is large and arrives in blue. The type does what
+            the sentence does. That is the whole idea and it needs no picture,
+            no rule and no box to carry it — which is also why this section can
+            stay on white without reading as empty: the colour event IS the
+            argument landing.
+
+            The three beats arrive in order with a held pause between them, and
+            the blue on the last one does not simply appear — it sweeps in over
+            a second and a half. The section is about whether control lasts over
+            time; the line that says so takes time to say it. */}
+        <Section>
+          <Reveal variant="fade">
+            {/* One sentence pair to a screen reader; three sizes to an eye. */}
+            <p className="crescendo max-w-4xl">
+              <span className="crescendo-lede">
+                In hypertension, the challenge is not simply whether blood
+                pressure can be lowered.
+              </span>
+              <span className="crescendo-turn">
+                The challenge is whether it can remain{" "}
+              </span>
+              <span className="crescendo-point">
+                <span className="crescendo-key">controlled over time.</span>
+              </span>
+            </p>
+          </Reveal>
+
+          {/* A narrower measure than the section allows, on purpose: after a
+              crescendo the supporting prose should read as an aside, and a
+              shorter line is how you say that without changing the type. */}
+          <Reveal variant="fade" delay={120}>
+            <p className="mt-16 max-w-2xl text-base leading-relaxed text-body">
+              Medication non-adherence is the leading cause of poor blood pressure
+              control, and hypertension is largely asymptomatic, resulting in poor
+              long-term adherence and treatment persistence.
+            </p>
+          </Reveal>
+
+          <Reveal variant="fade" delay={180}>
+            <p className="mt-10 max-w-2xl text-base leading-relaxed text-body">
+              Persistent uncontrolled blood pressure substantially increases the
+              risk of serious complications:
+            </p>
+          </Reveal>
+
+          {/* Seven terms as small hairline tags — outlines only, no fill, no
+              hover. The hover lit them in blue and the note back was that it
+              made them feel clickable, which is exactly right: colour that
+              responds to a cursor is a promise of somewhere to go, and there is
+              nowhere to go. They are labels. They sit still.
+
+              The stagger is what gives them life instead — 110ms apart rather
+              than 45, so the list visibly ACCUMULATES as it arrives. The
+              sentence above says risk increases; the list should look like it
+              is increasing. */}
+          <ul className="mt-6 flex max-w-3xl flex-wrap gap-2">
+            {complications.map((c, i) => (
+              <Reveal key={c} as="li" variant="fade" delay={240 + i * 110}>
+                <span className="risk-tag">
+                  <span aria-hidden className="risk-dot" />
+                  {c}
+                </span>
+              </Reveal>
+            ))}
+          </ul>
         </Section>
 
         {/* CinPressa solution. NO BACKDROP. This section had a wash, then a
             better wash, and both were the wrong instrument: its argument is
             structural — a foundation with optional courses laid on it — and a
             wash cannot state a structure. It carries a figure instead. See
-            control-model.tsx. */}
+            control-model.tsx.
+
+            COPY PROVENANCE, since it was asked: every word in this section is
+            verbatim from the approved site map (Google Doc, "Science" →
+            "CinPressa solution"). Eyebrow, headline and subheadline are exact;
+            the body is the map's single Section body paragraph, split at its
+            sentence boundary into the two columns. Nothing here is written. The
+            PDFs checked into this repo are an OLDER revision of that map and
+            disagree — the doc is the source. */}
         <Section tone="green">
           <SectionHeader
             eyebrow="CinPressa solution"
             title="A new treatment paradigm"
             deck="Long-acting control with infrequent dosing"
           />
-          <div className="mt-10 grid max-w-4xl gap-6 md:grid-cols-2">
-            <Reveal variant="fade">
-              <p className="text-base leading-relaxed text-body">
-                CinPressa is developing a treatment model that shifts
-                hypertension management from daily patient behavior to
-                infrequent provider-administered therapy.
-              </p>
-            </Reveal>
-            <Reveal variant="fade" delay={100}>
-              <p className="text-base leading-relaxed text-body">
-                Rather than relying on daily oral dosing, the aim is to deliver
-                durable blood pressure control with long-acting AGT silencing,
-                while still allowing complementary antihypertensive agents to be
-                layered onto an already controlled foundation for patients who
-                require additional reduction.
-              </p>
-            </Reveal>
-          </div>
+          {/* ONE paragraph, because that is what it is. The map carries this as a
+              single Section body and it was being split at its sentence
+              boundary into two columns — which left three lines beside six and
+              a hole under the short one. A two-column set only works when both
+              columns fill; this one never could. */}
+          <Reveal variant="fade" delay={100}>
+            <p className="mt-10 max-w-3xl text-base leading-relaxed text-body">
+              CinPressa is developing a treatment model that shifts hypertension
+              management from daily patient behavior to infrequent
+              provider-administered therapy. Rather than relying on daily oral
+              dosing, the aim is to deliver durable blood pressure control with
+              long-acting AGT silencing, while still allowing complementary
+              antihypertensive agents to be layered onto an already controlled
+              foundation for patients who require additional reduction.
+            </p>
+          </Reveal>
 
-          <Reveal variant="rise" delay={140} className="mt-14 max-w-5xl">
+          {/* Same measure as the copy above it: heading, paragraph and figure
+              all start on one edge and end on one. */}
+          <Reveal variant="rise" delay={140} className="mt-14 max-w-3xl">
             <ControlModel />
           </Reveal>
         </Section>

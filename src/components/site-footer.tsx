@@ -25,7 +25,12 @@ const columns = [
 
 export function SiteFooter() {
   return (
-    <footer className="relative overflow-hidden bg-deep text-white">
+    <footer
+      /* Stops the site alleys: a cool hairline over deep navy reads as a
+         scratch. See site-alleys.tsx. */
+      data-alleys-end
+      className="relative overflow-hidden bg-deep text-white"
+    >
       {/* Brand ladder hairline across the top edge: the one place the whole
           palette appears at once, and it separates the footer from the page
           without a flat rule. */}

@@ -1,26 +1,8 @@
 import { Reveal } from "@/components/reveal";
 
-/**
- * The forward calendar for the homepage news section.
- *
- * DELIBERATELY PLAIN. Two earlier cuts got this wrong in opposite directions:
- * the first was a line and two dots, which is not a design, and the second
- * overcorrected into a measured axis with forty-one minor ticks, ring-and-core
- * stations and drop lines — a surveying instrument built to carry two dates.
- * It also put the section back in the hairline language the brand direction had
- * just moved away from.
- *
- * What is actually here is two dated entries, so that is what it draws: a rule,
- * a date, what happens, and one sentence. The hierarchy does the work — the
- * date is the headline because the date is the news — and the rules line the
- * two columns up so the pair reads as a schedule rather than as two headings.
- * Nothing is invented, so nothing has to be decoded.
- *
- * Content note: CinPressa has issued no announcements, so there is no news to
- * preview and inventing one is not an option. Both entries restate copy already
- * approved on /news under "What's ahead", and both stay framed as plans. Swap
- * this for a real teaser when the first release lands.
- */
+/** The homepage's compact forward calendar. It carries only the two milestones
+ * already approved on /news; the large year supplies the visual anchor that a
+ * conventional news card cannot provide while the announcement list is empty. */
 
 type Milestone = {
   when: string;
@@ -30,12 +12,12 @@ type Milestone = {
 
 const MILESTONES: Milestone[] = [
   {
-    when: "Mid-2026",
+    when: "Mid-year",
     title: "U.S. IND submission",
     body: "CinPressa plans to submit a U.S. Investigational New Drug application for CIN-111.",
   },
   {
-    when: "Fall 2026",
+    when: "Fall",
     title: "First-in-human study",
     body: "A U.S. single-dose, single ascending dose study in patients with mild-to-moderate hypertension is expected to commence.",
   },
@@ -43,30 +25,50 @@ const MILESTONES: Milestone[] = [
 
 export function MilestoneStrip() {
   return (
-    <div className="mt-16">
-      <Reveal variant="fade">
-        <p className="text-[0.84rem] font-semibold uppercase tracking-[0.2em] text-blue">
-          What&rsquo;s ahead
-        </p>
-      </Reveal>
+    <section
+      aria-label="2026 forward calendar"
+      className="mt-14 border-y border-line/80"
+    >
+      <div className="grid lg:grid-cols-[minmax(15rem,0.72fr)_minmax(0,1.6fr)]">
+        <Reveal
+          variant="fade"
+          className="flex min-h-44 flex-col justify-between border-b border-line/80 py-7 lg:min-h-[22rem] lg:border-b-0 lg:border-r lg:py-9 lg:pr-10"
+        >
+          <p className="text-[0.78rem] font-semibold uppercase tracking-[0.2em] text-blue">
+            Forward calendar
+          </p>
+          <p
+            aria-hidden
+            className="mt-10 text-[clamp(5rem,10vw,8.5rem)] font-light leading-[0.78] tracking-[-0.04em] text-blue"
+          >
+            2026
+          </p>
+        </Reveal>
 
-      <div className="mt-8 grid gap-10 sm:grid-cols-2 sm:gap-14">
-        {MILESTONES.map((m, i) => (
-          <Reveal key={m.when} variant="rise" delay={i * 110}>
-            <div className="border-t border-line pt-7">
-              <p className="text-[1.75rem] font-light leading-none tracking-tight text-ink sm:text-[2.1rem]">
+        <ol className="divide-y divide-line/80">
+          {MILESTONES.map((m, i) => (
+            <Reveal
+              key={m.when}
+              as="li"
+              variant="rise"
+              delay={i * 100}
+              className="grid gap-4 py-7 lg:min-h-44 lg:grid-cols-[7.5rem_minmax(0,1fr)] lg:items-start lg:px-10 lg:py-9"
+            >
+              <p className="pt-1 text-[0.78rem] font-semibold uppercase tracking-[0.18em] text-blue">
                 {m.when}
               </p>
-              <p className="mt-4 text-[1.1rem] font-semibold leading-snug text-blue">
-                {m.title}
-              </p>
-              <p className="mt-3 max-w-md text-base leading-relaxed text-body">
-                {m.body}
-              </p>
-            </div>
-          </Reveal>
-        ))}
+              <div>
+                <h3 className="text-[1.2rem] font-medium leading-snug tracking-tight text-ink md:text-[1.35rem]">
+                  {m.title}
+                </h3>
+                <p className="mt-3 max-w-xl text-base leading-relaxed text-body">
+                  {m.body}
+                </p>
+              </div>
+            </Reveal>
+          ))}
+        </ol>
       </div>
-    </div>
+    </section>
   );
 }

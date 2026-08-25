@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import { stem } from "@/lib/fonts";
+import { SiteAlleys } from "@/components/site-alleys";
 import "./globals.css";
 
 const montserrat = Montserrat({
@@ -34,7 +35,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${montserrat.variable} ${stem.variable} antialiased`}>
-        {children}
+        {/* Positioned wrapper so the alleys can span the whole document rather
+            than the viewport — they run behind every section and stop at the
+            first element carrying data-alleys-end (the dark footer). */}
+        <div className="relative">
+          <SiteAlleys />
+          {children}
+        </div>
       </body>
     </html>
   );

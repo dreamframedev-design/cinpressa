@@ -60,12 +60,12 @@ export function PageHero({
         }`}
       >
         <div className="max-w-3xl">
-          <Reveal variant="draw">
-            {/* The single orange accent per page: punctuation, never a surface. */}
-            <span aria-hidden className="block h-px w-12 bg-orange" />
-          </Reveal>
+          {/* No rule above the eyebrow. It was the one orange accent per page and
+              it was also a hairline floating over nothing, which is the exact
+              mark this project has been asked to stop drawing. Interior heroes
+              now open on the label itself. */}
           <Reveal variant="fade" delay={80}>
-            <p className="mt-6 text-[0.84rem] font-semibold uppercase tracking-[0.22em] text-blue">
+            <p className="text-[0.84rem] font-semibold uppercase tracking-[0.22em] text-blue">
               {eyebrow}
             </p>
           </Reveal>

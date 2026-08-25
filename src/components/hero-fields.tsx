@@ -6,10 +6,13 @@ import { HeroCanvas, TAU, smooth, drawHeroWashes } from "@/components/hero-canva
  * Churn, the /pipeline hero field.
  *
  * The other interior pages: /about and /news use the default treatment in
- * hero-field.tsx, and /science now takes the shared ribbon field in
- * flow-field.tsx. The hairline fields that used to sit on /science and on two
- * home sections were retired with that change; all are recoverable from
- * history.
+ * hero-field.tsx, and /science takes open-flow.tsx.
+ *
+ * ⚠ OPEN NOTE, 2026-08-23. The direction that killed flow-field.tsx was "no
+ * funnel effects — constriction implies pressure, which is the opposite of what
+ * we are selling." The pinch described below is the same gesture, and this hero
+ * has not been reviewed against that rule yet. It is left as-is deliberately
+ * rather than changed without a brief.
  *
  * THE CONCEPT (kept on request): layered brand-colour ribbons continuously
  * STIRRED by a rotating warp — they curl, fold back on themselves and pinch
