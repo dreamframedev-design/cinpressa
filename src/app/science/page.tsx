@@ -25,9 +25,10 @@ const complications = [
   "Vascular dementia",
 ];
 
-/* The register is four across, so the ranks are chunks of four — the split has
-   to follow the grid rather than halve the list, or the second rank stops
-   aligning with the first. Seven gives four then three. */
+/* Four to a rank. Not because the register is a four-column grid (it is not,
+   see .risk-rank) but because four terms is what justifies across the measure
+   without the gaps opening into canyons. Seven gives four then three, in the
+   source document's order, which is the only order they have. */
 const COLUMNS = 4;
 const RANKS = Array.from(
   { length: Math.ceil(complications.length / COLUMNS) },
@@ -126,12 +127,10 @@ export default function SciencePage() {
           {/* THE SEVEN ARE THIS SECTION'S FIGURE. Full reasoning in the CSS:
               in short, the section read as left heavy because it was the only
               one on the page carrying no wide element, and the complications
-              were the only candidate. Both ranks sit on the SAME four-column
-              grid, so every dot in the second lands under a dot in the first;
-              sizing the second rank to its own three columns kept both edges
-              flush and still looked arbitrary, because nothing lined up down
-              the page. The rules belong to the rank rather than the cells, so
-              the empty eighth cell costs the register nothing. */}
+              were the only candidate. Each rank justifies its own terms
+              between the two edges rather than sharing one grid: seven is
+              prime, so any grid that fills the width leaves a hole, and that
+              hole is what read as a term left hanging on the right. */}
           <div className="risk-register mt-8 max-w-5xl">
             {RANKS.map((rank, r) => (
               <ul key={r} className="risk-rank">

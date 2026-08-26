@@ -411,21 +411,37 @@ p {
   display: block;
 }
 
-.crescendo-lede {
-  display: block;
-  max-width: 46ch;
-  font-size: clamp(1.02rem, 1.4vw, 1.18rem);
-  line-height: 1.6;
-  color: var(--color-muted);
-}
+/* TWO SIZES, NOT THREE. The setup used to step small, then medium, then huge,
+   and the note back was to ask whether the first two should simply be the same
+   size. They should. They are one continuous thought (the second sentence only
+   makes sense as an answer to the first) and giving each its own size asked a
+   reader to parse a hierarchy that is not there. Three sizes across four lines
+   is also just a lot of sizes, which is the same instinct as "there are like
+   six fonts in this section" on the home page.
 
+   So size steps once, at the payoff, and colour carries the build instead:
+   muted for the setup, ink for the sentence that runs into the payoff, brand
+   blue for the payoff itself. Two systems doing one job each rather than both
+   doing the same one.
+
+   The 46ch cap goes with it. At this size it pinned the opening line to under
+   half the measure, which is where this section's left-heaviness began. */
+.crescendo-lede,
 .crescendo-turn {
   display: block;
-  margin-top: 2rem;
   font-size: clamp(1.4rem, 2.3vw, 1.9rem);
   font-weight: 300;
   line-height: 1.25;
   letter-spacing: -0.02em;
+}
+
+.crescendo-lede {
+  color: var(--color-muted);
+}
+
+/* Close enough to read as the next breath rather than the next paragraph. */
+.crescendo-turn {
+  margin-top: 0.9rem;
   color: var(--color-ink);
 }
 
@@ -527,17 +543,24 @@ p {
    thing sat in the left half of a wide frame with nothing on the right. That is
    what "left heavy" was.
 
-   So the seven ARE the figure now: a register spanning the full 5xl measure,
-   chunked into ranks of four. Both ranks sit on the SAME four-column grid, so
-   every dot in the second rank lands directly under a dot in the first — and
-   that vertical alignment is the whole difference between a composed register
-   and seven terms scattered across a band. The first cut sized the second rank
-   to its own three columns; both edges were flush and it still looked
-   arbitrary, because nothing lined up down the page.
+   So the seven ARE the figure now: a register spanning the full 5xl measure.
 
-   The rules live on the rank, not on the cells, which is why the seventh item
-   leaving the eighth cell empty costs nothing: the hairline runs the full
-   measure either way and the empty cell just reads as a list of seven.
+   IT IS NOT A GRID, AND THAT IS THE POINT. Four across in two ranks left the
+   eighth cell empty, so the last term in the top rank sat over a quarter of
+   dead space: "just one hanging on the right", which is exactly what it looked
+   like. Seven is prime. No rectangle holds it, so any column count that fills
+   the width leaves a hole somewhere, and the hole is more visible than the
+   misaligned dot it was traded for.
+
+   The ranks are justified instead. Each spreads its own terms between the two
+   edges, four in the first and three in the second, so every rule starts and
+   ends on a word. Nothing hangs because there is no empty cell to hang over:
+   the gaps absorb the difference, the way they do in justified text or on a
+   masthead. Dots no longer align down the page, which is a real cost and the
+   cheaper of the two.
+
+   The rules live on the rank rather than on the cells, so they run the full
+   measure whatever the rank holds.
 
    Horizontal hairlines only, the same register the program spec uses; no
    vertical rules, because that tips it into looking like a table of data, and
@@ -552,15 +575,20 @@ p {
   border-bottom: 1px solid var(--color-pale);
 }
 
-/* Column counts are set by the longest term, not by taste. "Peripheral
-   arterial disease" is roughly 250px with its dot and its trailing gutter, so a
-   column has to clear that or the register turns into a block of two-line
-   items. Measured: at two up it needs a 592px container, at four up a 900px
-   one. Hence one column on a phone, two from 640, four from 1024 — every jump
-   sits above where the wrapping actually starts, not on top of it. */
+/* A narrow screen cannot justify anything (a rank spread across a phone is a
+   term, a canyon, and another term) so they stack there, and the register only
+   becomes a register once a whole rank fits on one line. Measured, that needs a
+   900px container, which a 1024 viewport clears. Below it: one column on a
+   phone, two from 640, both sized off the longest term - "Peripheral arterial
+   disease", about 250px with its dot and gutter, which needs a 592px container
+   at two up. Every jump sits above where wrapping starts, not on top of it. */
 .risk-rank {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
+  /* On the rank, never on the item: a gutter carried as item padding trails the
+     last term and stops the rank short of its own rule, which is the one thing
+     a justified rank cannot do. */
+  column-gap: 1.5rem;
   border-top: 1px solid var(--color-pale);
 }
 
@@ -572,7 +600,8 @@ p {
 
 @media (min-width: 1024px) {
   .risk-rank {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    display: flex;
+    justify-content: space-between;
   }
 }
 
@@ -582,7 +611,7 @@ p {
   gap: 0.55rem;
   /* Tighter when they are stacked one per line, so seven of them do not turn
      into a column of air. */
-  padding: 0.6rem 1.25rem 0.6rem 0;
+  padding-block: 0.6rem;
   font-size: 0.875rem;
   line-height: 1.3;
   color: var(--color-ink);
@@ -2592,6 +2621,8 @@ p {
     box-shadow: none !important;
   }
 }
+
+
 
 
 
