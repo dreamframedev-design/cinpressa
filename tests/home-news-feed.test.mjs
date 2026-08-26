@@ -83,23 +83,29 @@ test("the section keeps the map's headline and no subhead", async () => {
   );
 });
 
-test("the sample entries can never reach production", async () => {
+test("the shipped placeholders cannot be mistaken for announcements", async () => {
   const lib = await read("src/lib/news.ts");
+  const body = code(lib);
 
-  // Production has no such env var, so it gets the real list, which is empty.
-  assert.match(lib, /const REAL: Announcement\[\] = \[\];/);
-  assert.match(
-    lib,
-    /process\.env\.NEXT_PUBLIC_NEWS_PREVIEW === "1" \? SAMPLE : REAL/,
-  );
+  // Every row is stamped in the UI's own kind slot, where "Press release" sits.
+  const categories = [...body.matchAll(/category: "([^"]+)"/g)].map((m) => m[1]);
+  assert.ok(categories.length >= 3);
+  for (const c of categories) assert.equal(c, "Sample");
 
-  // Every sample is stamped in the UI's own kind slot, so any screen showing
-  // one is visibly a sample on every row.
-  // Scan the code, not the docblock — it carries an example of a real entry.
-  const samples = [...code(lib).matchAll(/category: "([^"]+)"/g)].map((m) => m[1]);
-  assert.ok(samples.length >= 3);
-  for (const c of samples) assert.equal(c, "Sample");
+  // None is phrased as a CinPressa announcement.
+  assert.doesNotMatch(body, /"[^"]*CinPressa[^"]*"/);
+  assert.doesNotMatch(body, /(Announces|Submits|Reports|Initiates)/);
 
-  // And none of them is written as a CinPressa announcement.
-  assert.doesNotMatch(lib, /title:\s*\n?\s*"CinPressa (Pharma )?(Announces|Submits|Reports)/);
+  // The real list stays empty, so publishing the true state is a one-word swap.
+  assert.match(body, /const REAL: Announcement\[\] = \[\];/);
+  assert.match(body, /export const ANNOUNCEMENTS: Announcement\[\] = SAMPLE;/);
+});
+
+test("no em dashes in copy that reaches the screen", async () => {
+  const lib = code(await read("src/lib/news.ts"));
+  const strings = [...lib.matchAll(/"([^"]{12,})"/g)].map((m) => m[1]);
+
+  for (const s of strings) {
+    assert.ok(!s.includes("—"), `em dash in rendered copy: "${s}"`);
+  }
 });

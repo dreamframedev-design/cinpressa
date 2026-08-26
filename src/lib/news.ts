@@ -3,13 +3,12 @@
  *
  * WHY THIS MODULE EXISTS. The homepage teaser and /news were carrying separate
  * copies of what counts as news, and they had drifted into saying different
- * things: /news correctly kept ANNOUNCEMENTS (press releases, none yet) apart
- * from MILESTONES (forward-looking, their own section), while the homepage put
+ * things: /news correctly kept announcements (press releases, none yet) apart
+ * from milestones (forward-looking, their own section), while the homepage put
  * the milestones straight into the announcements slot. That is the whole reason
- * the homepage section kept reading as "not a press release section" — it was
- * not one. Milestones are not news. A list of things that have not happened,
- * dated "Mid-2026" and "Fall 2026", cannot be made to look like a release feed
- * by restyling it, because the problem is the content and not the format.
+ * the homepage section kept reading as "not a press release section". It was
+ * not one. Milestones are not news, and a list of things that have not happened
+ * cannot be restyled into a release feed.
  *
  * Both surfaces now read from here, so they cannot drift again, and the first
  * real release drops into both at once.
@@ -27,10 +26,9 @@ export type Announcement = {
 };
 
 /**
- * Genuinely empty, not staged. CinPressa has issued no releases, so both the
- * homepage teaser and /news render their empty states. Add entries to REAL
- * below, newest first, and the lists take over automatically — no layout work
- * required.
+ * The real list. CinPressa has issued no releases, so it is genuinely empty
+ * rather than staged. Add entries here newest first and the lists take over
+ * automatically, with no layout work.
  *
  * A real entry looks like a real release: a full date, a kind, and a headline
  * written the way a wire headline is written.
@@ -47,55 +45,62 @@ export type Announcement = {
 const REAL: Announcement[] = [];
 
 /**
- * PREVIEW ONLY — NEVER SHIPS.
+ * PLACEHOLDER CONTENT, SHIPPED ON PURPOSE AND TEMPORARY.
  *
- * These exist so the populated list can be looked at while the newsroom is
- * still empty. They are not press releases and must never be mistaken for any:
- * every one carries the category "Sample", which renders in the entry's own
- * kind slot, so any screen showing them is visibly stamped as a sample on every
- * row. The headlines are written at realistic length because the point is to
- * judge the layout, and the layout is what wraps.
+ * These are on the deployed site so the populated design can be reviewed while
+ * the newsroom is still empty. They are not press releases and are built so
+ * that nobody can take them for any:
  *
- * Gated on an env var that exists only in a developer's .env.local. Production
- * has no such variable, so it gets `REAL`, which is empty. There is no code
- * path that puts these in front of the public — and a test asserts it.
+ *   - Every entry's category is "Sample", which renders in the row's own kind
+ *     slot, exactly where "Press release" would sit. Any screen showing one is
+ *     stamped on every row.
+ *   - Not one headline is phrased as a CinPressa announcement. They describe
+ *     themselves as placeholders and say what they are demonstrating.
+ *   - The site itself is behind the pre-launch password gate.
  *
- * To look at the populated design:  NEXT_PUBLIC_NEWS_PREVIEW=1 in .env.local
- * To go back to the true state:     remove it, or set it to 0
+ * They are realistic in LENGTH only, because the thing being judged is how a
+ * headline wraps and how the rows sit against each other. The three are
+ * deliberately uneven so the dividers, the date column and the ragged case can
+ * all be read in one stack.
+ *
+ * TO SHIP FOR REAL: change SAMPLE to REAL on the export below. That is the
+ * whole removal, and a test will confirm the real list is still empty.
  */
 const SAMPLE: Announcement[] = [
   {
     date: "2026-09-14",
     category: "Sample",
     title:
-      "Sample entry — a headline of about this length, long enough to show how a real wire headline wraps in this column",
+      "Placeholder headline of about this length, long enough to show how a real wire headline wraps across this column",
     summary:
-      "The summary sits here and runs to roughly two lines at this measure, which is what a release abstract usually needs. Replace this whole array with real entries in the file above.",
+      "The summary sits here and runs to roughly two lines at this measure, which is about what a release abstract needs. Replace this array with real entries in the file above.",
     href: "#",
   },
   {
     date: "2026-07-02",
     category: "Sample",
-    title: "Sample entry — a shorter headline, to show the ragged case",
+    title: "Placeholder headline, shorter, to show the ragged case",
     summary:
-      "A one-line summary, so the row height difference between entries is visible.",
+      "A one line summary, so the height difference between rows is visible.",
   },
   {
     date: "2026-05-20",
     category: "Sample",
     title:
-      "Sample entry — the third row, present so the dividers and the date column can be judged in a stack",
+      "Placeholder headline for a third row, so the dividers and the date column can be judged in a stack",
     summary:
-      "The homepage teaser shows the three most recent entries; the newsroom shows all of them.",
+      "The homepage teaser shows the three most recent entries. The newsroom shows all of them.",
     href: "#",
   },
 ];
 
 /**
- * The list both surfaces read. Empty in production, always.
+ * The list both surfaces read.
+ *
+ * Currently SAMPLE, for design review. Swap to REAL to publish the true
+ * (empty) state, or once real releases exist.
  */
-export const ANNOUNCEMENTS: Announcement[] =
-  process.env.NEXT_PUBLIC_NEWS_PREVIEW === "1" ? SAMPLE : REAL;
+export const ANNOUNCEMENTS: Announcement[] = SAMPLE;
 
 const FORMATTER = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
