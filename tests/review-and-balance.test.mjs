@@ -42,17 +42,28 @@ test("no section is left stranded at two thirds of its frame", async () => {
   assert.match(science, /className="crescendo max-w-5xl"/);
   // The burden section takes its width from the STATEMENT, which used to be
   // capped at 46ch and opened it at under half the frame. Five cuts tried to
-  // buy that width downstream instead - widening the complications into a grid,
-  // then a justified band that read as a footer - and each was worse.
+  // buy that width downstream instead - a grid, then a band justified edge to
+  // edge - and every one read worse than the tags they replaced.
   assert.doesNotMatch(css, /max-width:\s*46ch/);
-  assert.doesNotMatch(science, /risk-register|risk-rank|const RANKS|const COLUMNS/);
-  assert.doesNotMatch(science, /grid-cols-\[minmax\(0,0\.66fr\)/);
-  assert.doesNotMatch(css, /risk-register|risk-rank|risk-item|\.risk-tag/);
-  // The caption ends in a colon and introduces the list, so the list follows it
+  assert.doesNotMatch(science, /risk-register|risk-rank|risk-list|const RANKS|const COLUMNS/);
+  assert.doesNotMatch(css, /risk-register|risk-rank|risk-list|risk-item/);
+  // Tags, at the prose measure: wider and the seven break 6+1, stranding one.
+  assert.match(science, /<ul className="mt-5 flex max-w-3xl flex-wrap gap-2">/);
+  assert.match(css, /\.risk-tag \{/);
+  // The lead-in ends in a colon and introduces the tags, so they follow it
   // immediately at the same measure - never in a column of its own.
-  assert.match(science, /risk of serious complications:[\s\S]{0,400}?<ul className="risk-list mt-5 max-w-3xl">/);
-  // Two columns: the only count that divides seven without stranding one.
-  assert.match(css, /\.risk-list \{[\s\S]{0,300}?columns: 2/);
-  assert.match(css, /break-inside: avoid/);
-  assert.doesNotMatch(css, /columns: 3/);
+  assert.match(science, /risk of serious complications:[\s\S]{0,400}?<ul className="mt-5 flex max-w-3xl/);
+  // Measured rag fixes, not guesses: the lede broke 967px then 224px, and the
+  // body paragraph's last line was 182px of a 768px measure.
+  assert.match(css, /\.crescendo-lede,[\s\S]{0,900}?text-wrap: balance/);
+  // pretty leaves a two-word stub ("treatment persistence." at 182px of 768);
+  // balance breaks the same paragraph 492/477/529.
+  // The element defaults must sit in @layer base or they outrank the utility:
+  // unlayered CSS beats Tailwind's layers, so text-balance silently lost to
+  // `p { text-wrap: pretty }` and read as a class that did nothing.
+  assert.match(css, /@layer base \{[\s\S]{0,200}?text-wrap: pretty/);
+  assert.match(science, /max-w-3xl text-balance[\s\S]{0,90}?Medication non-adherence/);
+  assert.match(science, /text-pretty/);
+  // "controlled over time." collided with the line above at 0.35rem.
+  assert.match(css, /\.crescendo-point \{[\s\S]*?margin-top: 0\.8rem/);
 });

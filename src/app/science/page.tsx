@@ -81,31 +81,32 @@ export default function SciencePage() {
             </p>
           </Reveal>
 
-          {/* ONE COLUMN, TIGHT. NOT A SPREAD, AND NOT A BAND.
+          {/* ONE COLUMN, TIGHT, WITH THE TAGS BACK.
 
-              This section has now been cut five ways and the last one was the
-              worst: the seven complications stretched edge to edge across the
-              measure, which turned a list into a footer bar with canyons in it.
-              Every cut before that was the same instinct - the section looked
-              empty on the right, so something got widened to fill it.
+              This section has been cut six ways. The complications were tags,
+              then a four-across grid, then a band justified edge to edge, then
+              a two-column register - and every cut after the first was the same
+              instinct: the section looked empty on the right, so something got
+              widened to fill it. All of them read worse than the tags did.
 
-              The emptiness had one real cause and it is fixed upstream. The
-              statement above was capped at 46ch, so the section opened at under
-              half the frame and everything under it inherited that. It runs to
-              about 80% now (see .crescendo-lede), which is where this section
-              gets its width. Nothing down here has to stretch to earn it.
+              The emptiness had one cause and it was upstream. The statement
+              above was capped at 46ch, so the section opened at under half the
+              frame and everything below inherited that. It runs to about 80%
+              now, which is where this section's width comes from. Nothing down
+              here has to stretch to earn it, so the tags are just tags again.
 
-              So the body is a column, and the only job left is to stop it
-              reading as four blocks floating in white: the gaps tighten, and the
-              list sits at the prose measure directly under the sentence that
-              introduces it. That sentence ends in a colon and belongs to the
-              list - it can never be alone in a column, which is what broke two
-              of the five cuts.
+              The lead-in stays welded to them. It ends in a colon and its only
+              job is to introduce the seven terms, so it can never sit in a
+              column of its own - which is what broke two of the six cuts.
 
               Reading order is the argument's order: the statement, the cause,
               then the consequence and what it costs. */}
           <Reveal variant="fade" delay={120}>
-            <p className="mt-10 max-w-3xl text-base leading-relaxed text-body">
+            {/* BALANCE, NOT PRETTY. Measured at this measure: auto breaks
+                665/738/95, pretty breaks 665/651/182 - pretty only prevents a
+                one-WORD last line and "treatment persistence." is two, so it
+                leaves the stub. Balance breaks 492/477/529. */}
+            <p className="mt-10 max-w-3xl text-balance text-base leading-relaxed text-body">
               Medication non-adherence is the leading cause of poor blood
               pressure control, and hypertension is largely asymptomatic,
               resulting in poor long-term adherence and treatment persistence.
@@ -113,17 +114,15 @@ export default function SciencePage() {
           </Reveal>
 
           <Reveal variant="fade" delay={180}>
-            <p className="mt-8 max-w-3xl text-base leading-relaxed text-body">
+            <p className="mt-8 max-w-3xl text-pretty text-base leading-relaxed text-body">
               Persistent uncontrolled blood pressure substantially increases the
               risk of serious complications:
             </p>
           </Reveal>
 
-          {/* Two columns at the prose measure, which is the only count that
-              divides seven without stranding one: two gives four and three,
-              three gives three-three-one because the browser balances columns
-              by height rather than by count. Measured, not assumed. */}
-          <ul className="risk-list mt-5 max-w-3xl">
+          {/* At the prose measure, where the seven break four and three. Wider
+              and they break six and one, which strands a tag on its own line. */}
+          <ul className="mt-5 flex max-w-3xl flex-wrap gap-2">
             {complications.map((c, i) => (
               <Reveal
                 key={c}
@@ -134,8 +133,10 @@ export default function SciencePage() {
                    says risk increases; the list should look like it is. */
                 delay={240 + i * 90}
               >
-                <span aria-hidden className="risk-dot" />
-                {c}
+                <span className="risk-tag">
+                  <span aria-hidden className="risk-dot" />
+                  {c}
+                </span>
               </Reveal>
             ))}
           </ul>
