@@ -81,36 +81,41 @@ export default function SciencePage() {
             </p>
           </Reveal>
 
-          {/* TWO PARAGRAPHS ACROSS, THEN THE TAGS ACROSS.
+          {/* THE LEAD-IN BELONGS TO THE LIST, NOT TO A COLUMN.
 
-              The previous cut put one paragraph on the left and the other
-              paragraph PLUS all seven tags on the right, which made the columns
-              wildly unequal: three lines beside five, a void under the short one,
-              and the tags crushed into half the width so they broke over three
-              ragged rows. Fixing the page's left-hugging problem had introduced
-              a worse one.
+              Two cuts of this section put "Persistent uncontrolled blood
+              pressure substantially increases the risk of serious
+              complications:" in a column of its own — first stacked above the
+              tags in a half-width well, then paired across from the paragraph
+              on the left. Both were wrong for the same reason, which took too
+              long to see: that sentence is not a paragraph. It is a caption. It
+              ends in a colon and its entire job is to introduce the seven terms
+              underneath it, so putting it in a column beside something else
+              orphans it — one sentence hanging in a well, pointing at a list it
+              has been separated from.
 
-              The two paragraphs are close in length, so they pair cleanly. The
-              tags want width more than anything else — given the whole frame they
-              settle into two even rows instead of three ragged ones — so they get
-              their own full-width band underneath. The colon at the end of the
-              right-hand paragraph still runs straight into them. */}
-          <div className="mt-16 grid gap-10 lg:grid-cols-2 lg:gap-16">
-            <Reveal variant="fade" delay={120}>
-              <p className="text-base leading-relaxed text-body">
-                Medication non-adherence is the leading cause of poor blood
-                pressure control, and hypertension is largely asymptomatic,
-                resulting in poor long-term adherence and treatment persistence.
-              </p>
-            </Reveal>
+              It sits on the list now. One column throughout, and the tags run
+              the full frame, which is where the section gets its width from —
+              the earlier attempts held them to the prose measure and then tried
+              to fix the resulting narrowness by splitting the prose, which
+              solved nothing and broke the caption.
 
-            <Reveal variant="fade" delay={180}>
-              <p className="text-base leading-relaxed text-body">
-                Persistent uncontrolled blood pressure substantially increases
-                the risk of serious complications:
-              </p>
-            </Reveal>
-          </div>
+              Reading order is the argument's order: the statement, then the
+              cause, then the consequence and what it costs. */}
+          <Reveal variant="fade" delay={120}>
+            <p className="mt-16 max-w-3xl text-base leading-relaxed text-body">
+              Medication non-adherence is the leading cause of poor blood
+              pressure control, and hypertension is largely asymptomatic,
+              resulting in poor long-term adherence and treatment persistence.
+            </p>
+          </Reveal>
+
+          <Reveal variant="fade" delay={180}>
+            <p className="mt-12 max-w-3xl text-base leading-relaxed text-body">
+              Persistent uncontrolled blood pressure substantially increases the
+              risk of serious complications:
+            </p>
+          </Reveal>
 
           {/* Seven terms as small hairline tags — outlines only, no fill, no
               hover. The hover lit them in blue and the note back was that it
@@ -118,11 +123,13 @@ export default function SciencePage() {
               responds to a cursor is a promise of somewhere to go, and there is
               nowhere to go. They are labels. They sit still.
 
-              The stagger is what gives them life instead — 110ms apart rather
-              than 45, so the list visibly ACCUMULATES as it arrives. The
-              sentence above says risk increases; the list should look like it
-              is increasing. */}
-          <ul className="mt-8 flex flex-wrap gap-2">
+              Full width, so the seven settle into two even rows. Held to the
+              prose measure they broke over three ragged ones.
+
+              The stagger is what gives them life — 110ms apart rather than 45,
+              so the list visibly ACCUMULATES as it arrives. The sentence above
+              says risk increases; the list should look like it is increasing. */}
+          <ul className="mt-6 flex flex-wrap gap-2">
             {complications.map((c, i) => (
               <Reveal key={c} as="li" variant="fade" delay={240 + i * 110}>
                 <span className="risk-tag">
