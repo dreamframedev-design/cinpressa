@@ -4,6 +4,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { PageHero } from "@/components/page-hero";
 import { HeroChurn } from "@/components/hero-fields";
 import { Section } from "@/components/section";
+import { PipelineDiagram } from "@/components/pipeline-diagram";
 import { SectionHeader } from "@/components/section-header";
 import { Reveal } from "@/components/reveal";
 
@@ -107,14 +108,23 @@ export default function PipelinePage() {
               until the source dataset exists. */}
         </Section>
 
-        {/* THE DEVELOPMENT-STAGE GAUGE WAS DELETED HERE TOO. It was not
-            fabricated data, but it marked Phase 1 as "live" and "Underway" while
-            the copy it cited says the IND is PLANNED for mid-2026 and the study
-            is EXPECTED to commence in the fall. A pipeline chart that puts the
-            programme in Phase 1 tells a partner it is dosing when it is
-            preclinical, and that is the one thing a pipeline chart must not get
-            wrong. The stage is stated accurately in the section below, in words.
-            Recoverable from history if a corrected version is wanted. */}
+        {/* Development stage. The bar stays — it is the pipeline, and a pipeline
+            page without one is a pipeline page without a pipeline. What was
+            wrong with it was a claim, not the chart: it ran a quarter into Phase
+            1 and called that stage "Underway", while this page's own copy says
+            the IND is planned and the study is expected to commence. Corrected
+            rather than deleted — the bar now stops where the completed work
+            stops. See pipeline-diagram.tsx. */}
+        <Section>
+          <SectionHeader
+            eyebrow="Pipeline"
+            title="CIN-111 development stage"
+            subtitle="A single, focused program advancing from preclinical work into first-in-human development."
+          />
+          <div className="mt-14">
+            <PipelineDiagram />
+          </div>
+        </Section>
 
         {/* Clinical development */}
         <Section tone="indigo">
