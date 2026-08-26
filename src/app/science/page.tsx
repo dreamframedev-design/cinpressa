@@ -3,6 +3,7 @@ import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { PageHero } from "@/components/page-hero";
 import { OpenFlow } from "@/components/open-flow";
+import { ControlModel } from "@/components/control-model";
 import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
 import { RaasPathway } from "@/components/raas-pathway";
@@ -120,36 +121,32 @@ export default function SciencePage() {
           </ul>
         </Section>
 
-        {/* CinPressa solution. NO BACKDROP and, since review, no figure either —
-            this section makes its case in one paragraph.
+        {/* CinPressa solution. NO BACKDROP. This section had a wash, then a
+            better wash, and both were the wrong instrument: its argument is
+            structural — a foundation with optional courses laid on it — and a
+            wash cannot state a structure. It carries a figure instead. See
+            control-model.tsx.
 
             COPY PROVENANCE, since it was asked: every word in this section is
             verbatim from the approved site map (Google Doc, "Science" →
             "CinPressa solution"). Eyebrow, headline and subheadline are exact;
-            the body is the map's single Section body paragraph. Nothing here is
-            written. The PDFs checked into this repo are an OLDER revision of
-            that map and disagree — the doc is the source. */}
+            the body is the map's single Section body paragraph, split at its
+            sentence boundary into the two columns. Nothing here is written. The
+            PDFs checked into this repo are an OLDER revision of that map and
+            disagree — the doc is the source. */}
         <Section tone="green">
           <SectionHeader
             eyebrow="CinPressa solution"
             title="A new treatment paradigm"
+            deck="Long-acting control with infrequent dosing"
           />
-          {/* The deck sits ON its paragraph rather than under the headline. It
-              was reading as a third heading stacked on the first two; a
-              subheadline's job is to introduce the body, so the gap above it is
-              wider than the gap below and the pair reads as one block. */}
-          <Reveal variant="fade" delay={80}>
-            <p className="mt-11 max-w-3xl text-lg font-medium leading-snug tracking-tight text-ink md:text-xl">
-              Long-acting control with infrequent dosing
-            </p>
-          </Reveal>
           {/* ONE paragraph, because that is what it is. The map carries this as a
               single Section body and it was being split at its sentence
               boundary into two columns — which left three lines beside six and
               a hole under the short one. A two-column set only works when both
               columns fill; this one never could. */}
-          <Reveal variant="fade" delay={140}>
-            <p className="mt-5 max-w-3xl text-base leading-relaxed text-body">
+          <Reveal variant="fade" delay={100}>
+            <p className="mt-10 max-w-3xl text-base leading-relaxed text-body">
               CinPressa is developing a treatment model that shifts hypertension
               management from daily patient behavior to infrequent
               provider-administered therapy. Rather than relying on daily oral
@@ -160,13 +157,11 @@ export default function SciencePage() {
             </p>
           </Reveal>
 
-          {/* The control-model figure was deleted here per review. It was a
-              foundation block with an optional course resting on it and a year
-              line beneath — a good drawing of an argument this section already
-              makes in one paragraph, and one more object on a page that has a
-              hero field, a crescendo, a tag list and the RAAS cascade below.
-              Recoverable from history; control-model.tsx and its CSS went with
-              it. */}
+          {/* Same measure as the copy above it: heading, paragraph and figure
+              all start on one edge and end on one. */}
+          <Reveal variant="rise" delay={140} className="mt-14 max-w-3xl">
+            <ControlModel />
+          </Reveal>
         </Section>
 
         {/* Mechanism */}

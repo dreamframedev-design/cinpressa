@@ -14,11 +14,12 @@ test("homepage news uses the map's heading and the standard dated-list form", as
     read("src/components/news-feed.tsx"),
   ]);
 
-  // The map's headline, and no subhead: review cut "Recent updates, key
-  // milestones, and the latest news from the company." along with the invented
-  // "What's ahead for CIN-111" it had replaced.
+  // Map copy, verbatim — the invented "What's ahead for CIN-111" is gone.
   assert.match(home, /title="What’s new at CinPressa"/);
-  assert.doesNotMatch(home, /Recent updates, key milestones/);
+  assert.match(
+    home,
+    /subtitle="Recent updates, key milestones, and the latest news from the company\."/,
+  );
   assert.doesNotMatch(home, /What’s ahead for CIN-111/);
 
   // A list, not a calendar panel: no giant year, and the year rides the dates.
