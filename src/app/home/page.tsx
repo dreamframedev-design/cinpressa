@@ -205,7 +205,8 @@ export default function HomePage() {
               {
                 value: "1.4",
                 unit: "B",
-                label: "people live with hypertension worldwide",
+                /* "worldwide" was never in the map; it says "globally". */
+                label: "people globally live with hypertension",
                 share: 1,
               },
               {
@@ -313,14 +314,26 @@ export default function HomePage() {
             <ProgramSpec
               className="lg:pt-2"
               source="In hypertensive non-human primate studies"
+              /* Every label and value below is a LITERAL substring of the map's
+                 sentence for this section, not a paraphrase of it:
+
+                 "In hypertensive non-human primate studies, CIN-111 has achieved
+                  near complete reductions in AGT and substantial, sustained
+                  reductions in systolic blood pressure, with effects maintained
+                  for more than three months."
+
+                 An earlier cut had "AGT reduction" and "Effect maintained",
+                 which re-ordered the map's words rather than quoting them. No
+                 claim changed, but on a section that exists to carry preclinical
+                 findings, close enough is not the standard. Verified by test. */
               findings={[
-                { label: "AGT reduction", value: "Near complete" },
+                { label: "Reductions in AGT", value: "Near complete" },
                 {
-                  label: "Systolic blood pressure",
+                  label: "Reductions in systolic blood pressure",
                   value: "Substantial, sustained",
                 },
                 {
-                  label: "Effect maintained",
+                  label: "Effects maintained",
                   value: "More than three months",
                   accent: true,
                 },
