@@ -39,7 +39,12 @@ test("no section is left stranded at two thirds of its frame", async () => {
   assert.match(home, /<div className="max-w-5xl">/); // verdict
   assert.match(home, /lg:grid-cols-\[minmax\(0,1\.55fr\)_minmax\(0,1fr\)\]/); // dose card + copy
   assert.match(science, /className="crescendo max-w-5xl"/);
-  assert.match(science, /mt-16 grid gap-10 lg:grid-cols-2/); // cause | consequence
+  // The burden section takes its width from the full-frame tag list, NOT from
+  // splitting the prose. An earlier cut paired the paragraph with the list's
+  // caption to fill the frame, which orphaned a sentence ending in a colon.
+  assert.doesNotMatch(science, /lg:grid-cols-2/);
+  assert.match(science, /<ul className="mt-6 flex flex-wrap gap-2">/);
+  assert.doesNotMatch(science, /<ul className="[^"]*max-w-3xl[^"]*flex-wrap/);
   assert.match(science, /className="mt-14 max-w-5xl">\s*\n\s*<ControlModel/);
 
   // The dose card must stay on its own measure: its grid divides the width, so
