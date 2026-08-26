@@ -25,16 +25,6 @@ const complications = [
   "Vascular dementia",
 ];
 
-/* Four to a rank. Not because the register is a four-column grid (it is not,
-   see .risk-rank) but because four terms is what justifies across the measure
-   without the gaps opening into canyons. Seven gives four then three, in the
-   source document's order, which is the only order they have. */
-const COLUMNS = 4;
-const RANKS = Array.from(
-  { length: Math.ceil(complications.length / COLUMNS) },
-  (_, r) => complications.slice(r * COLUMNS, r * COLUMNS + COLUMNS),
-);
-
 export default function SciencePage() {
   return (
     <div id="top">
@@ -91,26 +81,31 @@ export default function SciencePage() {
             </p>
           </Reveal>
 
-          {/* THE LEAD-IN BELONGS TO THE LIST, NOT TO A COLUMN.
+          {/* ONE COLUMN, TIGHT. NOT A SPREAD, AND NOT A BAND.
 
-              Two cuts of this section put "Persistent uncontrolled blood
-              pressure substantially increases the risk of serious
-              complications:" in a column of its own — first stacked above the
-              tags in a half-width well, then paired across from the paragraph
-              on the left. Both were wrong for the same reason, which took too
-              long to see: that sentence is not a paragraph. It is a caption. It
-              ends in a colon and its entire job is to introduce the seven terms
-              underneath it, so putting it in a column beside something else
-              orphans it — one sentence hanging in a well, pointing at a list it
-              has been separated from.
+              This section has now been cut five ways and the last one was the
+              worst: the seven complications stretched edge to edge across the
+              measure, which turned a list into a footer bar with canyons in it.
+              Every cut before that was the same instinct - the section looked
+              empty on the right, so something got widened to fill it.
 
-              It sits directly on the register now, which is also how every
-              other section on this page is built: prose at the 3xl measure,
-              then the figure at the 5xl measure under it. Reading order is the
-              argument's order — the statement, then the cause, then the
-              consequence and what it costs. */}
+              The emptiness had one real cause and it is fixed upstream. The
+              statement above was capped at 46ch, so the section opened at under
+              half the frame and everything under it inherited that. It runs to
+              about 80% now (see .crescendo-lede), which is where this section
+              gets its width. Nothing down here has to stretch to earn it.
+
+              So the body is a column, and the only job left is to stop it
+              reading as four blocks floating in white: the gaps tighten, and the
+              list sits at the prose measure directly under the sentence that
+              introduces it. That sentence ends in a colon and belongs to the
+              list - it can never be alone in a column, which is what broke two
+              of the five cuts.
+
+              Reading order is the argument's order: the statement, the cause,
+              then the consequence and what it costs. */}
           <Reveal variant="fade" delay={120}>
-            <p className="mt-16 max-w-3xl text-base leading-relaxed text-body">
+            <p className="mt-10 max-w-3xl text-base leading-relaxed text-body">
               Medication non-adherence is the leading cause of poor blood
               pressure control, and hypertension is largely asymptomatic,
               resulting in poor long-term adherence and treatment persistence.
@@ -118,39 +113,32 @@ export default function SciencePage() {
           </Reveal>
 
           <Reveal variant="fade" delay={180}>
-            <p className="mt-12 max-w-3xl text-base leading-relaxed text-body">
+            <p className="mt-8 max-w-3xl text-base leading-relaxed text-body">
               Persistent uncontrolled blood pressure substantially increases the
               risk of serious complications:
             </p>
           </Reveal>
 
-          {/* THE SEVEN ARE THIS SECTION'S FIGURE. Full reasoning in the CSS:
-              in short, the section read as left heavy because it was the only
-              one on the page carrying no wide element, and the complications
-              were the only candidate. Each rank justifies its own terms
-              between the two edges rather than sharing one grid: seven is
-              prime, so any grid that fills the width leaves a hole, and that
-              hole is what read as a term left hanging on the right. */}
-          <div className="risk-register mt-8 max-w-5xl">
-            {RANKS.map((rank, r) => (
-              <ul key={r} className="risk-rank">
-                {rank.map((c, i) => (
-                  <Reveal
-                    key={c}
-                    as="li"
-                    variant="fade"
-                    className="risk-item"
-                    /* One continuous accumulation across both ranks, not two
-                       lists arriving in parallel. */
-                    delay={240 + (r * COLUMNS + i) * 110}
-                  >
-                    <span aria-hidden className="risk-dot" />
-                    {c}
-                  </Reveal>
-                ))}
-              </ul>
+          {/* Two columns at the prose measure, which is the only count that
+              divides seven without stranding one: two gives four and three,
+              three gives three-three-one because the browser balances columns
+              by height rather than by count. Measured, not assumed. */}
+          <ul className="risk-list mt-5 max-w-3xl">
+            {complications.map((c, i) => (
+              <Reveal
+                key={c}
+                as="li"
+                variant="fade"
+                /* The stagger is where their life comes from: 90ms apart, so the
+                   list visibly ACCUMULATES as it arrives. The sentence above
+                   says risk increases; the list should look like it is. */
+                delay={240 + i * 90}
+              >
+                <span aria-hidden className="risk-dot" />
+                {c}
+              </Reveal>
             ))}
-          </div>
+          </ul>
         </Section>
 
         {/* CinPressa solution. NO BACKDROP. This section had a wash, then a

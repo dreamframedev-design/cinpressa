@@ -435,14 +435,18 @@ p {
   letter-spacing: -0.02em;
 }
 
-.crescendo-lede {
-  color: var(--color-muted);
+/* One colour across the setup as well as one size. Large-and-grey against
+   large-and-ink read as two voices arguing over which was the lead; they are
+   one thought, so they get one voice, and the only change in the whole
+   paragraph is the payoff. */
+.crescendo-lede,
+.crescendo-turn {
+  color: var(--color-body);
 }
 
 /* Close enough to read as the next breath rather than the next paragraph. */
 .crescendo-turn {
   margin-top: 0.9rem;
-  color: var(--color-ink);
 }
 
 .crescendo-point {
@@ -528,99 +532,55 @@ p {
 }
 
 
-/* ---------- Risk register (science, "the burden") ----------
+/* ---------- Risk list (science, "the burden") ----------
 
-   WHAT THIS REPLACED AND WHY. The seven complications were outlined tags that
-   wrapped inline. Three separate notes came back on them: they read as buttons,
-   they ran further right than anything else in the section, and one of them was
-   left stranded alone on a second line. Constraining the wrap fixed the rag and
-   nothing else, because none of those were the real problem.
+   WHAT THIS REPLACED. The seven complications have been outlined tags that
+   wrapped inline, then a four-across grid, then two ranks justified edge to
+   edge. Each fix answered the last note and earned a worse one, because all
+   three were the same mistake: trying to make a list carry the width of the
+   section. Stretched to the measure the terms read as a footer bar, with
+   canyons between them and a hairline running on past the last word.
 
-   The real problem was the section, not the tags. Every other section on this
-   page is prose at the 3xl measure with a figure at the 5xl measure underneath
-   holding the frame open — the control model, the mechanism diagram. The burden
-   section had no figure at all, so it was prose and only prose, and the whole
-   thing sat in the left half of a wide frame with nothing on the right. That is
-   what "left heavy" was.
+   The width was never this list's to carry. The statement above was capped
+   at 46ch, which opened the section at under half the frame, and everything
+   below inherited that. It runs to about 80% now, and that is where the
+   section's width comes from. So the list is allowed to be a list: the prose
+   measure, directly under the sentence that introduces it, no fill, no radius,
+   no outline, no hover. A term, a dot, and the rule it sits on. Their life is
+   the staggered arrival, not decoration.
 
-   So the seven ARE the figure now: a register spanning the full 5xl measure.
+   Two columns, because two is the only count that divides seven without
+   stranding one. Three gives three-three-one, not three-two-two, because the
+   browser balances columns by height rather than by count - measured, after
+   assuming otherwise and shipping the orphan. Column-major either way, so the
+   source document's order reads down and then across. */
 
-   IT IS NOT A GRID, AND THAT IS THE POINT. Four across in two ranks left the
-   eighth cell empty, so the last term in the top rank sat over a quarter of
-   dead space: "just one hanging on the right", which is exactly what it looked
-   like. Seven is prime. No rectangle holds it, so any column count that fills
-   the width leaves a hole somewhere, and the hole is more visible than the
-   misaligned dot it was traded for.
 
-   The ranks are justified instead. Each spreads its own terms between the two
-   edges, four in the first and three in the second, so every rule starts and
-   ends on a word. Nothing hangs because there is no empty cell to hang over:
-   the gaps absorb the difference, the way they do in justified text or on a
-   masthead. Dots no longer align down the page, which is a real cost and the
-   cheaper of the two.
-
-   The rules live on the rank rather than on the cells, so they run the full
-   measure whatever the rank holds.
-
-   Horizontal hairlines only, the same register the program spec uses; no
-   vertical rules, because that tips it into looking like a table of data, and
-   these are terms rather than data.
-
-   The button read is gone with the box. Nothing here has a fill, a radius, or
-   an outline: a term, a dot, and the rule it sits on. Their life is the
-   staggered arrival — 110ms apart, so the list visibly ACCUMULATES along the
-   rules as it lands, which is what the sentence above it says is happening. */
-
-.risk-register {
+.risk-list {
+  columns: 1;
+  /* Closes the block into a rectangle. Without it the shorter column stops a
+     row early and the bottom edge steps. */
   border-bottom: 1px solid var(--color-pale);
 }
 
-/* A narrow screen cannot justify anything (a rank spread across a phone is a
-   term, a canyon, and another term) so they stack there, and the register only
-   becomes a register once a whole rank fits on one line. Measured, that needs a
-   900px container, which a 1024 viewport clears. Below it: one column on a
-   phone, two from 640, both sized off the longest term - "Peripheral arterial
-   disease", about 250px with its dot and gutter, which needs a 592px container
-   at two up. Every jump sits above where wrapping starts, not on top of it. */
-.risk-rank {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  /* On the rank, never on the item: a gutter carried as item padding trails the
-     last term and stops the rank short of its own rule, which is the one thing
-     a justified rank cannot do. */
-  column-gap: 1.5rem;
-  border-top: 1px solid var(--color-pale);
-}
-
 @media (min-width: 640px) {
-  .risk-rank {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .risk-list {
+    columns: 2;
+    column-gap: 2.5rem;
   }
 }
 
-@media (min-width: 1024px) {
-  .risk-rank {
-    display: flex;
-    justify-content: space-between;
-  }
-}
-
-.risk-item {
+.risk-list > * {
   display: flex;
   align-items: center;
   gap: 0.55rem;
-  /* Tighter when they are stacked one per line, so seven of them do not turn
-     into a column of air. */
-  padding-block: 0.6rem;
+  /* A row must never split across a column break. */
+  break-inside: avoid;
+  padding: 0.6rem 0;
+  border-top: 1px solid var(--color-pale);
   font-size: 0.875rem;
   line-height: 1.3;
   color: var(--color-ink);
-}
-
-@media (min-width: 640px) {
-  .risk-item {
-    padding-block: 0.85rem;
-  }
 }
 
 /* Marks each as an item without being a bullet the reader has to parse. */
@@ -631,7 +591,6 @@ p {
   border-radius: 9999px;
   background: var(--color-periwinkle);
 }
-
 
 /* ---------- Burden rail (home, "the challenge") ----------
    Three figures under one rule, each standing on a track that is also a
@@ -2621,6 +2580,9 @@ p {
     box-shadow: none !important;
   }
 }
+
+
+
 
 
 
