@@ -12,10 +12,10 @@ test("the homepage pipeline carries findings, not a decorative field", async () 
   ]);
 
   assert.match(home, /import \{ ProgramSpec \}/);
-  assert.match(home, /<Section tone="indigo">/);
-  // The blob is gone, and so is the section-level art slot it sat in.
+  assert.match(home, /<Section tone="indigo"/);
+  // The corner blob is gone for good.
   assert.doesNotMatch(home.replace(/\/\*[\s\S]*?\*\//g, ""), /PipelineField/);
-  assert.doesNotMatch(css, /pipeline-field/);
+  assert.doesNotMatch(css, /pipeline-field(?!-|s)/);
 
   // Provenance is not optional: findings without their study design are a boast.
   assert.match(home, /source="In hypertensive non-human primate studies"/);
@@ -48,4 +48,32 @@ test("the pipeline spec is rows of hairlines, never a card", async () => {
   assert.match(css, /\.program-spec-row \{[^}]*border-bottom: 1px solid var\(--color-pale\)/);
   assert.doesNotMatch(css, /\.program-spec[^{]*\{[^}]*border-radius/);
   assert.doesNotMatch(css, /\.program-spec[^{]*\{[^}]*box-shadow/);
+});
+
+test("the pipeline bloom is a crop, not a shape sitting in a box", async () => {
+  const [bloom, css] = await Promise.all([
+    read("src/components/pipeline-bloom.tsx"),
+    read("src/app/globals.css"),
+  ]);
+
+  // The rule the old blob broke: every centre must be outside the 1440x620
+  // frame, so only arcs enter and nothing has a findable middle.
+  const centres = [...bloom.matchAll(/cx: (-?\d+), cy: (-?\d+)/g)].map((m) => [
+    Number(m[1]),
+    Number(m[2]),
+  ]);
+  assert.equal(centres.length, 5);
+  for (const [cx, cy] of centres) {
+    const outside = cx < 0 || cx > 1440 || cy < 0 || cy > 620;
+    assert.ok(outside, `oval centre ${cx},${cy} sits inside the frame`);
+  }
+
+  // The saturated pair stay low enough to deepen the pale ovals rather than
+  // read as blue and indigo shapes in their own right.
+  const deep = [...bloom.matchAll(/color: "#(?:6771B5|2261AD)", alpha: ([\d.]+)/g)];
+  assert.equal(deep.length, 2);
+  for (const m of deep) assert.ok(Number(m[1]) <= 0.2, `deep oval alpha ${m[1]} too high`);
+
+  // And it dissolves at the section seams instead of stopping at them.
+  assert.match(css, /\.pipeline-bloom \{[\s\S]*?mask-image/);
 });

@@ -727,10 +727,35 @@ p {
 }
 
 
-/* ---------- Contact bloom ----------
-   The mark's ovals at architectural scale (contact-bloom.tsx). Entrance and
-   drift live on NESTED groups because both animate transform; transform-box
-   keeps every motion about the oval's own centre, not the SVG origin. */
+/* ---------- Pipeline bloom feather ----------
+   The contact bloom fills a hero and is cropped by the viewport, so it never
+   shows an edge. This one sits inside a section between two others, so it has
+   to dissolve at the seams rather than stop at them. */
+
+.pipeline-bloom {
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    #000 14%,
+    #000 80%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    #000 14%,
+    #000 80%,
+    transparent 100%
+  );
+}
+
+/* ---------- Bloom choreography (contact-bloom.tsx, pipeline-bloom.tsx) -------
+   The mark's ovals at architectural scale. Entrance and drift live on NESTED
+   groups because both animate transform; transform-box keeps every motion about
+   the oval's own centre, not the SVG origin.
+
+   Shared by both blooms rather than duplicated — the motion is the same idea in
+   two crops, and only the oval compositions differ. */
 
 @keyframes cb-enter {
   from {
@@ -2372,7 +2397,7 @@ p {
     transform: none !important;
   }
 
-  /* Contact bloom: the full composition, still. */
+  /* Both blooms: the full composition, still. */
   .cb-enter,
   .cb-drift {
     animation: none !important;
@@ -2502,6 +2527,8 @@ p {
     box-shadow: none !important;
   }
 }
+
+
 
 
 

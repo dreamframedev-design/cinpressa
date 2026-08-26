@@ -13,6 +13,7 @@ import { ANNOUNCEMENTS } from "@/lib/news";
 import { MarkPreview } from "@/components/mark-preview";
 import { Reveal } from "@/components/reveal";
 import { ArrowIcon } from "@/components/arrow-icon";
+import { PipelineBloom } from "@/components/pipeline-bloom";
 import { ProgramSpec } from "@/components/program-spec";
 
 export const metadata: Metadata = {
@@ -282,8 +283,14 @@ export default function HomePage() {
 
             A spread rather than a stack, because that is what the width is for:
             the argument reads down the left, the evidence stands on the right,
-            and both start on the same line. See program-spec.tsx. */}
-        <Section tone="indigo">
+            and both start on the same line. See program-spec.tsx.
+
+            The colour is back, composed this time. The field that was removed
+            was a blob parked in one corner; this one is the mark's own ovals
+            cropped so every centre sits outside the frame and the mass is
+            thrown to the top and bottom edges, leaving the band the copy
+            occupies to the faint tails. See pipeline-bloom.tsx. */}
+        <Section tone="indigo" art={<PipelineBloom className="absolute inset-0" />}>
           <div className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-start lg:gap-16">
             <div>
               <SectionHeader
