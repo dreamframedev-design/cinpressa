@@ -818,9 +818,9 @@ p {
 }
 
 /* ---------- News feed (home) ----------
-   A dated list, which is what a News heading promises. Date column, headline,
-   one line of detail, hairline between entries. No hover: the rows are not
-   links. See news-feed.tsx. */
+   A press-release list: full date, kind, wire-style headline, summary, link.
+   Empty until a release exists, and it says so — see news-feed.tsx for why the
+   milestones that used to sit here were the whole problem. */
 
 .news-feed {
   border-top: 1px solid var(--color-pale);
@@ -828,49 +828,112 @@ p {
 
 .news-entry {
   display: grid;
-  gap: 0.5rem 2.5rem;
+  gap: 0.75rem 2.5rem;
   border-bottom: 1px solid var(--color-pale);
   padding-block: 1.85rem;
 }
 
 @media (min-width: 768px) {
   .news-entry {
-    grid-template-columns: 9rem minmax(0, 1fr);
+    grid-template-columns: 12rem minmax(0, 1fr);
     align-items: start;
+  }
+}
+
+.news-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.3rem 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .news-meta {
+    /* Optically aligned to the headline's cap height, not its line box. */
+    padding-top: 0.3rem;
+    flex-direction: column;
   }
 }
 
 .news-when {
   font-size: 0.78rem;
   font-weight: 600;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--color-blue);
 }
 
-@media (min-width: 768px) {
-  /* Optically aligned to the headline's cap height rather than its line box. */
-  .news-when {
-    padding-top: 0.35rem;
-  }
+.news-kind {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-muted);
 }
 
 .news-title {
-  font-size: clamp(1.15rem, 1.7vw, 1.35rem);
+  font-size: clamp(1.15rem, 1.7vw, 1.4rem);
   font-weight: 500;
-  line-height: 1.3;
+  line-height: 1.32;
   letter-spacing: -0.015em;
   color: var(--color-ink);
 }
 
 .news-body {
   margin-top: 0.6rem;
-  /* A reading measure, but not so short that each entry leaves half its row
-     empty — at 46ch the two-line deks looked stranded beside their headlines. */
   max-width: 58ch;
   font-size: 1rem;
   line-height: 1.65;
   color: var(--color-body);
+}
+
+.news-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-blue);
+  transition: color 0.3s var(--ease-brand);
+}
+
+.news-link:hover {
+  color: var(--color-ink);
+}
+
+/* The empty state. A newsroom with nothing in it is normal at this stage, so
+   it is stated plainly and on the same rails the list will use — when the
+   first release lands the frame does not move. */
+.news-empty {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.25rem 3rem;
+  border-bottom: 1px solid var(--color-pale);
+  padding-block: 2rem;
+}
+
+.news-empty-body {
+  max-width: 60ch;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--color-body);
+}
+
+.news-empty-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-blue);
+  transition: color 0.3s var(--ease-brand);
+}
+
+.news-empty-link:hover {
+  color: var(--color-ink);
 }
 
 /* ---------- Nav links ---------- */
@@ -2439,5 +2502,6 @@ p {
     box-shadow: none !important;
   }
 }
+
 
 

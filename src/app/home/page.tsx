@@ -9,6 +9,7 @@ import { BurdenRail } from "@/components/burden-rail";
 import { DoseMigration } from "@/components/dose-migration";
 import { Bleed } from "@/components/bleed";
 import { NewsFeed } from "@/components/news-feed";
+import { ANNOUNCEMENTS } from "@/lib/news";
 import { MarkPreview } from "@/components/mark-preview";
 import { Reveal } from "@/components/reveal";
 import { ArrowIcon } from "@/components/arrow-icon";
@@ -328,25 +329,33 @@ export default function HomePage() {
           </div>
         </Section>
 
-        {/* News. Back to the map's own heading and subhead, and back to the
-            format a News heading promises: a dated list. What was here was a
-            bespoke forward calendar — good-looking, and it made a reader work
-            out the layout before they could read it. See news-feed.tsx. */}
+        {/* News. An announcements teaser, which is what a News heading promises
+            — and which is why the three versions before it were kicked back:
+            each put the two planned MILESTONES in the announcements slot, and a
+            list of things that have not happened cannot be restyled into a
+            release feed. The milestones live on /news under "What's ahead",
+            where forward-looking items belong. See news-feed.tsx.
+
+            The CTA is the feed's job when there is nothing to list, so the
+            section-level one only appears alongside real entries. Two links to
+            the same newsroom in one empty section is one too many. */}
         <Section id="news" tone="sky">
           <SectionHeader
             eyebrow="News"
             title="What’s new at CinPressa"
           />
           <NewsFeed className="mt-12" />
-          <Reveal variant="fade" delay={260}>
-            <Link
-              href="/news"
-              className="group mt-10 inline-flex min-h-11 items-center gap-2 text-base font-medium text-blue transition-colors hover:text-ink"
-            >
-              <span className="link-underline">Read the latest</span>
-              <ArrowIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-            </Link>
-          </Reveal>
+          {ANNOUNCEMENTS.length > 0 ? (
+            <Reveal variant="fade" delay={260}>
+              <Link
+                href="/news"
+                className="group mt-10 inline-flex min-h-11 items-center gap-2 text-base font-medium text-blue transition-colors hover:text-ink"
+              >
+                <span className="link-underline">Read the latest</span>
+                <ArrowIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+              </Link>
+            </Reveal>
+          ) : null}
         </Section>
       </main>
 

@@ -9,28 +9,13 @@ import { Timeline } from "@/components/timeline";
 import { MarkArt } from "@/components/geometry";
 import { Reveal } from "@/components/reveal";
 import { ArrowIcon } from "@/components/arrow-icon";
+import { ANNOUNCEMENTS, formatAnnouncementDate } from "@/lib/news";
 
 export const metadata: Metadata = {
   title: "News",
   description:
     "Follow CinPressa's progress as CIN-111 advances through development.",
 };
-
-type Announcement = {
-  /** ISO date, drives both the <time> attribute and the displayed date. */
-  date: string;
-  category: string;
-  title: string;
-  summary: string;
-  href?: string;
-};
-
-/**
- * No releases have been issued yet, so this is genuinely empty rather than
- * staged. The page renders an empty state until the first entry lands. Add
- * announcements here, newest first, and the list takes over automatically.
- */
-const ANNOUNCEMENTS: Announcement[] = [];
 
 /**
  * Both milestones are restated from the pipeline page, which is the approved
@@ -48,13 +33,6 @@ const MILESTONES = [
     body: "A U.S.-based first-in-human study is expected to commence: a single-dose, single ascending dose design in patients with mild-to-moderate hypertension.",
   },
 ];
-
-const dateFormat = new Intl.DateTimeFormat("en-US", {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-  timeZone: "UTC",
-});
 
 export default function NewsPage() {
   const hasNews = ANNOUNCEMENTS.length > 0;
@@ -94,7 +72,7 @@ export default function NewsPage() {
                         dateTime={item.date}
                         className="text-[0.84rem] font-semibold uppercase tracking-[0.15em] text-body"
                       >
-                        {dateFormat.format(new Date(item.date))}
+                        {formatAnnouncementDate(item.date)}
                       </time>
                       <span className="inline-flex rounded-full border border-pale/70 bg-pale/25 px-3 py-1 text-[0.82rem] font-semibold uppercase tracking-[0.11em] text-blue">
                         {item.category}
