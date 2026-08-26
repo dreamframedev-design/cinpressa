@@ -25,6 +25,15 @@ const complications = [
   "Vascular dementia",
 ];
 
+/* The register is four across, so the ranks are chunks of four — the split has
+   to follow the grid rather than halve the list, or the second rank stops
+   aligning with the first. Seven gives four then three. */
+const COLUMNS = 4;
+const RANKS = Array.from(
+  { length: Math.ceil(complications.length / COLUMNS) },
+  (_, r) => complications.slice(r * COLUMNS, r * COLUMNS + COLUMNS),
+);
+
 export default function SciencePage() {
   return (
     <div id="top">
@@ -94,14 +103,11 @@ export default function SciencePage() {
               orphans it — one sentence hanging in a well, pointing at a list it
               has been separated from.
 
-              It sits on the list now. One column throughout, and the tags run
-              the full frame, which is where the section gets its width from —
-              the earlier attempts held them to the prose measure and then tried
-              to fix the resulting narrowness by splitting the prose, which
-              solved nothing and broke the caption.
-
-              Reading order is the argument's order: the statement, then the
-              cause, then the consequence and what it costs. */}
+              It sits directly on the register now, which is also how every
+              other section on this page is built: prose at the 3xl measure,
+              then the figure at the 5xl measure under it. Reading order is the
+              argument's order — the statement, then the cause, then the
+              consequence and what it costs. */}
           <Reveal variant="fade" delay={120}>
             <p className="mt-16 max-w-3xl text-base leading-relaxed text-body">
               Medication non-adherence is the leading cause of poor blood
@@ -117,28 +123,35 @@ export default function SciencePage() {
             </p>
           </Reveal>
 
-          {/* Seven terms as small hairline tags — outlines only, no fill, no
-              hover. The hover lit them in blue and the note back was that it
-              made them feel clickable, which is exactly right: colour that
-              responds to a cursor is a promise of somewhere to go, and there is
-              nowhere to go. They are labels. They sit still.
-
-              Full width, so the seven settle into two even rows. Held to the
-              prose measure they broke over three ragged ones.
-
-              The stagger is what gives them life — 110ms apart rather than 45,
-              so the list visibly ACCUMULATES as it arrives. The sentence above
-              says risk increases; the list should look like it is increasing. */}
-          <ul className="mt-6 flex flex-wrap gap-2">
-            {complications.map((c, i) => (
-              <Reveal key={c} as="li" variant="fade" delay={240 + i * 110}>
-                <span className="risk-tag">
-                  <span aria-hidden className="risk-dot" />
-                  {c}
-                </span>
-              </Reveal>
+          {/* THE SEVEN ARE THIS SECTION'S FIGURE. Full reasoning in the CSS:
+              in short, the section read as left heavy because it was the only
+              one on the page carrying no wide element, and the complications
+              were the only candidate. Both ranks sit on the SAME four-column
+              grid, so every dot in the second lands under a dot in the first;
+              sizing the second rank to its own three columns kept both edges
+              flush and still looked arbitrary, because nothing lined up down
+              the page. The rules belong to the rank rather than the cells, so
+              the empty eighth cell costs the register nothing. */}
+          <div className="risk-register mt-8 max-w-5xl">
+            {RANKS.map((rank, r) => (
+              <ul key={r} className="risk-rank">
+                {rank.map((c, i) => (
+                  <Reveal
+                    key={c}
+                    as="li"
+                    variant="fade"
+                    className="risk-item"
+                    /* One continuous accumulation across both ranks, not two
+                       lists arriving in parallel. */
+                    delay={240 + (r * COLUMNS + i) * 110}
+                  >
+                    <span aria-hidden className="risk-dot" />
+                    {c}
+                  </Reveal>
+                ))}
+              </ul>
             ))}
-          </ul>
+          </div>
         </Section>
 
         {/* CinPressa solution. NO BACKDROP. This section had a wash, then a

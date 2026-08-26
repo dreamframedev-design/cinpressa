@@ -30,21 +30,34 @@ test("the science solution keeps its figure — the deck moved, the animation st
 });
 
 test("no section is left stranded at two thirds of its frame", async () => {
-  const [home, science] = await Promise.all([
+  const [home, science, css] = await Promise.all([
     read("src/app/home/page.tsx"),
     read("src/app/science/page.tsx"),
+    read("src/app/globals.css"),
   ]);
 
   // The four sections that used to stop short are paired or widened.
   assert.match(home, /<div className="max-w-5xl">/); // verdict
   assert.match(home, /lg:grid-cols-\[minmax\(0,1\.55fr\)_minmax\(0,1fr\)\]/); // dose card + copy
   assert.match(science, /className="crescendo max-w-5xl"/);
-  // The burden section takes its width from the full-frame tag list, NOT from
-  // splitting the prose. An earlier cut paired the paragraph with the list's
-  // caption to fill the frame, which orphaned a sentence ending in a colon.
+  // The burden section takes its width from its figure, NOT from splitting the
+  // prose. An earlier cut paired the paragraph with the list's caption to fill
+  // the frame, which orphaned a sentence ending in a colon.
   assert.doesNotMatch(science, /lg:grid-cols-2/);
-  assert.match(science, /<ul className="mt-6 flex flex-wrap gap-2">/);
-  assert.doesNotMatch(science, /<ul className="[^"]*max-w-3xl[^"]*flex-wrap/);
+  // The seven are the section's figure, at the same 5xl measure every other
+  // figure on the page uses. Two ranks of equal columns, so both share a left
+  // and a right edge and neither leaves an empty cell.
+  assert.match(science, /<div className="risk-register mt-8 max-w-5xl">/);
+  // Ranks chunk by the grid's column count, so the second rank's dots land
+  // under the first's. Halving the list breaks that the moment it is not 8.
+  assert.match(science, /const COLUMNS = 4;/);
+  assert.match(science, /complications\.slice\(r \* COLUMNS, r \* COLUMNS \+ COLUMNS\)/);
+  assert.match(css, /\.risk-rank \{[^}]*border-top: 1px solid var\(--color-pale\)/);
+  assert.doesNotMatch(science, /flex-wrap gap-2/);
+  // No box: the note back was that they read as buttons.
+  assert.doesNotMatch(css, /\.risk-tag/);
+  assert.doesNotMatch(css, /\.risk-item \{[^}]*border/);
+  assert.doesNotMatch(css, /\.risk-item \{[^}]*border-radius/);
   assert.match(science, /className="mt-14 max-w-5xl">\s*\n\s*<ControlModel/);
 
   // The dose card must stay on its own measure: its grid divides the width, so
