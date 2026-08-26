@@ -48,7 +48,8 @@ test("the newsroom has one source of truth", async () => {
     read("src/components/news-feed.tsx"),
   ]);
 
-  assert.match(lib, /export const ANNOUNCEMENTS: Announcement\[\] = \[\];/);
+  // The real list is empty; ANNOUNCEMENTS resolves to it outside preview.
+  assert.match(lib, /const REAL: Announcement\[\] = \[\];/);
   assert.match(news, /from "@\/lib\/news"/);
   assert.match(feed, /from "@\/lib\/news"/);
   assert.doesNotMatch(code(news), /const ANNOUNCEMENTS/);
@@ -80,4 +81,25 @@ test("the section keeps the map's headline and no subhead", async () => {
     home.indexOf("<NewsFeed") < home.indexOf("Read the latest"),
     "the CTA should come after the feed",
   );
+});
+
+test("the sample entries can never reach production", async () => {
+  const lib = await read("src/lib/news.ts");
+
+  // Production has no such env var, so it gets the real list, which is empty.
+  assert.match(lib, /const REAL: Announcement\[\] = \[\];/);
+  assert.match(
+    lib,
+    /process\.env\.NEXT_PUBLIC_NEWS_PREVIEW === "1" \? SAMPLE : REAL/,
+  );
+
+  // Every sample is stamped in the UI's own kind slot, so any screen showing
+  // one is visibly a sample on every row.
+  // Scan the code, not the docblock — it carries an example of a real entry.
+  const samples = [...code(lib).matchAll(/category: "([^"]+)"/g)].map((m) => m[1]);
+  assert.ok(samples.length >= 3);
+  for (const c of samples) assert.equal(c, "Sample");
+
+  // And none of them is written as a CinPressa announcement.
+  assert.doesNotMatch(lib, /title:\s*\n?\s*"CinPressa (Pharma )?(Announces|Submits|Reports)/);
 });

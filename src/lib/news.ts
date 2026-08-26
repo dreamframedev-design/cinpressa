@@ -28,8 +28,9 @@ export type Announcement = {
 
 /**
  * Genuinely empty, not staged. CinPressa has issued no releases, so both the
- * homepage teaser and /news render their empty states. Add entries here newest
- * first and the lists take over automatically — no layout work required.
+ * homepage teaser and /news render their empty states. Add entries to REAL
+ * below, newest first, and the lists take over automatically — no layout work
+ * required.
  *
  * A real entry looks like a real release: a full date, a kind, and a headline
  * written the way a wire headline is written.
@@ -43,7 +44,58 @@ export type Announcement = {
  *     href: "…",
  *   }
  */
-export const ANNOUNCEMENTS: Announcement[] = [];
+const REAL: Announcement[] = [];
+
+/**
+ * PREVIEW ONLY — NEVER SHIPS.
+ *
+ * These exist so the populated list can be looked at while the newsroom is
+ * still empty. They are not press releases and must never be mistaken for any:
+ * every one carries the category "Sample", which renders in the entry's own
+ * kind slot, so any screen showing them is visibly stamped as a sample on every
+ * row. The headlines are written at realistic length because the point is to
+ * judge the layout, and the layout is what wraps.
+ *
+ * Gated on an env var that exists only in a developer's .env.local. Production
+ * has no such variable, so it gets `REAL`, which is empty. There is no code
+ * path that puts these in front of the public — and a test asserts it.
+ *
+ * To look at the populated design:  NEXT_PUBLIC_NEWS_PREVIEW=1 in .env.local
+ * To go back to the true state:     remove it, or set it to 0
+ */
+const SAMPLE: Announcement[] = [
+  {
+    date: "2026-09-14",
+    category: "Sample",
+    title:
+      "Sample entry — a headline of about this length, long enough to show how a real wire headline wraps in this column",
+    summary:
+      "The summary sits here and runs to roughly two lines at this measure, which is what a release abstract usually needs. Replace this whole array with real entries in the file above.",
+    href: "#",
+  },
+  {
+    date: "2026-07-02",
+    category: "Sample",
+    title: "Sample entry — a shorter headline, to show the ragged case",
+    summary:
+      "A one-line summary, so the row height difference between entries is visible.",
+  },
+  {
+    date: "2026-05-20",
+    category: "Sample",
+    title:
+      "Sample entry — the third row, present so the dividers and the date column can be judged in a stack",
+    summary:
+      "The homepage teaser shows the three most recent entries; the newsroom shows all of them.",
+    href: "#",
+  },
+];
+
+/**
+ * The list both surfaces read. Empty in production, always.
+ */
+export const ANNOUNCEMENTS: Announcement[] =
+  process.env.NEXT_PUBLIC_NEWS_PREVIEW === "1" ? SAMPLE : REAL;
 
 const FORMATTER = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
