@@ -16,10 +16,7 @@ test("homepage news uses the map's heading and the standard dated-list form", as
 
   // Map copy, verbatim — the invented "What's ahead for CIN-111" is gone.
   assert.match(home, /title="What’s new at CinPressa"/);
-  assert.match(
-    home,
-    /subtitle="Recent updates, key milestones, and the latest news from the company\."/,
-  );
+  assert.doesNotMatch(home, /Recent updates, key milestones/);
   assert.doesNotMatch(home, /What’s ahead for CIN-111/);
 
   // A list, not a calendar panel: no giant year, and the year rides the dates.

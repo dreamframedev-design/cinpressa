@@ -132,9 +132,12 @@ export default function HomePage() {
             fading, not by crossing out. */}
         <section className="bg-[linear-gradient(180deg,var(--color-mist)_0%,rgba(255,255,255,0.96)_38%,#fff_100%)]">
           <div className="relative mx-auto w-full max-w-7xl px-6 py-14 lg:px-10 lg:py-16">
-            <div className="max-w-4xl">
+            {/* Widened. At a 3xl premise and a 3.9rem answer this block stopped
+                two thirds of the way across a frame its neighbours fill, and
+                a hinge that short reads as a stub rather than as a pause. */}
+            <div className="max-w-5xl">
               <Reveal variant="fade">
-                <p className="max-w-3xl text-[clamp(1rem,1.25vw,1.12rem)] leading-[1.62] text-muted">
+                <p className="max-w-4xl text-[clamp(1rem,1.3vw,1.2rem)] leading-[1.62] text-muted">
                   Daily oral therapy has been the backbone of hypertension care for
                   decades, yet a large proportion of patients remain uncontrolled or
                   untreated.
@@ -218,25 +221,27 @@ export default function HomePage() {
             The year-draining-into-two-doses flight now runs inside a framed
             instrument card — the card IS the container — and it wants clean
             paper behind it, not atmosphere. See dose-migration.tsx. */}
+        {/* NO SECTION HEADER, per review: the only headline above this animation
+            is the one inside the card. The eyebrow, headline and deck that used
+            to sit here were three lines of build-up in front of a figure that
+            states its case in five words. (Those are site-map lines — removing
+            them is a deliberate call, not an oversight.)
+
+            THE CARD IS PAIRED, NOT STACKED. Held to its own measure the card
+            stopped three quarters of the way across the frame while the
+            sections either side of it ran the full width, and that mismatch is
+            what read as the page listing to the left. The paragraph that used
+            to sit under it now sits beside it, so the section fills its frame
+            with content it already had. The card cannot simply be widened —
+            its grid divides the width, so a wider card means coarser dots, not
+            more of them. */}
         <Section>
-          <SectionHeader
-            eyebrow="Our approach"
-            title="Designed to create a backbone of control"
-            deck="Long-acting AGT silencing"
-          />
-          {/* Held to the section's own measure. The card used to run the full
-              container while the artwork inside it was half that wide, so the
-              figure floated in a white field with dead margins on three sides.
-              Same 3xl column as the heading above it and the paragraph below,
-              which means the whole section now reads down one edge at one
-              width. */}
-          <div className="mt-14 max-w-3xl">
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)] lg:items-center lg:gap-14">
             <Reveal variant="rise">
               <DoseMigration />
             </Reveal>
-          </div>
-          <Reveal variant="fade" delay={120}>
-            <p className="mt-12 max-w-3xl text-base leading-relaxed text-body">
+            <Reveal variant="fade" delay={120}>
+              <p className="text-base leading-relaxed text-body">
               CinPressa is advancing a long-acting AGT siRNA designed to provide
               durable blood pressure reduction with one to two administrations
               per year. The goal is to establish a continuous backbone of blood
@@ -244,9 +249,10 @@ export default function HomePage() {
               baseline BP reduction may be sufficient for many patients to
               achieve treatment goals as monotherapy, with complementary
               antihypertensive agents layered onto an already controlled
-              foundation for patients requiring additional control.
-            </p>
-          </Reveal>
+                foundation for patients requiring additional control.
+              </p>
+            </Reveal>
+          </div>
         </Section>
 
         {/* Pipeline.
@@ -273,7 +279,6 @@ export default function HomePage() {
               <SectionHeader
                 eyebrow="Pipeline"
                 title="A focused program"
-                deck="CIN-111 at the center"
                 className="max-w-none"
               />
               <Reveal variant="fade" delay={120}>
@@ -323,7 +328,6 @@ export default function HomePage() {
           <SectionHeader
             eyebrow="News"
             title="What’s new at CinPressa"
-            subtitle="Recent updates, key milestones, and the latest news from the company."
           />
           <NewsFeed className="mt-12" />
           <Reveal variant="fade" delay={260}>

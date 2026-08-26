@@ -67,7 +67,7 @@ export default function SciencePage() {
         <Section>
           <Reveal variant="fade">
             {/* One sentence pair to a screen reader; three sizes to an eye. */}
-            <p className="crescendo max-w-4xl">
+            <p className="crescendo max-w-5xl">
               <span className="crescendo-lede">
                 In hypertension, the challenge is not simply whether blood
                 pressure can be lowered.
@@ -81,23 +81,29 @@ export default function SciencePage() {
             </p>
           </Reveal>
 
-          {/* A narrower measure than the section allows, on purpose: after a
-              crescendo the supporting prose should read as an aside, and a
-              shorter line is how you say that without changing the type. */}
-          <Reveal variant="fade" delay={120}>
-            <p className="mt-16 max-w-2xl text-base leading-relaxed text-body">
-              Medication non-adherence is the leading cause of poor blood pressure
-              control, and hypertension is largely asymptomatic, resulting in poor
-              long-term adherence and treatment persistence.
-            </p>
-          </Reveal>
+          {/* PAIRED, NOT STACKED. Crescendo, paragraph, paragraph, tags — four
+              blocks all stopping around two thirds of the way across a frame the
+              sections either side of it fill, which is what made the page read
+              as listing to the left. The cause now reads on the left and its
+              consequence on the right, both at the same scale, so the section
+              fills its frame with copy it already had and the two halves of the
+              argument sit where a reader can hold them together. */}
+          <div className="mt-16 grid gap-10 lg:grid-cols-2 lg:gap-16">
+            <Reveal variant="fade" delay={120}>
+              <p className="text-base leading-relaxed text-body">
+                Medication non-adherence is the leading cause of poor blood
+                pressure control, and hypertension is largely asymptomatic,
+                resulting in poor long-term adherence and treatment persistence.
+              </p>
+            </Reveal>
 
-          <Reveal variant="fade" delay={180}>
-            <p className="mt-10 max-w-2xl text-base leading-relaxed text-body">
-              Persistent uncontrolled blood pressure substantially increases the
-              risk of serious complications:
-            </p>
-          </Reveal>
+            <div>
+              <Reveal variant="fade" delay={180}>
+                <p className="text-base leading-relaxed text-body">
+                  Persistent uncontrolled blood pressure substantially increases
+                  the risk of serious complications:
+                </p>
+              </Reveal>
 
           {/* Seven terms as small hairline tags — outlines only, no fill, no
               hover. The hover lit them in blue and the note back was that it
@@ -109,16 +115,18 @@ export default function SciencePage() {
               than 45, so the list visibly ACCUMULATES as it arrives. The
               sentence above says risk increases; the list should look like it
               is increasing. */}
-          <ul className="mt-6 flex max-w-3xl flex-wrap gap-2">
-            {complications.map((c, i) => (
-              <Reveal key={c} as="li" variant="fade" delay={240 + i * 110}>
-                <span className="risk-tag">
-                  <span aria-hidden className="risk-dot" />
-                  {c}
-                </span>
-              </Reveal>
-            ))}
-          </ul>
+              <ul className="mt-6 flex flex-wrap gap-2">
+                {complications.map((c, i) => (
+                  <Reveal key={c} as="li" variant="fade" delay={240 + i * 110}>
+                    <span className="risk-tag">
+                      <span aria-hidden className="risk-dot" />
+                      {c}
+                    </span>
+                  </Reveal>
+                ))}
+              </ul>
+            </div>
+          </div>
         </Section>
 
         {/* CinPressa solution. NO BACKDROP. This section had a wash, then a
@@ -138,15 +146,23 @@ export default function SciencePage() {
           <SectionHeader
             eyebrow="CinPressa solution"
             title="A new treatment paradigm"
-            deck="Long-acting control with infrequent dosing"
           />
+          {/* The deck sits ON its paragraph rather than under the headline. It
+              was reading as a third heading stacked on the first two; a
+              subheadline introduces the body, so the gap above it is wider than
+              the gap below and the pair reads as one block. */}
+          <Reveal variant="fade" delay={80}>
+            <p className="mt-11 max-w-3xl text-lg font-medium leading-snug tracking-tight text-ink md:text-xl">
+              Long-acting control with infrequent dosing
+            </p>
+          </Reveal>
           {/* ONE paragraph, because that is what it is. The map carries this as a
               single Section body and it was being split at its sentence
               boundary into two columns — which left three lines beside six and
               a hole under the short one. A two-column set only works when both
               columns fill; this one never could. */}
-          <Reveal variant="fade" delay={100}>
-            <p className="mt-10 max-w-3xl text-base leading-relaxed text-body">
+          <Reveal variant="fade" delay={140}>
+            <p className="mt-5 max-w-3xl text-base leading-relaxed text-body">
               CinPressa is developing a treatment model that shifts hypertension
               management from daily patient behavior to infrequent
               provider-administered therapy. Rather than relying on daily oral
@@ -157,9 +173,13 @@ export default function SciencePage() {
             </p>
           </Reveal>
 
-          {/* Same measure as the copy above it: heading, paragraph and figure
-              all start on one edge and end on one. */}
-          <Reveal variant="rise" delay={140} className="mt-14 max-w-3xl">
+          {/* Wider than the prose, deliberately. Held to the copy's measure the
+              figure stopped three quarters of the way across a frame the
+              sections either side of it fill, which is what made the page read
+              as listing to the left. Unlike the dose card this one scales
+              cleanly — the foundation is a bar and the year line is a rule, so
+              width costs it nothing. */}
+          <Reveal variant="rise" delay={200} className="mt-14 max-w-5xl">
             <ControlModel />
           </Reveal>
         </Section>

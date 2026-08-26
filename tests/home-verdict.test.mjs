@@ -22,16 +22,21 @@ test("the verdict uses the site container without a custom grid", () => {
   assert.doesNotMatch(home, /verdict-(inner|conclusion|negation)/);
   assert.doesNotMatch(css, /\.verdict-(inner|conclusion|negation)/);
   assert.doesNotMatch(home, /verdict-layout/);
-  assert.match(home, /<div className="max-w-4xl">/);
+  // Widened from 4xl: the hinge was stopping two thirds across a frame its
+  // neighbours fill. Still the plain container, still no custom grid.
+  assert.match(home, /<div className="max-w-5xl">/);
 });
 
 test("the final hierarchy uses one supporting scale and a tighter desktop hero", () => {
   assert.match(home, /min-h-\[88vh\][^"]*lg:min-h-\[76vh\]/);
   assert.doesNotMatch(home, /min-h-\[92vh\]/);
+  // One supporting scale, shared by the premise — the value moved when the
+  // hinge was widened; what matters is that there is still only one of it.
   assert.match(
     home,
-    /<p className="[^"]*text-\[clamp\(1rem,1\.25vw,1\.12rem\)\][^"]*">\s*Daily oral therapy/,
+    /<p className="[^"]*text-\[clamp\(1rem,1\.3vw,1\.2rem\)\][^"]*">\s*Daily oral therapy/,
   );
+  assert.equal((home.match(/text-\[clamp\(1rem,1\.3vw,1\.2rem\)\]/g) ?? []).length, 1);
   assert.match(home, /className="verdict-turn"/);
   assert.match(home, /className="verdict-key"/);
   assert.doesNotMatch(home, /text-\[clamp\(1\.15rem,1\.8vw,1\.5rem\)\]/);
