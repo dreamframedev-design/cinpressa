@@ -81,13 +81,20 @@ export default function SciencePage() {
             </p>
           </Reveal>
 
-          {/* PAIRED, NOT STACKED. Crescendo, paragraph, paragraph, tags — four
-              blocks all stopping around two thirds of the way across a frame the
-              sections either side of it fill, which is what made the page read
-              as listing to the left. The cause now reads on the left and its
-              consequence on the right, both at the same scale, so the section
-              fills its frame with copy it already had and the two halves of the
-              argument sit where a reader can hold them together. */}
+          {/* TWO PARAGRAPHS ACROSS, THEN THE TAGS ACROSS.
+
+              The previous cut put one paragraph on the left and the other
+              paragraph PLUS all seven tags on the right, which made the columns
+              wildly unequal: three lines beside five, a void under the short one,
+              and the tags crushed into half the width so they broke over three
+              ragged rows. Fixing the page's left-hugging problem had introduced
+              a worse one.
+
+              The two paragraphs are close in length, so they pair cleanly. The
+              tags want width more than anything else — given the whole frame they
+              settle into two even rows instead of three ragged ones — so they get
+              their own full-width band underneath. The colon at the end of the
+              right-hand paragraph still runs straight into them. */}
           <div className="mt-16 grid gap-10 lg:grid-cols-2 lg:gap-16">
             <Reveal variant="fade" delay={120}>
               <p className="text-base leading-relaxed text-body">
@@ -97,13 +104,13 @@ export default function SciencePage() {
               </p>
             </Reveal>
 
-            <div>
-              <Reveal variant="fade" delay={180}>
-                <p className="text-base leading-relaxed text-body">
-                  Persistent uncontrolled blood pressure substantially increases
-                  the risk of serious complications:
-                </p>
-              </Reveal>
+            <Reveal variant="fade" delay={180}>
+              <p className="text-base leading-relaxed text-body">
+                Persistent uncontrolled blood pressure substantially increases
+                the risk of serious complications:
+              </p>
+            </Reveal>
+          </div>
 
           {/* Seven terms as small hairline tags — outlines only, no fill, no
               hover. The hover lit them in blue and the note back was that it
@@ -115,18 +122,16 @@ export default function SciencePage() {
               than 45, so the list visibly ACCUMULATES as it arrives. The
               sentence above says risk increases; the list should look like it
               is increasing. */}
-              <ul className="mt-6 flex flex-wrap gap-2">
-                {complications.map((c, i) => (
-                  <Reveal key={c} as="li" variant="fade" delay={240 + i * 110}>
-                    <span className="risk-tag">
-                      <span aria-hidden className="risk-dot" />
-                      {c}
-                    </span>
-                  </Reveal>
-                ))}
-              </ul>
-            </div>
-          </div>
+          <ul className="mt-8 flex flex-wrap gap-2">
+            {complications.map((c, i) => (
+              <Reveal key={c} as="li" variant="fade" delay={240 + i * 110}>
+                <span className="risk-tag">
+                  <span aria-hidden className="risk-dot" />
+                  {c}
+                </span>
+              </Reveal>
+            ))}
+          </ul>
         </Section>
 
         {/* CinPressa solution. NO BACKDROP. This section had a wash, then a

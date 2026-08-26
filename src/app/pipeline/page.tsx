@@ -5,8 +5,6 @@ import { PageHero } from "@/components/page-hero";
 import { HeroChurn } from "@/components/hero-fields";
 import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
-import { EfficacyChart } from "@/components/efficacy-chart";
-import { PipelineDiagram } from "@/components/pipeline-diagram";
 import { Reveal } from "@/components/reveal";
 
 export const metadata: Metadata = {
@@ -99,23 +97,24 @@ export default function PipelinePage() {
             ))}
           </dl>
 
-          {/* The curves behind the two paragraphs above */}
-          <div className="mt-14">
-            <EfficacyChart />
-          </div>
+          {/* THE EFFICACY CURVES WERE DELETED HERE. Their own header said it:
+              only four figures in that chart were real, and everything between
+              the anchors — the baseline blood pressure, the shape of every
+              curve, and the ENTIRE zilebesiran comparator — was invented so the
+              layout could be designed. A fabricated head-to-head against a
+              named competitor is not a placeholder, it is a claim. The four real
+              figures are stated in the copy above, which is where they belong
+              until the source dataset exists. */}
         </Section>
 
-        {/* Development stage */}
-        <Section>
-          <SectionHeader
-            eyebrow="Pipeline"
-            title="CIN-111 development stage"
-            subtitle="A single, focused program advancing from preclinical work into first-in-human development."
-          />
-          <div className="mt-14">
-            <PipelineDiagram />
-          </div>
-        </Section>
+        {/* THE DEVELOPMENT-STAGE GAUGE WAS DELETED HERE TOO. It was not
+            fabricated data, but it marked Phase 1 as "live" and "Underway" while
+            the copy it cited says the IND is PLANNED for mid-2026 and the study
+            is EXPECTED to commence in the fall. A pipeline chart that puts the
+            programme in Phase 1 tells a partner it is dosing when it is
+            preclinical, and that is the one thing a pipeline chart must not get
+            wrong. The stage is stated accurately in the section below, in words.
+            Recoverable from history if a corrected version is wanted. */}
 
         {/* Clinical development */}
         <Section tone="indigo">
