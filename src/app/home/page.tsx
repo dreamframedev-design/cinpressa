@@ -180,11 +180,19 @@ export default function HomePage() {
             now leads the section instead of trailing it.
 
             Copy first, figure second: the rail is a helper, and helpers come
-            after the thing they help. */}
+            after the thing they help.
+
+            CENTRED, and this is the one section on the site that should be. The
+            rail underneath is three equal columns spanning the full frame — the
+            most symmetrical thing here — and a left-aligned header over a
+            symmetrical figure sits off its own axis. The header now shares the
+            rail's centre line. Everywhere else on the site the figure is
+            asymmetric and the copy stays left, which is why this does not
+            generalise. */}
         <Section tone="sky" className="pt-12! lg:pt-16!">
-          <SectionHeader title="Control that lasts remains elusive" />
+          <SectionHeader title="Control that lasts remains elusive" align="center" />
           <Reveal variant="fade" delay={120}>
-            <p className="mt-8 max-w-3xl text-lg font-medium leading-snug tracking-tight text-ink md:text-xl">
+            <p className="mx-auto mt-8 max-w-3xl text-center text-lg font-medium leading-snug tracking-tight text-ink md:text-xl">
               Medication non-adherence is the leading cause of poor blood
               pressure control, and hypertension is largely asymptomatic,
               resulting in poor long-term adherence and treatment persistence.
