@@ -218,19 +218,23 @@ export default function HomePage() {
             The year-draining-into-two-doses flight now runs inside a framed
             instrument card — the card IS the container — and it wants clean
             paper behind it, not atmosphere. See dose-migration.tsx. */}
+        {/* NO SECTION HEADER. Per review: the only headline above this animation
+            is the one inside the card — "365 doses, compressed into two." The
+            eyebrow, the headline and the deck that used to sit here were three
+            more lines of build-up in front of a figure that states its own case
+            in five words, and the paragraph below still carries the argument.
+
+            Map note: "Our approach", "Designed to create a backbone of control"
+            and "Long-acting AGT silencing" are site-map copy. Removing them is a
+            deliberate call from review, not an oversight. */}
         <Section>
-          <SectionHeader
-            eyebrow="Our approach"
-            title="Designed to create a backbone of control"
-            deck="Long-acting AGT silencing"
-          />
           {/* Held to the section's own measure. The card used to run the full
               container while the artwork inside it was half that wide, so the
               figure floated in a white field with dead margins on three sides.
               Same 3xl column as the heading above it and the paragraph below,
               which means the whole section now reads down one edge at one
               width. */}
-          <div className="mt-14 max-w-3xl">
+          <div className="max-w-3xl">
             <Reveal variant="rise">
               <DoseMigration />
             </Reveal>
@@ -273,7 +277,6 @@ export default function HomePage() {
               <SectionHeader
                 eyebrow="Pipeline"
                 title="A focused program"
-                deck="CIN-111 at the center"
                 className="max-w-none"
               />
               <Reveal variant="fade" delay={120}>
@@ -323,7 +326,6 @@ export default function HomePage() {
           <SectionHeader
             eyebrow="News"
             title="What’s new at CinPressa"
-            subtitle="Recent updates, key milestones, and the latest news from the company."
           />
           <NewsFeed className="mt-12" />
           <Reveal variant="fade" delay={260}>
