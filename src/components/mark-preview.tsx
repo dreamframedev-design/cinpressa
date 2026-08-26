@@ -41,8 +41,8 @@ export function MarkPreview({ className = "" }: { className?: string }) {
               }}
               className={
                 v.id === variant
-                  ? "text-[0.68rem] font-semibold tracking-[0.04em] text-blue underline decoration-blue/40 underline-offset-4"
-                  : "text-[0.68rem] tracking-[0.04em] text-stone transition-colors hover:text-body"
+                  ? "text-[0.76rem] font-semibold tracking-[0.04em] text-blue underline decoration-blue/40 underline-offset-4"
+                  : "text-[0.76rem] tracking-[0.04em] text-stone transition-colors hover:text-body"
               }
             >
               {v.label}
@@ -54,7 +54,7 @@ export function MarkPreview({ className = "" }: { className?: string }) {
           <button
             type="button"
             onClick={() => setRun((r) => r + 1)}
-            className="text-[0.68rem] tracking-[0.04em] text-stone transition-colors hover:text-body"
+            className="text-[0.76rem] tracking-[0.04em] text-stone transition-colors hover:text-body"
           >
             Replay
           </button>

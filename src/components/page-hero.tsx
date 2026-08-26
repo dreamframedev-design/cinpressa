@@ -65,7 +65,7 @@ export function PageHero({
               mark this project has been asked to stop drawing. Interior heroes
               now open on the label itself. */}
           <Reveal variant="fade" delay={80}>
-            <p className="text-[0.84rem] font-semibold uppercase tracking-[0.22em] text-blue">
+            <p className="text-[0.92rem] font-semibold uppercase tracking-[0.22em] text-blue">
               {eyebrow}
             </p>
           </Reveal>

@@ -140,7 +140,7 @@ export default function PipelinePage() {
                   key={row.label}
                   className="grid grid-cols-1 gap-1 border-b border-line px-6 py-5 last:border-0 sm:grid-cols-[180px_1fr] sm:gap-6 sm:px-8"
                 >
-                  <dt className="text-[0.84rem] font-semibold uppercase tracking-[0.15em] text-blue sm:pt-0.5">
+                  <dt className="text-[0.92rem] font-semibold uppercase tracking-[0.15em] text-blue sm:pt-0.5">
                     {row.label}
                   </dt>
                   <dd className="text-base leading-relaxed text-body">{row.value}</dd>

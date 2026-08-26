@@ -63,7 +63,6 @@ test("no section is left stranded at two thirds of its frame", async () => {
   // `p { text-wrap: pretty }` and read as a class that did nothing.
   assert.match(css, /@layer base \{[\s\S]{0,200}?text-wrap: pretty/);
   assert.match(science, /max-w-3xl text-balance[\s\S]{0,90}?Medication non-adherence/);
-  assert.match(science, /text-pretty/);
   // "controlled over time." collided with the line above at 0.35rem.
   assert.match(css, /\.crescendo-point \{[\s\S]*?margin-top: 0\.8rem/);
 });

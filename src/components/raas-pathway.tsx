@@ -75,11 +75,11 @@ export function RaasPathway() {
       <div className="relative mb-10 flex items-center justify-between gap-6">
         <div className="flex items-center gap-3">
           <span aria-hidden className="h-px w-8 bg-blue/40" />
-          <p className="text-[0.84rem] font-semibold uppercase tracking-[0.19em] text-blue">
+          <p className="text-[0.92rem] font-semibold uppercase tracking-[0.19em] text-blue">
             The RAAS cascade
           </p>
         </div>
-        <p className="hidden text-[0.78rem] font-semibold uppercase tracking-[0.16em] text-muted lg:block">
+        <p className="hidden text-[0.86rem] font-semibold uppercase tracking-[0.16em] text-muted lg:block">
           Where therapy acts
         </p>
       </div>
@@ -193,7 +193,7 @@ export function RaasPathway() {
           in the cascade above, downstream stays neutral. */}
       <div className="relative mt-12 grid gap-4 border-t border-line pt-9 sm:grid-cols-2">
         <div className="rounded-2xl border border-orange/25 bg-orange/[0.07] p-5">
-          <p className="flex items-center gap-2 text-[0.78rem] font-semibold uppercase tracking-[0.16em] text-[#9a5f00]">
+          <p className="flex items-center gap-2 text-[0.86rem] font-semibold uppercase tracking-[0.16em] text-[#9a5f00]">
             <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-orange" />
             Upstream
           </p>
@@ -203,7 +203,7 @@ export function RaasPathway() {
           </p>
         </div>
         <div className="rounded-2xl border border-line bg-mist p-5">
-          <p className="flex items-center gap-2 text-[0.78rem] font-semibold uppercase tracking-[0.16em] text-muted">
+          <p className="flex items-center gap-2 text-[0.86rem] font-semibold uppercase tracking-[0.16em] text-muted">
             <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-periwinkle" />
             Downstream
           </p>

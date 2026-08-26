@@ -48,7 +48,7 @@ export function AccessGate({ redirectTo = "/home" }: { redirectTo?: string }) {
     <form onSubmit={handleSubmit} className="max-w-sm" noValidate>
       <label
         htmlFor="access-code"
-        className="flex items-center gap-3 text-[0.84rem] font-semibold uppercase tracking-[0.2em] text-body"
+        className="flex items-center gap-3 text-[0.92rem] font-semibold uppercase tracking-[0.2em] text-body"
       >
         <LockIcon className="h-3.5 w-3.5 text-blue" />
         Private preview

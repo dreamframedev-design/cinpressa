@@ -114,7 +114,11 @@ export default function SciencePage() {
           </Reveal>
 
           <Reveal variant="fade" delay={180}>
-            <p className="mt-8 max-w-3xl text-pretty text-base leading-relaxed text-body">
+            {/* Balanced too, since the type scale went up: at 17px this no
+                longer fits one line and pretty leaves it 614/189. Balance gives
+                442/360. Widening to 52rem would hold it on one line, but the
+                tags below break 5+2 at that measure instead of 4+3. */}
+            <p className="mt-8 max-w-3xl text-balance text-base leading-relaxed text-body">
               Persistent uncontrolled blood pressure substantially increases the
               risk of serious complications:
             </p>

@@ -89,7 +89,7 @@ export function ControlModel() {
           <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <span
               aria-hidden
-              className="text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-blue/70"
+              className="text-[0.86rem] font-semibold uppercase tracking-[0.14em] text-blue/70"
             >
               If needed
             </span>
@@ -138,7 +138,7 @@ export function ControlModel() {
             />
           ))}
           <div className="relative px-6 py-7 sm:px-8 sm:py-8">
-            <p className="text-[1.05rem] font-medium text-white">
+            <p className="text-[1.15rem] font-medium text-white">
               CIN-111 &middot; long-acting AGT silencing
             </p>
             {/* Measured to break at its own comma. At the block's full width
@@ -196,7 +196,7 @@ export function ControlModel() {
               </span>{" "}
               given by a provider.
             </p>
-            <p className="text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-muted">
+            <p className="text-[0.86rem] font-semibold uppercase tracking-[0.14em] text-muted">
               One year
             </p>
           </div>

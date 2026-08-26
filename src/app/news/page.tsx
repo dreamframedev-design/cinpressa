@@ -70,11 +70,11 @@ export default function NewsPage() {
                     <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
                       <time
                         dateTime={item.date}
-                        className="text-[0.84rem] font-semibold uppercase tracking-[0.15em] text-body"
+                        className="text-[0.92rem] font-semibold uppercase tracking-[0.15em] text-body"
                       >
                         {formatAnnouncementDate(item.date)}
                       </time>
-                      <span className="inline-flex rounded-full border border-pale/70 bg-pale/25 px-3 py-1 text-[0.82rem] font-semibold uppercase tracking-[0.11em] text-blue">
+                      <span className="inline-flex rounded-full border border-pale/70 bg-pale/25 px-3 py-1 text-[0.9rem] font-semibold uppercase tracking-[0.11em] text-blue">
                         {item.category}
                       </span>
                     </div>

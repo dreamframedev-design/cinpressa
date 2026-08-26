@@ -30,7 +30,7 @@ export function Timeline({ items }: { items: TimelineItem[] }) {
             <span className="absolute inset-[3px] rounded-full bg-blue" />
           </span>
           <div className="-mt-1">
-            <p className="text-[0.82rem] font-medium uppercase tracking-[0.2em] text-sky">
+            <p className="text-[0.9rem] font-medium uppercase tracking-[0.2em] text-sky">
               {item.marker}
             </p>
             <h3 className="mt-2 text-xl font-light tracking-tight text-ink">

@@ -422,7 +422,7 @@ export function DoseMigration() {
           <span className="h-px w-6 bg-line" />
           <span
             ref={counterRef}
-            className="text-[0.68rem] font-semibold tracking-[0.18em] text-muted tabular-nums"
+            className="text-[0.76rem] font-semibold tracking-[0.18em] text-muted tabular-nums"
           >
             DAY 365
           </span>

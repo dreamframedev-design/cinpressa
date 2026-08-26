@@ -172,7 +172,7 @@ function Field({
 }) {
   return (
     <label htmlFor={htmlFor} className="block">
-      <span className="mb-2 block text-[0.84rem] font-semibold uppercase tracking-[0.16em] text-body">
+      <span className="mb-2 block text-[0.92rem] font-semibold uppercase tracking-[0.16em] text-body">
         {label}
         {optional ? <span className="ml-1 normal-case text-muted/70">(optional)</span> : null}
       </span>

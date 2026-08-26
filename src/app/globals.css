@@ -46,6 +46,37 @@
   --font-sans: var(--font-montserrat), "Montserrat", "Gotham", system-ui, sans-serif;
 
   --ease-brand: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ---------- Type scale ----------
+
+     RAISE THE FLOOR, HOLD THE CEILING. The note back was that the site reads
+     small everywhere, and it had been given more than once, which usually means
+     the problem is not the body size on its own. It was not here either. The
+     hero runs to 88px while section eyebrows, spec labels and newsroom meta sat
+     at 11.5 to 13.4px, so the scale spanned nearly eight to one; against a
+     headline that large, anything set at a normal reading size reads as fine
+     print. Bumping only the body would not have touched that.
+
+     So the small end rises faster than the middle and the display end does not
+     move at all. Body goes 16 to 17, the steps above it about 6%, and the
+     labels and eyebrows 10 to 13%. The ratio between the largest and smallest
+     type on a page closes from roughly 7.7:1 to 6.5:1.
+
+     These override Tailwind's own --text-* tokens, so all 88 text-base/lg/xl
+     usages move from here rather than from 88 edits. Line heights are declared
+     alongside each: redefining a size token without its paired token would
+     silently drop back to Tailwind's default leading. */
+
+  --text-base: 1.0625rem; /* 17px */
+  --text-base--line-height: calc(1.5 / 1.0625);
+  --text-lg: 1.2rem; /* 19.2px */
+  --text-lg--line-height: calc(1.75 / 1.2);
+  --text-xl: 1.35rem; /* 21.6px */
+  --text-xl--line-height: calc(1.75 / 1.35);
+  --text-2xl: 1.6rem; /* 25.6px */
+  --text-2xl--line-height: calc(2 / 1.6);
+  --text-3xl: 1.975rem; /* 31.6px */
+  --text-3xl--line-height: calc(2.25 / 1.975);
 }
 
 html {
@@ -571,7 +602,7 @@ body {
   border-radius: 0.375rem;
   background: rgba(255, 255, 255, 0.7);
   padding: 0.42rem 0.75rem 0.42rem 0.6rem;
-  font-size: 0.875rem;
+  font-size: 0.95rem;
   line-height: 1.2;
   color: var(--color-ink);
 }
@@ -704,7 +735,7 @@ body {
 
 .burden-label {
   margin-top: 1rem;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   font-weight: 400;
   line-height: 1.5;
   color: var(--color-muted);
@@ -846,7 +877,7 @@ body {
    why this replaced a decorative field. */
 
 .program-spec-source {
-  font-size: 0.72rem;
+  font-size: 0.81rem;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -864,7 +895,7 @@ body {
 }
 
 .program-spec-label {
-  font-size: 0.78rem;
+  font-size: 0.86rem;
   font-weight: 600;
   letter-spacing: 0.13em;
   text-transform: uppercase;
@@ -927,7 +958,7 @@ body {
 }
 
 .news-when {
-  font-size: 0.78rem;
+  font-size: 0.86rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -935,7 +966,7 @@ body {
 }
 
 .news-kind {
-  font-size: 0.72rem;
+  font-size: 0.81rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1011,7 +1042,7 @@ body {
 
 .nav-link {
   position: relative;
-  font-size: 0.94rem;
+  font-size: 1.03rem;
   font-weight: 500;
   color: var(--color-ink);
   transition: color 0.3s ease;
@@ -1104,7 +1135,7 @@ body {
 /* Compact variant for the nav bar */
 .btn-primary.btn-sm {
   padding: 0.78rem 1.5rem;
-  font-size: 0.92rem;
+  font-size: 1rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2573,6 +2604,7 @@ body {
     box-shadow: none !important;
   }
 }
+
 
 
 

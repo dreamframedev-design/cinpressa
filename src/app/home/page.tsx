@@ -54,7 +54,7 @@ export default function HomePage() {
           <div className="relative mx-auto grid w-full max-w-7xl items-center gap-14 px-6 pb-20 pt-32 lg:grid-cols-[1.08fr_0.92fr] lg:gap-10 lg:px-10 lg:pb-16 lg:pt-32">
             <div>
               <p
-                className="anim-rise flex items-center gap-3 text-[0.84rem] font-semibold uppercase tracking-[0.22em] text-blue"
+                className="anim-rise flex items-center gap-3 text-[0.92rem] font-semibold uppercase tracking-[0.22em] text-blue"
                 style={{ animationDelay: "0.02s" }}
               >
                 <span aria-hidden className="h-px w-8 bg-blue/40" />

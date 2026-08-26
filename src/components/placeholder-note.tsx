@@ -14,7 +14,7 @@ export function PlaceholderNote({ children }: { children: ReactNode }) {
   return (
     <p
       role="note"
-      className="inline-flex items-start gap-2 rounded border border-dashed border-[#b45309] bg-[#fffbeb] px-3 py-2 text-[0.82rem] font-semibold uppercase leading-relaxed tracking-[0.1em] text-[#92400e]"
+      className="inline-flex items-start gap-2 rounded border border-dashed border-[#b45309] bg-[#fffbeb] px-3 py-2 text-[0.9rem] font-semibold uppercase leading-relaxed tracking-[0.1em] text-[#92400e]"
     >
       <span aria-hidden>&#9650;</span>
       <span>{children}</span>

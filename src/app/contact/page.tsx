@@ -37,7 +37,7 @@ export default function ContactPage() {
                 />
               </Reveal>
               <Reveal variant="fade" delay={80}>
-                <p className="mt-6 text-[0.84rem] font-semibold uppercase tracking-[0.22em] text-blue">
+                <p className="mt-6 text-[0.92rem] font-semibold uppercase tracking-[0.22em] text-blue">
                   Connect
                 </p>
               </Reveal>
@@ -56,7 +56,7 @@ export default function ContactPage() {
               </Reveal>
               <Reveal variant="fade" delay={360}>
                 <div className="mt-10 border-t border-line pt-8">
-                  <p className="text-[0.84rem] font-semibold uppercase tracking-[0.16em] text-body">
+                  <p className="text-[0.92rem] font-semibold uppercase tracking-[0.16em] text-body">
                     Parent company
                   </p>
                   <p className="mt-2 text-base text-body">

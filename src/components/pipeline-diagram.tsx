@@ -90,7 +90,7 @@ export function PipelineDiagram() {
       <div className="-mx-6 overflow-x-auto px-6 lg:mx-0 lg:px-0">
         <div className="min-w-[36rem] overflow-hidden rounded-2xl border border-line bg-white">
           <div className={`${COLUMNS} border-b border-line bg-mist/70`}>
-            <div className="px-5 py-4 text-[0.84rem] font-semibold uppercase tracking-[0.16em] text-body sm:px-7">
+            <div className="px-5 py-4 text-[0.92rem] font-semibold uppercase tracking-[0.16em] text-body sm:px-7">
               Program
             </div>
             {STAGES.map((stage, i) => (
@@ -102,7 +102,7 @@ export function PipelineDiagram() {
                 onFocus={() => setActive(i)}
                 onBlur={() => setActive(null)}
                 aria-label={`${stage.name}: ${stage.status}`}
-                className={`pl-stage border-l border-line px-3 py-4 text-center text-[0.84rem] font-semibold uppercase tracking-[0.16em] outline-none ${
+                className={`pl-stage border-l border-line px-3 py-4 text-center text-[0.92rem] font-semibold uppercase tracking-[0.16em] outline-none ${
                   active === i ? "bg-blue/[0.07] text-blue" : "text-body"
                 }`}
               >
@@ -168,7 +168,7 @@ export function PipelineDiagram() {
       <div className="mt-6 min-h-[3.5rem]">
         <p
           aria-live="polite"
-          className="max-w-3xl text-[1.05rem] leading-relaxed text-ink transition-opacity duration-200"
+          className="max-w-3xl text-[1.15rem] leading-relaxed text-ink transition-opacity duration-200"
         >
           <span className="font-semibold text-blue">{shown.name}.</span>{" "}
           {shown.status}

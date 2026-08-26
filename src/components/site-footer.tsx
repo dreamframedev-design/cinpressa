@@ -147,7 +147,7 @@ export function SiteFooter() {
 
           {columns.map((column) => (
             <div key={column.heading}>
-              <p className="text-[0.84rem] font-semibold uppercase tracking-[0.16em] text-white/70">
+              <p className="text-[0.92rem] font-semibold uppercase tracking-[0.16em] text-white/70">
                 {column.heading}
               </p>
               <ul className="mt-5 space-y-3.5 text-base">
@@ -166,7 +166,7 @@ export function SiteFooter() {
           ))}
 
           <div>
-            <p className="text-[0.84rem] font-semibold uppercase tracking-[0.16em] text-white/70">
+            <p className="text-[0.92rem] font-semibold uppercase tracking-[0.16em] text-white/70">
               Parent company
             </p>
             <ul className="mt-5 space-y-3.5 text-base">

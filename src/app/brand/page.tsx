@@ -60,7 +60,7 @@ const PALETTE = [
 
 function Label({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-[0.82rem] font-semibold uppercase tracking-[0.18em] text-body">
+    <p className="text-[0.9rem] font-semibold uppercase tracking-[0.18em] text-body">
       {children}
     </p>
   );
@@ -71,7 +71,7 @@ export default function BrandPage() {
     <div className="min-h-[100dvh] bg-white">
       <div className="mx-auto max-w-6xl px-6 py-16 lg:px-10 lg:py-24">
         <header className="border-b border-line pb-10">
-          <p className="text-[0.84rem] font-semibold uppercase tracking-[0.2em] text-blue">
+          <p className="text-[0.92rem] font-semibold uppercase tracking-[0.2em] text-blue">
             Internal reference
           </p>
           <h1 className="mt-5 text-[clamp(2rem,4vw,3rem)] font-light leading-tight tracking-tight text-ink">

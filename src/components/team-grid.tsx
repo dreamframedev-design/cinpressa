@@ -102,7 +102,7 @@ export function TeamGrid() {
           <h3 className="mt-6 text-lg font-medium tracking-tight text-ink">
             {member.name}
           </h3>
-          <p className="mt-1 text-[0.82rem] font-medium uppercase tracking-[0.16em] text-blue">
+          <p className="mt-1 text-[0.9rem] font-medium uppercase tracking-[0.16em] text-blue">
             {member.role}
           </p>
           <p className="mt-5 text-base leading-relaxed text-body">{member.bio}</p>
