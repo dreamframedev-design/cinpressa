@@ -251,7 +251,7 @@ export default function HomePage() {
             Without it the prose column is short against the diagram, so the
             split narrows to 0.7/1.3 — the copy runs longer at a measure it can
             still hold, rather than stopping a third of the way down. */}
-        <Section tone="sky">
+        <Section id="mechanism" tone="sky">
           {/* EVERYTHING ON THE CENTRE LINE, and the cascade stays narrow.
 
               The brief was to put the header and both paragraphs above the

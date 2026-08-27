@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { ArrowIcon } from "@/components/arrow-icon";
@@ -17,6 +18,12 @@ const links = [
      any direct link to it still works. Restore the line below to bring it
      back into the bar. */
   // { href: "/science", label: "Science" },
+  /* MOA takes the slot Science had, and goes to the mechanism section on the
+     homepage rather than to a page. isActive compares against usePathname(),
+     which never carries a hash, so this never lights up - which is right: the
+     bar should read Home while you are on the homepage, wherever you are in
+     it. */
+  { href: "/home#mechanism", label: "MOA" },
   { href: "/pipeline", label: "Pipeline" },
   { href: "/news", label: "News" },
   { href: "/contact", label: "Contact" },
@@ -60,6 +67,33 @@ export function SiteNav({ tone = "light" }: { tone?: "light" | "dark" }) {
       document.body.style.overflow = "";
     };
   }, [menuOpen]);
+
+  /**
+   * A LINK INTO A SECTION HAS TO BE A NATIVE ANCHOR.
+   *
+   * next/link intercepts the click, and when the route it is pointing at is the
+   * one already rendered it sets the hash and stops - measured: location.hash
+   * became "#mechanism" and scrollY stayed at 0. A plain <a> hands the whole
+   * thing back to the browser, which scrolls, honours scroll-margin-top on the
+   * target and, from another page, loads /home and lands on the anchor.
+   *
+   * Client-side routing is worth keeping for every link that goes to a page, so
+   * only the hash ones are handed over.
+   */
+  const NavA = ({
+    href,
+    children,
+    ...rest
+  }: { href: string; children: ReactNode } & Record<string, unknown>) =>
+    href.includes("#") ? (
+      <a href={href} {...rest}>
+        {children}
+      </a>
+    ) : (
+      <Link href={href} {...rest}>
+        {children}
+      </Link>
+    );
 
   const isActive = (href: string) =>
     pathname === href || (href !== "/home" && pathname.startsWith(`${href}/`));
@@ -106,14 +140,14 @@ export function SiteNav({ tone = "light" }: { tone?: "light" | "dark" }) {
           {/* Desktop nav */}
           <nav aria-label="Primary" className="hidden items-center gap-7 md:flex lg:gap-9">
             {links.map((link) => (
-              <Link
+              <NavA
                 key={link.href}
                 href={link.href}
                 className={`nav-link ${onDark ? "nav-link-dark" : ""}`}
                 aria-current={isActive(link.href) ? "page" : undefined}
               >
                 {link.label}
-              </Link>
+              </NavA>
             ))}
             <Link
               href="/contact"
@@ -173,7 +207,7 @@ export function SiteNav({ tone = "light" }: { tone?: "light" | "dark" }) {
           <ul className="divide-y divide-line/70">
             {links.map((link, i) => (
               <li key={link.href}>
-                <Link
+                <NavA
                   href={link.href}
                   className="flex items-center justify-between py-4 text-lg font-light tracking-tight text-ink"
                   aria-current={isActive(link.href) ? "page" : undefined}
@@ -187,7 +221,7 @@ export function SiteNav({ tone = "light" }: { tone?: "light" | "dark" }) {
                       isActive(link.href) ? "text-blue opacity-100" : "opacity-30"
                     }`}
                   />
-                </Link>
+                </NavA>
               </li>
             ))}
           </ul>

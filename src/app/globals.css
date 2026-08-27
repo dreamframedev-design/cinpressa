@@ -83,6 +83,19 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Any section that can be jumped to has to clear the sticky bar, or the anchor
+   lands the heading underneath it. Scoped to sections that actually carry an
+   id, which is exactly the set that can be a link target. */
+section[id] {
+  scroll-margin-top: 6rem;
+}
+
+@media (min-width: 1024px) {
+  section[id] {
+    scroll-margin-top: 7rem;
+  }
+}
+
 body {
   background: #ffffff;
   color: var(--color-ink);
@@ -2309,6 +2322,7 @@ body {
     box-shadow: none !important;
   }
 }
+
 
 
 
