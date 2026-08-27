@@ -11,16 +11,6 @@ export const metadata: Metadata = {
     "CIN-111 targets angiotensinogen (AGT) synthesis in the liver via RNA interference, blocking the RAAS cascade upstream for durable, adherence-independent blood pressure control.",
 };
 
-const complications = [
-  "Stroke",
-  "Myocardial infarction",
-  "Heart failure",
-  "Chronic kidney disease",
-  "End-stage renal disease",
-  "Peripheral arterial disease",
-  "Vascular dementia",
-];
-
 export default function SciencePage() {
   return (
     <div id="top">
@@ -76,7 +66,7 @@ export default function SciencePage() {
             </p>
           </Reveal>
 
-          {/* ONE COLUMN, TIGHT, WITH THE TAGS BACK.
+          {/* ONE COLUMN, TIGHT.
 
               This section has been cut six ways. The complications were tags,
               then a four-across grid, then a band justified edge to edge, then
@@ -108,37 +98,6 @@ export default function SciencePage() {
             </p>
           </Reveal>
 
-          <Reveal variant="fade" delay={180}>
-            {/* Balanced too, since the type scale went up: at 17px this no
-                longer fits one line and pretty leaves it 614/189. Balance gives
-                442/360. Widening to 52rem would hold it on one line, but the
-                tags below break 5+2 at that measure instead of 4+3. */}
-            <p className="mt-8 max-w-3xl text-balance text-base leading-relaxed text-body">
-              Persistent uncontrolled blood pressure substantially increases the
-              risk of serious complications:
-            </p>
-          </Reveal>
-
-          {/* At the prose measure, where the seven break four and three. Wider
-              and they break six and one, which strands a tag on its own line. */}
-          <ul className="mt-5 flex max-w-3xl flex-wrap gap-2">
-            {complications.map((c, i) => (
-              <Reveal
-                key={c}
-                as="li"
-                variant="fade"
-                /* The stagger is where their life comes from: 90ms apart, so the
-                   list visibly ACCUMULATES as it arrives. The sentence above
-                   says risk increases; the list should look like it is. */
-                delay={240 + i * 90}
-              >
-                <span className="risk-tag">
-                  <span aria-hidden className="risk-dot" />
-                  {c}
-                </span>
-              </Reveal>
-            ))}
-          </ul>
         </Section>
 
       </main>

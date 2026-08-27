@@ -18,6 +18,20 @@ export const metadata: Metadata = {
     "CinPressa is advancing CIN-111, a best-in-class, long-acting AGT siRNA designed to establish a durable, adherence-independent backbone of blood pressure control.",
 };
 
+/**
+ * The complications, in the source document's order, which is the only order
+ * they have. Moved here from /science with the sentence that introduces them.
+ */
+const complications = [
+  "Stroke",
+  "Myocardial infarction",
+  "Heart failure",
+  "Chronic kidney disease",
+  "End-stage renal disease",
+  "Peripheral arterial disease",
+  "Vascular dementia",
+];
+
 export default function HomePage() {
   return (
     <div id="top">
@@ -136,6 +150,46 @@ export default function HomePage() {
               },
             ]}
           />
+
+          {/* THE CONSEQUENCE, UNDER THE TICKERS. Moved here from /science so
+              the whole cost of uncontrolled pressure is stated in one place:
+              the scale of it in the figures above, and what it leads to
+              underneath them.
+
+              Centred, because this section is. Everything above is on the
+              centre line and a left-aligned block under it would read as a
+              different section that had been appended.
+
+              The lead-in ends in a colon and belongs to the list, so it can
+              never be separated from it - a constraint that broke two earlier
+              cuts of this content on /science. Held to the prose measure, where
+              the seven break 4+3; wider and they break 6+1 and strand one tag
+              on its own line. */}
+          <Reveal variant="fade" delay={160}>
+            <p className="mx-auto mt-16 max-w-3xl text-balance text-center text-base leading-relaxed text-body">
+              Persistent uncontrolled blood pressure substantially increases the
+              risk of serious complications:
+            </p>
+          </Reveal>
+
+          <ul className="mx-auto mt-5 flex max-w-3xl flex-wrap justify-center gap-2">
+            {complications.map((c, i) => (
+              <Reveal
+                key={c}
+                as="li"
+                variant="fade"
+                /* 90ms apart, so the list visibly ACCUMULATES as it arrives.
+                   The sentence above says risk increases; the list should look
+                   like it is. */
+                delay={220 + i * 90}
+              >
+                <span className="risk-tag">
+                  <span aria-hidden className="risk-dot" />
+                  {c}
+                </span>
+              </Reveal>
+            ))}
+          </ul>
         </Section>
 
         {/* Our approach. White ground, no wash, no watermark: the note on the

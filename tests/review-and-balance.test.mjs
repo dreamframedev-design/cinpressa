@@ -50,12 +50,19 @@ test("no section is left stranded at two thirds of its frame", async () => {
   assert.doesNotMatch(css, /max-width:\s*46ch/);
   assert.doesNotMatch(science, /risk-register|risk-rank|risk-list|const RANKS|const COLUMNS/);
   assert.doesNotMatch(css, /risk-register|risk-rank|risk-list|risk-item/);
-  // Tags, at the prose measure: wider and the seven break 6+1, stranding one.
-  assert.match(science, /<ul className="mt-5 flex max-w-3xl flex-wrap gap-2">/);
+  // The tags and their lead-in moved to the homepage's challenge section, under
+  // the burden figures. Centred there, because that section is.
+  assert.doesNotMatch(science, /risk-tag|complications:/);
+  assert.match(home, /<ul className="mx-auto mt-5 flex max-w-3xl flex-wrap justify-center gap-2">/);
   assert.match(css, /\.risk-tag \{/);
-  // The lead-in ends in a colon and introduces the tags, so they follow it
-  // immediately at the same measure - never in a column of its own.
-  assert.match(science, /risk of serious complications:[\s\S]{0,400}?<ul className="mt-5 flex max-w-3xl/);
+  // The lead-in ends in a colon and introduces the tags, so it can never be
+  // separated from them - the constraint that broke two earlier cuts.
+  assert.match(home, /risk of serious complications:[\s\S]{0,600}?<ul className="mx-auto mt-5 flex max-w-3xl/);
+  // And they sit under the figures, not above them.
+  assert.ok(
+    home.indexOf("share: 0.7") < home.indexOf("risk of serious complications:"),
+    "the complications belong under the tickers",
+  );
   // Measured rag fixes, not guesses: the lede broke 967px then 224px, and the
   // body paragraph's last line was 182px of a 768px measure.
   assert.match(css, /\.crescendo-lede,[\s\S]{0,900}?text-wrap: balance/);
