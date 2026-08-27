@@ -18,17 +18,18 @@ test("review cuts: nothing above the dose animation, no pipeline tagline", async
   assert.doesNotMatch(home, /A focused program/);
 });
 
-test("the science solution keeps its figure — the deck moved, the animation stayed", async () => {
-  const science = await read("src/app/science/page.tsx");
+test("the control model kept its figure, on the homepage now", async () => {
+  const [home, science] = await Promise.all([
+    read("src/app/home/page.tsx"),
+    read("src/app/science/page.tsx"),
+  ]);
 
-  // The animation is the point of the section and was explicitly kept.
-  assert.match(code(science), /<ControlModel \/>/);
-  // The deck leads the body now instead of stacking under the headline.
-  assert.doesNotMatch(science, /deck="Long-acting control with infrequent dosing"/);
-  assert.match(
-    science,
-    /mt-11[^"]*">\s*\n\s*Long-acting control with infrequent dosing/,
-  );
+  // The animation was explicitly kept once before, when it was deleted by
+  // mistake. It moved rather than being deleted this time.
+  assert.match(code(home), /<ControlModel \/>/);
+  assert.doesNotMatch(code(science), /ControlModel/);
+  // And the deck it used to stack under is gone with the section it led.
+  assert.doesNotMatch(science, /Long-acting control with infrequent dosing/);
 });
 
 test("no section is left stranded at two thirds of its frame", async () => {

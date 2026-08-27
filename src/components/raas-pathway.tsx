@@ -53,12 +53,21 @@ const cascade: Node[] = [
 const FLOW: FlowTiming = { cycle: 8.4, lead: 0.05, travel: 0.76, dwell: 0.24 };
 
 /**
+ * CONSOLIDATED FOR A COLUMN. This ran the full measure as a single stack with
+ * its prose above it, which made a five-step diagram the tallest thing on its
+ * page - the note was simply that it was too large. It now sits in the right
+ * column of the mechanism section with the paragraphs beside it, so every
+ * dimension came down to suit a narrower, shorter box: padding, the gap under
+ * the column heads, the step between nodes, the node heading, the tags, and the
+ * footer panels. Nothing was removed. The five steps, both intervention tags
+ * and both panels are all still here; they are set tighter.
+ *
  * Card stays solid white rather than translucent: the violet outcome heading
  * needs a known background to clear AA (4.56:1 on white, 4.32:1 over a wash).
  */
 export function RaasPathway() {
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-line bg-white p-6 shadow-[0_36px_72px_-52px_rgba(13,35,66,0.42)] sm:p-10">
+    <div className="relative overflow-hidden rounded-3xl border border-line bg-white p-5 shadow-[0_36px_72px_-52px_rgba(13,35,66,0.42)] sm:p-7">
       {/* Warmth pooled at the upstream end of the card, under the one node
           CIN-111 acts on. Far below the threshold of a visible shape — it only
           weights the top of the diagram toward the amber the tag and the
@@ -72,14 +81,14 @@ export function RaasPathway() {
           which only reads as a deliberate second column once something names
           it — and only at widths where the tag still fits beside its node, so
           the label is scoped to exactly the layout it describes. */}
-      <div className="relative mb-10 flex items-center justify-between gap-6">
+      <div className="relative mb-7 flex items-center justify-between gap-6">
         <div className="flex items-center gap-3">
           <span aria-hidden className="h-px w-8 bg-blue/40" />
-          <p className="text-[0.92rem] font-semibold uppercase tracking-[0.19em] text-blue">
+          <p className="text-[0.86rem] font-semibold uppercase tracking-[0.19em] text-blue">
             The RAAS cascade
           </p>
         </div>
-        <p className="hidden text-[0.86rem] font-semibold uppercase tracking-[0.16em] text-muted lg:block">
+        <p className="hidden text-[0.8rem] font-semibold uppercase tracking-[0.16em] text-muted xl:block">
           Where therapy acts
         </p>
       </div>
@@ -155,10 +164,10 @@ export function RaasPathway() {
                     than trailing the heading, so the two points of
                     intervention line up in a column of their own and the
                     single-column card reads across its full width. */}
-                <div className={isLast ? "pb-0" : "pb-11"}>
-                  <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-2.5">
+                <div className={isLast ? "pb-0" : "pb-7"}>
+                  <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
                     <h3
-                      className="text-xl font-normal tracking-tight text-ink"
+                      className="text-lg font-normal tracking-tight text-ink"
                       style={node.outcome ? { color: node.accent } : undefined}
                     >
                       {node.name}
@@ -167,8 +176,8 @@ export function RaasPathway() {
                       <span
                         className={
                           node.tag.tone === "primary"
-                            ? "inline-flex items-center gap-1.5 rounded-full border border-orange/35 bg-orange/10 px-3.5 py-1.5 text-[0.8rem] font-semibold uppercase tracking-[0.12em] text-[#9a5f00]"
-                            : "inline-flex items-center gap-1.5 rounded-full border border-line bg-mist px-3.5 py-1.5 text-[0.8rem] font-semibold uppercase tracking-[0.12em] text-body"
+                            ? "inline-flex items-center gap-1.5 rounded-full border border-orange/35 bg-orange/10 px-3 py-1 text-[0.74rem] font-semibold uppercase tracking-[0.1em] text-[#9a5f00]"
+                            : "inline-flex items-center gap-1.5 rounded-full border border-line bg-mist px-3 py-1 text-[0.74rem] font-semibold uppercase tracking-[0.1em] text-body"
                         }
                       >
                         {node.tag.tone === "primary" ? (
@@ -178,7 +187,7 @@ export function RaasPathway() {
                       </span>
                     ) : null}
                   </div>
-                  <p className="mt-2.5 max-w-xl text-base leading-relaxed text-body">
+                  <p className="mt-2 max-w-xl text-[0.95rem] leading-relaxed text-body">
                     {node.sub}
                   </p>
                 </div>
@@ -191,23 +200,23 @@ export function RaasPathway() {
       {/* The argument the diagram is making, stated plainly. Two panels rather
           than two ticked lines: upstream carries the amber it is marked with
           in the cascade above, downstream stays neutral. */}
-      <div className="relative mt-12 grid gap-4 border-t border-line pt-9 sm:grid-cols-2">
-        <div className="rounded-2xl border border-orange/25 bg-orange/[0.07] p-5">
-          <p className="flex items-center gap-2 text-[0.86rem] font-semibold uppercase tracking-[0.16em] text-[#9a5f00]">
+      <div className="relative mt-8 grid gap-3 border-t border-line pt-6 xl:grid-cols-2">
+        <div className="rounded-2xl border border-orange/25 bg-orange/[0.07] p-4">
+          <p className="flex items-center gap-2 text-[0.8rem] font-semibold uppercase tracking-[0.16em] text-[#9a5f00]">
             <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-orange" />
             Upstream
           </p>
-          <p className="mt-2.5 text-base leading-relaxed text-body">
+          <p className="mt-2 text-[0.95rem] leading-relaxed text-body">
             CIN-111 suppresses AGT production in the liver, shutting the cascade
             off at its source.
           </p>
         </div>
-        <div className="rounded-2xl border border-line bg-mist p-5">
-          <p className="flex items-center gap-2 text-[0.86rem] font-semibold uppercase tracking-[0.16em] text-muted">
+        <div className="rounded-2xl border border-line bg-mist p-4">
+          <p className="flex items-center gap-2 text-[0.8rem] font-semibold uppercase tracking-[0.16em] text-muted">
             <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-periwinkle" />
             Downstream
           </p>
-          <p className="mt-2.5 text-base leading-relaxed text-body">
+          <p className="mt-2 text-[0.95rem] leading-relaxed text-body">
             ACE inhibitors and ARBs act late in the pathway and do not
             completely suppress it, leaving residual activity.
           </p>

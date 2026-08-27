@@ -4,6 +4,9 @@ import test from "node:test";
 
 const home = readFileSync(new URL("../src/app/home/page.tsx", import.meta.url), "utf8");
 const css = readFileSync(new URL("../src/app/globals.css", import.meta.url), "utf8");
+/* The hero moved into its own client component when it gained the A/B
+   switch; the measurements below are still its measurements. */
+const hero = readFileSync(new URL("../src/components/home-hero.tsx", import.meta.url), "utf8");
 
 test("the homepage verdict keeps 'not efficacy' together", () => {
   assert.match(
@@ -28,7 +31,7 @@ test("the verdict uses the site container without a custom grid", () => {
 });
 
 test("the final hierarchy uses one supporting scale and a tighter desktop hero", () => {
-  assert.match(home, /min-h-\[88vh\][^"]*lg:min-h-\[76vh\]/);
+  assert.match(hero, /min-h-\[88vh\][^"]*lg:min-h-\[76vh\]/);
   assert.doesNotMatch(home, /min-h-\[92vh\]/);
   // One supporting scale, shared by the premise — the value moved when the
   // hinge was widened; what matters is that there is still only one of it.
