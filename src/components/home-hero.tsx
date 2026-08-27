@@ -67,14 +67,22 @@ export function HomeHero() {
         <>
           <HeroChurn key="churn" className="absolute inset-0" />
           {/* Feather into the section below, so the field is not cut off by the
-              boundary after all the work it does to avoid a visible edge. The
-              same treatment PageHero gives it on an interior page. */}
+              boundary after all the work it does to avoid a visible edge.
+
+              IT FADES TO MIST, NOT TO WHITE. PageHero's version fades to white
+              because the interior sections under it are white; this hero's own
+              gradient ends on mist and the section below it opens on mist, so a
+              white feather laid over that painted the hero's last pixel row
+              white against a mist neighbour - a hard rule across the full width
+              at exactly the section boundary, which is the seam the field was
+              added to avoid in the first place. Matching the colour underneath
+              is the whole fix. */}
           <div
             aria-hidden
             className="pointer-events-none absolute inset-x-0 bottom-0 h-32 lg:h-44"
             style={{
               background:
-                "linear-gradient(0deg, #ffffff 0%, rgba(255,255,255,0) 100%)",
+                "linear-gradient(0deg, var(--color-mist) 0%, rgba(244,248,252,0) 100%)",
             }}
           />
         </>

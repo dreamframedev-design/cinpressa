@@ -19,6 +19,18 @@ test("the homepage hero switches between two treatments, A first", async () => {
   assert.match(hero, /aria-pressed=\{v\.id === view\}/);
 });
 
+test("the field feathers to the colour the boundary actually is", async () => {
+  const hero = await read("src/components/home-hero.tsx");
+
+  // PageHero fades its fields to white because the sections under it are
+  // white. This hero's own gradient ends on mist and the section below opens
+  // on mist, so a white feather painted the last pixel row white against a
+  // mist neighbour - a hard rule across the full width at the seam.
+  assert.match(hero, /linear-gradient\(0deg, var\(--color-mist\) 0%, rgba\(244,248,252,0\) 100%\)/);
+  assert.doesNotMatch(hero, /linear-gradient\(0deg, #ffffff/);
+  assert.match(hero, /to-mist/);
+});
+
 test("the review scaffolding is gone from the hero", async () => {
   const home = await read("src/app/home/page.tsx");
 
