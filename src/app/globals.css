@@ -702,36 +702,7 @@ body {
 }
 
 
-/* ---------- Pipeline bloom feather ----------
-   The contact bloom fills a hero and is cropped by the viewport, so it never
-   shows an edge. This one sits inside a section between two others, so it has
-   to dissolve at the seams rather than stop at them. */
-
-.pipeline-bloom {
-  /* Nothing for the top third. A mask that fades the first 14% cannot soften a
-     handoff when the ovals are already at full strength by 14% — the previous
-     version tried exactly that and the seam stayed visible. The colour simply
-     does not start until well down the section now, and it dissolves again
-     before the bottom so the next section begins on its own ground. */
-  -webkit-mask-image: linear-gradient(
-    180deg,
-    transparent 0%,
-    transparent 30%,
-    #000 62%,
-    #000 84%,
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    180deg,
-    transparent 0%,
-    transparent 30%,
-    #000 62%,
-    #000 84%,
-    transparent 100%
-  );
-}
-
-/* ---------- Bloom choreography (contact-bloom.tsx, pipeline-bloom.tsx) -------
+/* ---------- Bloom choreography (contact-bloom.tsx) ----------------------
    The mark's ovals at architectural scale. Entrance and drift live on NESTED
    groups because both animate transform; transform-box keeps every motion about
    the oval's own centre, not the SVG origin.
@@ -2338,6 +2309,7 @@ body {
     box-shadow: none !important;
   }
 }
+
 
 
 

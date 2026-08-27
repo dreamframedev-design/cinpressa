@@ -14,14 +14,13 @@ test("the mechanism section is a centred stack over a compact cascade", async ()
   assert.match(home, /eyebrow="Mechanism"/);
   assert.match(home, /title="Targeting AGT upstream"/);
 
-  // Header and both paragraphs sit above the diagram, and the whole section
-  // shares one axis. Stacked and left-aligned, full-measure copy over a 672px
-  // box leaves the box hanging off its own section's left edge.
-  assert.match(home, /deck="RAAS modulation at the source"[\s\S]{0,40}?align="center"/);
-  // Both mechanism paragraphs, specifically - the challenge section's lead-in
-  // happens to carry the same class string.
-  assert.match(home, /max-w-3xl text-balance text-center[\s\S]{0,60}?AGT is the precursor/);
-  assert.match(home, /max-w-3xl text-balance text-center[\s\S]{0,60}?By targeting AGT synthesis/);
+  // Header and both paragraphs sit above the diagram. The LINES read left -
+  // centred lines cost legibility on a paragraph this long - while the COLUMN
+  // is held to the cascade's own measure and centred, so copy and diagram share
+  // one left edge and one right edge.
+  assert.match(home, /<div className="mx-auto max-w-2xl">/);
+  assert.match(home, /deck="RAAS modulation at the source"[\s\S]{0,40}?className="max-w-none!"/);
+  assert.doesNotMatch(home, /align="center"/);
   assert.ok(
     home.indexOf('title="Targeting AGT upstream"') < home.indexOf("AGT is the precursor"),
     "the header comes before its paragraphs",
@@ -49,7 +48,7 @@ test("the mechanism copy is the map's, word for word", async () => {
 
   assert.match(
     home,
-    /AGT is the precursor in the RAAS pathway and is crucial for blood[\s\S]{0,130}?suppress the RAAS pathway\./,
+    /AGT is the precursor in the RAAS pathway and is crucial for[\s\S]{0,140}?suppress the RAAS pathway\./,
   );
   assert.match(
     home,

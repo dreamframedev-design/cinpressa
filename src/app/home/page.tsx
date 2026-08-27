@@ -8,7 +8,6 @@ import { DoseMigration } from "@/components/dose-migration";
 import { Bleed } from "@/components/bleed";
 import { HomeHero } from "@/components/home-hero";
 import { Reveal } from "@/components/reveal";
-import { PipelineBloom } from "@/components/pipeline-bloom";
 import { RaasPathway } from "@/components/raas-pathway";
 
 export const metadata: Metadata = {
@@ -243,60 +242,50 @@ export default function HomePage() {
               its own section, which is the exact fault this content was sent
               back for twice on the science page.
 
-              Centring is what makes the stack work. Copy and figure share one
-              axis, so the box reads as the section's figure rather than as
-              something that ran out of room, and the same shape is already on
-              this page - the challenge section above it is set the same way.
+              Centring the BLOCK is what makes the stack work. Copy and figure
+              share one axis, so the box reads as the section's figure rather
+              than as something that ran out of room. The lines inside it read
+              left; only the column is centred.
 
               The cascade holds 2xl, a shade wider than the 644px it had in the
               column, so nothing inside it reflows: both intervention tags still
               sit beside their node headings at this width. */}
-          <SectionHeader
-            eyebrow="Mechanism"
-            title="Targeting AGT upstream"
-            deck="RAAS modulation at the source"
-            align="center"
-          />
+          {/* LINES READ LEFT, THE BLOCK STAYS CENTRED. Centred lines were
+              costing legibility on a paragraph this long, so the type is set
+              left again - but the column is held to the cascade's own measure
+              and centred on the page, so the copy and the diagram share one
+              left edge and one right edge and the whole stack still sits on
+              the page's axis. max-w-none! on the header because SectionHeader
+              carries its own 3xl and the wrapper is what sets the measure
+              here. */}
+          <div className="mx-auto max-w-2xl">
+            <SectionHeader
+              eyebrow="Mechanism"
+              title="Targeting AGT upstream"
+              deck="RAAS modulation at the source"
+              className="max-w-none!"
+            />
 
-          <Reveal variant="fade" delay={120}>
-            <p className="mx-auto mt-10 max-w-3xl text-balance text-center text-base leading-relaxed text-body">
-              AGT is the precursor in the RAAS pathway and is crucial for blood
-              pressure regulation. Standard RAAS inhibitors act downstream and
-              do not completely suppress the RAAS pathway.
-            </p>
-          </Reveal>
-          <Reveal variant="fade" delay={180}>
-            <p className="mx-auto mt-5 max-w-3xl text-balance text-center text-base leading-relaxed text-body">
-              By targeting AGT synthesis in the liver via RNA interference,
-              CIN-111 is designed to block the RAAS cascade upstream.
-            </p>
-          </Reveal>
+            <Reveal variant="fade" delay={120}>
+              <p className="mt-10 text-base leading-relaxed text-body">
+                AGT is the precursor in the RAAS pathway and is crucial for
+                blood pressure regulation. Standard RAAS inhibitors act
+                downstream and do not completely suppress the RAAS pathway.
+              </p>
+            </Reveal>
+            <Reveal variant="fade" delay={180}>
+              <p className="mt-5 text-base leading-relaxed text-body">
+                By targeting AGT synthesis in the liver via RNA interference,
+                CIN-111 is designed to block the RAAS cascade upstream.
+              </p>
+            </Reveal>
+          </div>
 
           <Reveal variant="rise" delay={240} className="mx-auto mt-12 max-w-2xl">
             <RaasPathway />
           </Reveal>
         </Section>
 
-        {/* THE PIPELINE SECTION IS COLOUR ONLY NOW.
-
-            Every word here has been removed by request: the heading, both
-            paragraphs, the Visit Pipeline link and the findings spec. What is
-            left is the field — the mark's own ovals cropped so every centre
-            sits outside the frame — which makes this a breath between the two
-            sections that do carry copy rather than a section competing with
-            them. The pipeline itself is a page, and the nav goes there.
-
-            The height is explicit because there is no content to set it: a
-            section with art and nothing else collapses to its own padding. With
-            the spacer the band is 368px, which is where the ovals stop reading
-            as a stripe without leaving a screen of pale nothing above them. The
-            mask's top fade is what blends it out of the white section above, so
-            the upper third is meant to be almost empty. Both oval centres sit
-            below the frame, so the swell rises into the footer rather than
-            sitting in the middle of the band. See pipeline-bloom.tsx. */}
-        <Section tone="indigo" art={<PipelineBloom className="absolute inset-0" />}>
-          <div aria-hidden className="h-24 lg:h-36" />
-        </Section>
 
       </main>
 
