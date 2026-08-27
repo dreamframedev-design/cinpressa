@@ -18,18 +18,23 @@ test("review cuts: nothing above the dose animation, no pipeline tagline", async
   assert.doesNotMatch(home, /A focused program/);
 });
 
-test("the control model kept its figure, on the homepage now", async () => {
+test("the science solution keeps its figure", async () => {
   const [home, science] = await Promise.all([
     read("src/app/home/page.tsx"),
     read("src/app/science/page.tsx"),
   ]);
 
-  // The animation was explicitly kept once before, when it was deleted by
-  // mistake. It moved rather than being deleted this time.
-  assert.match(code(home), /<ControlModel \/>/);
-  assert.doesNotMatch(code(science), /ControlModel/);
-  // And the deck it used to stack under is gone with the section it led.
-  assert.doesNotMatch(science, /Long-acting control with infrequent dosing/);
+  // It was deleted by mistake once, then moved to the homepage for one cut and
+  // sent back for making that section carry two figures. It lives here.
+  assert.match(code(science), /<ControlModel \/>/);
+  assert.match(science, /eyebrow="CinPressa solution"/);
+  assert.doesNotMatch(code(home), /ControlModel/);
+  // The deck still leads the body rather than stacking under the headline.
+  assert.doesNotMatch(science, /deck="Long-acting control with infrequent dosing"/);
+  assert.match(
+    science,
+    /mt-11[^"]*">[\s\S]{0,40}?Long-acting control with infrequent dosing/,
+  );
 });
 
 test("no section is left stranded at two thirds of its frame", async () => {

@@ -9,7 +9,6 @@ import { Bleed } from "@/components/bleed";
 import { HomeHero } from "@/components/home-hero";
 import { Reveal } from "@/components/reveal";
 import { PipelineBloom } from "@/components/pipeline-bloom";
-import { ControlModel } from "@/components/control-model";
 import { RaasPathway } from "@/components/raas-pathway";
 
 export const metadata: Metadata = {
@@ -237,36 +236,47 @@ export default function HomePage() {
             own paragraphs it reads as the illustration of an argument instead
             of a chapter of one, and the section costs about half the height.
 
-            The control model comes with it, under the prose rather than in a
-            row of its own. It is the conclusion the cascade earns — silence AGT
-            upstream and control stops depending on the patient — and putting it
-            in the left column also gives that column enough height to stand
-            against the diagram. */}
-        <Section tone="sky">
-          <SectionHeader
-            eyebrow="Mechanism"
-            title="Targeting AGT upstream"
-            deck="RAAS modulation at the source"
-          />
+            THE CONTROL MODEL WENT BACK TO /science. It lived here for one
+            cut, under the prose, on the reasoning that it was the conclusion
+            the cascade earns and that it gave the left column height. The note
+            back was that the section read as too busy with both, which is fair:
+            two figures in one section makes the reader choose which one is the
+            point. It is on the science page again, in the solution section it
+            was built for.
 
-          <div className="mt-12 grid gap-12 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] lg:items-start lg:gap-14">
+            Without it the prose column is short against the diagram, so the
+            split narrows to 0.7/1.3 — the copy runs longer at a measure it can
+            still hold, rather than stopping a third of the way down. */}
+        <Section tone="sky">
+          {/* THE HEADER SITS IN THE COLUMN, not across the top. With the
+              control model gone back to /science the prose column ran 241px
+              against a 714px diagram, which is a heading over a hole - the same
+              shape that got this content sent back twice on the science page.
+              Putting the eyebrow, headline and deck into the column with the
+              paragraphs they introduce fills it, and it turns the section into
+              the composition it should have been: the argument stated on the
+              left, the diagram it describes on the right, both starting on the
+              same line. */}
+          <div className="grid gap-12 lg:grid-cols-[minmax(0,0.86fr)_minmax(0,1.14fr)] lg:items-start lg:gap-14">
             <div>
-              <Reveal variant="fade">
-                <p className="text-base leading-relaxed text-body">
+              <SectionHeader
+                eyebrow="Mechanism"
+                title="Targeting AGT upstream"
+                deck="RAAS modulation at the source"
+                className="max-w-none"
+              />
+              <Reveal variant="fade" delay={200}>
+                <p className="mt-9 text-base leading-relaxed text-body">
                   AGT is the precursor in the RAAS pathway and is crucial for
                   blood pressure regulation. Standard RAAS inhibitors act
                   downstream and do not completely suppress the RAAS pathway.
                 </p>
               </Reveal>
-              <Reveal variant="fade" delay={100}>
+              <Reveal variant="fade" delay={260}>
                 <p className="mt-5 text-base leading-relaxed text-body">
                   By targeting AGT synthesis in the liver via RNA interference,
                   CIN-111 is designed to block the RAAS cascade upstream.
                 </p>
-              </Reveal>
-
-              <Reveal variant="rise" delay={200} className="mt-12">
-                <ControlModel />
               </Reveal>
             </div>
 

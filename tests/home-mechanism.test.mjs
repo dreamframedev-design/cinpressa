@@ -13,20 +13,24 @@ test("the mechanism section moved to the homepage, two columns", async () => {
 
   assert.match(home, /eyebrow="Mechanism"/);
   assert.match(home, /title="Targeting AGT upstream"/);
-  // The cascade was too large as a full-measure stack. It sits beside its own
-  // prose now, with the control model under that prose to hold the column up.
+  // The cascade was too large as a full-measure stack, so it sits beside its
+  // own prose. The header sits IN that column rather than across the top: with
+  // the control model gone back to /science the column ran 241px against a
+  // 714px diagram, which is a heading over a hole. With it, 447 against 739.
   assert.match(
     home,
-    /lg:grid-cols-\[minmax\(0,0\.82fr\)_minmax\(0,1\.18fr\)\]/,
+    /lg:grid-cols-\[minmax\(0,0\.86fr\)_minmax\(0,1\.14fr\)\]/,
+  );
+  assert.ok(
+    home.indexOf('eyebrow="Mechanism"') < home.indexOf("AGT is the precursor"),
+    "the header belongs to the prose column, above its paragraphs",
   );
   assert.ok(
     home.indexOf("AGT is the precursor") < home.indexOf("<RaasPathway />"),
     "the prose column comes before the diagram column",
   );
-  assert.ok(
-    home.indexOf("<ControlModel />") < home.indexOf("<RaasPathway />"),
-    "the control model belongs to the prose column",
-  );
+  // One figure per section: the control model went back to /science.
+  assert.doesNotMatch(home, /ControlModel/);
 
   // It is a move, not a copy.
   assert.doesNotMatch(code(science), /RaasPathway|Mechanism/);

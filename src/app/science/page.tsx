@@ -3,6 +3,8 @@ import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { PageHero } from "@/components/page-hero";
 import { Section } from "@/components/section";
+import { SectionHeader } from "@/components/section-header";
+import { ControlModel } from "@/components/control-model";
 import { Reveal } from "@/components/reveal";
 
 export const metadata: Metadata = {
@@ -98,6 +100,61 @@ export default function SciencePage() {
             </p>
           </Reveal>
 
+        </Section>
+
+        {/* CinPressa solution. NO BACKDROP. This section had a wash, then a
+            better wash, and both were the wrong instrument: its argument is
+            structural â€” a foundation with optional courses laid on it â€” and a
+            wash cannot state a structure. It carries a figure instead. See
+            control-model.tsx.
+
+            COPY PROVENANCE, since it was asked: every word in this section is
+            verbatim from the approved site map (Google Doc, "Science" â†’
+            "CinPressa solution"). Eyebrow, headline and subheadline are exact;
+            the body is the map's single Section body paragraph, split at its
+            sentence boundary into the two columns. Nothing here is written. The
+            PDFs checked into this repo are an OLDER revision of that map and
+            disagree â€” the doc is the source. */}
+        <Section tone="green">
+          <SectionHeader
+            eyebrow="CinPressa solution"
+            title="A new treatment paradigm"
+          />
+          {/* The deck sits ON its paragraph rather than under the headline. It
+              was reading as a third heading stacked on the first two; a
+              subheadline introduces the body, so the gap above it is wider than
+              the gap below and the pair reads as one block. */}
+          <Reveal variant="fade" delay={80}>
+            <p className="mt-11 max-w-3xl text-lg font-medium leading-snug tracking-tight text-ink md:text-xl">
+              Long-acting control with infrequent dosing
+            </p>
+          </Reveal>
+          {/* ONE paragraph, because that is what it is. The map carries this as a
+              single Section body and it was being split at its sentence
+              boundary into two columns â€” which left three lines beside six and
+              a hole under the short one. A two-column set only works when both
+              columns fill; this one never could. */}
+          <Reveal variant="fade" delay={140}>
+            <p className="mt-5 max-w-3xl text-base leading-relaxed text-body">
+              CinPressa is developing a treatment model that shifts hypertension
+              management from daily patient behavior to infrequent
+              provider-administered therapy. Rather than relying on daily oral
+              dosing, the aim is to deliver durable blood pressure control with
+              long-acting AGT silencing, while still allowing complementary
+              antihypertensive agents to be layered onto an already controlled
+              foundation for patients who require additional reduction.
+            </p>
+          </Reveal>
+
+          {/* Wider than the prose, deliberately. Held to the copy's measure the
+              figure stopped three quarters of the way across a frame the
+              sections either side of it fill, which is what made the page read
+              as listing to the left. Unlike the dose card this one scales
+              cleanly â€” the foundation is a bar and the year line is a rule, so
+              width costs it nothing. */}
+          <Reveal variant="rise" delay={200} className="mt-14 max-w-5xl">
+            <ControlModel />
+          </Reveal>
         </Section>
 
       </main>
