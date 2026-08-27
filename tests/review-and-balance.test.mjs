@@ -46,7 +46,13 @@ test("no section is left stranded at two thirds of its frame", async () => {
 
   // The four sections that used to stop short are paired or widened.
   assert.match(home, /className="crescendo max-w-none"/); // the hinge
-  assert.match(home, /lg:grid-cols-\[minmax\(0,1\.55fr\)_minmax\(0,1fr\)\]/); // dose card + copy
+  // Copy left, card right - the ratio turned over with them, so the card keeps
+  // the larger share while the section opens on its argument.
+  assert.match(home, /lg:grid-cols-\[minmax\(0,1fr\)_minmax\(0,1\.55fr\)\]/);
+  assert.ok(
+    home.indexOf("CinPressa is advancing a long-acting") < home.indexOf("<DoseMigration />"),
+    "the copy column comes before the card",
+  );
   assert.match(science, /className="crescendo max-w-5xl"/);
   // The burden section takes its width from the STATEMENT, which used to be
   // capped at 46ch and opened it at under half the frame. Five cuts tried to

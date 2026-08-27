@@ -189,22 +189,40 @@ export default function HomePage() {
             with content it already had. The card cannot simply be widened —
             its grid divides the width, so a wider card means coarser dots, not
             more of them. */}
+        {/* COPY LEFT, FIGURE RIGHT, and the ratio turns over with them: the
+            card was given the larger share because it is the thing being read,
+            and it still is - it just reads from the other side now. Every other
+            spread on this page opens on its argument, so this one no longer
+            makes the reader start at a diagram and work backwards.
+
+            THE FIRST SENTENCE LEADS. It is the claim - a long-acting siRNA,
+            one to two administrations a year - and the two sentences after it
+            qualify it. At one size the claim was buried in the middle of a
+            block; set larger it becomes the section's opening line, which is
+            what the dose card is illustrating. Not one word changes: the same
+            map sentence, split at its own full stop. */}
         <Section>
-          <div className="grid gap-10 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)] lg:items-center lg:gap-14">
-            <Reveal variant="rise">
-              <DoseMigration />
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.55fr)] lg:items-center lg:gap-14">
+            <Reveal variant="fade">
+              <div>
+                <p className="text-lg font-light leading-snug tracking-tight text-ink md:text-xl">
+                  CinPressa is advancing a long-acting AGT siRNA designed to
+                  provide durable blood pressure reduction with one to two
+                  administrations per year.
+                </p>
+                <p className="mt-5 text-base leading-relaxed text-body">
+                  The goal is to establish a continuous backbone of blood
+                  pressure control independent of daily patient adherence.
+                  Meaningful baseline BP reduction may be sufficient for many
+                  patients to achieve treatment goals as monotherapy, with
+                  complementary antihypertensive agents layered onto an already
+                  controlled foundation for patients requiring additional
+                  control.
+                </p>
+              </div>
             </Reveal>
-            <Reveal variant="fade" delay={120}>
-              <p className="text-base leading-relaxed text-body">
-              CinPressa is advancing a long-acting AGT siRNA designed to provide
-              durable blood pressure reduction with one to two administrations
-              per year. The goal is to establish a continuous backbone of blood
-              pressure control independent of daily patient adherence. Meaningful
-              baseline BP reduction may be sufficient for many patients to
-              achieve treatment goals as monotherapy, with complementary
-              antihypertensive agents layered onto an already controlled
-                foundation for patients requiring additional control.
-              </p>
+            <Reveal variant="rise" delay={120}>
+              <DoseMigration />
             </Reveal>
           </div>
         </Section>
