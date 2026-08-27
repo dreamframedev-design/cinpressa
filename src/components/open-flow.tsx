@@ -71,13 +71,28 @@ type Ribbon = {
  * light ones ride above them, so the field has a floor and a haze rather than a
  * uniform stripe. Alphas run 0.30–0.52; nothing here is a tint.
  */
+/**
+ * TUNED TOWARD THE BLEED. The note was that this field was missing the darkness
+ * and the purple the second wave piece has, and the reason was specific rather
+ * than general: both fields already multiply, and both draw from the same
+ * palette, but in this one the deep blue and the violet were its two most
+ * transparent and most heavily blurred ribbons. The colours that carry a field's
+ * weight were the ones being washed out.
+ *
+ * Against the bleed's own numbers: its deep blue runs alpha 0.42 at blur 22 with
+ * the heaviest weight in the stack, its azure 0.5 at blur 0, and its violet 0.38
+ * at blur 7. This ran 0.34/blur 26, 0.44/blur 10, and 0.30/blur 20. Those three
+ * are brought to the bleed's strength and given back their edges; the rest of
+ * the stack is untouched, and so is the geometry - the ribbons still widen and
+ * narrow without ever pinching, which is the whole reason this field exists.
+ */
 const RIBBONS: Ribbon[] = [
-  { base: 0.86, rise: -0.05, weight: 0.3, amp: 0.045, lambda: 0.78, phase: 0.0, color: [4, 115, 187], alpha: 0.34, blur: 26, flow: 58, bob: 0.03, bobPeriod: 52, breathe: 0.26, breathePeriod: 41 },
-  { base: 0.74, rise: 0.06, weight: 0.24, amp: 0.055, lambda: 0.64, phase: 2.1, color: [21, 150, 212], alpha: 0.44, blur: 10, flow: 44, bob: 0.038, bobPeriod: 39, breathe: 0.3, breathePeriod: 47, crest: true },
+  { base: 0.86, rise: -0.05, weight: 0.36, amp: 0.045, lambda: 0.78, phase: 0.0, color: [4, 115, 187], alpha: 0.46, blur: 12, flow: 58, bob: 0.03, bobPeriod: 52, breathe: 0.26, breathePeriod: 41 },
+  { base: 0.74, rise: 0.06, weight: 0.26, amp: 0.055, lambda: 0.64, phase: 2.1, color: [21, 150, 212], alpha: 0.5, blur: 3, flow: 44, bob: 0.038, bobPeriod: 39, breathe: 0.3, breathePeriod: 47, crest: true },
   { base: 0.63, rise: -0.04, weight: 0.17, amp: 0.048, lambda: 0.88, phase: 4.0, color: [30, 174, 229], alpha: 0.46, blur: 0, flow: 66, bob: 0.031, bobPeriod: 58, breathe: 0.24, breathePeriod: 33 },
   { base: 0.55, rise: 0.05, weight: 0.13, amp: 0.042, lambda: 0.71, phase: 1.2, color: [149, 218, 248], alpha: 0.52, blur: 6, flow: 37, bob: 0.027, bobPeriod: 45, breathe: 0.34, breathePeriod: 29 },
   { base: 0.48, rise: -0.03, weight: 0.1, amp: 0.036, lambda: 1.02, phase: 5.3, color: [175, 219, 188], alpha: 0.4, blur: 14, flow: 74, bob: 0.022, bobPeriod: 63, breathe: 0.28, breathePeriod: 37, crest: true },
-  { base: 0.93, rise: 0.04, weight: 0.26, amp: 0.038, lambda: 0.83, phase: 3.1, color: [103, 113, 181], alpha: 0.3, blur: 20, flow: 50, bob: 0.026, bobPeriod: 34, breathe: 0.22, breathePeriod: 26 },
+  { base: 0.93, rise: 0.04, weight: 0.32, amp: 0.038, lambda: 0.83, phase: 3.1, color: [103, 113, 181], alpha: 0.42, blur: 8, flow: 50, bob: 0.026, bobPeriod: 34, breathe: 0.22, breathePeriod: 26 },
 ];
 
 /** Centre line of a ribbon at horizontal fraction f and time t, in fractions. */
@@ -169,19 +184,23 @@ function render(ctx: CanvasRenderingContext2D, w: number, h: number, t: number) 
     ctx.stroke();
   }
 
-  // Dissolve upward, so the field is a ground rather than a band.
+  // Dissolve upward, so the field is a ground rather than a band. Eased back
+  // with the ribbons: these scrims were set against a paler stack, and at their
+  // old strength they took most of the added depth straight back off.
   const up = ctx.createLinearGradient(0, 0, 0, h);
   up.addColorStop(0, "rgba(255,255,255,1)");
-  up.addColorStop(0.34, "rgba(255,255,255,0.55)");
-  up.addColorStop(0.62, "rgba(255,255,255,0)");
+  up.addColorStop(0.34, "rgba(255,255,255,0.44)");
+  up.addColorStop(0.66, "rgba(255,255,255,0)");
   ctx.fillStyle = up;
   ctx.fillRect(0, 0, w, h);
 
   // Damp the left column hard: the headline lives there and must sit on paper.
+  // The left column is held at full strength - the headline still has to sit on
+  // paper - and only the half with nothing over it is let through darker.
   const left = ctx.createLinearGradient(0, 0, w, 0);
   left.addColorStop(0, "rgba(255,255,255,0.94)");
-  left.addColorStop(0.3, "rgba(255,255,255,0.74)");
-  left.addColorStop(0.62, "rgba(255,255,255,0.16)");
+  left.addColorStop(0.3, "rgba(255,255,255,0.72)");
+  left.addColorStop(0.62, "rgba(255,255,255,0.08)");
   left.addColorStop(1, "rgba(255,255,255,0)");
   ctx.fillStyle = left;
   ctx.fillRect(0, 0, w, h);

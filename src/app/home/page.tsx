@@ -79,87 +79,84 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ONE BLOCK: THE PROBLEM, STATED ONCE.
+        {/* THE PROBLEM, IN TWO COLUMNS: THE CLAIM AND ITS EVIDENCE.
 
-            This was three things - a hinge section, then the Bleed, then a
-            "Control that lasts remains elusive" section carrying the same
-            argument in prose. The headline is deleted and the two halves are
-            joined, because they were always one thought: the challenge is
-            persistence, here is why persistence fails, here is what it costs.
-            Squeezed to match - 40px between the statement and the cause, not a
-            section boundary.
+            This was three things - a hinge section, the Bleed, and a "Control
+            that lasts remains elusive" section repeating the same argument in
+            prose. The headline is deleted and what is left is split at its
+            natural seam rather than stacked: the statement stands on the left,
+            and everything that substantiates it - why persistence fails, and
+            what failing costs - stacks on the right.
 
-            LEFT-ALIGNED, and the reason the centring existed is gone. It was
-            justified by the rail sitting underneath as three equal columns
-            spanning the frame - a symmetrical figure wants a symmetrical header
-            over it. That rail is the banner ABOVE this block now, so there is
-            nothing symmetrical left inside the section for the copy to answer
-            to, and three centred blocks in a row read as a poster rather than
-            as an argument. Left is also what every other statement on the site
-            does, including this same crescendo on /science.
+            The crescendo carries the left column on its own, so the split is
+            weighted toward it: display type at 30 and 56px needs room to break
+            where it wants to, and the right column is prose plus a tag list
+            that reflows to whatever it is given.
 
-            Reading order is the argument's order: the statement, the cause,
-            then the consequence and what it costs. */}
+            The lead-in ends in a colon and belongs to its list, so the two stay
+            together inside the right column - the constraint that broke two
+            earlier cuts of this content. */}
         <Section tone="sky" className="pt-14! lg:pt-20!">
-          <Reveal variant="fade">
-            {/* One sentence pair to a screen reader; two sizes to an eye. */}
-            <p className="crescendo max-w-5xl">
-              <span className="crescendo-lede">
-                In hypertension, the challenge is not whether blood pressure can
-                be lowered.
-              </span>
-              <span className="crescendo-turn">
-                The challenge is whether it can remain{" "}
-              </span>
-              <span className="crescendo-point">
-                <span className="crescendo-key">controlled over time.</span>
-              </span>
-            </p>
-          </Reveal>
-
-          <Reveal variant="fade" delay={120}>
-            <p className="mt-10 max-w-3xl text-base leading-relaxed text-body">
-              Medication non-adherence is the leading cause of poor blood
-              pressure control, and hypertension is largely asymptomatic,
-              resulting in poor long-term adherence and treatment persistence.
-            </p>
-          </Reveal>
-
-          {/* THE CONSEQUENCE, UNDER THE TICKERS. Moved here from /science so
-              the whole cost of uncontrolled pressure is stated in one place:
-              the scale of it in the figures above, and what it leads to
-              underneath them.
-
-              The lead-in ends in a colon and belongs to the list, so it can
-              never be separated from it - a constraint that broke two earlier
-              cuts of this content on /science. Held to the prose measure, where
-              the seven break 4+3; wider and they break 6+1 and strand one tag
-              on its own line. */}
-          <Reveal variant="fade" delay={160}>
-            <p className="mt-10 max-w-3xl text-base leading-relaxed text-body">
-              Persistent uncontrolled blood pressure substantially increases the
-              risk of serious complications:
-            </p>
-          </Reveal>
-
-          <ul className="mt-5 flex max-w-3xl flex-wrap gap-2">
-            {complications.map((c, i) => (
-              <Reveal
-                key={c}
-                as="li"
-                variant="fade"
-                /* 90ms apart, so the list visibly ACCUMULATES as it arrives.
-                   The sentence above says risk increases; the list should look
-                   like it is. */
-                delay={220 + i * 90}
-              >
-                <span className="risk-tag">
-                  <span aria-hidden className="risk-dot" />
-                  {c}
+          <div className="grid gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-start lg:gap-16">
+            <Reveal variant="fade">
+              {/* One sentence pair to a screen reader; two sizes to an eye. */}
+              <p className="crescendo max-w-none">
+                <span className="crescendo-lede">
+                  In hypertension, the challenge is not whether blood pressure can
+                  be lowered.
                 </span>
+                <span className="crescendo-turn">
+                  The challenge is whether it can remain{" "}
+                </span>
+                <span className="crescendo-point">
+                  <span className="crescendo-key">controlled over time.</span>
+                </span>
+              </p>
+            </Reveal>
+
+            <div>
+              <Reveal variant="fade" delay={120}>
+                <p className="text-base leading-relaxed text-body">
+                  Medication non-adherence is the leading cause of poor blood
+                  pressure control, and hypertension is largely asymptomatic,
+                  resulting in poor long-term adherence and treatment
+                  persistence.
+                </p>
               </Reveal>
-            ))}
-          </ul>
+
+              {/* The lead-in ends in a colon and belongs to the list, so the
+                  two never separate - the constraint that broke two earlier
+                  cuts of this content on /science. The tags take the column's
+                  measure rather than one of their own; at this width they break
+                  three rows, and the alternative was giving them a width the
+                  column does not have. */}
+              <Reveal variant="fade" delay={160}>
+                <p className="mt-8 text-base leading-relaxed text-body">
+                  Persistent uncontrolled blood pressure substantially increases
+                  the risk of serious complications:
+                </p>
+              </Reveal>
+
+              <ul className="mt-5 flex flex-wrap gap-2">
+              {complications.map((c, i) => (
+                <Reveal
+                  key={c}
+                  as="li"
+                  variant="fade"
+                  /* 90ms apart, so the list visibly ACCUMULATES as it arrives.
+                     The sentence above says risk increases; the list should look
+                     like it is. */
+                  delay={220 + i * 90}
+                >
+                  <span className="risk-tag">
+                    <span aria-hidden className="risk-dot" />
+                    {c}
+                  </span>
+                </Reveal>
+              ))}
+            </ul>
+            </div>
+          </div>
         </Section>
 
         {/* Bleed runs full-bleed rather than inside the container - it is a piece,
