@@ -40,28 +40,26 @@ export default function HomePage() {
       <main>
         <HomeHero />
 
-        {/* THE VERDICT — the homepage sibling of the science page's crescendo,
-            so the two most important statements on the site speak one language.
+        {/* THE HINGE, REPLACED. It carried "The unmet need in hypertension
+            is not efficacy. It is persistence." for four cuts - a plain grey
+            paragraph, a two-column split, a strikethrough on "efficacy", and
+            finally a colour migration from the wrong answer to the right one.
+            The new copy was handed over verbatim and says the same thing in the
+            open rather than by implication, so none of that machinery survives
+            with it: there is no "not X / it is Y" pair left to play ink against.
 
-            History, because this block has now been through four shapes: a
-            plain grey paragraph (skimmed past), a two-column split (never
-            aligned), and a strikethrough on "efficacy" (read wrong — the copy
-            already says NOT efficacy, so a strike on top of it negates twice,
-            and with the word broken onto its own line the eye met a crossed-out
-            word before it had the sentence that frames it). All dead.
+            It is set as a crescendo, which is the same three-beat build the
+            science page uses for its own statement, and it is already tuned:
+            two sizes rather than three, one voice across the setup, balanced
+            lines, and the colour arriving on the last phrase over a second and
+            a half. The section is about whether control lasts over time; the
+            line that says so takes time to say it. See .crescendo-* in the
+            stylesheet.
 
-            What replaced them: the sentence set at its own weights — the turn
-            at reading scale, the answer at display scale — and the COLOUR now
-            tells the story the strike was reaching for, without the double
-            negative. After both lines land, "efficacy." visibly loses its ink
-            and dims to grey while "persistence." takes the blue: emphasis
-            migrating from the wrong answer to the right one. Discarded by
-            fading, not by crossing out. */}
+            The verdict-* rules are deleted with the copy they were written
+            for. */}
         <section className="bg-[linear-gradient(180deg,var(--color-mist)_0%,rgba(255,255,255,0.96)_38%,#fff_100%)]">
           <div className="relative mx-auto w-full max-w-7xl px-6 py-14 lg:px-10 lg:py-16">
-            {/* Widened. At a 3xl premise and a 3.9rem answer this block stopped
-                two thirds of the way across a frame its neighbours fill, and
-                a hinge that short reads as a stub rather than as a pause. */}
             <div className="max-w-5xl">
               <Reveal variant="fade">
                 <p className="max-w-4xl text-[clamp(1rem,1.3vw,1.2rem)] leading-[1.62] text-muted">
@@ -71,23 +69,18 @@ export default function HomePage() {
                 </p>
               </Reveal>
 
-              {/* One sentence pair to a screen reader; two scales to an eye.
-                  "not efficacy." stays whole on the turn line — the break that
-                  stranded the word below its "not" is what made every earlier
-                  cut of this read wrong. */}
               <Reveal variant="fade" delay={110} className="mt-9 lg:mt-11">
-                <p className="verdict">
-                  <span className="verdict-turn">
-                    The unmet need in hypertension is{" "}
-                    {/* Bound: if the line has to wrap on a phone, "not" and
-                        "efficacy." travel together — the split between them is
-                        what made every earlier cut read wrong. */}
-                    <span className="whitespace-nowrap">
-                      not <span className="verdict-set">efficacy.</span>
-                    </span>
-                  </span>{" "}
-                  <span className="verdict-answer">
-                    It is <span className="verdict-key">persistence.</span>
+                {/* One sentence pair to a screen reader; two sizes to an eye. */}
+                <p className="crescendo max-w-5xl">
+                  <span className="crescendo-lede">
+                    In hypertension, the challenge is not whether blood pressure
+                    can be lowered.
+                  </span>
+                  <span className="crescendo-turn">
+                    The challenge is whether it can remain{" "}
+                  </span>
+                  <span className="crescendo-point">
+                    <span className="crescendo-key">controlled over time.</span>
                   </span>
                 </p>
               </Reveal>

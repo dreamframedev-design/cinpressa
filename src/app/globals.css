@@ -334,112 +334,14 @@ body {
 }
 
 
-/* ---------- The verdict (home, "the unmet need") ----------
-   The homepage sibling of the science crescendo below — same scale system,
-   same reveal grammar — with one move of its own: the emphasis MIGRATES.
-   "efficacy." starts in ink like the rest of its line and dims to grey as
-   "persistence." takes the blue, so the wrong answer is discarded by fading
-   rather than by strikethrough. (A strike was tried. The copy already says
-   NOT efficacy; a strike on top of that negates twice, and it read wrong.)
+/* ---------- The crescendo (home and science) ----------
+   One sentence pair, set so the setup is one voice and the point is the largest
+   thing in the section. Nothing is drawn here — the type does all of it.
 
-   Base state is the finished composition — efficacy already dimmed, the key
-   already blue — so this is correct without JS and under reduced motion. */
-
-.verdict {
-  display: block;
-}
-
-.verdict-turn {
-  display: block;
-  font-size: clamp(1.4rem, 2.5vw, 2.25rem);
-  font-weight: 300;
-  line-height: 1.3;
-  letter-spacing: -0.02em;
-  color: var(--color-ink);
-}
-
-/* The idea being set aside. Muted at rest; the reveal replays how it got
-   that way. */
-.verdict-set {
-  color: var(--color-muted);
-}
-
-.verdict-answer {
-  display: block;
-  margin-top: 0.4rem;
-  font-size: clamp(2.25rem, 5.6vw, 4.75rem);
-  font-weight: 300;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
-  color: var(--color-ink);
-}
-
-/* Same clipped ramp as .crescendo-key: ink sits over a brand gradient and
-   retreats. Every stop clears 3:1 on white, which is what this size needs. */
-.verdict-key {
-  color: transparent;
-  background-image: linear-gradient(
-    96deg,
-    #2261ad 0%,
-    #0473bb 30%,
-    #0783c6 52%,
-    #1596d4 74%,
-    #2261ad 100%
-  );
-  background-size: 210% 100%;
-  background-position: 0 0;
-  -webkit-background-clip: text;
-  background-clip: text;
-}
-
-[data-reveal].reveal-pending .verdict-turn,
-[data-reveal].reveal-pending .verdict-answer {
-  opacity: 0;
-  transform: translateY(14px);
-}
-
-[data-reveal].reveal-pending .verdict-set {
-  color: var(--color-ink);
-}
-
-[data-reveal].reveal-pending .verdict-key {
-  color: var(--color-ink);
-  background-position: 100% 0;
-}
-
-[data-reveal].reveal-in .verdict-turn {
-  animation: crescendo-in 0.8s var(--ease-brand) 0.1s both;
-}
-
-[data-reveal].reveal-in .verdict-answer {
-  animation: crescendo-in 0.85s var(--ease-brand) 0.65s both;
-}
-
-/* The migration: efficacy lets go of its ink first, then persistence takes
-   the colour. Cause, then effect, on the same unhurried sweep the science
-   crescendo earns its point with. */
-[data-reveal].reveal-in .verdict-set {
-  animation: verdict-dim 0.7s var(--ease-brand) 1.3s both;
-}
-
-[data-reveal].reveal-in .verdict-key {
-  animation: crescendo-colour 1.4s var(--ease-brand) 1.6s both;
-}
-
-@keyframes verdict-dim {
-  from {
-    color: var(--color-ink);
-  }
-  to {
-    color: var(--color-muted);
-  }
-}
-
-
-/* ---------- The crescendo (science, "the burden") ----------
-   One sentence pair set at three sizes, because its three parts are not equal.
-   The qualifier recedes, the turn sits at reading scale, and the point is the
-   largest thing in the section. Nothing is drawn here — the type does all of it.
+   It carries the homepage hinge as well now. That block used to be .verdict-*,
+   a "not X / it is Y" pair whose whole design was ink migrating from the wrong
+   answer to the right one; the replacement copy states the same thing in the
+   open, so there is no pair left to play ink against and those rules are gone.
 
    Base state is the finished composition, as everywhere else on this site: the
    key phrase is already blue, so this is correct without JS and under reduced
@@ -2294,16 +2196,13 @@ body {
     animation: none !important;
   }
 
-  /* The crescendo and the verdict resolve instantly: their base state is the
-     finished composition, so killing the animations is the whole job. */
+  /* The crescendo resolves instantly: its base state is the finished
+     composition, so killing the animations is the whole job. It carries both
+     the homepage hinge and the science statement now. */
   .crescendo-lede,
   .crescendo-turn,
   .crescendo-point,
-  .crescendo-key,
-  .verdict-turn,
-  .verdict-set,
-  .verdict-answer,
-  .verdict-key {
+  .crescendo-key {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
@@ -2439,6 +2338,7 @@ body {
     box-shadow: none !important;
   }
 }
+
 
 
 
