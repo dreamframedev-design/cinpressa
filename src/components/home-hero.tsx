@@ -115,9 +115,12 @@ export function HomeHero() {
             className="anim-rise mt-7 max-w-xl text-lg leading-relaxed text-body"
             style={{ animationDelay: "0.28s" }}
           >
-            CinPressa is advancing CIN-111, a best-in-class AGT siRNA for the
-            treatment of hypertension, designed to prevent the formation of
-            angiotensinogen and deliver long-acting blood pressure control.
+            {/* Opens on "Designed". The clause it replaced - "CinPressa is
+                advancing CIN-111, a best-in-class AGT siRNA for the treatment
+                of hypertension," - restated the headline directly above it,
+                which already says best-in-class siRNA for hypertension. */}
+            Designed to prevent the formation of angiotensinogen and deliver
+            long-acting blood pressure control.
           </p>
 
           <div className="anim-rise mt-10 w-fit" style={{ animationDelay: "0.4s" }}>
