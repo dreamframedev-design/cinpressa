@@ -164,11 +164,18 @@ export function PipelineDiagram() {
         </div>
       </div>
 
-      {/* The status line. Live region so the change is announced rather than silent. */}
-      <div className="mt-6 min-h-[3.5rem]">
+      {/* The status line. Live region so the change is announced rather than
+          silent.
+
+          NO MEASURE ON IT. It was held to 3xl like prose, which broke a
+          two-clause sentence in half under a bar that runs the full frame; the
+          line belongs to that bar and reads as its caption, so it takes the
+          bar's width. min-h drops with it, since one line is now the common
+          case rather than the exception. */}
+      <div className="mt-5 min-h-[2.2rem]">
         <p
           aria-live="polite"
-          className="max-w-3xl text-[1.15rem] leading-relaxed text-ink transition-opacity duration-200"
+          className="text-[1.15rem] leading-relaxed text-ink transition-opacity duration-200"
         >
           <span className="font-semibold text-blue">{shown.name}.</span>{" "}
           {shown.status}

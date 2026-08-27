@@ -14,7 +14,7 @@ test("the pipeline bar is the first thing under the hero", async () => {
   // The headline over the bar is gone - the hero above already names the
   // programme - so the eyebrow is what marks the section now.
   const stage = page.indexOf("<PipelineDiagram />");
-  const lead = page.indexOf("hypertension-related indications");
+  const lead = page.indexOf("In hypertensive");
   const clinical = page.indexOf('title="From IND to first-in-human"');
 
   assert.ok(hero < stage, "the stage section must come after the hero");
@@ -38,6 +38,9 @@ test("the hero deck and the bar's headline are gone", async () => {
   const hero = await read("src/components/page-hero.tsx");
   assert.match(hero, /const bare = !deck && !subtitle && !aside;/);
   assert.match(hero, /min-h-\[26rem\] pb-12 lg:min-h-\[30rem\] lg:pb-16/);
-  // The phrase survives as prose in the body, which is where it belongs.
-  assert.match(page, /depth of AGT knockdown, and safety/);
+  // That sentence is gone from the body too, by request - the hero two screens
+  // up already names the programme in those words, and it was a claim standing
+  // in front of its own evidence. The body opens on the data now.
+  assert.doesNotMatch(code(page), /a profile built around/);
+  assert.match(page, /In hypertensive[\s\S]{0,60}?nearly 100 percent reduction/);
 });

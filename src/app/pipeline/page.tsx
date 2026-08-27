@@ -71,7 +71,7 @@ export default function PipelinePage() {
             rather than deleted — the bar stops where the completed work stops,
             and the Phase 1 note under it says planned. See
             pipeline-diagram.tsx. */}
-        <Section className="pt-12! pb-10! lg:pt-16! lg:pb-14!">
+        <Section className="pt-12! pb-6! lg:pt-16! lg:pb-8!">
           {/* NO HEADLINE OVER THE BAR. "CIN-111 development stage" and its
               subtitle are deleted: the hero directly above already names the
               programme, and a headline repeating it pushed the one thing a
@@ -95,13 +95,17 @@ export default function PipelinePage() {
             Phase 1 note, which read as the page ending rather than continuing.
             The tone still changes at the seam, so the two keep some air, just
             not a screen of it. */}
-        <Section tone="sky" className="pt-12! lg:pt-16!">
+        <Section tone="sky" className="pt-8! lg:pt-10!">
           <div className="grid gap-6 lg:max-w-4xl">
             <Reveal variant="fade">
+              {/* Opens on the data. The sentence that led this - "CIN-111 is a
+                  best-in-class AGT siRNA candidate for hypertension-related
+                  indications, with a profile built around durability, depth of
+                  AGT knockdown, and safety." - is deleted: the hero two screens
+                  up already names the programme in those words, and it was a
+                  claim standing in front of the evidence for it. */}
               <p className="text-lg leading-relaxed text-body">
-                CIN-111 is a best-in-class AGT siRNA candidate for
-                hypertension-related indications, with a profile built around
-                durability, depth of AGT knockdown, and safety. In hypertensive
+                In hypertensive
                 non-human primates, CIN-111 achieved nearly 100 percent reduction
                 in AGT protein at one month, sustained with a mean of
                 approximately 88 percent reduction on Day 119. CIN-111 reduced
