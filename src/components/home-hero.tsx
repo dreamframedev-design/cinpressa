@@ -97,8 +97,11 @@ export function HomeHero() {
             className="anim-rise mt-7 text-[clamp(2.4rem,5.4vw,4.25rem)] font-light leading-[1.04] tracking-tight text-ink"
             style={{ animationDelay: "0.1s" }}
           >
-            Advancing a best-in-class{" "}
-            <span className="text-blue">siRNA</span> for hypertension
+            {/* The blue lands on "hypertension", not on "siRNA". The molecule
+                class is what CinPressa makes; the disease is what the sentence
+                is about, and it is the word a reader is scanning for. */}
+            Advancing a best-in-class siRNA for{" "}
+            <span className="text-blue">hypertension</span>
           </h1>
           <p
             className="anim-rise mt-7 max-w-xl text-lg leading-relaxed text-body"

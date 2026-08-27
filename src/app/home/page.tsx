@@ -119,7 +119,7 @@ export default function HomePage() {
         <Section tone="sky" className="pt-12! lg:pt-16!">
           <SectionHeader title="Control that lasts remains elusive" align="center" />
           <Reveal variant="fade" delay={120}>
-            <p className="mx-auto mt-8 max-w-3xl text-center text-lg font-medium leading-snug tracking-tight text-ink md:text-xl">
+            <p className="mx-auto mt-8 max-w-3xl text-center text-lg leading-snug tracking-tight text-ink md:text-xl">
               Medication non-adherence is the leading cause of poor blood
               pressure control, and hypertension is largely asymptomatic,
               resulting in poor long-term adherence and treatment persistence.
