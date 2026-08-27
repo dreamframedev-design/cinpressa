@@ -40,13 +40,12 @@ test("the verdict uses the site container without a custom grid", () => {
 test("the final hierarchy uses one supporting scale and a tighter desktop hero", () => {
   assert.match(hero, /min-h-\[88vh\][^"]*lg:min-h-\[76vh\]/);
   assert.doesNotMatch(home, /min-h-\[92vh\]/);
-  // One supporting scale, shared by the premise — the value moved when the
-  // hinge was widened; what matters is that there is still only one of it.
-  assert.match(
-    home,
-    /<p className="[^"]*text-\[clamp\(1rem,1\.3vw,1\.2rem\)\][^"]*">\s*Daily oral therapy/,
-  );
-  assert.equal((home.match(/text-\[clamp\(1rem,1\.3vw,1\.2rem\)\]/g) ?? []).length, 1);
+  // The premise paragraph is gone, and its supporting scale went with it -
+  // nothing else on the page was using that clamp.
+  assert.doesNotMatch(code(home), /Daily oral therapy/);
+  assert.equal((home.match(/text-\[clamp\(1rem,1\.3vw,1\.2rem\)\]/g) ?? []).length, 0);
+  // The crescendo is the whole block now, so it carries no top margin.
+  assert.doesNotMatch(home, /delay=\{110\} className="mt-9 lg:mt-11"/);
   assert.match(home, /className="crescendo-turn"/);
   assert.match(home, /className="crescendo-key"/);
   assert.doesNotMatch(home, /text-\[clamp\(1\.15rem,1\.8vw,1\.5rem\)\]/);

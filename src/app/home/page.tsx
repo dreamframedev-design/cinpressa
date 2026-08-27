@@ -60,15 +60,12 @@ export default function HomePage() {
         <section className="bg-[linear-gradient(180deg,var(--color-mist)_0%,rgba(255,255,255,0.96)_38%,#fff_100%)]">
           <div className="relative mx-auto w-full max-w-7xl px-6 py-14 lg:px-10 lg:py-16">
             <div className="max-w-5xl">
+              {/* The premise that used to open this block - "Daily oral therapy
+                  has been the backbone of hypertension care for decades..." -
+                  is removed. The crescendo is the whole section now, so it also
+                  loses the top margin that only existed to separate it from
+                  that paragraph. */}
               <Reveal variant="fade">
-                <p className="max-w-4xl text-[clamp(1rem,1.3vw,1.2rem)] leading-[1.62] text-muted">
-                  Daily oral therapy has been the backbone of hypertension care for
-                  decades, yet a large proportion of patients remain uncontrolled or
-                  untreated.
-                </p>
-              </Reveal>
-
-              <Reveal variant="fade" delay={110} className="mt-9 lg:mt-11">
                 {/* One sentence pair to a screen reader; two sizes to an eye. */}
                 <p className="crescendo max-w-5xl">
                   <span className="crescendo-lede">
