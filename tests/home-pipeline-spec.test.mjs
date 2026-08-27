@@ -4,50 +4,30 @@ import { readFile } from "node:fs/promises";
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 
-test("the homepage pipeline carries findings, not a decorative field", async () => {
-  const [home, spec, css] = await Promise.all([
+/** The docblock names what was removed, so it must not answer the tests. */
+const code = (source) => source.replace(/\/\*[\s\S]*?\*\//g, "");
+
+test("the homepage pipeline section is colour only", async () => {
+  const [home, css] = await Promise.all([
     read("src/app/home/page.tsx"),
-    read("src/components/program-spec.tsx"),
     read("src/app/globals.css"),
   ]);
 
-  assert.match(home, /import \{ ProgramSpec \}/);
-  assert.match(home, /<Section tone="indigo"/);
-  // The corner blob is gone for good.
-  assert.doesNotMatch(home.replace(/\/\*[\s\S]*?\*\//g, ""), /PipelineField/);
+  // Every word was removed by request: the heading, both paragraphs, the link
+  // and the findings spec. The field stays.
+  assert.match(
+    home,
+    /<Section tone="indigo" art=\{<PipelineBloom className="absolute inset-0" \/>\}>\s*\n\s*<div aria-hidden className="h-24 lg:h-36" \/>\s*\n\s*<\/Section>/,
+  );
+  assert.doesNotMatch(code(home), /ProgramSpec|A focused program|Visit Pipeline/);
+  assert.doesNotMatch(code(home), /Our pipeline is centered on CIN-111/);
+
+  // The component and its styles went with it rather than lingering unused.
+  assert.doesNotMatch(css, /program-spec/);
+
+  // The corner blob is still gone for good.
+  assert.doesNotMatch(code(home), /PipelineField/);
   assert.doesNotMatch(css, /pipeline-field(?!-|s)/);
-
-  // Provenance is not optional: findings without their study design are a boast.
-  assert.match(home, /source="In hypertensive non-human primate studies"/);
-  assert.match(spec, /program-spec-source/);
-
-  // Exactly one accent in the section, on the differentiating claim.
-  assert.equal((home.match(/accent: true/g) ?? []).length, 1);
-  assert.match(home, /value: "More than three months",\s*\n\s*accent: true/);
-});
-
-test("the pipeline paragraph keeps the map's first and last sentences", async () => {
-  const home = await read("src/app/home/page.tsx");
-
-  assert.match(
-    home,
-    /Our pipeline is centered on CIN-111, a long-acting AGT siRNA\s*\n\s*program for hypertension\./,
-  );
-  assert.match(
-    home,
-    /These data support a long-acting profile with infrequent\s*\n\s*administration\./,
-  );
-  // The middle sentence moved into the spec, so its prose form must not linger.
-  assert.doesNotMatch(home, /has achieved near complete reductions in AGT/);
-});
-
-test("the pipeline spec is rows of hairlines, never a card", async () => {
-  const css = await read("src/app/globals.css");
-
-  assert.match(css, /\.program-spec \{[^}]*border-top: 1px solid var\(--color-pale\)/);
-  assert.match(css, /\.program-spec-row \{[^}]*border-bottom: 1px solid var\(--color-pale\)/);
-  assert.doesNotMatch(css, /\.program-spec[^{]*\{[^}]*border-radius/);
-  assert.doesNotMatch(css, /\.program-spec[^{]*\{[^}]*box-shadow/);
 });
 
 test("the pipeline bloom is a crop, not a shape sitting in a box", async () => {
@@ -71,9 +51,7 @@ test("the pipeline bloom is a crop, not a shape sitting in a box", async () => {
   }
 
   // Both sit below the frame, so the top of the section stays clean. That is
-  // what blends it into the white section above — no colour there to begin
-  // with, rather than a gradient laid over colour that is already at full
-  // strength.
+  // what blends it into the white section above.
   for (const [, cy] of centres) {
     assert.ok(cy > 620, `oval centre cy ${cy} reaches into the top of the frame`);
   }

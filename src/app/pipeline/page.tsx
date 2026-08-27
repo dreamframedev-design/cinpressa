@@ -49,8 +49,31 @@ export default function PipelinePage() {
               siRNA for hypertension
             </>
           }
-          deck="Depth of knockdown and safety"
         />
+
+        {/* Development stage. FIRST ON THE PAGE, directly under the hero.
+            This is the one thing a reader opens a pipeline page to see, and it
+            was sitting third, below two screens of prose. Everything below it
+            now reads as the detail behind it rather than the run-up to it.
+
+            The bar itself stays as it is — it is the pipeline, and a pipeline
+            page without one is a pipeline page without a pipeline. What was
+            wrong with it was a claim, not the chart: it ran a quarter into Phase
+            1 and called that stage "Underway", while this page's own copy says
+            the IND is planned and the study is expected to commence. Corrected
+            rather than deleted — the bar stops where the completed work stops,
+            and the Phase 1 note under it says planned. See
+            pipeline-diagram.tsx. */}
+        <Section>
+          <SectionHeader
+            eyebrow="Pipeline"
+            title="CIN-111 development stage"
+            subtitle="A single, focused program advancing from preclinical work into first-in-human development."
+          />
+          <div className="mt-14">
+            <PipelineDiagram />
+          </div>
+        </Section>
 
         {/* Lead program: the map's body */}
         <Section tone="sky">
@@ -106,24 +129,6 @@ export default function PipelinePage() {
               named competitor is not a placeholder, it is a claim. The four real
               figures are stated in the copy above, which is where they belong
               until the source dataset exists. */}
-        </Section>
-
-        {/* Development stage. The bar stays — it is the pipeline, and a pipeline
-            page without one is a pipeline page without a pipeline. What was
-            wrong with it was a claim, not the chart: it ran a quarter into Phase
-            1 and called that stage "Underway", while this page's own copy says
-            the IND is planned and the study is expected to commence. Corrected
-            rather than deleted — the bar now stops where the completed work
-            stops. See pipeline-diagram.tsx. */}
-        <Section>
-          <SectionHeader
-            eyebrow="Pipeline"
-            title="CIN-111 development stage"
-            subtitle="A single, focused program advancing from preclinical work into first-in-human development."
-          />
-          <div className="mt-14">
-            <PipelineDiagram />
-          </div>
         </Section>
 
         {/* Clinical development */}

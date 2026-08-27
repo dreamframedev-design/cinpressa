@@ -6,8 +6,13 @@ const read = (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 
 /**
  * The approved site map's section bodies, verbatim (Google Doc, "Home").
- * Every word these two figures put on screen must come from its own body —
- * this file is the guard against a figure quietly paraphrasing its source.
+ * Every word a figure puts on screen must come from its own body — this file is
+ * the guard against one quietly paraphrasing its source.
+ *
+ * The pipeline spec that used to be checked here is gone: the homepage pipeline
+ * section is colour only now, by request, so there is no text left in it to
+ * verify. MAP.pipeline stays because the removed strings must not come back
+ * anywhere else, and the last test still checks the two that were caught.
  */
 const MAP = {
   pipeline:
@@ -41,17 +46,6 @@ const strings = (jsx) => [
   ...[...jsx.matchAll(/source="([^"]+)"/g)].map((m) => m[1]),
 ];
 
-test("the pipeline spec quotes its map body rather than paraphrasing it", async () => {
-  const jsx = block(await read("src/app/home/page.tsx"), "ProgramSpec");
-  const found = strings(jsx);
-  const hay = MAP.pipeline.toLowerCase();
-
-  assert.ok(found.length >= 7, `expected the spec's strings, got ${found.length}`);
-  for (const s of found) {
-    assert.ok(hay.includes(s.toLowerCase()), `"${s}" is not in the map body`);
-  }
-});
-
 test("the challenge rail quotes its map body rather than paraphrasing it", async () => {
   const jsx = block(await read("src/app/home/page.tsx"), "BurdenRail");
   const labels = [...jsx.matchAll(/label:\s*\n?\s*"([^"]+)"/g)].map((m) => m[1]);
@@ -69,4 +63,8 @@ test("the paraphrases that were found cannot come back", async () => {
   assert.doesNotMatch(home, /label: "AGT reduction"/);
   assert.doesNotMatch(home, /label: "Effect maintained"/);
   assert.doesNotMatch(home, /people live with hypertension worldwide/);
+
+  // And the spec they belonged to is gone entirely.
+  assert.doesNotMatch(home, /ProgramSpec/);
+  assert.ok(MAP.pipeline.length > 0);
 });

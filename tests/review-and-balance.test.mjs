@@ -13,7 +13,9 @@ test("review cuts: nothing above the dose animation, no pipeline tagline", async
   assert.doesNotMatch(home, /Long-acting AGT silencing/);
   assert.doesNotMatch(home, /eyebrow="Our approach"/);
   assert.doesNotMatch(home, /CIN-111 at the center/);
-  assert.match(home, /title="A focused program"/);
+  // The pipeline section is colour only now - the heading went with the
+  // rest of its copy, by request.
+  assert.doesNotMatch(home, /A focused program/);
 });
 
 test("the science solution keeps its figure — the deck moved, the animation stayed", async () => {

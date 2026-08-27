@@ -1,4 +1,3 @@
-import Link from "next/link";
 import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import { SiteNav } from "@/components/site-nav";
@@ -8,13 +7,9 @@ import { SectionHeader } from "@/components/section-header";
 import { BurdenRail } from "@/components/burden-rail";
 import { DoseMigration } from "@/components/dose-migration";
 import { Bleed } from "@/components/bleed";
-import { NewsFeed } from "@/components/news-feed";
-import { ANNOUNCEMENTS } from "@/lib/news";
 import { MarkPreview } from "@/components/mark-preview";
 import { Reveal } from "@/components/reveal";
-import { ArrowIcon } from "@/components/arrow-icon";
 import { PipelineBloom } from "@/components/pipeline-bloom";
-import { ProgramSpec } from "@/components/program-spec";
 
 export const metadata: Metadata = {
   title: "Advancing a best-in-class siRNA for hypertension",
@@ -266,117 +261,27 @@ export default function HomePage() {
           </div>
         </Section>
 
-        {/* Pipeline.
+        {/* THE PIPELINE SECTION IS COLOUR ONLY NOW.
 
-            The section was a headline, a deck, one paragraph and a decorative
-            colour field in the corner — a section called "Pipeline" that told a
-            reader nothing about the pipeline. The field kept getting tuned, and
-            tuning was never going to fix it: art was standing in for content
-            that had gone missing.
+            Every word here has been removed by request: the heading, both
+            paragraphs, the Visit Pipeline link and the findings spec. What is
+            left is the field — the mark's own ovals cropped so every centre
+            sits outside the frame — which makes this a breath between the two
+            sections that do carry copy rather than a section competing with
+            them. The pipeline itself is a page, and the nav goes there.
 
-            It had not gone missing, it was buried. The map's body for this
-            section is context, then three preclinical findings, then a
-            conclusion — and set as one paragraph the findings are a subordinate
-            clause nobody stops on. The paragraph keeps its first sentence and
-            its last; the middle one becomes the spec beside it. Same body, same
-            words, redistributed into the shape each part wanted.
-
-            A spread rather than a stack, because that is what the width is for:
-            the argument reads down the left, the evidence stands on the right,
-            and both start on the same line. See program-spec.tsx.
-
-            The colour is back, composed this time. The field that was removed
-            was a blob parked in one corner; this one is the mark's own ovals
-            cropped so every centre sits outside the frame and the mass is
-            thrown to the top and bottom edges, leaving the band the copy
-            occupies to the faint tails. See pipeline-bloom.tsx. */}
+            The height is explicit because there is no content to set it: a
+            section with art and nothing else collapses to its own padding. With
+            the spacer the band is 368px, which is where the ovals stop reading
+            as a stripe without leaving a screen of pale nothing above them. The
+            mask's top fade is what blends it out of the white section above, so
+            the upper third is meant to be almost empty. Both oval centres sit
+            below the frame, so the swell rises into the footer rather than
+            sitting in the middle of the band. See pipeline-bloom.tsx. */}
         <Section tone="indigo" art={<PipelineBloom className="absolute inset-0" />}>
-          <div className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-start lg:gap-16">
-            <div>
-              <SectionHeader
-                eyebrow="Pipeline"
-                title="A focused program"
-                className="max-w-none"
-              />
-              <Reveal variant="fade" delay={120}>
-                <p className="mt-9 text-base leading-relaxed text-body">
-                  Our pipeline is centered on CIN-111, a long-acting AGT siRNA
-                  program for hypertension.
-                </p>
-              </Reveal>
-              <Reveal variant="fade" delay={180}>
-                <p className="mt-5 text-base leading-relaxed text-body">
-                  These data support a long-acting profile with infrequent
-                  administration.
-                </p>
-              </Reveal>
-              <Reveal variant="fade" delay={240}>
-                <Link href="/pipeline" className="btn-ghost group mt-10 inline-flex">
-                  Visit Pipeline
-                  <ArrowIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-                </Link>
-              </Reveal>
-            </div>
-
-            <ProgramSpec
-              className="lg:pt-2"
-              source="In hypertensive non-human primate studies"
-              /* Every label and value below is a LITERAL substring of the map's
-                 sentence for this section, not a paraphrase of it:
-
-                 "In hypertensive non-human primate studies, CIN-111 has achieved
-                  near complete reductions in AGT and substantial, sustained
-                  reductions in systolic blood pressure, with effects maintained
-                  for more than three months."
-
-                 An earlier cut had "AGT reduction" and "Effect maintained",
-                 which re-ordered the map's words rather than quoting them. No
-                 claim changed, but on a section that exists to carry preclinical
-                 findings, close enough is not the standard. Verified by test. */
-              findings={[
-                { label: "Reductions in AGT", value: "Near complete" },
-                {
-                  label: "Reductions in systolic blood pressure",
-                  value: "Substantial, sustained",
-                },
-                {
-                  label: "Effects maintained",
-                  value: "More than three months",
-                  accent: true,
-                },
-              ]}
-            />
-          </div>
+          <div aria-hidden className="h-24 lg:h-36" />
         </Section>
 
-        {/* News. An announcements teaser, which is what a News heading promises
-            — and which is why the three versions before it were kicked back:
-            each put the two planned MILESTONES in the announcements slot, and a
-            list of things that have not happened cannot be restyled into a
-            release feed. The milestones live on /news under "What's ahead",
-            where forward-looking items belong. See news-feed.tsx.
-
-            The CTA is the feed's job when there is nothing to list, so the
-            section-level one only appears alongside real entries. Two links to
-            the same newsroom in one empty section is one too many. */}
-        <Section id="news" tone="sky">
-          <SectionHeader
-            eyebrow="News"
-            title="What’s new at CinPressa"
-          />
-          <NewsFeed className="mt-12" />
-          {ANNOUNCEMENTS.length > 0 ? (
-            <Reveal variant="fade" delay={260}>
-              <Link
-                href="/news"
-                className="group mt-10 inline-flex min-h-11 items-center gap-2 text-base font-medium text-blue transition-colors hover:text-ink"
-              >
-                <span className="link-underline">Read the latest</span>
-                <ArrowIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-              </Link>
-            </Reveal>
-          ) : null}
-        </Section>
       </main>
 
       <SiteFooter />
