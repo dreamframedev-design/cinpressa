@@ -13,7 +13,10 @@ import { SiteLogo } from "@/components/site-logo";
  */
 const links = [
   { href: "/home", label: "Home" },
-  { href: "/science", label: "Science" },
+  /* Science is HIDDEN, not deleted: the page still renders at /science and
+     any direct link to it still works. Restore the line below to bring it
+     back into the bar. */
+  // { href: "/science", label: "Science" },
   { href: "/pipeline", label: "Pipeline" },
   { href: "/news", label: "News" },
   { href: "/contact", label: "Contact" },

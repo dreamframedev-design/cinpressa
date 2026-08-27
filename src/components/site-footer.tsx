@@ -9,7 +9,10 @@ const columns = [
     heading: "Company",
     /** /about is hidden from navigation. See the note in site-nav.tsx. */
     links: [
-      { href: "/science", label: "Science" },
+      /* Hidden with the nav entry. A page taken out of the bar but left in
+         the footer is still linked from every page on the site, which is
+         not hidden. Restore both together. */
+      // { href: "/science", label: "Science" },
       { href: "/pipeline", label: "Pipeline" },
       { href: "/news", label: "News" },
     ],

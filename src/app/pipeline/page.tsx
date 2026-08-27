@@ -48,8 +48,12 @@ export default function PipelinePage() {
           eyebrow="Lead program"
           title={
             <>
-              <span className="text-blue">CIN-111</span> | Best-in-class AGT
-              siRNA for hypertension
+              <span className="text-blue">CIN-111</span>{" "}
+              {/* Stone, not ink. At display weight a full-strength pipe beside
+                  "CIN-111" reads as a fourth 1 - the name looked like CIN-1111.
+                  It is a separator, so it sits back with the rules. */}
+              <span className="text-stone">|</span> Best-in-class AGT siRNA for
+              hypertension
             </>
           }
         />
@@ -67,19 +71,31 @@ export default function PipelinePage() {
             rather than deleted — the bar stops where the completed work stops,
             and the Phase 1 note under it says planned. See
             pipeline-diagram.tsx. */}
-        <Section>
-          <SectionHeader
-            eyebrow="Pipeline"
-            title="CIN-111 development stage"
-            subtitle="A single, focused program advancing from preclinical work into first-in-human development."
-          />
-          <div className="mt-14">
+        <Section className="pt-12! pb-10! lg:pt-16! lg:pb-14!">
+          {/* NO HEADLINE OVER THE BAR. "CIN-111 development stage" and its
+              subtitle are deleted: the hero directly above already names the
+              programme, and a headline repeating it pushed the one thing a
+              reader opens this page for further down the screen. The eyebrow
+              stays, so the figure is still labelled. SectionHeader is not used
+              because it exists to set a headline, and there is no longer one. */}
+          <Reveal variant="fade">
+            <p className="flex items-center gap-3 text-[0.92rem] font-semibold uppercase tracking-[0.2em] text-blue">
+              <span aria-hidden className="h-px w-8 bg-blue/40" />
+              Pipeline
+            </p>
+          </Reveal>
+          <div className="mt-9">
             <PipelineDiagram />
           </div>
         </Section>
 
         {/* Lead program: the map's body */}
-        <Section tone="sky">
+        {/* Pulled up to meet the bar. The stage section's own bottom padding
+            and this one's top padding stacked to about 250px of white under the
+            Phase 1 note, which read as the page ending rather than continuing.
+            The tone still changes at the seam, so the two keep some air, just
+            not a screen of it. */}
+        <Section tone="sky" className="pt-12! lg:pt-16!">
           <div className="grid gap-6 lg:max-w-4xl">
             <Reveal variant="fade">
               <p className="text-lg leading-relaxed text-body">

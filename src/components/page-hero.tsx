@@ -29,6 +29,9 @@ export function PageHero({
   aside,
   field,
 }: PageHeroProps) {
+  /** Nothing under the headline but the next section. */
+  const bare = !deck && !subtitle && !aside;
+
   return (
     <section className="relative overflow-hidden bg-white">
       {field ? (
@@ -50,14 +53,24 @@ export function PageHero({
         <HeroField mark={!aside} />
       )}
 
-      {/* Fixed min-height so every interior header is the same size and the
-          mark reads at one consistent scale across pages. content-start keeps
-          the eyebrow on the same baseline whether the headline runs one line
-          or three. */}
+      {/* Min-height so interior headers read at one consistent scale, and
+          content-start keeps the eyebrow on the same baseline whether the
+          headline runs one line or three.
+
+          A HERO CARRYING NEITHER A DECK NOR A SUBTITLE SITS SHORTER. The tall
+          value was sized for headers that carry one; /pipeline's lost its deck
+          and the fixed height then held 307px of empty white under the headline
+          before the next section's own 112px of padding even started. Holding
+          every header to one height stops serving consistency at the point
+          where it opens a hole - the amount of content is genuinely different,
+          so the box is too. This is the only bare hero on the site today, so it
+          is the only one that moves. */}
       <div
-        className={`relative mx-auto grid min-h-[33rem] max-w-7xl content-start gap-12 px-6 pb-16 pt-32 lg:min-h-[41rem] lg:px-10 lg:pb-24 lg:pt-44 ${
-          aside ? "lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16" : ""
-        }`}
+        className={`relative mx-auto grid max-w-7xl content-start gap-12 px-6 pt-32 lg:px-10 lg:pt-44 ${
+          bare
+            ? "min-h-[26rem] pb-12 lg:min-h-[30rem] lg:pb-16"
+            : "min-h-[33rem] pb-16 lg:min-h-[41rem] lg:pb-24"
+        } ${aside ? "lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16" : ""}`}
       >
         <div className="max-w-3xl">
           {/* No rule above the eyebrow. It was the one orange accent per page and
