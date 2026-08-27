@@ -45,7 +45,7 @@ test("no section is left stranded at two thirds of its frame", async () => {
   ]);
 
   // The four sections that used to stop short are paired or widened.
-  assert.match(home, /<div className="max-w-5xl">/); // verdict
+  assert.match(home, /className="crescendo mx-auto max-w-5xl text-center"/); // the hinge
   assert.match(home, /lg:grid-cols-\[minmax\(0,1\.55fr\)_minmax\(0,1fr\)\]/); // dose card + copy
   assert.match(science, /className="crescendo max-w-5xl"/);
   // The burden section takes its width from the STATEMENT, which used to be
@@ -59,14 +59,17 @@ test("no section is left stranded at two thirds of its frame", async () => {
   // the burden figures. Centred there, because that section is.
   assert.doesNotMatch(science, /risk-tag|complications:/);
   assert.match(home, /<ul className="mx-auto mt-5 flex max-w-3xl flex-wrap justify-center gap-2">/);
+  // The figures left this block for a banner above it, so they are no longer
+  // what the tags sit under.
+  assert.doesNotMatch(home.slice(home.indexOf("crescendo mx-auto")), /<BurdenRail/);
   assert.match(css, /\.risk-tag \{/);
   // The lead-in ends in a colon and introduces the tags, so it can never be
   // separated from them - the constraint that broke two earlier cuts.
   assert.match(home, /risk of serious complications:[\s\S]{0,600}?<ul className="mx-auto mt-5 flex max-w-3xl/);
   // And they sit under the figures, not above them.
   assert.ok(
-    home.indexOf("share: 0.7") < home.indexOf("risk of serious complications:"),
-    "the complications belong under the tickers",
+    home.indexOf("<BurdenRail") < home.indexOf("crescendo mx-auto"),
+    "the figures banner comes before the block it used to sit inside",
   );
   // Measured rag fixes, not guesses: the lede broke 967px then 224px, and the
   // body paragraph's last line was 182px of a 768px measure.

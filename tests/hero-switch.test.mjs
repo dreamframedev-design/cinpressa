@@ -10,7 +10,7 @@ test("the homepage hero switches between two treatments, A first", async () => {
   assert.match(hero, /^"use client";/);
   // A is the default and is the field that was on /pipeline.
   assert.match(hero, /useState<View>\("a"\)/);
-  assert.match(hero, /import \{ HeroChurn \} from "@\/components\/hero-fields"/);
+  assert.match(hero, /import \{ OpenFlow \} from "@\/components\/open-flow"/);
   // B is the mark.
   assert.match(hero, /<ConvergenceMark key="mark"[^>]*variant="cascade"/);
   // Two controls, no more: the four-way variant picker is not coming back.
@@ -48,11 +48,12 @@ test("the hero fields swapped pages", async () => {
     read("src/components/home-hero.tsx"),
   ]);
 
-  // /science's open flow went to /pipeline...
-  assert.match(pipeline, /field=\{<OpenFlow className="absolute inset-0" \/>\}/);
-  assert.doesNotMatch(pipeline, /HeroChurn/);
-  // ...and /pipeline's churn went to the homepage hero as treatment A.
-  assert.match(hero, /<HeroChurn key="churn" className="absolute inset-0" \/>/);
+  // The two traded places: the open flow is the homepage's treatment A...
+  assert.match(hero, /<OpenFlow key="flow" className="absolute inset-0" \/>/);
+  assert.doesNotMatch(hero, /HeroChurn/);
+  // ...and the churn is back on /pipeline.
+  assert.match(pipeline, /field=\{<HeroChurn className="absolute inset-0" \/>\}/);
+  assert.doesNotMatch(pipeline, /OpenFlow/);
   // /science keeps no field of its own; PageHero falls back to its own mark.
   assert.doesNotMatch(science, /OpenFlow/);
 });

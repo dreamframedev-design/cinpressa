@@ -3,16 +3,15 @@
 import { useState } from "react";
 import type { CSSProperties } from "react";
 import { ConvergenceMark } from "@/components/convergence-mark";
-import { HeroChurn } from "@/components/hero-fields";
+import { OpenFlow } from "@/components/open-flow";
 
 /**
  * The homepage hero, with an A/B switch between its two treatments.
  *
- * A — THE FIELD, and the default. The churn that was on /pipeline: layered
- * colour being stirred, every sample displaced by a rotating warp so the bands
- * curl and fold instead of sliding. It spans the whole hero behind the copy,
- * the way it does on an interior page, and feathers into the section below so
- * the section boundary never cuts it.
+ * A — THE FIELD, and the default. The open flow: ribbons that widen and narrow
+ * but never pinch. It spans the whole hero behind the copy, the way a field
+ * does on an interior page, and feathers into the section below so the boundary
+ * never cuts it. It traded places with the churn, which is on /pipeline now.
  *
  * B — THE MARK. What the hero carried before: the logo converging, with its own
  * petal colours blooming outward behind it on four mismatched breaths.
@@ -65,7 +64,7 @@ export function HomeHero() {
         />
       ) : (
         <>
-          <HeroChurn key="churn" className="absolute inset-0" />
+          <OpenFlow key="flow" className="absolute inset-0" />
           {/* Feather into the section below, so the field is not cut off by the
               boundary after all the work it does to avoid a visible edge.
 

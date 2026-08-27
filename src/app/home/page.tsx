@@ -39,84 +39,22 @@ export default function HomePage() {
       <main>
         <HomeHero />
 
-        {/* THE HINGE, REPLACED. It carried "The unmet need in hypertension
-            is not efficacy. It is persistence." for four cuts - a plain grey
-            paragraph, a two-column split, a strikethrough on "efficacy", and
-            finally a colour migration from the wrong answer to the right one.
-            The new copy was handed over verbatim and says the same thing in the
-            open rather than by implication, so none of that machinery survives
-            with it: there is no "not X / it is Y" pair left to play ink against.
+        {/* THE FIGURES AS A BANNER, between the hero and the statement.
 
-            It is set as a crescendo, which is the same three-beat build the
-            science page uses for its own statement, and it is already tuned:
-            two sizes rather than three, one voice across the setup, balanced
-            lines, and the colour arriving on the last phrase over a second and
-            a half. The section is about whether control lasts over time; the
-            line that says so takes time to say it. See .crescendo-* in the
-            stylesheet.
+            They used to sit under the challenge copy as that section's helper.
+            Moved up here they do a different job: the scale of the problem,
+            stated once, immediately after the hero and before the argument
+            starts. A band rather than a section - full-bleed hairline, mist
+            ground, tight padding - so it reads as a rule across the page with
+            numbers on it rather than as a section of its own.
 
-            The verdict-* rules are deleted with the copy they were written
-            for. */}
-        <section className="bg-[linear-gradient(180deg,var(--color-mist)_0%,rgba(255,255,255,0.96)_38%,#fff_100%)]">
-          <div className="relative mx-auto w-full max-w-7xl px-6 py-14 lg:px-10 lg:py-16">
-            <div className="max-w-5xl">
-              {/* The premise that used to open this block - "Daily oral therapy
-                  has been the backbone of hypertension care for decades..." -
-                  is removed. The crescendo is the whole section now, so it also
-                  loses the top margin that only existed to separate it from
-                  that paragraph. */}
-              <Reveal variant="fade">
-                {/* One sentence pair to a screen reader; two sizes to an eye. */}
-                <p className="crescendo max-w-5xl">
-                  <span className="crescendo-lede">
-                    In hypertension, the challenge is not whether blood pressure
-                    can be lowered.
-                  </span>
-                  <span className="crescendo-turn">
-                    The challenge is whether it can remain{" "}
-                  </span>
-                  <span className="crescendo-point">
-                    <span className="crescendo-key">controlled over time.</span>
-                  </span>
-                </p>
-              </Reveal>
-            </div>
-          </div>
-        </section>
-        {/* Bleed runs full-bleed rather than inside the container - it is a piece,
-            not a figure, and gutters would make it read as an illustration sitting
-            in a slot. It lands directly under the answer, which is the point. */}
-        <Bleed className="h-[190px] w-full sm:h-[250px] lg:h-[330px]" />
-
-        {/* The challenge. Stripped twice over. The eyebrow went because the
-            headline already says what this section is; the first half of the
-            paragraph went because it read the stat rail's numbers back to the
-            reader in prose, which is where the redundancy actually lived. What
-            is left is the sentence those numbers were building toward, and it
-            now leads the section instead of trailing it.
-
-            Copy first, figure second: the rail is a helper, and helpers come
-            after the thing they help.
-
-            CENTRED, and this is the one section on the site that should be. The
-            rail underneath is three equal columns spanning the full frame — the
-            most symmetrical thing here — and a left-aligned header over a
-            symmetrical figure sits off its own axis. The header now shares the
-            rail's centre line. Everywhere else on the site the figure is
-            asymmetric and the copy stays left, which is why this does not
-            generalise. */}
-        <Section tone="sky" className="pt-12! lg:pt-16!">
-          <SectionHeader title="Control that lasts remains elusive" align="center" />
-          <Reveal variant="fade" delay={120}>
-            <p className="mx-auto mt-8 max-w-3xl text-center text-lg font-light leading-snug tracking-tight text-ink md:text-xl">
-              Medication non-adherence is the leading cause of poor blood
-              pressure control, and hypertension is largely asymptomatic,
-              resulting in poor long-term adherence and treatment persistence.
-            </p>
-          </Reveal>
-          <BurdenRail
-            className="mt-14 lg:mt-16"
-            figures={[
+            Mist, because the hero's gradient ends on mist. The band continues
+            that colour instead of introducing a new one, so the only edge is
+            the hairline, which is the edge that is meant to show. */}
+        <section className="border-b border-line bg-mist">
+          <div className="mx-auto w-full max-w-7xl px-6 pb-10 lg:px-10 lg:pb-12">
+            <BurdenRail
+              figures={[
               {
                 value: "1.4",
                 unit: "B",
@@ -138,7 +76,53 @@ export default function HomePage() {
                 share: 0.7,
               },
             ]}
-          />
+            />
+          </div>
+        </section>
+
+        {/* ONE BLOCK: THE PROBLEM, STATED ONCE.
+
+            This was three things - a hinge section, then the Bleed, then a
+            "Control that lasts remains elusive" section carrying the same
+            argument in prose. The headline is deleted and the two halves are
+            joined, because they were always one thought: the challenge is
+            persistence, here is why persistence fails, here is what it costs.
+            Squeezed to match - 40px between the statement and the cause, not a
+            section boundary.
+
+            THE FIGURES LEFT, so the alignment question reopened and the answer
+            did not change. Centring was justified by the rail underneath being
+            three equal columns spanning the frame; the rail is a banner above
+            this now. What still holds the axis is the banner itself, full-bleed
+            and symmetric, and the tag rows at the bottom, which break 4+3 and
+            taper. The block sits on the centre line between them.
+
+            Reading order is the argument's order: the statement, the cause,
+            then the consequence and what it costs. */}
+        <Section tone="sky" className="pt-14! lg:pt-20!">
+          <Reveal variant="fade">
+            {/* One sentence pair to a screen reader; two sizes to an eye. */}
+            <p className="crescendo mx-auto max-w-5xl text-center">
+              <span className="crescendo-lede">
+                In hypertension, the challenge is not whether blood pressure can
+                be lowered.
+              </span>
+              <span className="crescendo-turn">
+                The challenge is whether it can remain{" "}
+              </span>
+              <span className="crescendo-point">
+                <span className="crescendo-key">controlled over time.</span>
+              </span>
+            </p>
+          </Reveal>
+
+          <Reveal variant="fade" delay={120}>
+            <p className="mx-auto mt-10 max-w-3xl text-balance text-center text-base leading-relaxed text-body">
+              Medication non-adherence is the leading cause of poor blood
+              pressure control, and hypertension is largely asymptomatic,
+              resulting in poor long-term adherence and treatment persistence.
+            </p>
+          </Reveal>
 
           {/* THE CONSEQUENCE, UNDER THE TICKERS. Moved here from /science so
               the whole cost of uncontrolled pressure is stated in one place:
@@ -155,7 +139,7 @@ export default function HomePage() {
               the seven break 4+3; wider and they break 6+1 and strand one tag
               on its own line. */}
           <Reveal variant="fade" delay={160}>
-            <p className="mx-auto mt-16 max-w-3xl text-balance text-center text-base leading-relaxed text-body">
+            <p className="mx-auto mt-10 max-w-3xl text-balance text-center text-base leading-relaxed text-body">
               Persistent uncontrolled blood pressure substantially increases the
               risk of serious complications:
             </p>
@@ -180,6 +164,11 @@ export default function HomePage() {
             ))}
           </ul>
         </Section>
+
+        {/* Bleed runs full-bleed rather than inside the container - it is a piece,
+            not a figure, and gutters would make it read as an illustration sitting
+            in a slot. It lands directly under the answer, which is the point. */}
+        <Bleed className="h-[190px] w-full sm:h-[250px] lg:h-[330px]" />
 
         {/* Our approach. White ground, no wash, no watermark: the note on the
             old treatment was that the dots floated in space over a green field.

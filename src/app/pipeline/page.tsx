@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { PageHero } from "@/components/page-hero";
-import { OpenFlow } from "@/components/open-flow";
+import { HeroChurn } from "@/components/hero-fields";
 import { Section } from "@/components/section";
 import { PipelineDiagram } from "@/components/pipeline-diagram";
 import { SectionHeader } from "@/components/section-header";
@@ -39,12 +39,12 @@ export default function PipelinePage() {
       <SiteNav />
 
       <main>
-        {/* Open flow, moved here from /science: ribbons that widen and
-            narrow but never pinch, which is the one gesture a page about an
-            unconstricted pathway cannot make. The churn that was here went
-            to the homepage hero, where it is now treatment A. */}
+        {/* Churn: layered colour being stirred, every sample displaced by a
+            rotating warp so the bands curl and fold instead of sliding. It
+            traded places with the open flow, which is the homepage hero's
+            treatment A now. */}
         <PageHero
-          field={<OpenFlow className="absolute inset-0" />}
+          field={<HeroChurn className="absolute inset-0" />}
           eyebrow="Lead program"
           title={
             <>

@@ -18,24 +18,29 @@ test("the homepage hinge carries the replacement copy, as a crescendo", () => {
   assert.doesNotMatch(home, /verdict-(turn|set|answer|key)/);
   assert.doesNotMatch(code(css), /\.verdict-/);
 
-  assert.match(home, /className="crescendo max-w-5xl"/);
+  // Centred now: the hinge merged into one block with the cause and the
+  // consequence, and that block sits between a full-bleed banner and a tag
+  // list that tapers, so it holds their axis.
+  assert.match(home, /className="crescendo mx-auto max-w-5xl text-center"/);
   assert.match(home, /In hypertension, the challenge is not whether blood pressure/);
   assert.match(home, /The challenge is whether it can remain/);
   assert.match(home, /<span className="crescendo-key">controlled over time\.<\/span>/);
 });
 
-test("the verdict uses the site container without a custom grid", () => {
-  assert.match(
-    home,
-    /<div className="relative mx-auto w-full max-w-7xl px-6 py-14 lg:px-10 lg:py-16">/,
-  );
-  assert.doesNotMatch(home, /verdict-(inner|conclusion|negation)/);
-  assert.doesNotMatch(css, /\.verdict-(inner|conclusion|negation)/);
-  assert.doesNotMatch(home, /verdict-layout/);
-  // Widened from 4xl: the hinge was stopping two thirds across a frame its
-  // neighbours fill. Still the plain container, still no custom grid.
-  assert.match(home, /<div className="max-w-5xl">/);
+test("the hinge is one block with the cause and the consequence", () => {
+  // The "Control that lasts remains elusive" headline is deleted and the two
+  // sections it split are joined - they were always one thought.
+  assert.doesNotMatch(code(home), /Control that lasts remains elusive/);
+  assert.doesNotMatch(code(home), /verdict-(inner|conclusion|negation|layout)/);
+  assert.doesNotMatch(code(css), /\.verdict-/);
+
+  // Statement, then cause, then consequence, in one Section.
+  const block = home.slice(home.indexOf("crescendo mx-auto"), home.indexOf("</Section>", home.indexOf("crescendo mx-auto")));
+  assert.match(block, /Medication non-adherence is the leading cause/);
+  assert.match(block, /risk of serious complications:/);
+  assert.match(block, /risk-tag/);
 });
+
 
 test("the final hierarchy uses one supporting scale and a tighter desktop hero", () => {
   assert.match(hero, /min-h-\[88vh\][^"]*lg:min-h-\[76vh\]/);
