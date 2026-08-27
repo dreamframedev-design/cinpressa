@@ -4,11 +4,17 @@ import { CascadeFlow, type FlowTiming } from "@/components/cascade-flow";
 type Node = {
   name: string;
   sub: string;
-  /** Petal colour from the logo ladder; the cascade descends deep blue → violet. */
+  /**
+   * ONE COLOUR DOWN THE WHOLE CASCADE, and it is the signal's own gold. This
+   * used to descend the logo ladder - amber, then deep blue, azure, a pale
+   * blue, and violet at the outcome - which made the spine look like five
+   * unrelated markers that happened to be strung together, and put the
+   * travelling light in a colour none of the nodes it passed were drawn in.
+   * Matching the CinRx pathway: gold dots on a gold line, lit by a gold signal.
+   */
   accent: string;
   tag?: { label: string; tone: "primary" | "muted" };
   highlight?: boolean;
-  outcome?: boolean;
 };
 
 const cascade: Node[] = [
@@ -22,24 +28,23 @@ const cascade: Node[] = [
   {
     name: "Angiotensin I",
     sub: "Cleaved from AGT by renin.",
-    accent: "#0473bb",
+    accent: "#f9a81a",
   },
   {
     name: "Angiotensin II",
     sub: "Converted from angiotensin I by ACE; drives vasoconstriction.",
     tag: { label: "ACE inhibitors · ARBs act here", tone: "muted" },
-    accent: "#1596d4",
+    accent: "#f9a81a",
   },
   {
     name: "Aldosterone",
     sub: "Released in response to angiotensin II; retains sodium and water.",
-    accent: "#7eaadb",
+    accent: "#f9a81a",
   },
   {
     name: "Elevated blood pressure",
     sub: "The downstream clinical consequence of RAAS activity.",
-    accent: "#6771b5",
-    outcome: true,
+    accent: "#f9a81a",
   },
 ];
 
@@ -62,8 +67,11 @@ const FLOW: FlowTiming = { cycle: 8.4, lead: 0.05, travel: 0.76, dwell: 0.24 };
  * footer panels. Nothing was removed. The five steps, both intervention tags
  * and both panels are all still here; they are set tighter.
  *
- * Card stays solid white rather than translucent: the violet outcome heading
- * needs a known background to clear AA (4.56:1 on white, 4.32:1 over a wash).
+ * Card stays solid white rather than translucent. It was holding a violet
+ * outcome heading that needed a known background to clear AA; that heading is
+ * ink now, but the reason survives the change - the gold markers and the
+ * travelling light are both tuned against white, and a wash under them shifts
+ * every one of them.
  */
 export function RaasPathway() {
   return (
@@ -131,9 +139,7 @@ export function RaasPathway() {
                     style={
                       node.highlight
                         ? undefined
-                        : node.outcome
-                          ? { background: node.accent }
-                          : { background: "#fff", border: `1px solid ${node.accent}` }
+                        : { background: "#fff", border: `1px solid ${node.accent}` }
                     }
                   >
                     {node.highlight ? (
@@ -142,20 +148,22 @@ export function RaasPathway() {
                         <span className="absolute inset-0 rounded-full border-2 border-orange" />
                         <span className="h-2 w-2 rounded-full bg-orange" />
                       </>
-                    ) : node.outcome ? null : (
+                    ) : (
                       <span
                         className="absolute inset-[7px] rounded-full"
                         style={{ background: node.accent }}
                       />
                     )}
                   </span>
+                  {/* Held well back from the dots. At full strength a gold rule
+                      running the height of the card competes with the markers it
+                      is only there to connect, and the travelling light has
+                      nothing left to stand out against. */}
                   {!isLast ? (
                     <span
                       aria-hidden
                       className="w-px flex-1"
-                      style={{
-                        background: `linear-gradient(to bottom, ${node.accent}, ${cascade[i + 1].accent})`,
-                      }}
+                      style={{ background: "rgba(249,168,26,0.42)" }}
                     />
                   ) : null}
                 </div>
@@ -166,10 +174,11 @@ export function RaasPathway() {
                     single-column card reads across its full width. */}
                 <div className={isLast ? "pb-0" : "pb-7"}>
                   <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
-                    <h3
-                      className="text-lg font-normal tracking-tight text-ink"
-                      style={node.outcome ? { color: node.accent } : undefined}
-                    >
+                    {/* No colour override any more. This read violet to pair
+                        with a violet dot; the dot is gold now, and gold is not
+                        a text colour on white - 2.0:1, and the spec sheet
+                        keeps orange off type. */}
+                    <h3 className="text-lg font-normal tracking-tight text-ink">
                       {node.name}
                     </h3>
                     {node.tag ? (

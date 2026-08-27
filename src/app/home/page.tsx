@@ -245,42 +245,47 @@ export default function HomePage() {
             split narrows to 0.7/1.3 — the copy runs longer at a measure it can
             still hold, rather than stopping a third of the way down. */}
         <Section tone="sky">
-          {/* THE HEADER SITS IN THE COLUMN, not across the top. With the
-              control model gone back to /science the prose column ran 241px
-              against a 714px diagram, which is a heading over a hole - the same
-              shape that got this content sent back twice on the science page.
-              Putting the eyebrow, headline and deck into the column with the
-              paragraphs they introduce fills it, and it turns the section into
-              the composition it should have been: the argument stated on the
-              left, the diagram it describes on the right, both starting on the
-              same line. */}
-          <div className="grid gap-12 lg:grid-cols-[minmax(0,0.86fr)_minmax(0,1.14fr)] lg:items-start lg:gap-14">
-            <div>
-              <SectionHeader
-                eyebrow="Mechanism"
-                title="Targeting AGT upstream"
-                deck="RAAS modulation at the source"
-                className="max-w-none"
-              />
-              <Reveal variant="fade" delay={200}>
-                <p className="mt-9 text-base leading-relaxed text-body">
-                  AGT is the precursor in the RAAS pathway and is crucial for
-                  blood pressure regulation. Standard RAAS inhibitors act
-                  downstream and do not completely suppress the RAAS pathway.
-                </p>
-              </Reveal>
-              <Reveal variant="fade" delay={260}>
-                <p className="mt-5 text-base leading-relaxed text-body">
-                  By targeting AGT synthesis in the liver via RNA interference,
-                  CIN-111 is designed to block the RAAS cascade upstream.
-                </p>
-              </Reveal>
-            </div>
+          {/* EVERYTHING ON THE CENTRE LINE, and the cascade stays narrow.
 
-            <Reveal variant="rise" delay={140}>
-              <RaasPathway />
-            </Reveal>
-          </div>
+              The brief was to put the header and both paragraphs above the
+              diagram without letting the diagram get any wider - it is wanted
+              compact. Stacked and left-aligned that fails badly: full-measure
+              copy over a 670px box leaves the box hanging off the left edge of
+              its own section, which is the exact fault this content was sent
+              back for twice on the science page.
+
+              Centring is what makes the stack work. Copy and figure share one
+              axis, so the box reads as the section's figure rather than as
+              something that ran out of room, and the same shape is already on
+              this page - the challenge section above it is set the same way.
+
+              The cascade holds 2xl, a shade wider than the 644px it had in the
+              column, so nothing inside it reflows: both intervention tags still
+              sit beside their node headings at this width. */}
+          <SectionHeader
+            eyebrow="Mechanism"
+            title="Targeting AGT upstream"
+            deck="RAAS modulation at the source"
+            align="center"
+          />
+
+          <Reveal variant="fade" delay={120}>
+            <p className="mx-auto mt-10 max-w-3xl text-balance text-center text-base leading-relaxed text-body">
+              AGT is the precursor in the RAAS pathway and is crucial for blood
+              pressure regulation. Standard RAAS inhibitors act downstream and
+              do not completely suppress the RAAS pathway.
+            </p>
+          </Reveal>
+          <Reveal variant="fade" delay={180}>
+            <p className="mx-auto mt-5 max-w-3xl text-balance text-center text-base leading-relaxed text-body">
+              By targeting AGT synthesis in the liver via RNA interference,
+              CIN-111 is designed to block the RAAS cascade upstream.
+            </p>
+          </Reveal>
+
+          <Reveal variant="rise" delay={240} className="mx-auto mt-12 max-w-2xl">
+            <RaasPathway />
+          </Reveal>
         </Section>
 
         {/* THE PIPELINE SECTION IS COLOUR ONLY NOW.

@@ -5,7 +5,7 @@ import { readFile } from "node:fs/promises";
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 const code = (source) => source.replace(/\/\*[\s\S]*?\*\//g, "");
 
-test("the mechanism section moved to the homepage, two columns", async () => {
+test("the mechanism section is a centred stack over a compact cascade", async () => {
   const [home, science] = await Promise.all([
     read("src/app/home/page.tsx"),
     read("src/app/science/page.tsx"),
@@ -13,26 +13,34 @@ test("the mechanism section moved to the homepage, two columns", async () => {
 
   assert.match(home, /eyebrow="Mechanism"/);
   assert.match(home, /title="Targeting AGT upstream"/);
-  // The cascade was too large as a full-measure stack, so it sits beside its
-  // own prose. The header sits IN that column rather than across the top: with
-  // the control model gone back to /science the column ran 241px against a
-  // 714px diagram, which is a heading over a hole. With it, 447 against 739.
-  assert.match(
-    home,
-    /lg:grid-cols-\[minmax\(0,0\.86fr\)_minmax\(0,1\.14fr\)\]/,
-  );
+
+  // Header and both paragraphs sit above the diagram, and the whole section
+  // shares one axis. Stacked and left-aligned, full-measure copy over a 672px
+  // box leaves the box hanging off its own section's left edge.
+  assert.match(home, /deck="RAAS modulation at the source"[\s\S]{0,40}?align="center"/);
+  // Both mechanism paragraphs, specifically - the challenge section's lead-in
+  // happens to carry the same class string.
+  assert.match(home, /max-w-3xl text-balance text-center[\s\S]{0,60}?AGT is the precursor/);
+  assert.match(home, /max-w-3xl text-balance text-center[\s\S]{0,60}?By targeting AGT synthesis/);
   assert.ok(
-    home.indexOf('eyebrow="Mechanism"') < home.indexOf("AGT is the precursor"),
-    "the header belongs to the prose column, above its paragraphs",
+    home.indexOf('title="Targeting AGT upstream"') < home.indexOf("AGT is the precursor"),
+    "the header comes before its paragraphs",
   );
   assert.ok(
     home.indexOf("AGT is the precursor") < home.indexOf("<RaasPathway />"),
-    "the prose column comes before the diagram column",
+    "the copy comes before the diagram",
   );
-  // One figure per section: the control model went back to /science.
-  assert.doesNotMatch(home, /ControlModel/);
 
-  // It is a move, not a copy.
+  // The cascade stays compact and centred; it is not allowed to widen.
+  assert.match(home, /className="mx-auto mt-12 max-w-2xl"/);
+  // ...and this section specifically is not a grid any more. Scoped, because
+  // the dose section above it legitimately uses one.
+  const mech = home.slice(home.indexOf('eyebrow="Mechanism"'), home.indexOf("<RaasPathway />"));
+  assert.doesNotMatch(mech, /grid-cols/);
+
+  // One figure per section: the control model lives on /science.
+  assert.doesNotMatch(home, /ControlModel/);
+  // And this is a move, not a copy.
   assert.doesNotMatch(code(science), /RaasPathway|Mechanism/);
 });
 
@@ -41,11 +49,11 @@ test("the mechanism copy is the map's, word for word", async () => {
 
   assert.match(
     home,
-    /AGT is the precursor in the RAAS pathway and is crucial for\s*\n\s*blood pressure regulation\. Standard RAAS inhibitors act\s*\n\s*downstream and do not completely suppress the RAAS pathway\./,
+    /AGT is the precursor in the RAAS pathway and is crucial for blood[\s\S]{0,130}?suppress the RAAS pathway\./,
   );
   assert.match(
     home,
-    /By targeting AGT synthesis in the liver via RNA interference,\s*\n\s*CIN-111 is designed to block the RAAS cascade upstream\./,
+    /By targeting AGT synthesis in the liver via RNA interference,[\s\S]{0,90}?block the RAAS cascade upstream\./,
   );
 });
 
@@ -64,4 +72,25 @@ test("the cascade is consolidated, not cut down", async () => {
   assert.match(raas, /isLast \? "pb-0" : "pb-7"/);
   assert.match(raas, /text-lg font-normal tracking-tight text-ink/);
   assert.doesNotMatch(raas, /pb-11|sm:p-10|text-xl font-normal/);
+});
+
+test("the cascade is gold down its whole length", async () => {
+  const raas = await read("src/components/raas-pathway.tsx");
+
+  // One colour, matching the CinRx pathway: gold dots on a gold line, lit by a
+  // gold signal. It used to descend the logo ladder - amber, deep blue, azure,
+  // pale blue, violet - so the travelling light passed through nodes drawn in
+  // colours it never was.
+  const accents = [...raas.matchAll(/accent: "(#[0-9a-fA-F]{6})"/g)].map((m) => m[1]);
+  assert.equal(accents.length, 5);
+  for (const a of accents) assert.equal(a, "#f9a81a");
+
+  // The spine sits well back from the dots it connects.
+  assert.match(raas, /background: "rgba\(249,168,26,0\.42\)"/);
+
+  // Gold is 2.0:1 on white and the spec sheet keeps orange off type, so no
+  // heading may take an accent as its colour.
+  assert.doesNotMatch(raas, /color: node\.accent/);
+  // Every node is a ring with a dot in it now, including the last.
+  assert.doesNotMatch(code(raas), /node\.outcome/);
 });
