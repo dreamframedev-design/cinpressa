@@ -89,19 +89,21 @@ export default function HomePage() {
             Squeezed to match - 40px between the statement and the cause, not a
             section boundary.
 
-            THE FIGURES LEFT, so the alignment question reopened and the answer
-            did not change. Centring was justified by the rail underneath being
-            three equal columns spanning the frame; the rail is a banner above
-            this now. What still holds the axis is the banner itself, full-bleed
-            and symmetric, and the tag rows at the bottom, which break 4+3 and
-            taper. The block sits on the centre line between them.
+            LEFT-ALIGNED, and the reason the centring existed is gone. It was
+            justified by the rail sitting underneath as three equal columns
+            spanning the frame - a symmetrical figure wants a symmetrical header
+            over it. That rail is the banner ABOVE this block now, so there is
+            nothing symmetrical left inside the section for the copy to answer
+            to, and three centred blocks in a row read as a poster rather than
+            as an argument. Left is also what every other statement on the site
+            does, including this same crescendo on /science.
 
             Reading order is the argument's order: the statement, the cause,
             then the consequence and what it costs. */}
         <Section tone="sky" className="pt-14! lg:pt-20!">
           <Reveal variant="fade">
             {/* One sentence pair to a screen reader; two sizes to an eye. */}
-            <p className="crescendo mx-auto max-w-5xl text-center">
+            <p className="crescendo max-w-5xl">
               <span className="crescendo-lede">
                 In hypertension, the challenge is not whether blood pressure can
                 be lowered.
@@ -116,7 +118,7 @@ export default function HomePage() {
           </Reveal>
 
           <Reveal variant="fade" delay={120}>
-            <p className="mx-auto mt-10 max-w-3xl text-balance text-center text-base leading-relaxed text-body">
+            <p className="mt-10 max-w-3xl text-base leading-relaxed text-body">
               Medication non-adherence is the leading cause of poor blood
               pressure control, and hypertension is largely asymptomatic,
               resulting in poor long-term adherence and treatment persistence.
@@ -128,23 +130,19 @@ export default function HomePage() {
               the scale of it in the figures above, and what it leads to
               underneath them.
 
-              Centred, because this section is. Everything above is on the
-              centre line and a left-aligned block under it would read as a
-              different section that had been appended.
-
               The lead-in ends in a colon and belongs to the list, so it can
               never be separated from it - a constraint that broke two earlier
               cuts of this content on /science. Held to the prose measure, where
               the seven break 4+3; wider and they break 6+1 and strand one tag
               on its own line. */}
           <Reveal variant="fade" delay={160}>
-            <p className="mx-auto mt-10 max-w-3xl text-balance text-center text-base leading-relaxed text-body">
+            <p className="mt-10 max-w-3xl text-base leading-relaxed text-body">
               Persistent uncontrolled blood pressure substantially increases the
               risk of serious complications:
             </p>
           </Reveal>
 
-          <ul className="mx-auto mt-5 flex max-w-3xl flex-wrap justify-center gap-2">
+          <ul className="mt-5 flex max-w-3xl flex-wrap gap-2">
             {complications.map((c, i) => (
               <Reveal
                 key={c}
@@ -167,7 +165,13 @@ export default function HomePage() {
         {/* Bleed runs full-bleed rather than inside the container - it is a piece,
             not a figure, and gutters would make it read as an illustration sitting
             in a slot. It lands directly under the answer, which is the point. */}
-        <Bleed className="h-[190px] w-full sm:h-[250px] lg:h-[330px]" />
+        <Bleed
+          /* The sky wash above ends on #e6f1fa, and the field's base is opaque,
+             so the piece has to start on the same colour or its top edge is a
+             rule across the page. */
+          topColor="#e6f1fa"
+          className="h-[190px] w-full sm:h-[250px] lg:h-[330px]"
+        />
 
         {/* Our approach. White ground, no wash, no watermark: the note on the
             old treatment was that the dots floated in space over a green field.

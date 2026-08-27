@@ -173,11 +173,22 @@ function draw(
   h: number,
   t: number,
   cur: Cursor,
+  topColor: string,
 ) {
-  // Multiply needs something to multiply into. The section is white, so the field is.
+  // MULTIPLY NEEDS SOMETHING TO MULTIPLY INTO, and that base is opaque, which
+  // makes it the piece's top edge. Filling flat white put a hard rule across
+  // the page wherever the section above did not also end on white - and the
+  // section above this one is the sky wash, which ends on #e6f1fa. The base is
+  // a ramp now: it starts on whatever colour the caller says is above it and
+  // resolves to white before the field is half done, so the seam is a
+  // continuation rather than an edge.
   ctx.globalCompositeOperation = "source-over";
   ctx.filter = "none";
-  ctx.fillStyle = "#ffffff";
+  const base = ctx.createLinearGradient(0, 0, 0, h);
+  base.addColorStop(0, topColor);
+  base.addColorStop(0.55, "#ffffff");
+  base.addColorStop(1, "#ffffff");
+  ctx.fillStyle = base;
   ctx.fillRect(0, 0, w, h);
 
   ctx.globalCompositeOperation = "multiply";
@@ -204,7 +215,16 @@ function draw(
   ctx.globalCompositeOperation = "source-over";
 }
 
-export function Bleed({ className = "" }: { className?: string }) {
+export function Bleed({
+  className = "",
+  /** The colour the page is immediately above this piece. The field's base is
+   *  opaque - multiply has to have something to work on - so this is the piece's
+   *  own top edge, and it has to match its neighbour or it draws a rule. */
+  topColor = "#ffffff",
+}: {
+  className?: string;
+  topColor?: string;
+}) {
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -242,7 +262,7 @@ export function Bleed({ className = "" }: { className?: string }) {
       canvas.height = h;
       // A fixed offset rather than 0, so the still frame is a composed moment
       // rather than every band sitting at its start phase.
-      draw(ctx, w, h, reduced ? 19 : 0, cur);
+      draw(ctx, w, h, reduced ? 19 : 0, cur, topColor);
     };
     resize();
 
@@ -286,7 +306,7 @@ export function Bleed({ className = "" }: { className?: string }) {
         cur.fx += (wantX - cur.fx) * kp;
         cur.fy += (wantY - cur.fy) * kp;
         cur.strength += (wantStrength - cur.strength) * ks;
-        draw(ctx, w, h, Math.max(0, now - start) / 1000, cur);
+        draw(ctx, w, h, Math.max(0, now - start) / 1000, cur, topColor);
       }
       rafId = requestAnimationFrame(loop);
     };

@@ -90,6 +90,20 @@ const SPLIT = MONTHS.slice(0, ROWS / 2).reduce((a, b) => a + b, 0);
 const CYCLE = 9;
 const DEPART_SPAN = 3.2;
 const FLIGHT = 1.4;
+/** THE HOLD IS NOW A RESOLUTION. Everything has landed by DEPART_SPAN +
+ *  FLIGHT, and the piece used to simply sit there with two small beads at the
+ *  foot of the card until the refill. They rise into the emptied calendar
+ *  instead, gather to the centre and grow: the year is gone and this is what it
+ *  became. The lift has to start after the last day arrives or the flight paths
+ *  would be aiming at a target that had moved, and it has to be given back
+ *  before the refill so next year's days fall to beads that are where they
+ *  belong. */
+const SETTLE_START = DEPART_SPAN + FLIGHT;
+const SETTLE_SPAN = 1.1;
+const RELEASE_SPAN = 0.7;
+/** How much bigger the pair reads once it is the only thing left. */
+const SETTLE_GROW = 1.15;
+
 const REFILL_START = 7;
 const REFILL_SPAN = 1.6;
 const REFILL_RAMP = 0.35;
@@ -202,6 +216,16 @@ function render(
   /** Where the rope is at its narrowest, between the block and the doses. */
   const waistY = gridBottom + 0.62 * (doseY - gridBottom);
 
+  // The resolution: 0 while the year is still falling, 1 once the pair has
+  // risen, and back to 0 before the refill starts.
+  const settle =
+    smooth(clamp01((phase - SETTLE_START) / SETTLE_SPAN)) *
+    (1 - smooth(clamp01((phase - (REFILL_START - RELEASE_SPAN)) / RELEASE_SPAN)));
+  // Into the middle of the emptied calendar, which is the space the year has
+  // just vacated - the whole point of putting them there.
+  const restY = gy0 + gridH * 0.5;
+  const restHalf = R * (1 + SETTLE_GROW) * 1.35;
+
   const slot = (i: number): Pt => ({
     x: gx0 + (CELL[i].col + 0.5) * cell,
     y: gy0 + (CELL[i].row + 0.5) * cell,
@@ -257,7 +281,9 @@ function render(
   //    two joined cubics and the seam has to be walked, not declared.
   ctx.lineWidth = Math.max(1, w / 1500);
   ctx.lineCap = "round";
-  ctx.strokeStyle = `rgba(${BLUE},0.12)`;
+  // The rails fade out as the pair leaves the foot of the card: a route drawn
+  // to a place nothing is any more is just a line.
+  ctx.strokeStyle = `rgba(${BLUE},${(0.12 * (1 - settle)).toFixed(3)})`;
   for (const half of [0, 1] as const) {
     const i = half === 0 ? 60 : 300;
     ctx.beginPath();
@@ -324,14 +350,24 @@ function render(
   //    small on purpose — see the note at the top of this file.
   const arrived = clamp01((phase - FLIGHT) / DEPART_SPAN) * DAYS;
   for (const half of [0, 1] as const) {
-    const target = half === 0 ? d0 : d1;
+    const seat = half === 0 ? d0 : d1;
+    // Lerped rather than re-laid-out, so the pair travels from exactly where
+    // the year delivered it to exactly where it rests.
+    const target: Pt = {
+      x: seat.x + (0.5 * w + (half === 0 ? -restHalf : restHalf) - seat.x) * settle,
+      y: seat.y + (restY - seat.y) * settle,
+    };
     const own =
       half === 0
         ? clamp01(arrived / SPLIT)
         : clamp01((arrived - SPLIT) / (DAYS - SPLIT));
     const grown = Math.sqrt(own);
     // The refill shrinks them back: next year's doses, waiting.
-    const r = R * (0.52 + 0.48 * grown) * (1 - 0.3 * smooth(refillP));
+    const r =
+      R *
+      (0.52 + 0.48 * grown) *
+      (1 - 0.3 * smooth(refillP)) *
+      (1 + SETTLE_GROW * settle);
 
     const halo = ctx.createRadialGradient(
       target.x,

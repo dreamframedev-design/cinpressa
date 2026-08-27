@@ -21,7 +21,7 @@ test("the homepage hinge carries the replacement copy, as a crescendo", () => {
   // Centred now: the hinge merged into one block with the cause and the
   // consequence, and that block sits between a full-bleed banner and a tag
   // list that tapers, so it holds their axis.
-  assert.match(home, /className="crescendo mx-auto max-w-5xl text-center"/);
+  assert.match(home, /className="crescendo max-w-5xl"/);
   assert.match(home, /In hypertension, the challenge is not whether blood pressure/);
   assert.match(home, /The challenge is whether it can remain/);
   assert.match(home, /<span className="crescendo-key">controlled over time\.<\/span>/);
@@ -35,7 +35,7 @@ test("the hinge is one block with the cause and the consequence", () => {
   assert.doesNotMatch(code(css), /\.verdict-/);
 
   // Statement, then cause, then consequence, in one Section.
-  const block = home.slice(home.indexOf("crescendo mx-auto"), home.indexOf("</Section>", home.indexOf("crescendo mx-auto")));
+  const block = home.slice(home.indexOf("crescendo max-w-5xl"), home.indexOf("</Section>", home.indexOf("crescendo max-w-5xl")));
   assert.match(block, /Medication non-adherence is the leading cause/);
   assert.match(block, /risk of serious complications:/);
   assert.match(block, /risk-tag/);
