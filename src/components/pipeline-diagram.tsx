@@ -63,10 +63,15 @@ const STAGES: Stage[] = [
       "Complete. Non-human primate studies and GLP toxicology are done, with roughly a 100-fold therapeutic window.",
   },
   {
+    /* COPY SUPPLIED, AND IT CONTRADICTS TWO THINGS ON THIS PAGE. "Ongoing"
+       says the study has started; the Clinical development section below still
+       reads "expected to commence in fall 2026", and this stage is still
+       state "next" so the bar stops at the end of preclinical. Changed as
+       asked and raised - if the study really has begun, that subtitle and this
+       state both need to move with it, and neither is mine to decide. */
     name: "Phase 1",
     state: "next",
-    status:
-      "Planned. A U.S. IND is planned for around mid-2026, with a first-in-human single ascending dose study expected to commence in fall 2026.",
+    status: "A single ascending dose study is ongoing.",
   },
   { name: "Phase 2", state: "todo", status: "Not started." },
   { name: "Phase 3", state: "todo", status: "Not started." },

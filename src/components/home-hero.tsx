@@ -133,8 +133,14 @@ export function HomeHero() {
             className="anim-rise flex items-center gap-3 text-[0.92rem] font-semibold uppercase tracking-[0.22em] text-blue"
             style={{ animationDelay: "0.02s" }}
           >
-            <span aria-hidden className="h-px w-8 bg-blue/40" />
-            A CinRx company
+            {/* ORANGE, AND THIS IS THE PLACE FOR IT. The hero carried none:
+                the mark has it, the dose beads have it, the cascade's upstream
+                node has it, and between the top of the page and the middle
+                there was no trace of the one colour that is only ever
+                punctuation. A 1px rule 32px long is the smallest thing on the
+                page that can carry it, which is exactly why it can. */}
+            <span aria-hidden className="h-px w-8 bg-orange" />
+            A CinRx portfolio company
           </p>
           <h1
             className="anim-rise mt-7 text-[clamp(2.4rem,5.4vw,4.25rem)] font-light leading-[1.04] tracking-tight text-ink"

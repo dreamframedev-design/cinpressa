@@ -631,13 +631,17 @@ body {
   background: var(--color-line);
 }
 
+/* The share bars carry the accent too. They are the one measured thing in the
+   top third of the page - three 2px rules stating a proportion - which is what
+   punctuation is for, and they put the mark's orange directly under the hero
+   rather than leaving it to appear halfway down. */
 .burden-share {
   position: absolute;
   left: 0;
   bottom: -0.5px;
   height: 2px;
   width: var(--share);
-  background: var(--color-stone);
+  background: var(--color-orange);
   transform-origin: left center;
   transition:
     background 0.5s var(--ease-brand),
@@ -723,13 +727,17 @@ body {
   transition: color 0.3s ease;
 }
 
+/* The hover rule is orange, the current-page rule stays blue. Interaction
+   gets the accent; state keeps the structural colour, so the bar still reads
+   at a glance which page you are on. Only the 1px rule changes - the label
+   itself goes blue on hover, because orange type is 2.0:1 on white. */
 .nav-link::after {
   content: "";
   position: absolute;
   inset-inline: 0;
   bottom: -6px;
   height: 1px;
-  background: var(--color-blue);
+  background: var(--color-orange);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.45s var(--ease-brand);
@@ -742,6 +750,10 @@ body {
 .nav-link:hover::after,
 .nav-link[aria-current]::after {
   transform: scaleX(1);
+}
+
+.nav-link[aria-current]::after {
+  background: var(--color-blue);
 }
 
 .nav-link[aria-current] {
@@ -2276,6 +2288,7 @@ body {
     box-shadow: none !important;
   }
 }
+
 
 
 
