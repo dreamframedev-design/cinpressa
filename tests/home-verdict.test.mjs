@@ -40,8 +40,8 @@ test("the hinge is one block with the cause and the consequence", () => {
   // Statement, then cause, then consequence, in one Section.
   const block = home.slice(home.indexOf("crescendo max-w-none"), home.indexOf("</Section>", home.indexOf("crescendo max-w-none")));
   assert.match(block, /Medication non-adherence is the leading cause/);
-  assert.match(block, /risk of serious complications:/);
-  assert.match(block, /risk-tag/);
+  assert.match(block, /risk of serious complications for/);
+  assert.match(block, /COMPLICATIONS_RUN/);
 });
 
 

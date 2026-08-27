@@ -488,52 +488,6 @@ body {
 }
 
 
-/* ---------- Risk tags (home, "the challenge") ----------
-
-   NOW ON THE HOMEPAGE, under the burden figures, so the scale of
-   uncontrolled pressure and what it leads to are stated in one place.
-
-   BADGES, BY REQUEST, AND THEY WERE THE RIGHT CALL. This list has since been a
-   four-across grid and a band justified edge to edge, and both were worse: a
-   list of seven short terms does not want to be a table, and stretched across
-   the measure it reads as a footer bar. Tags size themselves to their words,
-   which is the one shape that suits terms of wildly different length.
-
-   NOT BUTTONS, WHICH WAS THE OTHER NOTE. The difference is all in the details:
-   a hairline instead of a fill, a 6px radius instead of a pill, padding sized
-   to the type instead of to a thumb, a step down in size from the prose above,
-   and no hover. Colour that answers a cursor promises somewhere to go and there
-   is nowhere to go; they are labels, so they hold still. Their life is the
-   staggered arrival instead.
-
-   HELD TO THE PROSE MEASURE. Measured across the real widths: at the full frame
-   the seven break six and one, stranding a tag alone on a second line; from 820
-   to 1024 they break five and two; at the 3xl measure they break four and
-   three, the only even pair on offer, and they stop where the paragraphs stop
-   instead of running past them. */
-
-.risk-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  border: 1px solid var(--color-line);
-  border-radius: 0.375rem;
-  background: rgba(255, 255, 255, 0.7);
-  padding: 0.42rem 0.75rem 0.42rem 0.6rem;
-  font-size: 0.95rem;
-  line-height: 1.2;
-  color: var(--color-ink);
-}
-
-/* Marks each as an item without being a bullet the reader has to parse. */
-.risk-dot {
-  height: 4px;
-  width: 4px;
-  flex: none;
-  border-radius: 9999px;
-  background: var(--color-periwinkle);
-}
-
 /* ---------- Burden rail (home, "the challenge") ----------
    Three figures under one rule, each standing on a track that is also a
    measure. See burden-rail.tsx for why the card grid went and why these start
@@ -2322,6 +2276,7 @@ body {
     box-shadow: none !important;
   }
 }
+
 
 
 

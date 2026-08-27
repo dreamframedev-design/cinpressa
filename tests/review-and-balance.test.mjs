@@ -61,18 +61,21 @@ test("no section is left stranded at two thirds of its frame", async () => {
   assert.doesNotMatch(css, /max-width:\s*46ch/);
   assert.doesNotMatch(science, /risk-register|risk-rank|risk-list|const RANKS|const COLUMNS/);
   assert.doesNotMatch(css, /risk-register|risk-rank|risk-list|risk-item/);
-  // The tags and their lead-in moved to the homepage's challenge section, under
-  // the burden figures. Centred there, because that section is.
-  assert.doesNotMatch(science, /risk-tag|complications:/);
-  // The tags take their column's measure rather than one of their own.
-  assert.match(home, /<ul className="mt-5 flex flex-wrap gap-2">/);
-  // The figures left this block for a banner above it, so they are no longer
-  // what the tags sit under.
+  // The complications left /science, and on the homepage they are a run-in
+  // sentence rather than badges: as tags they took three rows and most of their
+  // column. The tag styles went with them, and so did the colon - it introduces
+  // a list about to be set apart, and nothing is set apart now.
+  assert.doesNotMatch(code(science), /risk-tag|complications/);
+  assert.doesNotMatch(home, /risk-tag|risk-dot|<ul/);
+  assert.doesNotMatch(css, /\.risk-tag|\.risk-dot/);
+  assert.doesNotMatch(home, /serious complications:/);
+  assert.match(home, /risk of serious complications for/);
+  // Still generated from the one array, so the terms and their order have a
+  // single source.
+  assert.match(home, /const COMPLICATIONS_RUN = complications/);
+  assert.match(home, /\.map\(\(c\) => c\.toLowerCase\(\)\)/);
+  // The figures left this block for a banner above it.
   assert.doesNotMatch(home.slice(home.indexOf("crescendo max-w-none")), /<BurdenRail/);
-  assert.match(css, /\.risk-tag \{/);
-  // The lead-in ends in a colon and introduces the tags, so it can never be
-  // separated from them - the constraint that broke two earlier cuts.
-  assert.match(home, /risk of serious complications:[\s\S]{0,600}?<ul className="mt-5 flex flex-wrap/);
   // And they sit under the figures, not above them.
   assert.ok(
     home.indexOf("<BurdenRail") < home.indexOf("crescendo max-w-none"),

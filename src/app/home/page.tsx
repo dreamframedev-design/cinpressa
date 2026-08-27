@@ -30,6 +30,14 @@ const complications = [
   "Vascular dementia",
 ];
 
+/** The same seven, set as a run-in list: lowercased because they sit inside a
+ *  sentence now, comma-separated, with "and" before the last. Derived rather
+ *  than written out, so the array above stays the only place they live. */
+const COMPLICATIONS_RUN = complications
+  .map((c) => c.toLowerCase())
+  .map((c, k, all) => (k === all.length - 1 ? `and ${c}.` : `${c},`))
+  .join(" ");
+
 export default function HomePage() {
   return (
     <div id="top">
@@ -124,37 +132,27 @@ export default function HomePage() {
                 </p>
               </Reveal>
 
-              {/* The lead-in ends in a colon and belongs to the list, so the
-                  two never separate - the constraint that broke two earlier
-                  cuts of this content on /science. The tags take the column's
-                  measure rather than one of their own; at this width they break
-                  three rows, and the alternative was giving them a width the
-                  column does not have. */}
+              {/* THE SEVEN RUN IN, rather than sitting in badges. As tags they
+                  took three rows and most of this column; as a sentence they
+                  take two lines and finish the paragraph that introduces them,
+                  which is what a list of seven short terms wants to be.
+
+                  The colon goes with them - a colon introduces a list that is
+                  about to be set apart, and nothing is set apart any more. The
+                  terms lowercase because they are now inside a sentence rather
+                  than labels in their own right; not one of them is a proper
+                  noun, so nothing is lost. They stay in ink against the body
+                  grey, so the run still reads as the list it is.
+
+                  Still generated from the same array, so the terms and their
+                  order have one source. */}
               <Reveal variant="fade" delay={160}>
                 <p className="mt-8 text-base leading-relaxed text-body">
                   Persistent uncontrolled blood pressure substantially increases
-                  the risk of serious complications:
+                  the risk of serious complications for{" "}
+                  <span className="text-ink">{COMPLICATIONS_RUN}</span>
                 </p>
               </Reveal>
-
-              <ul className="mt-5 flex flex-wrap gap-2">
-              {complications.map((c, i) => (
-                <Reveal
-                  key={c}
-                  as="li"
-                  variant="fade"
-                  /* 90ms apart, so the list visibly ACCUMULATES as it arrives.
-                     The sentence above says risk increases; the list should look
-                     like it is. */
-                  delay={220 + i * 90}
-                >
-                  <span className="risk-tag">
-                    <span aria-hidden className="risk-dot" />
-                    {c}
-                  </span>
-                </Reveal>
-              ))}
-            </ul>
             </div>
           </div>
         </Section>
@@ -205,7 +203,12 @@ export default function HomePage() {
           <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.55fr)] lg:items-center lg:gap-14">
             <Reveal variant="fade">
               <div>
-                <p className="text-lg font-light leading-snug tracking-tight text-ink md:text-xl">
+                {/* Deck scale, not body scale. At text-lg/xl this was still
+                    reading as the first paragraph of a block rather than as the
+                    section's opening claim; it clamps up to 32px now, half
+                    again the body around it, so it holds the column against a
+                    card that is 686px wide. */}
+                <p className="text-[clamp(1.45rem,2.4vw,2rem)] font-light leading-[1.2] tracking-tight text-ink">
                   CinPressa is advancing a long-acting AGT siRNA designed to
                   provide durable blood pressure reduction with one to two
                   administrations per year.

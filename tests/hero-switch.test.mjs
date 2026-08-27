@@ -4,7 +4,7 @@ import { readFile } from "node:fs/promises";
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 
-test("the homepage hero switches between two treatments, A first", async () => {
+test("the homepage hero switches between three treatments, A first", async () => {
   const hero = await read("src/components/home-hero.tsx");
 
   assert.match(hero, /^"use client";/);
@@ -13,9 +13,16 @@ test("the homepage hero switches between two treatments, A first", async () => {
   assert.match(hero, /import \{ OpenFlow \} from "@\/components\/open-flow"/);
   // B is the mark.
   assert.match(hero, /<ConvergenceMark key="mark"[^>]*variant="cascade"/);
-  // Two controls, no more: the four-way variant picker is not coming back.
-  const labels = [...hero.matchAll(/label: "([AB])"/g)].map((m) => m[1]);
-  assert.deepEqual(labels, ["A", "B"]);
+  // Three treatments now, and no more: the four-way variant picker is not
+  // coming back. C is the layered wave field from further down the page.
+  const labels = [...hero.matchAll(/label: "([A-Z])"/g)].map((m) => m[1]);
+  assert.deepEqual(labels, ["A", "B", "C"]);
+  assert.match(hero, /import \{ Bleed \} from "@\/components\/bleed"/);
+  assert.match(hero, /<Bleed key="bleed" topColor="#ffffff"/);
+  // The field has no scrim of its own - down the page nothing sits over it -
+  // so the hero adds the two A paints into its own canvas, at A's strengths.
+  assert.match(hero, /rgba\(255,255,255,0\.44\) 34%/);
+  assert.match(hero, /rgba\(255,255,255,0\.94\) 0%, rgba\(255,255,255,0\.72\) 30%/);
   assert.match(hero, /aria-pressed=\{v\.id === view\}/);
 });
 
