@@ -461,7 +461,11 @@ body {
     background-position: 128% 0;
     -webkit-background-clip: text;
     background-clip: text;
-    animation: hero-beam 11s var(--ease-brand) 2.4s infinite;
+    /* LINEAR, AND THIS WAS THE BUG. --ease-brand is cubic-bezier(0.16,1,0.3,1):
+       it puts almost all of its travel in the first fifth of the duration, so
+       an 11s cycle still crossed the word in well under a second and read as a
+       flash. A beam of light moves at one speed. 5.3s across, 8.7s holding. */
+    animation: hero-beam 14s linear 2.4s infinite;
   }
 }
 
@@ -470,7 +474,7 @@ body {
   0% {
     background-position: 128% 0;
   }
-  26% {
+  38% {
     background-position: -28% 0;
   }
   100% {
@@ -573,6 +577,10 @@ body {
 
 /* The upper rule frames. It fades out at the right the way the Bleed bands do,
    so the rail is bounded without being boxed. */
+/* THE RULE IGNITES WARM AND COOLS ALONG ITS LENGTH. It was pale for its whole
+   run; it now starts on the mark's orange and is back to the pale hairline
+   within the first fifth, so the accent is present without the rule becoming a
+   coloured line. The right-hand fade is unchanged. */
 .burden-rail::before {
   content: "";
   position: absolute;
@@ -581,7 +589,9 @@ body {
   height: 1px;
   background: linear-gradient(
     90deg,
-    var(--color-pale) 0%,
+    var(--color-orange) 0%,
+    rgba(249, 168, 26, 0.55) 9%,
+    var(--color-pale) 20%,
     var(--color-pale) 68%,
     rgba(190, 215, 236, 0) 100%
   );
@@ -604,10 +614,11 @@ body {
   transition: opacity 0.55s var(--ease-brand);
   background: linear-gradient(
     90deg,
-    var(--color-stone) 0%,
-    var(--color-stone) 46%,
-    rgba(163, 171, 174, 0.35) 82%,
-    rgba(163, 171, 174, 0) 100%
+    var(--color-orange) 0%,
+    rgba(249, 168, 26, 0.8) 26%,
+    rgba(249, 168, 26, 0.3) 48%,
+    var(--color-pale) 66%,
+    rgba(190, 215, 236, 0) 100%
   );
 }
 
@@ -2387,6 +2398,7 @@ body {
     box-shadow: none !important;
   }
 }
+
 
 
 
