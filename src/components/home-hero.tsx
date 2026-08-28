@@ -150,7 +150,7 @@ export function HomeHero() {
                 class is what CinPressa makes; the disease is what the sentence
                 is about, and it is the word a reader is scanning for. */}
             Advancing a best-in-class siRNA for{" "}
-            <span className="text-blue">hypertension</span>
+            <span className="hero-key">hypertension</span>
           </h1>
           <p
             className="anim-rise mt-7 max-w-xl text-lg leading-relaxed text-body"

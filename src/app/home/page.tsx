@@ -58,7 +58,7 @@ export default function HomePage() {
             Mist, because the hero's gradient ends on mist. The band continues
             that colour instead of introducing a new one, so the only edge is
             the hairline, which is the edge that is meant to show. */}
-        <section className="border-b border-line bg-mist">
+        <section className="burden-banner border-b border-line bg-mist">
           <div className="mx-auto w-full max-w-7xl px-6 pb-10 lg:px-10 lg:pb-12">
             <BurdenRail
               figures={[

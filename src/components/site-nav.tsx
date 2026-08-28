@@ -149,13 +149,10 @@ export function SiteNav({ tone = "light" }: { tone?: "light" | "dark" }) {
                 {link.label}
               </NavA>
             ))}
-            <Link
-              href="/contact"
-              className={`btn-primary btn-sm group ${onDark ? "btn-on-dark" : ""}`}
-            >
-              Partner with us
-              <ArrowIcon className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
-            </Link>
+            {/* The "Partner with us" button is deleted from the bar. Contact
+                is still a link in it, and the mobile menu keeps its own
+                full-width version - that one is inside the opened menu rather
+                than in the bar, so it is not what was removed. */}
           </nav>
 
           {/* Mobile toggle */}

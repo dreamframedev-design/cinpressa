@@ -414,6 +414,70 @@ body {
   letter-spacing: -0.03em;
 }
 
+/* ---------- Hero beam ("hypertension") ----------
+
+   A warm sweep crossing the one blue word in the headline, so the mark's
+   accent turns up in the largest type on the site rather than only in the
+   small punctuation. The technique is .crescendo-key's: a ramp clipped to the
+   glyphs, moved by background-position rather than by animating colour, which
+   is the only version of this that stays on the compositor.
+
+   ON CONTRAST, BECAUSE THIS IS THE H1. Brand orange is 2.0:1 on white and the
+   spec sheet keeps it off type entirely. So the beam's CORE is the brand
+   colour and its shoulders are a darker amber that clears 3:1 - AA large,
+   which this qualifies for at 68px - and the core is narrow enough that no
+   more than a slice of one glyph carries it at any instant. Everything either
+   side of the beam, and the whole word at rest, is brand blue at 6.6:1.
+
+   It sweeps for under three seconds of an eleven second cycle and then holds.
+   A hint that arrives twice a minute reads as craft; the same thing on a short
+   loop reads as a banner ad.
+
+   @supports guards the disappearing act: if background-clip: text is not
+   honoured the word keeps its blue and simply does not sweep. .crescendo-key
+   predates this and takes the risk; the H1 should not. */
+.hero-key {
+  color: var(--color-blue);
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .hero-key {
+    color: transparent;
+    background-image: linear-gradient(
+      100deg,
+      #2261ad 0%,
+      #2261ad 36%,
+      #1d6cba 41%,
+      #c07a00 45.5%,
+      #d18a00 48%,
+      #f9a81a 50%,
+      #d18a00 52%,
+      #c07a00 54.5%,
+      #1d6cba 59%,
+      #2261ad 64%,
+      #2261ad 100%
+    );
+    background-size: 320% 100%;
+    background-position: 128% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: hero-beam 11s var(--ease-brand) 2.4s infinite;
+  }
+}
+
+/* Across, then hold. The rest of the cycle is the word sitting still in blue. */
+@keyframes hero-beam {
+  0% {
+    background-position: 128% 0;
+  }
+  26% {
+    background-position: -28% 0;
+  }
+  100% {
+    background-position: -28% 0;
+  }
+}
+
 /* The colour arrives rather than being there. A brand ramp is clipped to the
    glyphs and an ink fill sits over it; the fill retreats as the ramp slides
    across. Every stop clears 3:1 on white, which is what this size needs. */
@@ -522,6 +586,33 @@ body {
     rgba(190, 215, 236, 0) 100%
   );
   transform-origin: left center;
+}
+
+/* HOVER DEEPENS THE ETCH. The resting rule is the pale hairline, which is the
+   colour it should be; hovering the band brings a slightly stronger grey up
+   underneath it and lets it run further before it fades. Cross-faded rather
+   than transitioned, because two gradients do not interpolate - the second one
+   sits on ::after and only its opacity moves. */
+.burden-rail::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 1px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.55s var(--ease-brand);
+  background: linear-gradient(
+    90deg,
+    var(--color-stone) 0%,
+    var(--color-stone) 46%,
+    rgba(163, 171, 174, 0.35) 82%,
+    rgba(163, 171, 174, 0) 100%
+  );
+}
+
+.burden-banner:hover .burden-rail::after {
+  opacity: 1;
 }
 
 [data-reveal].reveal-pending .burden-rail::before {
@@ -2152,6 +2243,10 @@ body {
   .crescendo-lede,
   .crescendo-turn,
   .crescendo-point,
+  .hero-key {
+    animation: none !important;
+  }
+
   .crescendo-key {
     animation: none !important;
     opacity: 1 !important;
@@ -2177,6 +2272,10 @@ body {
   .burden-share {
     animation: none !important;
     transform: none !important;
+  }
+
+  .burden-rail::after {
+    transition: none !important;
   }
 
   .burden-value,
@@ -2288,6 +2387,8 @@ body {
     box-shadow: none !important;
   }
 }
+
+
 
 
 
