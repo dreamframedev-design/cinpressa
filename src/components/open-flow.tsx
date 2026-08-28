@@ -184,6 +184,43 @@ function render(ctx: CanvasRenderingContext2D, w: number, h: number, t: number) 
     ctx.stroke();
   }
 
+  // ── THE THREAD. A single drawn hairline running through the field, on its
+  //    own sine rather than on any ribbon's edge - the crest lines above are
+  //    the boundary of a mass, which is a different thing, and a field made
+  //    only of soft edges has nothing crisp in it to read against. Two
+  //    components at incommensurable periods so it never resolves into a clean
+  //    repeating wave, and a long slow travel so it reads as drift rather than
+  //    as motion. It is drawn after the masses and before the scrims, so the
+  //    same white that keeps the headline legible damps the thread over the
+  //    copy and lets it run in the open half.
+  {
+    const base = 0.6;
+    const amp = 0.055;
+    const travel = t * 0.012;
+    ctx.lineWidth = Math.max(1, w / 1900);
+    const thread = ctx.createLinearGradient(0, 0, w, 0);
+    thread.addColorStop(0, "rgba(34,97,173,0)");
+    thread.addColorStop(0.28, "rgba(34,97,173,0.16)");
+    thread.addColorStop(0.6, "rgba(34,97,173,0.32)");
+    thread.addColorStop(0.86, "rgba(34,97,173,0.14)");
+    thread.addColorStop(1, "rgba(34,97,173,0)");
+    ctx.strokeStyle = thread;
+    ctx.beginPath();
+    for (let i = 0; i <= STEPS; i++) {
+      const f = i / STEPS;
+      const x = -0.08 * w + 1.16 * w * f;
+      const y =
+        (base +
+          amp * Math.sin((f - travel) * TAU * 1.35 + 0.6) +
+          amp * 0.42 * Math.sin((f + travel * 1.7) * TAU * 2.9 + 2.1) +
+          0.014 * Math.sin(t * 0.09)) *
+        h;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+  }
+
   // Dissolve upward, so the field is a ground rather than a band. Eased back
   // with the ribbons: these scrims were set against a paler stack, and at their
   // old strength they took most of the added depth straight back off.

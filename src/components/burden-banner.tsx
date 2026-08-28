@@ -50,8 +50,15 @@ export function BurdenBanner({
       pending = -1;
     };
 
+    /* MEASURED OFF THE RULE, NOT OFF THE BAND. The band is full-bleed and the
+       rule sits inside the page container, so mapping the pointer to the band's
+       width put the glow about forty pixels adrift of the cursor - visible, and
+       exactly the kind of thing that makes a tracking effect feel broken. */
+    const target = () =>
+      (el.querySelector(".burden-rail") as HTMLElement | null) ?? el;
+
     const onMove = (e: PointerEvent) => {
-      const rect = el.getBoundingClientRect();
+      const rect = target().getBoundingClientRect();
       if (rect.width === 0) return;
       pending = Math.min(100, Math.max(0, ((e.clientX - rect.left) / rect.width) * 100));
       if (!frame) frame = requestAnimationFrame(flush);

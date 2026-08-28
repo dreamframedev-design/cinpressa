@@ -469,12 +469,13 @@ body {
        it puts almost all of its travel in the first fifth of the duration, so
        an 11s cycle still crossed the word in well under a second and read as a
        flash. A beam of light moves at one speed. 5.3s across, 8.7s holding. */
-    /* Sooner and more often. A 2.4s wait before the first pass and 8.7s
-       between passes meant most people never saw it, and the ramp had hard
-       shoulders so it read as a band crossing rather than as light moving.
-       0.8s in, 5.4s across, 3.6s holding, with the ramp below twice as wide so
-       the colour arrives and leaves gradually. */
-    animation: hero-beam 9s linear 0.8s infinite;
+    /* Slower across, and back sooner. The two are opposite ends of the same
+       cycle, so the fix is to give the sweep most of it and leave only a beat
+       of rest: 0.6s in, 6.6s across, 1.4s holding. Each pass is about a fifth
+       slower than before and the gap between passes drops from 3.6s to 1.4s,
+       which is what makes it read as something moving continuously rather than
+       as an effect that fires now and then. */
+    animation: hero-beam 8s linear 0.6s infinite;
   }
 }
 
@@ -483,7 +484,7 @@ body {
   0% {
     background-position: 128% 0;
   }
-  60% {
+  82% {
     background-position: -28% 0;
   }
   100% {
@@ -494,20 +495,55 @@ body {
 /* The colour arrives rather than being there. A brand ramp is clipped to the
    glyphs and an ink fill sits over it; the fill retreats as the ramp slides
    across. Every stop clears 3:1 on white, which is what this size needs. */
+/* TWO LAYERS, AND THAT IS WHAT MAKES THE SHINE POSSIBLE HERE. This phrase
+   already animates its background-position: the reveal sweeps a blue ramp
+   across it once, ink to colour. A warm beam cannot share that ramp - anything
+   added to it would be dragged through by the reveal, so the phrase would
+   flash orange as it arrived.
+
+   So the beam is its own layer sitting in front, transparent everywhere except
+   its band. Where it is clear the blue ramp underneath shows through; where the
+   band passes, the warm wins. The two positions then animate independently,
+   which is why every rule below states both.
+
+   Same contrast reasoning as the hero: the core is brand orange and its
+   shoulders are darker ambers that clear 3:1, on type at 56px, which is large.
+   Transparent stops are written rgba(249,168,26,0) rather than `transparent`
+   so the fade stays in the hue instead of passing through grey. */
 .crescendo-key {
   color: transparent;
-  background-image: linear-gradient(
-    96deg,
-    #2261ad 0%,
-    #0473bb 30%,
-    #0783c6 52%,
-    #1596d4 74%,
-    #2261ad 100%
-  );
-  background-size: 210% 100%;
-  background-position: 0 0;
+  background-image:
+    linear-gradient(
+      100deg,
+      rgba(249, 168, 26, 0) 0%,
+      rgba(249, 168, 26, 0) 31%,
+      rgba(138, 106, 42, 0.55) 38%,
+      rgba(192, 122, 0, 0.85) 44%,
+      #e39a10 48%,
+      #f9a81a 50%,
+      #e39a10 52%,
+      rgba(192, 122, 0, 0.85) 56%,
+      rgba(138, 106, 42, 0.55) 62%,
+      rgba(249, 168, 26, 0) 69%,
+      rgba(249, 168, 26, 0) 100%
+    ),
+    linear-gradient(
+      96deg,
+      #2261ad 0%,
+      #0473bb 30%,
+      #0783c6 52%,
+      #1596d4 74%,
+      #2261ad 100%
+    );
+  background-size:
+    320% 100%,
+    210% 100%;
+  background-position:
+    128% 0,
+    0 0;
   -webkit-background-clip: text;
   background-clip: text;
+  animation: crescendo-beam 8s linear 1.2s infinite;
 }
 
 [data-reveal].reveal-pending .crescendo-lede,
@@ -519,7 +555,10 @@ body {
 
 [data-reveal].reveal-pending .crescendo-key {
   color: var(--color-ink);
-  background-position: 100% 0;
+  animation: none;
+  background-position:
+    128% 0,
+    100% 0;
 }
 
 [data-reveal].reveal-in .crescendo-lede {
@@ -538,8 +577,13 @@ body {
 
 /* Slow on purpose. The section asks whether control lasts over time; the line
    that says so should take some. */
+/* The arrival first, then the beam takes the position over. Later in the list
+   wins where they overlap, and the beam's delay clears the arrival's 1.55 + 1.5
+   so nothing is fighting mid-sweep. */
 [data-reveal].reveal-in .crescendo-key {
-  animation: crescendo-colour 1.5s var(--ease-brand) 1.55s both;
+  animation:
+    crescendo-colour 1.5s var(--ease-brand) 1.55s both,
+    crescendo-beam 8s linear 3.4s infinite;
 }
 
 @keyframes crescendo-in {
@@ -556,11 +600,35 @@ body {
 @keyframes crescendo-colour {
   from {
     color: var(--color-ink);
-    background-position: 100% 0;
+    background-position:
+      128% 0,
+      100% 0;
   }
   to {
     color: transparent;
-    background-position: 0 0;
+    background-position:
+      128% 0,
+      0 0;
+  }
+}
+
+/* The beam crosses; the blue ramp underneath stays put. Same shape as the
+   hero's: most of the cycle is the crossing, with a beat of rest. */
+@keyframes crescendo-beam {
+  0% {
+    background-position:
+      128% 0,
+      0 0;
+  }
+  82% {
+    background-position:
+      -28% 0,
+      0 0;
+  }
+  100% {
+    background-position:
+      -28% 0,
+      0 0;
   }
 }
 
@@ -586,10 +654,12 @@ body {
 
 /* The upper rule frames. It fades out at the right the way the Bleed bands do,
    so the rail is bounded without being boxed. */
-/* THE RULE IGNITES WARM AND COOLS ALONG ITS LENGTH. It was pale for its whole
-   run; it now starts on the mark's orange and is back to the pale hairline
-   within the first fifth, so the accent is present without the rule becoming a
-   coloured line. The right-hand fade is unchanged. */
+/* THE RESTING RULE IS PALE, and that is the point of it. It carried a fixed
+   orange ignition at its left end for one commit, and with the tracking glow
+   also orange the only thing a moving cursor changed was a fade - the accent
+   was already sitting there, so nothing appeared to follow anything. The warm
+   belongs to the cursor now and to nothing else, which is what makes the
+   tracking readable. */
 .burden-rail::before {
   content: "";
   position: absolute;
@@ -598,9 +668,7 @@ body {
   height: 1px;
   background: linear-gradient(
     90deg,
-    var(--color-orange) 0%,
-    rgba(249, 168, 26, 0.55) 9%,
-    var(--color-pale) 20%,
+    var(--color-pale) 0%,
     var(--color-pale) 68%,
     rgba(190, 215, 236, 0) 100%
   );
@@ -626,11 +694,13 @@ body {
   transition: opacity 0.4s var(--ease-brand);
   background: linear-gradient(
     90deg,
-    rgba(249, 168, 26, 0) calc(var(--etch-x, 50%) - 22%),
-    rgba(249, 168, 26, 0.5) calc(var(--etch-x, 50%) - 10%),
+    rgba(249, 168, 26, 0) calc(var(--etch-x, 50%) - 20%),
+    rgba(249, 168, 26, 0.28) calc(var(--etch-x, 50%) - 12%),
+    rgba(249, 168, 26, 0.85) calc(var(--etch-x, 50%) - 4%),
     var(--color-orange) var(--etch-x, 50%),
-    rgba(249, 168, 26, 0.5) calc(var(--etch-x, 50%) + 10%),
-    rgba(249, 168, 26, 0) calc(var(--etch-x, 50%) + 22%)
+    rgba(249, 168, 26, 0.85) calc(var(--etch-x, 50%) + 4%),
+    rgba(249, 168, 26, 0.28) calc(var(--etch-x, 50%) + 12%),
+    rgba(249, 168, 26, 0) calc(var(--etch-x, 50%) + 20%)
   );
 }
 
@@ -2421,6 +2491,9 @@ body {
     box-shadow: none !important;
   }
 }
+
+
+
 
 
 
