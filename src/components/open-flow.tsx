@@ -136,7 +136,13 @@ function edge(
   }
 }
 
-function render(ctx: CanvasRenderingContext2D, w: number, h: number, t: number) {
+function render(
+  ctx: CanvasRenderingContext2D,
+  w: number,
+  h: number,
+  t: number,
+  withThread: boolean,
+) {
   // Multiply needs something to multiply into, and the hero is white.
   ctx.globalCompositeOperation = "source-over";
   ctx.filter = "none";
@@ -184,6 +190,10 @@ function render(ctx: CanvasRenderingContext2D, w: number, h: number, t: number) 
     ctx.stroke();
   }
 
+  // ── THE GOLDEN THREAD. Skipped entirely when the field is asked for
+  //    without it (see the thread prop) - the hero offers the same flow with
+  //    and without, and everything else about the two is identical.
+  if (withThread) {
   // ── THE GOLDEN THREAD. A single drawn hairline running through the field, on
   //    its own sine rather than on any ribbon's edge - the crest lines above are
   //    the boundary of a mass, which is a different thing, and a field made
@@ -221,7 +231,7 @@ function render(ctx: CanvasRenderingContext2D, w: number, h: number, t: number) 
     // half to eight tenths of a CSS pixel. The browser drew it at partial
     // coverage - a grey ghost, which is exactly what came back. Since w scales
     // with the store, a fraction of w is a fraction of the CSS width either
-    // way: w/620 is a little over two CSS pixels at any density.
+    // way: w/730 is about 1.8 CSS pixels at any density.
 
     // PASS ZERO: A LIGHT BED UNDER THE GOLD, and this is what stops the dingy
     // olive. Gold at partial alpha over the deep blue band does not read as
@@ -238,7 +248,7 @@ function render(ctx: CanvasRenderingContext2D, w: number, h: number, t: number) 
     bed.addColorStop(0.88, "rgba(255,252,244,0.7)");
     bed.addColorStop(1, "rgba(255,252,244,0)");
     ctx.strokeStyle = bed;
-    ctx.lineWidth = Math.max(2.6, w / 400);
+    ctx.lineWidth = Math.max(2.2, w / 470);
     trace();
     ctx.stroke();
 
@@ -246,7 +256,7 @@ function render(ctx: CanvasRenderingContext2D, w: number, h: number, t: number) 
     // middle now rather than ramping through the fifties - the only fade is at
     // the extreme ends, over a couple of percent, where there is nothing much
     // beneath it to mix with.
-    ctx.lineWidth = Math.max(1.6, w / 620);
+    ctx.lineWidth = Math.max(1.4, w / 730);
     const thread = ctx.createLinearGradient(0, 0, w, 0);
     thread.addColorStop(0, "rgba(249,168,26,0)");
     thread.addColorStop(0.1, "rgba(249,168,26,0.85)");
@@ -276,7 +286,7 @@ function render(ctx: CanvasRenderingContext2D, w: number, h: number, t: number) 
     if (hi < 1) shine.addColorStop(hi, "rgba(255,197,66,0)");
     shine.addColorStop(1, "rgba(255,197,66,0)");
     ctx.strokeStyle = shine;
-    ctx.lineWidth = Math.max(2.4, w / 380);
+    ctx.lineWidth = Math.max(2.1, w / 450);
     ctx.shadowColor = "rgba(249,168,26,0.8)";
     ctx.shadowBlur = Math.max(8, w / 130);
     trace();
@@ -287,6 +297,8 @@ function render(ctx: CanvasRenderingContext2D, w: number, h: number, t: number) 
     // Reset, or the scrims below inherit the glow.
     ctx.shadowBlur = 0;
     ctx.shadowColor = "transparent";
+  }
+
   }
 
   // Dissolve upward, so the field is a ground rather than a band. Eased back
@@ -311,8 +323,15 @@ function render(ctx: CanvasRenderingContext2D, w: number, h: number, t: number) 
   ctx.fillRect(0, 0, w, h);
 }
 
-export function OpenFlow({ className = "" }: { className?: string }) {
-  const draw: HeroRender = (ctx, w, h, t) => render(ctx, w, h, t);
+export function OpenFlow({
+  className = "",
+  /** The golden thread. Off gives the same field with nothing drawn in it. */
+  thread = true,
+}: {
+  className?: string;
+  thread?: boolean;
+}) {
+  const draw: HeroRender = (ctx, w, h, t) => render(ctx, w, h, t, thread);
   return (
     <HeroCanvas
       render={draw}

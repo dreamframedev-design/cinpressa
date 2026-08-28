@@ -4,7 +4,6 @@ import { useState } from "react";
 import type { CSSProperties } from "react";
 import { ConvergenceMark } from "@/components/convergence-mark";
 import { OpenFlow } from "@/components/open-flow";
-import { Bleed } from "@/components/bleed";
 
 /**
  * The homepage hero, with an A/B switch between its two treatments.
@@ -17,16 +16,11 @@ import { Bleed } from "@/components/bleed";
  * B — THE MARK. What the hero carried before: the logo converging, with its own
  * petal colours blooming outward behind it on four mismatched breaths.
  *
- * C — THE LAYERED FIELD. The wave piece from further down the page, brought up
- * here: six translucent bands composited with multiply, so where two cross the
- * colour deepens and the violet band reads as a shadow under the blue. It is the
- * same component, not a copy - see bleed.tsx.
- *
- * C CARRIES NO SCRIM OF ITS OWN, which A does. Down the page that field has
- * nothing over it, so it never needed one; under a headline it does, or the
- * copy sits on full-strength colour. The two gradients over it here are the
- * ones A paints into its own canvas, at the same strengths, so the three
- * treatments put the headline on the same paper.
+ * C — THE SAME FIELD AS A, WITHOUT THE THREAD. One component and one set of
+ * ribbons; the only difference is whether the golden thread is drawn through
+ * it. That makes A and C a choice about the thread rather than a choice
+ * between two unrelated pieces of art, and it means neither can drift from the
+ * other.
  *
  * The two are not variants of one layout, which is why this holds the whole
  * hero rather than just its art slot. A is a backdrop and wants the copy on one
@@ -77,27 +71,11 @@ export function HomeHero() {
       ) : (
         <>
           {view === "c" ? (
-            <>
-              {/* White above it, because this sits at the top of the page. */}
-              <Bleed key="bleed" topColor="#ffffff" className="absolute inset-0" />
-              {/* The scrims A paints into its own canvas, at A's strengths. */}
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.44) 34%, rgba(255,255,255,0) 66%)",
-                }}
-              />
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(90deg, rgba(255,255,255,0.94) 0%, rgba(255,255,255,0.72) 30%, rgba(255,255,255,0.08) 62%, rgba(255,255,255,0) 100%)",
-                }}
-              />
-            </>
+            /* The same field as A, with nothing drawn in it. The two are one
+               component and one set of ribbons; only the thread differs, so
+               choosing between them is a choice about the thread rather than
+               about two unrelated pieces of art. */
+            <OpenFlow key="plain" thread={false} className="absolute inset-0" />
           ) : (
             <OpenFlow key="flow" className="absolute inset-0" />
           )}

@@ -17,12 +17,14 @@ test("the homepage hero switches between three treatments, A first", async () =>
   // coming back. C is the layered wave field from further down the page.
   const labels = [...hero.matchAll(/label: "([A-Z])"/g)].map((m) => m[1]);
   assert.deepEqual(labels, ["A", "B", "C"]);
-  assert.match(hero, /import \{ Bleed \} from "@\/components\/bleed"/);
-  assert.match(hero, /<Bleed key="bleed" topColor="#ffffff"/);
-  // The field has no scrim of its own - down the page nothing sits over it -
-  // so the hero adds the two A paints into its own canvas, at A's strengths.
-  assert.match(hero, /rgba\(255,255,255,0\.44\) 34%/);
-  assert.match(hero, /rgba\(255,255,255,0\.94\) 0%, rgba\(255,255,255,0\.72\) 30%/);
+  // C is the SAME field as A with the thread switched off - one component and
+  // one set of ribbons, so the two cannot drift from each other and the choice
+  // between them is a choice about the thread.
+  assert.match(hero, /<OpenFlow key="plain" thread=\{false\} className="absolute inset-0" \/>/);
+  assert.doesNotMatch(hero, /Bleed/);
+  const flow = await read("src/components/open-flow.tsx");
+  assert.match(flow, /thread = true/);
+  assert.match(flow, /if \(withThread\)/);
   assert.match(hero, /aria-pressed=\{v\.id === view\}/);
 });
 
