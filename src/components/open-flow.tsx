@@ -223,16 +223,36 @@ function render(ctx: CanvasRenderingContext2D, w: number, h: number, t: number) 
     // with the store, a fraction of w is a fraction of the CSS width either
     // way: w/620 is a little over two CSS pixels at any density.
 
-    // PASS ONE: the thread itself, in the mark's gold at close to full
-    // strength. It fades to nothing at both ends like everything else in this
-    // field, so it arrives and leaves rather than starting and stopping.
+    // PASS ZERO: A LIGHT BED UNDER THE GOLD, and this is what stops the dingy
+    // olive. Gold at partial alpha over the deep blue band does not read as
+    // dimmer gold, it reads as a different, muddier colour - warm over dark
+    // blue mixes toward olive, and the thread crosses that band for most of
+    // its length. Laying a soft warm-white under the line first means the gold
+    // above never composites against the blue at all: it is always mixing into
+    // something pale, so it stays the brand colour everywhere it goes.
     ctx.lineCap = "round";
+    const bed = ctx.createLinearGradient(0, 0, w, 0);
+    bed.addColorStop(0, "rgba(255,252,244,0)");
+    bed.addColorStop(0.18, "rgba(255,252,244,0.65)");
+    bed.addColorStop(0.55, "rgba(255,252,244,0.9)");
+    bed.addColorStop(0.88, "rgba(255,252,244,0.7)");
+    bed.addColorStop(1, "rgba(255,252,244,0)");
+    ctx.strokeStyle = bed;
+    ctx.lineWidth = Math.max(2.6, w / 400);
+    trace();
+    ctx.stroke();
+
+    // PASS ONE: the thread itself, in the mark's gold. Opaque across the whole
+    // middle now rather than ramping through the fifties - the only fade is at
+    // the extreme ends, over a couple of percent, where there is nothing much
+    // beneath it to mix with.
     ctx.lineWidth = Math.max(1.6, w / 620);
     const thread = ctx.createLinearGradient(0, 0, w, 0);
     thread.addColorStop(0, "rgba(249,168,26,0)");
-    thread.addColorStop(0.22, "rgba(249,168,26,0.5)");
-    thread.addColorStop(0.55, "rgba(249,168,26,0.92)");
-    thread.addColorStop(0.85, "rgba(249,168,26,0.62)");
+    thread.addColorStop(0.1, "rgba(249,168,26,0.85)");
+    thread.addColorStop(0.2, "rgba(249,168,26,1)");
+    thread.addColorStop(0.86, "rgba(249,168,26,1)");
+    thread.addColorStop(0.96, "rgba(249,168,26,0.8)");
     thread.addColorStop(1, "rgba(249,168,26,0)");
     ctx.strokeStyle = thread;
     trace();
