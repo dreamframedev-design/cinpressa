@@ -867,12 +867,23 @@ body {
    site moves together. Previously these were 14px labels in tight pills and
    read as secondary text. */
 
+/* SQUARED OFF, NOT PILLS. A fully rounded button is the most dated shape on a
+   modern site and it fought everything else here: this page is built out of
+   hairlines and hard section edges, and a capsule is the one form that agrees
+   with none of them. A 4px radius reads as a considered corner rather than as
+   no corner at all, and it matches the rest of the geometry - the cards are
+   2xl, the tags were 6px, the rules are square.
+
+   The rest of the change is restraint. The old buttons lifted 2px on hover and
+   carried a 32px coloured shadow, which is the vocabulary of a consumer app;
+   they now stay put and change colour, with the shadow tightened to something
+   that reads as weight rather than as glow. */
 .btn-primary,
 .btn-ghost {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  border-radius: 9999px;
+  border-radius: 4px;
   font-size: 1rem;
   font-weight: 500;
   line-height: 1;
@@ -887,43 +898,43 @@ body {
 
 .btn-primary {
   background: var(--color-blue);
-  padding: 1.1rem 2.15rem;
+  padding: 1rem 1.9rem;
   color: #ffffff;
-  box-shadow: 0 16px 32px -18px rgba(34, 97, 173, 0.7);
+  box-shadow: 0 8px 18px -12px rgba(20, 48, 79, 0.55);
 }
 
 .btn-primary:hover {
   background: var(--color-ink);
-  box-shadow: 0 24px 44px -20px rgba(20, 48, 79, 0.6);
-  transform: translateY(-2px);
+  box-shadow: 0 10px 22px -12px rgba(20, 48, 79, 0.6);
 }
 
 .btn-primary:active {
-  transform: translateY(0);
+  background: var(--color-ink);
 }
 
 .btn-ghost {
-  border: 1px solid var(--color-pale);
+  border: 1px solid var(--color-line);
   background: rgba(255, 255, 255, 0.72);
-  padding: calc(1.1rem - 1px) calc(1.9rem - 1px);
+  padding: calc(1rem - 1px) calc(1.7rem - 1px);
   color: var(--color-ink);
 }
 
+/* The accent arrives on the border. It is a hairline, which is the one place
+   orange is allowed to carry weight, and it means the ghost button gains the
+   brand colour on hover without any of it landing on type. */
 .btn-ghost:hover {
-  border-color: var(--color-blue);
-  color: var(--color-blue);
+  border-color: var(--color-orange);
+  color: var(--color-ink);
   background: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 0 20px 38px -24px rgba(34, 97, 173, 0.45);
 }
 
 .btn-ghost:active {
-  transform: translateY(0);
+  background: rgba(255, 255, 255, 0.9);
 }
 
 /* Compact variant for the nav bar */
 .btn-primary.btn-sm {
-  padding: 0.78rem 1.5rem;
+  padding: 0.72rem 1.35rem;
   font-size: 1rem;
 }
 
@@ -2398,6 +2409,7 @@ body {
     box-shadow: none !important;
   }
 }
+
 
 
 

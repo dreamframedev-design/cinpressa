@@ -5,7 +5,6 @@ import { SiteFooter } from "@/components/site-footer";
 import { PageHero } from "@/components/page-hero";
 import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
-import { Timeline } from "@/components/timeline";
 import { MarkArt } from "@/components/geometry";
 import { Reveal } from "@/components/reveal";
 import { ArrowIcon } from "@/components/arrow-icon";
@@ -17,22 +16,6 @@ export const metadata: Metadata = {
     "Follow CinPressa's progress as CIN-111 advances through development.",
 };
 
-/**
- * Both milestones are restated from the pipeline page, which is the approved
- * source. Nothing here is new information.
- */
-const MILESTONES = [
-  {
-    marker: "Mid-2026",
-    title: "U.S. IND submission",
-    body: "CinPressa plans to submit a U.S. IND for CIN-111.",
-  },
-  {
-    marker: "Fall 2026",
-    title: "First-in-human study",
-    body: "A U.S.-based first-in-human study is expected to commence: a single-dose, single ascending dose design in patients with mild-to-moderate hypertension.",
-  },
-];
 
 export default function NewsPage() {
   const hasNews = ANNOUNCEMENTS.length > 0;
@@ -49,7 +32,11 @@ export default function NewsPage() {
           subtitle="Follow CinPressa's progress as CIN-111 advances through development."
         />
 
-        <Section>
+        {/* Pulled up. The hero above carries a subtitle so it runs its full
+            41rem, and this section's own py-28 sat under that - about two
+            hundred pixels of white between the headline and the first thing
+            the page is actually for. */}
+        <Section className="pt-10! lg:pt-14!">
           <SectionHeader
             eyebrow="Announcements"
             title="Company news and milestones"
@@ -122,25 +109,6 @@ export default function NewsPage() {
           </div>
         </Section>
 
-        <Section tone="sky">
-          <SectionHeader
-            eyebrow="What's ahead"
-            title="The next milestones for CIN-111"
-            subtitle="The program is moving from preclinical work into clinical development."
-          />
-          <div className="mt-14 max-w-3xl">
-            <Timeline items={MILESTONES} />
-          </div>
-          <Reveal variant="fade" delay={140}>
-            <Link
-              href="/pipeline"
-              className="btn-ghost group mt-12"
-            >
-              See the full pipeline
-              <ArrowIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-            </Link>
-          </Reveal>
-        </Section>
       </main>
 
       <SiteFooter />
