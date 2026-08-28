@@ -215,15 +215,24 @@ function render(ctx: CanvasRenderingContext2D, w: number, h: number, t: number) 
       }
     };
 
-    // PASS ONE: the thread itself, in the mark's gold. It fades to nothing at
-    // both ends like everything else in this field, so it arrives and leaves
-    // rather than starting and stopping.
-    ctx.lineWidth = Math.max(1, w / 1900);
+    // WIDTHS ARE A FRACTION OF w, AND w IS THE BACKING STORE. That is the whole
+    // reason the first cut of this was invisible: w/1900 floored to ONE backing
+    // pixel, and this canvas renders at 1.25x to 2x, so one backing pixel is
+    // half to eight tenths of a CSS pixel. The browser drew it at partial
+    // coverage - a grey ghost, which is exactly what came back. Since w scales
+    // with the store, a fraction of w is a fraction of the CSS width either
+    // way: w/620 is a little over two CSS pixels at any density.
+
+    // PASS ONE: the thread itself, in the mark's gold at close to full
+    // strength. It fades to nothing at both ends like everything else in this
+    // field, so it arrives and leaves rather than starting and stopping.
+    ctx.lineCap = "round";
+    ctx.lineWidth = Math.max(1.6, w / 620);
     const thread = ctx.createLinearGradient(0, 0, w, 0);
     thread.addColorStop(0, "rgba(249,168,26,0)");
-    thread.addColorStop(0.26, "rgba(249,168,26,0.3)");
-    thread.addColorStop(0.6, "rgba(249,168,26,0.55)");
-    thread.addColorStop(0.87, "rgba(249,168,26,0.26)");
+    thread.addColorStop(0.22, "rgba(249,168,26,0.5)");
+    thread.addColorStop(0.55, "rgba(249,168,26,0.92)");
+    thread.addColorStop(0.85, "rgba(249,168,26,0.62)");
     thread.addColorStop(1, "rgba(249,168,26,0)");
     ctx.strokeStyle = thread;
     trace();
@@ -233,20 +242,26 @@ function render(ctx: CanvasRenderingContext2D, w: number, h: number, t: number) 
     // reads as a gold filament catching light rather than as a drawn line that
     // happens to be gold. Its stops are built around a moving centre and
     // clamped, because a canvas gradient will not take stops out of order.
-    const cyc = (t * 0.055) % 1;
+    const cyc = (t * 0.075) % 1;
     const c = Math.min(0.995, Math.max(0.005, -0.16 + cyc * 1.32));
-    const lo = Math.max(0, c - 0.13);
-    const hi = Math.min(1, c + 0.13);
+    const lo = Math.max(0, c - 0.16);
+    const hi = Math.min(1, c + 0.16);
+    // Stays GOLD at its peak rather than going to cream. The first cut ran to
+    // near-white, which reads as an absence of colour on a pale field - the
+    // brightest part of a brand accent should still be the brand.
     const shine = ctx.createLinearGradient(0, 0, w, 0);
-    shine.addColorStop(0, "rgba(255,238,196,0)");
-    if (lo > 0) shine.addColorStop(lo, "rgba(255,238,196,0)");
-    shine.addColorStop(c, "rgba(255,243,214,0.95)");
-    if (hi < 1) shine.addColorStop(hi, "rgba(255,238,196,0)");
-    shine.addColorStop(1, "rgba(255,238,196,0)");
+    shine.addColorStop(0, "rgba(255,197,66,0)");
+    if (lo > 0) shine.addColorStop(lo, "rgba(255,197,66,0)");
+    shine.addColorStop(c, "rgba(255,201,74,1)");
+    if (hi < 1) shine.addColorStop(hi, "rgba(255,197,66,0)");
+    shine.addColorStop(1, "rgba(255,197,66,0)");
     ctx.strokeStyle = shine;
-    ctx.lineWidth = Math.max(1.2, w / 1500);
-    ctx.shadowColor = "rgba(249,168,26,0.55)";
-    ctx.shadowBlur = Math.max(4, w / 220);
+    ctx.lineWidth = Math.max(2.4, w / 380);
+    ctx.shadowColor = "rgba(249,168,26,0.8)";
+    ctx.shadowBlur = Math.max(8, w / 130);
+    trace();
+    ctx.stroke();
+    // Twice, so the glow builds where the travelling length is.
     trace();
     ctx.stroke();
     // Reset, or the scrims below inherit the glow.
