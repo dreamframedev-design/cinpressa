@@ -184,8 +184,8 @@ function render(ctx: CanvasRenderingContext2D, w: number, h: number, t: number) 
     ctx.stroke();
   }
 
-  // ── THE THREAD. A single drawn hairline running through the field, on its
-  //    own sine rather than on any ribbon's edge - the crest lines above are
+  // ── THE GOLDEN THREAD. A single drawn hairline running through the field, on
+  //    its own sine rather than on any ribbon's edge - the crest lines above are
   //    the boundary of a mass, which is a different thing, and a field made
   //    only of soft edges has nothing crisp in it to read against. Two
   //    components at incommensurable periods so it never resolves into a clean
@@ -197,28 +197,61 @@ function render(ctx: CanvasRenderingContext2D, w: number, h: number, t: number) 
     const base = 0.6;
     const amp = 0.055;
     const travel = t * 0.012;
+
+    // The path once, reused by both passes.
+    const trace = () => {
+      ctx.beginPath();
+      for (let i = 0; i <= STEPS; i++) {
+        const f = i / STEPS;
+        const x = -0.08 * w + 1.16 * w * f;
+        const y =
+          (base +
+            amp * Math.sin((f - travel) * TAU * 1.35 + 0.6) +
+            amp * 0.42 * Math.sin((f + travel * 1.7) * TAU * 2.9 + 2.1) +
+            0.014 * Math.sin(t * 0.09)) *
+          h;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+    };
+
+    // PASS ONE: the thread itself, in the mark's gold. It fades to nothing at
+    // both ends like everything else in this field, so it arrives and leaves
+    // rather than starting and stopping.
     ctx.lineWidth = Math.max(1, w / 1900);
     const thread = ctx.createLinearGradient(0, 0, w, 0);
-    thread.addColorStop(0, "rgba(34,97,173,0)");
-    thread.addColorStop(0.28, "rgba(34,97,173,0.16)");
-    thread.addColorStop(0.6, "rgba(34,97,173,0.32)");
-    thread.addColorStop(0.86, "rgba(34,97,173,0.14)");
-    thread.addColorStop(1, "rgba(34,97,173,0)");
+    thread.addColorStop(0, "rgba(249,168,26,0)");
+    thread.addColorStop(0.26, "rgba(249,168,26,0.3)");
+    thread.addColorStop(0.6, "rgba(249,168,26,0.55)");
+    thread.addColorStop(0.87, "rgba(249,168,26,0.26)");
+    thread.addColorStop(1, "rgba(249,168,26,0)");
     ctx.strokeStyle = thread;
-    ctx.beginPath();
-    for (let i = 0; i <= STEPS; i++) {
-      const f = i / STEPS;
-      const x = -0.08 * w + 1.16 * w * f;
-      const y =
-        (base +
-          amp * Math.sin((f - travel) * TAU * 1.35 + 0.6) +
-          amp * 0.42 * Math.sin((f + travel * 1.7) * TAU * 2.9 + 2.1) +
-          0.014 * Math.sin(t * 0.09)) *
-        h;
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    }
+    trace();
     ctx.stroke();
+
+    // PASS TWO: the shine. A short bright length travelling the thread, so it
+    // reads as a gold filament catching light rather than as a drawn line that
+    // happens to be gold. Its stops are built around a moving centre and
+    // clamped, because a canvas gradient will not take stops out of order.
+    const cyc = (t * 0.055) % 1;
+    const c = Math.min(0.995, Math.max(0.005, -0.16 + cyc * 1.32));
+    const lo = Math.max(0, c - 0.13);
+    const hi = Math.min(1, c + 0.13);
+    const shine = ctx.createLinearGradient(0, 0, w, 0);
+    shine.addColorStop(0, "rgba(255,238,196,0)");
+    if (lo > 0) shine.addColorStop(lo, "rgba(255,238,196,0)");
+    shine.addColorStop(c, "rgba(255,243,214,0.95)");
+    if (hi < 1) shine.addColorStop(hi, "rgba(255,238,196,0)");
+    shine.addColorStop(1, "rgba(255,238,196,0)");
+    ctx.strokeStyle = shine;
+    ctx.lineWidth = Math.max(1.2, w / 1500);
+    ctx.shadowColor = "rgba(249,168,26,0.55)";
+    ctx.shadowBlur = Math.max(4, w / 220);
+    trace();
+    ctx.stroke();
+    // Reset, or the scrims below inherit the glow.
+    ctx.shadowBlur = 0;
+    ctx.shadowColor = "transparent";
   }
 
   // Dissolve upward, so the field is a ground rather than a band. Eased back
