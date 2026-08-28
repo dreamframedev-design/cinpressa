@@ -4,6 +4,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { Section } from "@/components/section";
 import { SectionHeader } from "@/components/section-header";
 import { BurdenRail } from "@/components/burden-rail";
+import { BurdenBanner } from "@/components/burden-banner";
 import { DoseMigration } from "@/components/dose-migration";
 import { Bleed } from "@/components/bleed";
 import { HomeHero } from "@/components/home-hero";
@@ -58,7 +59,7 @@ export default function HomePage() {
             Mist, because the hero's gradient ends on mist. The band continues
             that colour instead of introducing a new one, so the only edge is
             the hairline, which is the edge that is meant to show. */}
-        <section className="burden-banner border-b border-line bg-mist">
+        <BurdenBanner className="border-b border-line bg-mist">
           <div className="mx-auto w-full max-w-7xl px-6 pb-10 lg:px-10 lg:pb-12">
             <BurdenRail
               figures={[
@@ -85,7 +86,7 @@ export default function HomePage() {
             ]}
             />
           </div>
-        </section>
+        </BurdenBanner>
 
         {/* THE PROBLEM, IN TWO COLUMNS: THE CLAIM AND ITS EVIDENCE.
 

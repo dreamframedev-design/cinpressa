@@ -446,15 +446,19 @@ body {
     background-image: linear-gradient(
       100deg,
       #2261ad 0%,
-      #2261ad 36%,
-      #1d6cba 41%,
-      #c07a00 45.5%,
-      #d18a00 48%,
+      #2261ad 24%,
+      #2166b4 31%,
+      #1d6cba 37%,
+      #8a6a2a 42%,
+      #c07a00 46%,
+      #e39a10 48.5%,
       #f9a81a 50%,
-      #d18a00 52%,
-      #c07a00 54.5%,
-      #1d6cba 59%,
-      #2261ad 64%,
+      #e39a10 51.5%,
+      #c07a00 54%,
+      #8a6a2a 58%,
+      #1d6cba 63%,
+      #2166b4 69%,
+      #2261ad 76%,
       #2261ad 100%
     );
     background-size: 320% 100%;
@@ -465,7 +469,12 @@ body {
        it puts almost all of its travel in the first fifth of the duration, so
        an 11s cycle still crossed the word in well under a second and read as a
        flash. A beam of light moves at one speed. 5.3s across, 8.7s holding. */
-    animation: hero-beam 14s linear 2.4s infinite;
+    /* Sooner and more often. A 2.4s wait before the first pass and 8.7s
+       between passes meant most people never saw it, and the ramp had hard
+       shoulders so it read as a band crossing rather than as light moving.
+       0.8s in, 5.4s across, 3.6s holding, with the ramp below twice as wide so
+       the colour arrives and leaves gradually. */
+    animation: hero-beam 9s linear 0.8s infinite;
   }
 }
 
@@ -474,7 +483,7 @@ body {
   0% {
     background-position: 128% 0;
   }
-  38% {
+  60% {
     background-position: -28% 0;
   }
   100% {
@@ -598,11 +607,14 @@ body {
   transform-origin: left center;
 }
 
-/* HOVER DEEPENS THE ETCH. The resting rule is the pale hairline, which is the
-   colour it should be; hovering the band brings a slightly stronger grey up
-   underneath it and lets it run further before it fades. Cross-faded rather
-   than transitioned, because two gradients do not interpolate - the second one
-   sits on ::after and only its opacity moves. */
+/* THE ETCH FOLLOWS THE CURSOR. This was a fixed gradient anchored at the left,
+   which is not a hover state at all - it lit the same inch of rule wherever the
+   pointer happened to be. The band writes the pointer's x into --etch-x (see
+   burden-banner.tsx) and the glow centres on it, so the warmth sits under the
+   cursor and travels with it.
+
+   On its own pseudo-element rather than transitioned on ::before, because two
+   gradients do not interpolate; only opacity moves here. */
 .burden-rail::after {
   content: "";
   position: absolute;
@@ -611,18 +623,18 @@ body {
   height: 1px;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.55s var(--ease-brand);
+  transition: opacity 0.4s var(--ease-brand);
   background: linear-gradient(
     90deg,
-    var(--color-orange) 0%,
-    rgba(249, 168, 26, 0.8) 26%,
-    rgba(249, 168, 26, 0.3) 48%,
-    var(--color-pale) 66%,
-    rgba(190, 215, 236, 0) 100%
+    rgba(249, 168, 26, 0) calc(var(--etch-x, 50%) - 22%),
+    rgba(249, 168, 26, 0.5) calc(var(--etch-x, 50%) - 10%),
+    var(--color-orange) var(--etch-x, 50%),
+    rgba(249, 168, 26, 0.5) calc(var(--etch-x, 50%) + 10%),
+    rgba(249, 168, 26, 0) calc(var(--etch-x, 50%) + 22%)
   );
 }
 
-.burden-banner:hover .burden-rail::after {
+.burden-banner[data-etch] .burden-rail::after {
   opacity: 1;
 }
 
@@ -2409,6 +2421,8 @@ body {
     box-shadow: none !important;
   }
 }
+
+
 
 
 

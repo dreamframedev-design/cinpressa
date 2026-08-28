@@ -57,7 +57,15 @@ type Oval = {
  *  outward and some inward (ds either side of 1), so neighbouring overlaps
  *  deepen and thin against each other rather than in unison. */
 const OVALS: Oval[] = [
-  { color: "#AFDBBC", alpha: 0.85, cx: 300, cy: 170, rx: 560, ry: 380, rot: -18, ex: -60, ey: -40, delay: 0, dx: 30, dy: 18, dr: 1.6, ds: 1.035, dur: 34 },
+  /* THE GOLD PETAL. This oval was the mark's green; it carries the accent now,
+     which is the one colour in the logo the page had none of. Alpha is half the
+     others because orange is a far stronger hue than the pale green it
+     replaced - at the same 0.85 it stopped being a wash and became a tint over
+     the whole upper left. At 0.42 multiplied over white it lands near
+     rgb(253,220,163), a warm sand that the ink headline still clears 9:1 on,
+     and it deepens to amber wherever the azure ovals cross it. Geometry and
+     motion are untouched. */
+  { color: "#F9A81A", alpha: 0.42, cx: 300, cy: 170, rx: 560, ry: 380, rot: -18, ex: -60, ey: -40, delay: 0, dx: 30, dy: 18, dr: 1.6, ds: 1.035, dur: 34 },
   { color: "#95DAF8", alpha: 0.8, cx: 1090, cy: 240, rx: 640, ry: 410, rot: 14, ex: 70, ey: -30, delay: 0.12, dx: -34, dy: 22, dr: -1.8, ds: 0.98, dur: 44 },
   { color: "#AADBF6", alpha: 0.85, cx: 760, cy: 820, rx: 560, ry: 380, rot: -9, ex: 0, ey: 70, delay: 0.24, dx: 26, dy: -26, dr: 1.3, ds: 1.045, dur: 38 },
   { color: "#6771B5", alpha: 0.3, cx: 1280, cy: 780, rx: 470, ry: 320, rot: 26, ex: 60, ey: 40, delay: 0.36, dx: -22, dy: -18, dr: -2.2, ds: 1.025, dur: 48 },
