@@ -213,6 +213,22 @@ function draw(
 
   ctx.filter = "none";
   ctx.globalCompositeOperation = "source-over";
+
+  // TOP FEATHER, AND THE BASE COLOUR ALONE WAS NOT ENOUGH. Matching the base to
+  // the section above gets the ground right, but the bands are multiplied over
+  // it and their soft tails reach the first row - measured, the top pixel came
+  // out rgb(227,239,248) against a neighbour ending on rgb(230,241,250). Three
+  // levels is invisible as a colour and perfectly visible as a rule, because it
+  // runs the full width at exactly the seam.
+  //
+  // So the incoming colour is laid back over the top of the field, opaque at
+  // the very edge and gone within the first fifth. The piece now starts on its
+  // neighbour's exact colour and the bands emerge out of it.
+  const cap = ctx.createLinearGradient(0, 0, 0, h * 0.2);
+  cap.addColorStop(0, topColor);
+  cap.addColorStop(1, `${topColor}00`);
+  ctx.fillStyle = cap;
+  ctx.fillRect(0, 0, w, Math.ceil(h * 0.2));
 }
 
 export function Bleed({
