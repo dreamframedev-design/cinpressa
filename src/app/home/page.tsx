@@ -116,9 +116,17 @@ export default function HomePage() {
               The cost is that the crescendo is two paragraphs rather than one.
               Both halves are whole sentences, and the sentence that runs into
               the payoff is not the one that got split, so nothing is broken for
-              a screen reader by the change. */}
+              a screen reader by the change.
+
+              ORDER PUTS THE CRESCENDO BACK TOGETHER WHEN THE GRID STACKS. In
+              one column the source order would read premise, cause, answer,
+              consequence - which drops the supporting paragraph into the middle
+              of a sentence that has not finished. Below the breakpoint the two
+              crescendo halves take orders 1 and 2 and the body paragraphs 3 and
+              4, so the phrase completes before anything else speaks; at lg
+              every order resets to 0 and source order takes the grid back. */}
           <div className="grid gap-x-12 gap-y-9 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-start lg:gap-x-16">
-            <Reveal variant="fade">
+            <Reveal variant="fade" className="order-1 lg:order-none">
               <p className="crescendo max-w-none">
                 <span className="crescendo-lede">
                   In hypertension, the challenge is not whether blood pressure can
@@ -127,7 +135,7 @@ export default function HomePage() {
               </p>
             </Reveal>
 
-            <Reveal variant="fade" delay={120}>
+            <Reveal variant="fade" delay={120} className="order-3 lg:order-none">
               <p className="text-base leading-relaxed text-body">
                 Medication non-adherence is the leading cause of poor blood
                 pressure control, and hypertension is largely asymptomatic,
@@ -135,7 +143,7 @@ export default function HomePage() {
               </p>
             </Reveal>
 
-            <Reveal variant="fade" delay={60}>
+            <Reveal variant="fade" delay={60} className="order-2 lg:order-none">
               <p className="crescendo max-w-none">
                 <span className="crescendo-turn">
                   The challenge is whether it can remain{" "}
@@ -160,7 +168,7 @@ export default function HomePage() {
 
                 Still generated from the same array, so the terms and their
                 order have one source. */}
-            <Reveal variant="fade" delay={160}>
+            <Reveal variant="fade" delay={160} className="order-4 lg:order-none">
               <p className="text-base leading-relaxed text-body">
                 Persistent uncontrolled blood pressure substantially increases
                 the risk of serious complications for{" "}
