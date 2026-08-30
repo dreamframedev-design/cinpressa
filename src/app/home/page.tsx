@@ -60,7 +60,7 @@ export default function HomePage() {
             that colour instead of introducing a new one, so the only edge is
             the hairline, which is the edge that is meant to show. */}
         <BurdenBanner className="border-b border-line bg-mist">
-          <div className="mx-auto w-full max-w-7xl px-6 pb-10 lg:px-10 lg:pb-12">
+          <div className="mx-auto w-full max-w-7xl px-6 pb-7 lg:px-10 lg:pb-8">
             <BurdenRail
               figures={[
               {
@@ -79,8 +79,7 @@ export default function HomePage() {
               {
                 value: "70",
                 unit: "%",
-                label:
-                  "of treated patients do not achieve target blood pressure levels, despite numerous approved therapies",
+                label: "of treated patients do not achieve target blood pressure levels",
                 share: 0.7,
               },
             ]}
@@ -106,14 +105,38 @@ export default function HomePage() {
             together inside the right column - the constraint that broke two
             earlier cuts of this content. */}
         <Section tone="sky" className="pt-14! lg:pt-20!">
-          <div className="grid gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-start lg:gap-16">
+          {/* TWO COLUMNS AND TWO ROWS, which is what makes the second beat of
+              each column start on the same line as the other's. A fixed offset
+              on the turn would only hold at one width - the paragraph across
+              from it rewraps, so the distance to match changes with the
+              viewport. Grid rows solve it outright: row one is the premise
+              beside the cause, row two is the answer beside the consequence,
+              and the browser aligns them at any measure.
+
+              The cost is that the crescendo is two paragraphs rather than one.
+              Both halves are whole sentences, and the sentence that runs into
+              the payoff is not the one that got split, so nothing is broken for
+              a screen reader by the change. */}
+          <div className="grid gap-x-12 gap-y-9 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-start lg:gap-x-16">
             <Reveal variant="fade">
-              {/* One sentence pair to a screen reader; two sizes to an eye. */}
               <p className="crescendo max-w-none">
                 <span className="crescendo-lede">
                   In hypertension, the challenge is not whether blood pressure can
                   be lowered.
                 </span>
+              </p>
+            </Reveal>
+
+            <Reveal variant="fade" delay={120}>
+              <p className="text-base leading-relaxed text-body">
+                Medication non-adherence is the leading cause of poor blood
+                pressure control, and hypertension is largely asymptomatic,
+                resulting in poor long-term adherence and treatment persistence.
+              </p>
+            </Reveal>
+
+            <Reveal variant="fade" delay={60}>
+              <p className="crescendo max-w-none">
                 <span className="crescendo-turn">
                   The challenge is whether it can remain{" "}
                 </span>
@@ -123,38 +146,27 @@ export default function HomePage() {
               </p>
             </Reveal>
 
-            <div>
-              <Reveal variant="fade" delay={120}>
-                <p className="text-base leading-relaxed text-body">
-                  Medication non-adherence is the leading cause of poor blood
-                  pressure control, and hypertension is largely asymptomatic,
-                  resulting in poor long-term adherence and treatment
-                  persistence.
-                </p>
-              </Reveal>
+            {/* THE SEVEN RUN IN, rather than sitting in badges. As tags they
+                took three rows and most of this column; as a sentence they take
+                two lines and finish the paragraph that introduces them, which
+                is what a list of seven short terms wants to be.
 
-              {/* THE SEVEN RUN IN, rather than sitting in badges. As tags they
-                  took three rows and most of this column; as a sentence they
-                  take two lines and finish the paragraph that introduces them,
-                  which is what a list of seven short terms wants to be.
+                The colon goes with them - a colon introduces a list that is
+                about to be set apart, and nothing is set apart any more. The
+                terms lowercase because they are now inside a sentence rather
+                than labels in their own right; not one of them is a proper
+                noun, so nothing is lost. They stay in ink against the body
+                grey, so the run still reads as the list it is.
 
-                  The colon goes with them - a colon introduces a list that is
-                  about to be set apart, and nothing is set apart any more. The
-                  terms lowercase because they are now inside a sentence rather
-                  than labels in their own right; not one of them is a proper
-                  noun, so nothing is lost. They stay in ink against the body
-                  grey, so the run still reads as the list it is.
-
-                  Still generated from the same array, so the terms and their
-                  order have one source. */}
-              <Reveal variant="fade" delay={160}>
-                <p className="mt-8 text-base leading-relaxed text-body">
-                  Persistent uncontrolled blood pressure substantially increases
-                  the risk of serious complications for{" "}
-                  <span className="text-ink">{COMPLICATIONS_RUN}</span>
-                </p>
-              </Reveal>
-            </div>
+                Still generated from the same array, so the terms and their
+                order have one source. */}
+            <Reveal variant="fade" delay={160}>
+              <p className="text-base leading-relaxed text-body">
+                Persistent uncontrolled blood pressure substantially increases
+                the risk of serious complications for{" "}
+                <span className="text-ink">{COMPLICATIONS_RUN}</span>
+              </p>
+            </Reveal>
           </div>
         </Section>
 

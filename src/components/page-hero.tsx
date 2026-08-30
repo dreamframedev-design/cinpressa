@@ -66,7 +66,13 @@ export function PageHero({
           so the box is too. This is the only bare hero on the site today, so it
           is the only one that moves. */}
       <div
-        className={`relative mx-auto grid max-w-7xl content-start gap-12 px-6 pt-32 lg:px-10 lg:pt-44 ${
+        /* w-full IS LOAD-BEARING. Without it a grid shrinks to fit its
+           content, and mx-auto then centres that shrunken box - so on a wide
+           screen a short headline drifts right of the gutter every other thing
+           on the page starts at, including the logo directly above it. Every
+           other container on the site pairs w-full with max-w-7xl; this one
+           did not, which is why the interior heroes sat off-axis. */
+        className={`relative mx-auto grid w-full max-w-7xl content-start gap-12 px-6 pt-32 lg:px-10 lg:pt-44 ${
           bare
             ? "min-h-[26rem] pb-12 lg:min-h-[30rem] lg:pb-16"
             : "min-h-[33rem] pb-16 lg:min-h-[41rem] lg:pb-24"

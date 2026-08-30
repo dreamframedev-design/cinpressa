@@ -107,17 +107,21 @@ export function HomeHero() {
         }`}
       >
         <div className={mark ? undefined : "max-w-2xl"}>
+          {/* NOT UPPERCASED, and that is deliberate rather than a lapse in the
+              eyebrow style. CinRx is set in elephant case - upper and lower
+              mixed - and that is how the name is always written, so a
+              text-transform that flattens it to CINRX is not available here.
+              The tracking and weight carry the eyebrow treatment instead.
+
+              The rule is blue again, matching the words it introduces. The
+              orange it carried for a few commits now lives on the rail below
+              and on the thread in the field, which is enough punctuation for
+              one screen. */}
           <p
-            className="anim-rise flex items-center gap-3 text-[0.92rem] font-semibold uppercase tracking-[0.22em] text-blue"
+            className="anim-rise flex items-center gap-3 text-[0.92rem] font-semibold tracking-[0.18em] text-blue"
             style={{ animationDelay: "0.02s" }}
           >
-            {/* ORANGE, AND THIS IS THE PLACE FOR IT. The hero carried none:
-                the mark has it, the dose beads have it, the cascade's upstream
-                node has it, and between the top of the page and the middle
-                there was no trace of the one colour that is only ever
-                punctuation. A 1px rule 32px long is the smallest thing on the
-                page that can carry it, which is exactly why it can. */}
-            <span aria-hidden className="h-px w-8 bg-orange" />
+            <span aria-hidden className="h-px w-8 bg-blue" />
             A CinRx portfolio company
           </p>
           <h1
@@ -130,17 +134,10 @@ export function HomeHero() {
             Advancing a best-in-class siRNA for{" "}
             <span className="hero-key">hypertension</span>
           </h1>
-          <p
-            className="anim-rise mt-7 max-w-xl text-lg leading-relaxed text-body"
-            style={{ animationDelay: "0.28s" }}
-          >
-            {/* Opens on "Designed". The clause it replaced - "CinPressa is
-                advancing CIN-111, a best-in-class AGT siRNA for the treatment
-                of hypertension," - restated the headline directly above it,
-                which already says best-in-class siRNA for hypertension. */}
-            Designed to prevent the formation of angiotensinogen and deliver
-            long-acting blood pressure control.
-          </p>
+          {/* The hero paragraph is removed. What is left is the eyebrow, the
+              headline and the switch - the headline already says what the
+              company is doing, and the page states the rest three sections
+              down. */}
 
           <div className="anim-rise mt-10 w-fit" style={{ animationDelay: "0.4s" }}>
             <div className="flex items-center gap-3 border-t border-line/70 pt-3">

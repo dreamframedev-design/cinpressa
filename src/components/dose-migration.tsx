@@ -87,10 +87,17 @@ const SPLIT = MONTHS.slice(0, ROWS / 2).reduce((a, b) => a + b, 0);
  *  fall, and two grown doses — then the emptied calendar holds for a beat
  *  before the year refills. A glance catches the whole story; a second glance
  *  catches the next year. */
-const CYCLE = 9;
+const CYCLE = 12;
 const DEPART_SPAN = 3.2;
 const FLIGHT = 1.4;
-/** THE HOLD IS NOW A RESOLUTION. Everything has landed by DEPART_SPAN +
+/** THE HOLD IS NOW A RESOLUTION, AND IT IS LONG.
+
+ *  The pair used to reach the top and start back down almost at once: risen by
+ *  5.7s and already falling by 6.3s, which is six tenths of a second at rest
+ *  and a seven-tenths drop. It reads as a bounce rather than as an arrival. The
+ *  cycle stretches to twelve seconds to buy the time: the pair now holds at the
+ *  top for about 2.9 seconds and takes 1.8 to come back down.
+ * Everything has landed by DEPART_SPAN +
  *  FLIGHT, and the piece used to simply sit there with two small beads at the
  *  foot of the card until the refill. They rise into the emptied calendar
  *  instead, gather to the centre and grow: the year is gone and this is what it
@@ -100,11 +107,11 @@ const FLIGHT = 1.4;
  *  belong. */
 const SETTLE_START = DEPART_SPAN + FLIGHT;
 const SETTLE_SPAN = 1.1;
-const RELEASE_SPAN = 0.7;
+const RELEASE_SPAN = 1.8;
 /** How much bigger the pair reads once it is the only thing left. */
 const SETTLE_GROW = 1.15;
 
-const REFILL_START = 7;
+const REFILL_START = 10.4;
 const REFILL_SPAN = 1.6;
 const REFILL_RAMP = 0.35;
 

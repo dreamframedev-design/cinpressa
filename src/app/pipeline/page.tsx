@@ -5,6 +5,7 @@ import { PageHero } from "@/components/page-hero";
 import { HeroChurn } from "@/components/hero-fields";
 import { Section } from "@/components/section";
 import { PipelineDiagram } from "@/components/pipeline-diagram";
+import { BurdenRail } from "@/components/burden-rail";
 import { SectionHeader } from "@/components/section-header";
 import { Reveal } from "@/components/reveal";
 
@@ -23,14 +24,20 @@ const phase1Spec = [
   { label: "Cohorts", value: "8 subjects, expandable to 24 when a dose yields >80% AGT reduction at Day 28" },
 ];
 
+/* THE SAME RAIL AS THE HOMEPAGE, not a lookalike. These were three bordered
+   tiles with their own type ramp and their own accent per tile; they are the
+   burden rail now, so a change to the rail's proportions lands in both places
+   at once and the two cannot drift. No shares: none of these three is a
+   proportion of anything, and the rail leaves the track off when it is not
+   given one. */
 const highlights = [
-  { value: "~100×", label: "therapeutic window in GLP toxicology", accent: "text-blue", rule: "bg-blue" },
+  { value: "~100", unit: "×", label: "therapeutic window in GLP toxicology" },
   /* Was "6 mo+ / potential dosing interval". The updated copy states a
      long-acting profile with infrequent administration and no longer claims a
      six-month interval, so the tile now carries the NHP durability figure the
      body does support. */
-  { value: "~88%", label: "mean AGT reduction sustained to Day 119 in hypertensive NHPs", accent: "text-cobalt", rule: "bg-cobalt" },
-  { value: "2044", label: "expected IP expiry, global and pending in major markets", accent: "text-indigo", rule: "bg-indigo" },
+  { value: "~88", unit: "%", label: "mean AGT reduction sustained to Day 119 in hypertensive NHPs" },
+  { value: "2044", label: "expected IP expiry, global and pending in major markets" },
 ];
 
 export default function PipelinePage() {
@@ -69,7 +76,7 @@ export default function PipelinePage() {
             1 and called that stage "Underway", while this page's own copy says
             the IND is planned and the study is expected to commence. Corrected
             rather than deleted — the bar stops where the completed work stops,
-            and the Phase 1 note under it says planned. See
+            and the Phase I note under it says planned. See
             pipeline-diagram.tsx. */}
         <Section className="pt-12! pb-6! lg:pt-16! lg:pb-8!">
           {/* NO HEADLINE OVER THE BAR. "CIN-111 development stage" and its
@@ -92,7 +99,7 @@ export default function PipelinePage() {
         {/* Lead program: the map's body */}
         {/* Pulled up to meet the bar. The stage section's own bottom padding
             and this one's top padding stacked to about 250px of white under the
-            Phase 1 note, which read as the page ending rather than continuing.
+            Phase I note, which read as the page ending rather than continuing.
             The tone still changes at the seam, so the two keep some air, just
             not a screen of it. */}
         <Section tone="sky" className="pt-8! lg:pt-10!">
@@ -125,24 +132,7 @@ export default function PipelinePage() {
             </Reveal>
           </div>
 
-          <dl className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-3">
-            {highlights.map((h, i) => (
-              <Reveal
-                key={h.label}
-                variant="rise"
-                delay={i * 90}
-                className="bg-white px-7 py-8"
-              >
-                <span aria-hidden className={`mb-5 block h-px w-10 ${h.rule}`} />
-                <dd
-                  className={`text-[clamp(2rem,3.5vw,2.75rem)] font-extralight leading-none tracking-tight ${h.accent}`}
-                >
-                  {h.value}
-                </dd>
-                <dt className="mt-3 text-base leading-relaxed text-body">{h.label}</dt>
-              </Reveal>
-            ))}
-          </dl>
+          <BurdenRail className="mt-12" figures={highlights} />
 
           {/* THE EFFICACY CURVES WERE DELETED HERE. Their own header said it:
               only four figures in that chart were real, and everything between

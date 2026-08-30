@@ -37,13 +37,19 @@ const FILL = "#2261ad";
  * Preclinical is complete: one full stage column, or 25% of a four-stage track.
  *
  * It used to run to 31.25%, a quarter into Phase 1, with Phase 1 marked "live"
- * and its status reading "Underway". That was wrong on the page's own evidence:
- * the copy says the IND is PLANNED for mid-2026 and the study is EXPECTED to
- * commence in the fall. A pipeline bar reaching into Phase 1 tells a partner the
- * programme is dosing when it is preclinical, which is the one thing this chart
- * must not get wrong. It stops where the completed work stops.
+ * and its status reading "Underway", at a point when the page's own copy said
+ * the IND was planned and the study expected to commence.
+ *
+ * IT REACHES INTO PHASE I AGAIN NOW, BY INSTRUCTION, and the copy has moved
+ * with it: the status line reads that a single ascending dose study is ongoing.
+ * The bar spans four stages, so a third of the way through the first phase is
+ * 25% for the completed preclinical plus a third of the next quarter. What has
+ * NOT moved is the Clinical development section further down the page, which
+ * still reads "expected to commence in fall 2026" - flagged, not silently
+ * reconciled, because which of the two is true is not a call this file can
+ * make.
  */
-const PROGRESS = 25;
+const PROGRESS = 33.3;
 
 const COLUMNS = "grid grid-cols-[minmax(9rem,1.15fr)_repeat(4,minmax(0,1fr))]";
 
@@ -69,12 +75,12 @@ const STAGES: Stage[] = [
        state "next" so the bar stops at the end of preclinical. Changed as
        asked and raised - if the study really has begun, that subtitle and this
        state both need to move with it, and neither is mine to decide. */
-    name: "Phase 1",
+    name: "Phase I",
     state: "next",
     status: "A single ascending dose study is ongoing.",
   },
-  { name: "Phase 2", state: "todo", status: "Not started." },
-  { name: "Phase 3", state: "todo", status: "Not started." },
+  { name: "Phase II", state: "todo", status: "Not started." },
+  { name: "Phase III", state: "todo", status: "Not started." },
 ];
 
 /** With nothing hovered the line reports the stage the programme is heading
@@ -127,7 +133,7 @@ export function PipelineDiagram() {
             <div
               className="relative col-span-4 self-stretch"
               role="img"
-              aria-label="CIN-111 development status: preclinical complete, Phase 1 underway, Phase 2 and Phase 3 not yet started."
+              aria-label="CIN-111 development status: preclinical complete, Phase I underway, Phase II and Phase III not yet started."
             >
               {/* Stage boundaries, aligned to the header columns above. The column
                   under the cursor tints its full height, so the hover reads down the

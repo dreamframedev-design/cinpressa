@@ -395,9 +395,16 @@ body {
 }
 
 /* A sentence gap has to beat the line gap inside a sentence or the two read as
-   one block with odd leading. Line pitch here is 36px, so this sits at 26. */
+   one block with odd leading. Line pitch here is 36px, so this sits at 26 -
+   except where the turn opens its own block, which it does on the homepage now
+   that the crescendo is split across two grid rows. There the gap belongs to
+   the row, not to the span. */
 .crescendo-turn {
   margin-top: 1.6rem;
+}
+
+.crescendo-turn:first-child {
+  margin-top: 0;
 }
 
 /* THE PAYOFF NEEDS AIR ABOVE IT. This was 0.35rem, set when the line above was
@@ -469,13 +476,12 @@ body {
        it puts almost all of its travel in the first fifth of the duration, so
        an 11s cycle still crossed the word in well under a second and read as a
        flash. A beam of light moves at one speed. 5.3s across, 8.7s holding. */
-    /* Slower across, and back sooner. The two are opposite ends of the same
-       cycle, so the fix is to give the sweep most of it and leave only a beat
-       of rest: 0.6s in, 6.6s across, 1.4s holding. Each pass is about a fifth
-       slower than before and the gap between passes drops from 3.6s to 1.4s,
-       which is what makes it read as something moving continuously rather than
-       as an effect that fires now and then. */
-    animation: hero-beam 8s linear 0.6s infinite;
+    /* STARTS ON LOAD, and the second pass follows close behind. The delay is
+       gone, so the first sweep is already crossing as the page arrives. The
+       speed across the word is unchanged - still 6.6s, which was the part that
+       was right - and the rest between passes drops from 1.4s to 0.6s, so the
+       second animation begins sooner without either one moving faster. */
+    animation: hero-beam 7.2s linear 0s infinite;
   }
 }
 
@@ -484,7 +490,7 @@ body {
   0% {
     background-position: 128% 0;
   }
-  82% {
+  92% {
     background-position: -28% 0;
   }
   100% {
@@ -638,11 +644,17 @@ body {
    measure. See burden-rail.tsx for why the card grid went and why these start
    monochrome. */
 
+/* TIGHTER, SMALLER, CENTRED - measured against Stripe's own stat rail, which
+   is the reference this was given. Ours ran a 54px figure over 40px of padding
+   with a 17px label a full rem below it, which is why it read as three tall
+   boxes rather than as a rail. The figure comes down to 36px, the paddings and
+   gaps close, and each cell centres on its own axis so the numbers line up with
+   their labels instead of both hanging off a left edge. */
 .burden-rail {
   position: relative;
   display: grid;
   grid-template-columns: 1fr;
-  padding-block: 2.5rem 0;
+  padding-block: 1.6rem 0;
 }
 
 @media (min-width: 768px) {
@@ -720,6 +732,8 @@ body {
   position: relative;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .burden-cell + .burden-cell {
@@ -756,11 +770,14 @@ body {
    there anyway. */
 .burden-value {
   display: block;
-  font-size: clamp(2.4rem, 4.4vw, 3.4rem);
+  font-size: clamp(1.75rem, 2.8vw, 2.25rem);
   font-weight: 600;
   line-height: 1;
   letter-spacing: -0.03em;
-  color: var(--color-ink);
+  /* Dark grey rather than the near-black ink: at this size a full-strength
+     ink figure reads as heavy, and the whole point of the rail is that the
+     numbers are calm until they are hovered. */
+  color: #414c59;
   /* Every stop clears 3:1 on white, which is what this size needs. The
      lighter half of the ladder — cyan, sky, frost — is absent on purpose:
      it is beautiful and it is unreadable. */
@@ -790,7 +807,7 @@ body {
 }
 
 .burden-label {
-  margin-top: 1rem;
+  margin-top: 0.55rem;
   font-size: 1.05rem;
   font-weight: 400;
   line-height: 1.5;
@@ -803,7 +820,8 @@ body {
 .burden-track {
   position: relative;
   margin-top: auto;
-  padding-top: 1.6rem;
+  padding-top: 1rem;
+  align-self: stretch;
 }
 
 .burden-track::before {
@@ -2491,6 +2509,9 @@ body {
     box-shadow: none !important;
   }
 }
+
+
+
 
 
 

@@ -13,7 +13,8 @@ export type Figure = {
    * why the label carries the denominator rather than the cells sharing one
    * axis.
    */
-  share: number;
+  /** Omit on a rail whose figures are not proportions of anything. */
+  share?: number;
 };
 
 /**
@@ -60,7 +61,10 @@ export function BurdenRail({
             className="burden-cell"
             style={
               {
-                "--share": `${Math.round(f.share * 1000) / 10}%`,
+                "--share":
+                  f.share === undefined
+                    ? undefined
+                    : `${Math.round(f.share * 1000) / 10}%`,
                 "--i": i,
               } as CSSProperties
             }
@@ -70,9 +74,16 @@ export function BurdenRail({
               {f.unit ? <span className="burden-unit">{f.unit}</span> : null}
             </dd>
             <dt className="burden-label">{f.label}</dt>
-            <div aria-hidden className="burden-track">
-              <span className="burden-share" />
-            </div>
+            {/* THE TRACK IS THE PROPORTION, so a figure that is not a
+                proportion of anything does not get one. /pipeline reuses this
+                rail for three findings - a therapeutic window, a reduction
+                sustained to a day, an expiry year - and a progress bar under
+                any of those would be inventing a scale. */}
+            {f.share === undefined ? null : (
+              <div aria-hidden className="burden-track">
+                <span className="burden-share" />
+              </div>
+            )}
           </div>
         ))}
       </dl>
