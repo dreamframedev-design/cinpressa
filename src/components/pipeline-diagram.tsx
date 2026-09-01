@@ -17,10 +17,18 @@ import { Reveal } from "@/components/reveal";
  * with one colour there is no code to decode — the bar reaches Phase 1 and stops, and
  * a pipeline chart needs no instructions to be read.
  *
- * ONE COLOUR, ONE MOVING PART. Core brand blue, flat. The only motion inside the bar
- * is a soft beam that crosses in a beat and then leaves the chart still for five
- * seconds. Tempo is the whole trick: a continuous shine is a loading bar, and a
- * loading bar says "waiting". A single unhurried pass says the programme is live.
+ * ONE COLOUR, ONE MOVING PART. The brand orange, flat. The only motion inside the bar
+ * is a soft beam that crosses and then leaves the chart still for five seconds. Tempo
+ * is the whole trick: a continuous shine is a loading bar, and a loading bar says
+ * "waiting". A single unhurried pass says the programme is live.
+ *
+ * ORANGE RATHER THAN BLUE, BY INSTRUCTION, and worth one note. Against the pale track
+ * the orange is a weaker LUMINANCE contrast than the blue was - 1.6:1 where the blue
+ * managed 5.1 - so what separates fill from empty here is hue rather than value. At
+ * this size that carries: an 18px bar running a third of a wide track is not a
+ * hairline, and the status line underneath states the same fact in words. It would
+ * not carry on anything small, which is why the orange is not being moved onto
+ * thinner marks alongside it.
  *
  * INTERACTION THAT INFORMS. Hovering a stage column tints it and prints that stage's
  * status underneath; with no pointer at all the line carries the stage actually
@@ -31,7 +39,7 @@ import { Reveal } from "@/components/reveal";
 /** Bar and track height. A rule, not a slab. */
 const BAR_H = 18;
 
-const FILL = "#2261ad";
+const FILL = "#f9a81a";
 
 /**
  * Preclinical is complete: one full stage column, or 25% of a four-stage track.
@@ -53,9 +61,13 @@ const PROGRESS = 33.3;
 
 const COLUMNS = "grid grid-cols-[minmax(9rem,1.15fr)_repeat(4,minmax(0,1fr))]";
 
-/** Soft-cored, transparent at both ends, so the bar's own clip fades it in and out. */
+/** Soft-cored, transparent at both ends, so the bar's own clip fades it in and out.
+ *  Wider and lower-peaked than it was: on orange a 0.62 white core reads as a hot
+ *  spot travelling the bar, where the point is a sheen moving across it. Spreading
+ *  the same light over 42% of the fill instead of 30, with shoulders either side of
+ *  the core, is what makes the pass read as smooth rather than as an object. */
 const BEAM =
-  "linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.34) 42%, rgba(255,255,255,0.62) 52%, rgba(255,255,255,0.3) 62%, rgba(255,255,255,0) 100%)";
+  "linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.16) 28%, rgba(255,255,255,0.36) 44%, rgba(255,255,255,0.5) 52%, rgba(255,255,255,0.32) 62%, rgba(255,255,255,0.13) 76%, rgba(255,255,255,0) 100%)";
 
 /** "next" is the stage the programme is heading into, not one it has entered. */
 type Stage = { name: string; status: string; state: "done" | "next" | "todo" };
@@ -164,7 +176,7 @@ export function PipelineDiagram() {
                   >
                     <div
                       aria-hidden
-                      className="pl-beam absolute inset-y-0 left-0 w-[30%]"
+                      className="pl-beam absolute inset-y-0 left-0 w-[42%]"
                       style={{ background: BEAM }}
                     />
                   </div>

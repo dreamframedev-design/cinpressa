@@ -2439,13 +2439,24 @@ body {
    the bar clips it, so it resolves out of the left edge and dissolves into the
    right on geometry alone. Every keyframe declares the transform, so the whole
    crossing is a single eased interval — it gathers pace, glides, and settles,
-   rather than switching speed at a keyframe seam. */
+   rather than switching speed at a keyframe seam.
+
+   SLOWER, AND EASED MORE GENTLY. The crossing was a fifth of a 6.5s cycle, so
+   1.3 seconds end to end, on a curve whose control points sit at 0.65 and 0.35 -
+   a hard acceleration into a fast middle and a hard settle. Both halves of that
+   read as a flick.
+
+   It is 2.7 seconds now, a third of an 8s cycle, on 0.37/0.63 - a gentler S with
+   most of its length near constant speed. Twice as long and far less abrupt at
+   either end, which is what makes it a sheen crossing rather than something
+   being thrown across. The still interval is untouched at a little over five
+   seconds, because that was the part that was right. */
 
 @keyframes pl-beam {
   0% {
-    transform: translateX(-115%) skewX(-12deg);
+    transform: translateX(-130%) skewX(-12deg);
   }
-  20% {
+  34% {
     transform: translateX(400%) skewX(-12deg);
   }
   100% {
@@ -2454,7 +2465,7 @@ body {
 }
 
 .pl-beam {
-  animation: pl-beam 6.5s cubic-bezier(0.65, 0, 0.35, 1) 1.4s infinite;
+  animation: pl-beam 8s cubic-bezier(0.37, 0, 0.63, 1) 1.6s infinite;
 }
 
 /* The stage column under the cursor. A tint and a crisp top rule, nothing soft. */
@@ -2854,6 +2865,7 @@ body {
 
 
 /* r */
+
 
 
 
