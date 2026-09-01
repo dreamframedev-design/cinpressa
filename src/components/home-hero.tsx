@@ -223,34 +223,6 @@ export function HomeHero() {
               company is doing, and the page states the rest three sections
               down. */}
 
-          <div className="anim-rise mt-10 w-fit" style={{ animationDelay: "0.4s" }}>
-            <div className="flex items-center gap-3 border-t border-line/70 pt-3">
-              {(
-                [
-                  { id: "a", label: "A" },
-                  { id: "b", label: "B" },
-                  { id: "c", label: "C" },
-                  { id: "d", label: "D" },
-                  { id: "e", label: "E" },
-                  { id: "f", label: "F" },
-                ] as { id: View; label: string }[]
-              ).map((v) => (
-                <button
-                  key={v.id}
-                  type="button"
-                  aria-pressed={v.id === view}
-                  onClick={() => setView(v.id)}
-                  className={
-                    v.id === view
-                      ? "text-[0.76rem] font-semibold tracking-[0.08em] text-blue underline decoration-blue/40 underline-offset-4"
-                      : "text-[0.76rem] tracking-[0.08em] text-stone transition-colors hover:text-body"
-                  }
-                >
-                  {v.label}
-                </button>
-              ))}
-            </div>
-          </div>
         </div>
 
         {mark ? (
@@ -283,6 +255,43 @@ export function HomeHero() {
             </div>
           </div>
         ) : null}
+      </div>
+
+      {/* PARKED OUT OF THE COMPOSITION. The switch used to sit in the copy
+          column, under the headline, which put review furniture inside the very
+          thing being reviewed - it took a line of vertical space, it drew the
+          eye to the bottom left, and because the hero centres its content it
+          was also changing where every version's copy block sat. You could not
+          judge the balance of a hero while a control was standing in it.
+
+          Corner-parked and out of flow, it costs the layout nothing: what is
+          left in the column is exactly the badge and the headline, which is
+          what ships. */}
+      <div className="absolute bottom-5 right-6 z-10 flex items-center gap-3 lg:bottom-7 lg:right-10">
+        {(
+          [
+            { id: "a", label: "A" },
+            { id: "b", label: "B" },
+            { id: "c", label: "C" },
+            { id: "d", label: "D" },
+            { id: "e", label: "E" },
+            { id: "f", label: "F" },
+          ] as { id: View; label: string }[]
+        ).map((v) => (
+          <button
+            key={v.id}
+            type="button"
+            aria-pressed={v.id === view}
+            onClick={() => setView(v.id)}
+            className={
+              v.id === view
+                ? "text-[0.76rem] font-semibold tracking-[0.08em] text-blue underline decoration-blue/40 underline-offset-4"
+                : "text-[0.76rem] tracking-[0.08em] text-stone/70 transition-colors hover:text-body"
+            }
+          >
+            {v.label}
+          </button>
+        ))}
       </div>
     </section>
   );

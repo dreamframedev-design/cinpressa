@@ -856,7 +856,18 @@ body {
    it.
 
    Twelve per cent to full is the width of the fade. Shorter and it reads as an
-   edge that has been softened; longer and the rule looks like it is failing. */
+   edge that has been softened; longer and the rule looks like it is failing.
+
+   AND THEY ARE 0.9px, NOT 1, WHICH IS WHAT MAKES THEM MATCH. Both were authored
+   at 1px and the top one still rendered heavier, because the two sit at
+   different ends of a box whose height is fractional: one landed on a device
+   pixel boundary and snapped to a crisp full-strength line, the other landed
+   between two and got antialiased across both. Same declaration, two different
+   hairlines, and no amount of adjusting the colour would have reconciled them.
+
+   At 0.9 NEITHER can snap. Both are antialiased at every device ratio, so they
+   render identically wherever they sit, and they land on the lighter of the two
+   weights - which is the one that was wanted. */
 /* THE RESTING RULE IS PALE, and that is the point of it. It carried a fixed
    orange ignition at its left end for one commit, and with the tracking glow
    also orange the only thing a moving cursor changed was a fade - the accent
@@ -868,7 +879,7 @@ body {
   position: absolute;
   inset-inline: 0;
   top: 0;
-  height: 1px;
+  height: 0.9px;
   background: linear-gradient(
     90deg,
     rgba(190, 215, 236, 0) 0%,
@@ -892,7 +903,7 @@ body {
   position: absolute;
   inset-inline: 0;
   top: 0;
-  height: 1px;
+  height: 0.9px;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.4s var(--ease-brand);
@@ -946,7 +957,7 @@ body {
   position: absolute;
   inset-inline: 0;
   bottom: 0;
-  height: 1px;
+  height: 0.9px;
   background: linear-gradient(
     90deg,
     rgba(190, 215, 236, 0) 0%,
@@ -1007,7 +1018,10 @@ body {
    there anyway. */
 .burden-value {
   display: block;
-  font-size: clamp(1.75rem, 2.8vw, 2.25rem);
+  /* Up from a 36px ceiling. Against the reference at the same measure ours was
+     reading a size small - its figures carry the block and ours were sharing
+     the job with their captions. */
+  font-size: clamp(1.9rem, 3.1vw, 2.5rem);
   /* LIGHTER THAN IT WAS. 600 was chosen when these were the loudest thing on a
      page that needed one; beside the reference at the same size it reads chunky
      rather than confident, and the weight is doing work the size already does.
@@ -1054,10 +1068,32 @@ body {
 .burden-label {
   margin-top: 0.7rem;
   font-size: 0.9rem;
-  font-weight: 400;
+  /* 450, not 400. At 14px the regular weight goes papery under a figure this
+     heavy - the caption stopped looking quiet and started looking faint. The
+     variable face makes the half step available, and a half step is all this
+     needs; 500 would start competing. */
+  font-weight: 450;
   line-height: 1.45;
   color: var(--color-muted);
   transition: color 0.4s var(--ease-brand);
+}
+
+/* THE FIRST ONE IS DARKER, WHICH IS WHAT THE REFERENCE DOES. Its four captions
+   are not one grey: the leading one sits near black and the rest fall back, so
+   the row has a head rather than being four equal things in a line. Ours were
+   three identical greys, which reads as a table.
+
+   Ink here rather than a half tone. The step from muted has to survive being
+   glanced at, and 6.3:1 to 12.5:1 on this ground is a step you can see without
+   looking for it. */
+/* :first-of-type, NOT :first-child. The baseline is an absolutely positioned
+   span sitting ahead of the cells in the rail, so it holds first-child and this
+   rule matched nothing at all. Of-type is right rather than lucky: the cells are
+   divs and the baseline is a span, so the first div is the first figure whether
+   the baseline is drawn or not - and on /pipeline, where there are no measures
+   and no baseline, it still resolves to the same cell. */
+.burden-cell:first-of-type .burden-label {
+  color: var(--color-ink);
 }
 
 /* margin-top:auto pins the tracks to a common baseline across the row, so the
@@ -1142,9 +1178,27 @@ body {
 
    #1596d4 is the ceiling on purpose - it clears 3:1 on white at this size, and
    every stop lighter on the ladder does not. */
+/* IT HOLDS NOW, RATHER THAN CONSTANTLY TRAVELLING. The first cut swept at a
+   constant rate from one end to the other, which meant the figure was in
+   transition for the whole cycle: never settled on a colour, always sliding
+   between two. Read across three numbers doing it out of phase, that is busy
+   rather than alive.
+
+   The sweep is the same distance; what changed is that the keyframes park at
+   both ends of it. Roughly a third of the cycle is spent stationary and fully
+   blue, another sixth stationary and fully dark, and the moves between them
+   take the rest on an ease so they settle rather than arrive. What a viewer
+   sees is a figure that turns blue, STAYS blue long enough to register as a
+   state, and turns back.
+
+   The stops are chosen against the gradient below rather than by eye: at 320%
+   the window onto the ramp is 31.25% wide, so position 50% sits entirely inside
+   the blue plateau and 120% and -20% sit entirely inside the dark ones. Those
+   are the three positions the animation parks at, which is why each hold is a
+   flat colour and not a frozen gradient. */
 .burden-value {
-  animation: burden-beam 10s linear infinite;
-  animation-delay: calc(var(--i, 0) * -3.33s);
+  animation: burden-beam 13s cubic-bezier(0.45, 0, 0.25, 1) infinite;
+  animation-delay: calc(var(--i, 0) * -4.33s);
 }
 
 /* The fill only goes transparent where the ramp can actually be clipped to the
@@ -1156,13 +1210,13 @@ body {
     background-image: linear-gradient(
       100deg,
       #414c59 0%,
-      #414c59 30%,
-      #2261ad 38%,
-      #0473bb 44%,
+      #414c59 18%,
+      #2261ad 24%,
+      #0473bb 30%,
       #1596d4 50%,
-      #0473bb 56%,
-      #2261ad 62%,
-      #414c59 70%,
+      #0473bb 70%,
+      #2261ad 76%,
+      #414c59 82%,
       #414c59 100%
     );
     background-size: 320% 100%;
@@ -1174,24 +1228,32 @@ body {
   background-image: linear-gradient(
     100deg,
     #2261ad 0%,
-    #2261ad 26%,
-    #0473bb 36%,
-    #0783c6 44%,
+    #2261ad 20%,
+    #0473bb 30%,
+    #0783c6 40%,
     #1596d4 50%,
-    #0783c6 56%,
-    #0473bb 64%,
-    #2261ad 74%,
+    #0783c6 60%,
+    #0473bb 70%,
+    #2261ad 80%,
     #2261ad 100%
   );
   background-size: 320% 100%;
 }
 
+/* Three parked positions and two moves between them. The doubled stops are the
+   holds; the gaps between the pairs are the travel. */
 @keyframes burden-beam {
-  from {
-    background-position: 110% 0;
+  0%,
+  8% {
+    background-position: 120% 0;
   }
-  to {
-    background-position: -10% 0;
+  32%,
+  62% {
+    background-position: 50% 0;
+  }
+  86%,
+  100% {
+    background-position: -20% 0;
   }
 }
 
@@ -2911,6 +2973,8 @@ body {
 
 
 /* rebuild */
+
+
 
 
 
