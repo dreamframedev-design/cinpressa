@@ -2318,12 +2318,29 @@ body {
    being measured out - the bar would shoot to nearly full length and creep the
    rest. 0.22/1/0.36/1 spends its length more evenly and settles rather than
    creeping. */
-[data-reveal].reveal-pending .track-progress {
-  width: 0;
-}
+/* IT DRAWS ON LOAD, WITHOUT JAVASCRIPT AND WITHOUT REVEAL.
 
-[data-reveal].reveal-in .track-progress {
-  animation: pl-draw 1.25s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+   It was hung off Reveal, and Reveal deliberately ignores anything already on
+   screen when the page loads - it only marks elements that START below the
+   fold, because its whole job is to hide things that are about to scroll into
+   view. The pipeline chart sits high on /pipeline and is inside the first
+   viewport for most windows, so it fell straight through that guard: no class,
+   no animation, a bar that was simply already full. Working exactly as written
+   and doing nothing anybody could see.
+
+   Driving it from CSS alone fixes that and is better on every count here. It
+   cannot flash, because there is no moment where the server's full-width bar is
+   painted and then reset to zero by script. It needs no JavaScript at all: with
+   fill-mode both the element sits at the from-state through the delay and holds
+   the to-state afterwards, so a visitor with JS disabled still gets the
+   animation AND the correct final width. And it runs on a client-side
+   navigation into the page as readily as on a cold load, because the element
+   mounts fresh either way.
+
+   The delay lets the hero settle first rather than everything moving at once. */
+.track-progress {
+  width: var(--pl-progress);
+  animation: pl-draw 1.3s cubic-bezier(0.22, 1, 0.36, 1) 0.45s both;
 }
 
 @keyframes pl-draw {
@@ -2333,14 +2350,6 @@ body {
   to {
     width: var(--pl-progress);
   }
-}
-
-/* WITHOUT JAVASCRIPT, OR ABOVE THE FOLD, the bar is simply the right width.
-   Reveal only marks elements that start below the viewport, so a visitor who
-   lands with the chart already on screen gets no animation and no missing bar -
-   which is the correct behaviour rather than a fallback. */
-.track-progress {
-  width: var(--pl-progress);
 }
 
 /* Continuous focal pulse ring */
@@ -2507,22 +2516,14 @@ body {
 }
 
 .pl-beam {
-  animation: pl-beam 8s cubic-bezier(0.37, 0, 0.63, 1) 1.6s infinite;
+  animation: pl-beam 8s cubic-bezier(0.37, 0, 0.63, 1) 2.3s infinite;
 }
 
-/* THE SHINE WAITS FOR THE BAR TO FINISH. Held until the draw completes at 1.45s
-   and given a beat after it, so the sequence reads as one event: the pipe is
-   laid down, it settles, and only then does light cross it. Started together
-   they fight - a specular pass over something still growing looks like a
-   loading bar, which is the one thing this chart must not look like. */
-[data-reveal].reveal-pending .pl-beam {
-  animation: none;
-  opacity: 0;
-}
-
-[data-reveal].reveal-in .pl-beam {
-  animation: pl-beam 8s cubic-bezier(0.37, 0, 0.63, 1) 2.1s infinite;
-}
+/* THE SHINE WAITS FOR THE BAR TO FINISH. The draw ends at 1.75s, so the first
+   pass is held to 2.3 and the sequence reads as one event: the pipe is laid
+   down, it settles, and only then does light cross it. Started together they
+   fight - a specular pass over something still growing looks like a loading
+   bar, which is the one thing this chart must not look like. */
 
 /* The stage column under the cursor. A tint and a crisp top rule, nothing soft. */
 .pl-stage {
@@ -2922,6 +2923,7 @@ body {
 
 
 /* r */
+
 
 
 
