@@ -645,6 +645,20 @@ body {
 }
 
 
+/* ---------- Nav lockup stands down ------------------------------------
+   Set by the homepage hero while it is showing the mark at architectural
+   scale (see home-hero.tsx). Two marks on one screen, one of them 500px and
+   one of them 44, is the larger one asking to be looked at while the smaller
+   one insists it is the logo.
+
+   display:none rather than opacity or visibility, so the lockup's own gap
+   collapses with it and the wordmark sits flush against the gutter instead of
+   floating an empty mark's width off it. The nav keeps its job: the wordmark
+   is still the link home and still says who this is. */
+[data-nav-mark="off"] .logo-hover-scope .nvm {
+  display: none;
+}
+
 /* ---------- Portfolio badge (portfolio-badge.tsx) ----------------------
    Provenance as a plate, not a kicker. Every token here is one any sibling
    site under the same parent already defines, so the component lifts whole.
@@ -2897,6 +2911,7 @@ body {
 
 
 /* rebuild */
+
 
 
 

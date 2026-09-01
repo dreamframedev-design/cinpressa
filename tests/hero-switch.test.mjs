@@ -11,9 +11,16 @@ test("the homepage hero switches between six treatments, A first", async () => {
   // A is the default and is the field that was on /pipeline.
   assert.match(hero, /useState<View>\("a"\)/);
   assert.match(hero, /import \{ OpenFlow \} from "@\/components\/open-flow"/);
-  // C is the mark.
+  // B is the mark, and it is the one stop where the nav drops its own copy of
+  // it: two marks on one screen, at 500px and at 44, is the big one asking to
+  // be looked at while the small one insists it is the logo.
   assert.match(hero, /<ConvergenceMark key="mark"[^>]*variant="cascade"/);
-  assert.match(hero, /const mark = view === "c";/);
+  assert.match(hero, /const mark = view === "b";/);
+  assert.match(hero, /root\.dataset\.navMark = "off"/);
+  // Cleaned up on unmount, or another page inherits a nav with no mark.
+  assert.match(hero, /delete root\.dataset\.navMark;[\s\S]{0,120}\}, \[mark\]\)/);
+  const css0 = await read("src/app/globals.css");
+  assert.match(css0, /\[data-nav-mark="off"\] \.logo-hover-scope \.nvm \{\s*display: none;/);
   const labels = [...hero.matchAll(/label: "([A-Z])"/g)].map((m) => m[1]);
   assert.deepEqual(labels, ["A", "B", "C", "D", "E", "F"]);
   // FOUR OF THE SIX DRAW THE IDENTICAL FIELD, down to the mount key, so those

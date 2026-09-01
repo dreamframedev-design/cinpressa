@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { CSSProperties } from "react";
 import { ConvergenceMark } from "@/components/convergence-mark";
 import { OpenFlow } from "@/components/open-flow";
@@ -25,12 +25,20 @@ import { PortfolioBadge } from "@/components/portfolio-badge";
  * sheet rather than a version of it, which was the brief. It leads because the
  * default should be the thing being proposed rather than the hedge against it.
  *
- * B — THE SAME HERO WITH THE RESTRAINED PLATE. The accent cut carries the
+ * B — THE MARK, AND THE NAV STANDS DOWN FOR IT. The logo converging in the
+ * right column, with its own petal colours blooming outward behind it on four
+ * mismatched breaths - and, because it is the only stop where the mark is
+ * already on screen at architectural scale, the nav drops its own copy and
+ * runs the wordmark alone: CINPRESSA with pharma hanging under it.
+ *
+ * Two marks on one screen, one of them 500px and one of them 44, is the larger
+ * one asking to be looked at while the smaller one insists it is the logo. The
+ * nav keeps its job either way - the wordmark is still a link home and still
+ * says who this is - it just stops competing with a version of itself.
+ *
+ * C — THE SAME HERO AS A WITH THE RESTRAINED PLATE. The accent cut carries the
  * orange on the edge and the relation over a cream ground instead of filling
  * the plate with it. Nothing else differs from A at all.
- *
- * C — THE MARK. What the hero carried before: the logo converging, with its own
- * petal colours blooming outward behind it on four mismatched breaths.
  *
  * D — THE NEUTRAL ONE. Same field again, and the only option whose badge stays
  * on the hairline cut, so the sole warm thing anywhere on D is the beam
@@ -76,9 +84,27 @@ type View = "a" | "b" | "c" | "d" | "e" | "f";
 
 export function HomeHero() {
   const [view, setView] = useState<View>("a");
-  const mark = view === "c";
+  const mark = view === "b";
   /** E's whole proposition: same field, smaller headline, higher block. */
   const compact = view === "e";
+
+  /* THE NAV IS NOT THIS COMPONENT'S TO RENDER, so the hero publishes a flag and
+     the stylesheet reacts to it. SiteNav is a sibling in the page tree rather
+     than a child, and threading one boolean between them would mean a context,
+     a client wrapper around both, or lifting the switch's whole state out of
+     the component that owns it - real structure for a control that exists to be
+     deleted the moment one of these six is chosen.
+
+     Scoped to the document element and cleaned up on unmount, so no other page
+     can inherit it. */
+  useEffect(() => {
+    const root = document.documentElement;
+    if (mark) root.dataset.navMark = "off";
+    else delete root.dataset.navMark;
+    return () => {
+      delete root.dataset.navMark;
+    };
+  }, [mark]);
 
   return (
     <section className="relative flex min-h-[88vh] items-center overflow-hidden bg-gradient-to-b from-white via-white to-mist lg:min-h-[76vh]">
@@ -159,8 +185,8 @@ export function HomeHero() {
               default because the default should be the thing being proposed
               rather than the hedge against it. D and F take the hairline cut -
               F is D plus the thread, so it has to carry D's badge or the two
-              would differ in two things at once. Everything else runs the
-              accent cut in between. */}
+              would differ in two things at once. Everything else, B and C and
+              E, runs the accent cut in between. */}
           <div className="anim-rise" style={{ animationDelay: "0.02s" }}>
             <PortfolioBadge
               parent="CinRx"
