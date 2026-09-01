@@ -4,7 +4,7 @@ import { readFile } from "node:fs/promises";
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 
-test("the homepage hero switches between six treatments, A first", async () => {
+test("the homepage hero switches between five treatments, A first", async () => {
   const hero = await read("src/components/home-hero.tsx");
 
   assert.match(hero, /^"use client";/);
@@ -22,12 +22,12 @@ test("the homepage hero switches between six treatments, A first", async () => {
   const css0 = await read("src/app/globals.css");
   assert.match(css0, /\[data-nav-mark="off"\] \.logo-hover-scope \.nvm \{\s*display: none;/);
   const labels = [...hero.matchAll(/label: "([A-Z])"/g)].map((m) => m[1]);
-  assert.deepEqual(labels, ["A", "B", "C", "D", "E", "F"]);
-  // FOUR OF THE SIX DRAW THE IDENTICAL FIELD, down to the mount key, so those
-  // comparisons isolate exactly one variable each. Only C swaps the field out
-  // and only F adds the thread to it.
+  assert.deepEqual(labels, ["A", "B", "C", "D", "E"]);
+  // THREE OF THE FIVE DRAW THE IDENTICAL FIELD, down to the mount key, so those
+  // comparisons isolate exactly one variable each. Only B swaps the field out
+  // and only E adds the thread to it.
   assert.match(hero, /<OpenFlow key="plain" thread=\{false\} className="absolute inset-0" \/>/);
-  assert.match(hero, /view === "f" \?/);
+  assert.match(hero, /view === "e" \?/);
   assert.match(hero, /<OpenFlow key="flow" className="absolute inset-0" \/>/);
   // The gold band is gone from the whole codebase, not just unused.
   assert.doesNotMatch(hero, /goldBand/);
@@ -36,6 +36,16 @@ test("the homepage hero switches between six treatments, A first", async () => {
   assert.match(flow, /thread = true/);
   assert.match(flow, /if \(withThread\)/);
   assert.match(hero, /aria-pressed=\{v\.id === view\}/);
+  // The compact typographic variant is gone, and with it the branch it forced
+  // into the padding and the headline - one size and one position for every
+  // stop now. Comments stripped first: the note explaining the removal names
+  // the thing it removed, which is not the same as still shipping it.
+  const heroCode = hero
+    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .replace(/\/\/.*$/gm, "");
+  assert.doesNotMatch(heroCode, /compact/);
+  // The gold band went when D became a type variant; it stays gone.
+  assert.doesNotMatch(flow, /goldBand|paintGold|GOLD_INDEX/);
 });
 
 test("the field feathers to the colour the boundary actually is", async () => {
@@ -77,19 +87,6 @@ test("the hero fields swapped pages", async () => {
   assert.doesNotMatch(science, /OpenFlow/);
 });
 
-test("E is D, set smaller and higher", async () => {
-  const hero = await read("src/components/home-hero.tsx");
-  const flow = await read("src/components/open-flow.tsx");
-
-  // A typographic variant, not an artistic one: same field as D, so the only
-  // differences between the two are the ones being judged.
-  assert.match(hero, /const compact = view === "e";/);
-  assert.match(hero, /compact[\s\S]{0,40}text-\[clamp\(2rem/);
-  assert.match(hero, /compact\s*\?\s*"self-start pt-24 lg:pb-28 lg:pt-40"/);
-  // And the band is deleted rather than left dangling behind a false default.
-  assert.doesNotMatch(flow, /goldBand|paintGold|GOLD_INDEX/);
-});
-
 test("provenance is a badge, and the badge is portable", async () => {
   const hero = await read("src/components/home-hero.tsx");
   const badge = await read("src/components/portfolio-badge.tsx");
@@ -98,7 +95,7 @@ test("provenance is a badge, and the badge is portable", async () => {
   // thing being proposed, not the hedge against it. D and F take the hairline:
   // F is D plus the thread, so it has to carry D's badge or the two would
   // differ in two things at once.
-  assert.match(hero, /view === "d" \|\| view === "f"\s*\?\s*"line"/);
+  assert.match(hero, /view === "d" \|\| view === "e"\s*\?\s*"line"/);
   assert.match(hero, /view === "a"\s*\?\s*"solid"/);
   assert.match(badge, /"line" \| "accent" \| "solid" \| "dark"/);
   // The approved phrasing is "a CinRx portfolio company", so the article has to

@@ -12,13 +12,13 @@ import { PortfolioBadge } from "@/components/portfolio-badge";
  * ONE FIELD UNDER ALL BUT TWO OF THEM. The open flow - ribbons that widen and
  * narrow but never pinch - spans the whole hero behind the copy the way a field
  * does on an interior page, and feathers into the section below so the boundary
- * never cuts it. A, B, D and E draw it identically, down to the mount key, so
- * switching between any of those does not even restart the art. Only C swaps
- * the field out, and only F adds anything to it.
+ * never cuts it. A, C and D draw it identically, down to the mount key, so
+ * switching between any of those does not even restart the art. Only B swaps
+ * the field out, and only E adds anything to it.
  *
- * That is deliberate. With the art held constant across four of the six stops,
- * every one of those comparisons isolates exactly one variable, which is the
- * only way any of them can actually be judged.
+ * That is deliberate. With the art held constant across three of the five
+ * stops, every one of those comparisons isolates exactly one variable, which is
+ * the only way any of them can actually be judged.
  *
  * A — THE BADGE IN THE LITERAL BRAND COLOUR, and the default. Its plate is
  * #F9A81A itself, at full strength and full opacity - the value off the brand
@@ -44,15 +44,17 @@ import { PortfolioBadge } from "@/components/portfolio-badge";
  * on the hairline cut, so the sole warm thing anywhere on D is the beam
  * crossing "hypertension".
  *
- * E — D'S FIELD AND D'S COPY, SET SMALLER AND HIGHER. A typographic comparison
- * rather than an artistic one: the headline comes down about a fifth and the
- * whole block sits higher in the frame.
- *
- * F — D, PLUS THE GOLDEN THREAD. The thread used to be welded to A, which meant
+ * E — D, PLUS THE GOLDEN THREAD. The thread used to be welded to A, which meant
  * it could never be judged on its own: A differed from the others in the badge
  * AND in the thread at the same time. It is its own stop now, on the neutral
- * base, so F against D is a question about one line drawn through a field and
+ * base, so E against D is a question about one line drawn through a field and
  * nothing else.
+ *
+ * The typographic variant that used to hold this letter is gone. It set the
+ * headline about a fifth smaller and pinned the block higher, and dropping it
+ * takes the compact branch out of the padding and the h1 with it - one size and
+ * one position for every stop now, which is one less thing differing between
+ * any two of them.
  *
  * The two are not variants of one layout, which is why this holds the whole
  * hero rather than just its art slot. A is a backdrop and wants the copy on one
@@ -80,13 +82,11 @@ const BLOOMS = [
   { color: "103,113,181", size: 62, x: 34, y: 36, low: 0.2, high: 0.4, dur: 23, delay: -13 },
 ];
 
-type View = "a" | "b" | "c" | "d" | "e" | "f";
+type View = "a" | "b" | "c" | "d" | "e";
 
 export function HomeHero() {
   const [view, setView] = useState<View>("a");
   const mark = view === "b";
-  /** E's whole proposition: same field, smaller headline, higher block. */
-  const compact = view === "e";
 
   /* THE NAV IS NOT THIS COMPONENT'S TO RENDER, so the hero publishes a flag and
      the stylesheet reacts to it. SiteNav is a sibling in the page tree rather
@@ -122,7 +122,7 @@ export function HomeHero() {
         />
       ) : (
         <>
-          {view === "f" ? (
+          {view === "e" ? (
             /* The one stop that carries the thread. Same component and same
                ribbons as every other field on this hero; the only difference is
                whether the line is drawn through it. */
@@ -160,18 +160,14 @@ export function HomeHero() {
            40px without changing the hero's height or the area the field paints.
            Still 96px of clearance under a nav that is 76 tall.
 
-           D OPTS OUT OF THE CENTRING ENTIRELY, and has to. Under items-center
-           the position is a function of the CONTENT's height, so D's smaller
-           headline made its block shorter and centring then pushed it 20px
-           DOWN - the opposite of what a compact variant is for. self-start
-           takes it off the centre line so its top padding places it outright:
-           160px puts the badge 45px above where A and C hold theirs, and it
-           stays there whatever the headline does. */
-        className={`relative mx-auto grid w-full max-w-7xl items-center gap-14 px-6 pb-24 lg:gap-10 lg:px-10 ${
-          compact
-            ? "self-start pt-24 lg:pb-28 lg:pt-40"
-            : "pt-28 lg:pb-28 lg:pt-24"
-        } ${mark ? "lg:grid-cols-[1.08fr_0.92fr]" : ""}`}
+           There used to be a second branch here for the compact variant, which
+           had to opt out of the centring entirely: under items-center the
+           position is a function of the CONTENT's height, so a smaller headline
+           made that block shorter and centring pushed it DOWN. With the variant
+           gone so is the branch, and every stop takes the same padding. */
+        className={`relative mx-auto grid w-full max-w-7xl items-center gap-14 px-6 pb-24 pt-28 lg:gap-10 lg:px-10 lg:pb-28 lg:pt-24 ${
+          mark ? "lg:grid-cols-[1.08fr_0.92fr]" : ""
+        }`}
       >
         <div className={mark ? undefined : "max-w-2xl"}>
           {/* THE PROVENANCE IS A PLATE NOW, not a kicker. It was a hairline and
@@ -183,15 +179,15 @@ export function HomeHero() {
 
               A is the solid cut, the plate at #F9A81A itself, and it is the
               default because the default should be the thing being proposed
-              rather than the hedge against it. D and F take the hairline cut -
-              F is D plus the thread, so it has to carry D's badge or the two
-              would differ in two things at once. Everything else, B and C and
-              E, runs the accent cut in between. */}
+              rather than the hedge against it. D and E take the hairline cut -
+              E is D plus the thread, so it has to carry D's badge or the two
+              would differ in two things at once. B and C run the accent cut in
+              between. */}
           <div className="anim-rise" style={{ animationDelay: "0.02s" }}>
             <PortfolioBadge
               parent="CinRx"
               tone={
-                view === "d" || view === "f"
+                view === "d" || view === "e"
                   ? "line"
                   : view === "a"
                     ? "solid"
@@ -205,11 +201,7 @@ export function HomeHero() {
               supposed to carry the page. One step up is enough; 500 would make
               it a different headline. */}
           <h1
-            className={`anim-rise mt-7 font-normal leading-[1.04] tracking-tight text-ink ${
-              compact
-                ? "text-[clamp(2rem,4.1vw,3.25rem)]"
-                : "text-[clamp(2.4rem,5.4vw,4.25rem)]"
-            }`}
+            className="anim-rise mt-7 text-[clamp(2.4rem,5.4vw,4.25rem)] font-normal leading-[1.04] tracking-tight text-ink"
             style={{ animationDelay: "0.1s" }}
           >
             {/* The blue lands on "hypertension", not on "siRNA". The molecule
@@ -295,7 +287,6 @@ export function HomeHero() {
                 { id: "c", label: "C" },
                 { id: "d", label: "D" },
                 { id: "e", label: "E" },
-                { id: "f", label: "F" },
             ] as { id: View; label: string }[]
             ).map((v) => (
               <button
