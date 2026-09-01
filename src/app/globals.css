@@ -12,12 +12,6 @@
   /* Core */
   --color-blue: #2261ad;
   --color-orange: #f9a81a;
-  /* ELECTRIC. Brighter and more saturated than anything on the brand ladder,
-     which tops out at #1596d4 - the reference's rules read as lit rather than
-     as drawn, and nothing already in the palette does that. It is only ever
-     used on rules and bars, never on type: at 3.0:1 on white it would fail as
-     text and passes easily as a line. */
-  --color-electric: #0d8bf2;
   --color-green: #afdbbc;
   --color-indigo: #6771b5;
 
@@ -876,22 +870,12 @@ body {
 }
 
 /* ---------- Burden rail (home, "the challenge") ----------
-   Three figures under one rule, each standing on a track that is also a
-   measure. See burden-rail.tsx for why the card grid went and why these start
-   monochrome. */
+   Three figures between two hairlines. Built against the reference's stat rail,
+   which is worth stating plainly because four rounds of this went wrong by
+   improvising instead: its rules are dead uniform and very light, its FIRST
+   figure is emphasised and the rest fall back, and the highlight on its rules
+   is a soft segment that LOCKS to a column rather than following the pointer. */
 
-/* TIGHTER, SMALLER, CENTRED - measured against Stripe's own stat rail, which
-   is the reference this was given. Ours ran a 54px figure over 40px of padding
-   with a 17px label a full rem below it, which is why it read as three tall
-   boxes rather than as a rail. The figure comes down to 36px, the paddings and
-   gaps close, and each cell centres on its own axis so the numbers line up with
-   their labels instead of both hanging off a left edge. */
-/* MORE AIR INSIDE THE RULES. The reference gives its figures noticeably more
-   room between the two lines than ours had - about a quarter of the block's
-   height above the number and a third below the caption - and that space is
-   most of why its rail reads as a considered band rather than a strip. Ours ran
-   26 above and 23 below; it runs 38 and 35 now, and the figures grow with it so
-   the proportion holds rather than the numbers rattling in a taller box. */
 .burden-rail {
   position: relative;
   display: grid;
@@ -906,133 +890,52 @@ body {
   }
 }
 
-/* TWO PLAIN HAIRLINES, AND NOTHING ELSE ON THEM.
+/* THE TWO RULES ARE AUTHORED SOFT, AND THAT IS THE FIX FOR THEM DISAGREEING.
 
-   This went round three times and each cut was a different kind of wrong: one
-   rule fading while its partner held, then both flat across in a colour heavy
-   enough to read as drawn rather than as a boundary, then both fading
-   symmetrically at the ends. Put ours beside the reference and none of that is
-   what it does. Its rules are dead straight, dead uniform, and very light -
-   they stop at the container and they carry no gradient, no fade and no colour
-   at all. A rule that is trying to be interesting is the problem; the whole job
-   here is to bound the row and disappear.
+   They were 1px each and the top one still rendered three times heavier. The
+   cause is sub-pixel: the rail's top landed on a whole pixel and its bottom did
+   not, so at DPR 1 the top rule painted as one solid row while the baseline
+   spread across two at roughly a third and two thirds. Same declaration, and no
+   colour or fractional height reconciles them, because the difference is WHERE
+   each line sits, not what it is.
 
-   COLOUR IS WHAT WAS ACTUALLY WRONG, not the ends. --color-pale is #bed7ec,
-   which against the mist behind it is a visible blue line - "basically solid"
-   is a fair description of it. --color-line is #dce7f1, about a third of that
-   contrast, and it lands where the reference sits: present when you look for
-   it, gone when you are reading the figures.
-
-   Back to a flat 1px, because at this weight the two cannot disagree. The
-   0.9px was there to stop one snapping crisp while the other antialiased, which
-   was a real difference on a line that dark; at #dce7f1 the gap between a
-   snapped and an antialiased hairline is under two per cent of a value that is
-   already near the background. */
-/* THE RESTING RULE IS PALE, and that is the point of it. It carried a fixed
-   orange ignition at its left end for one commit, and with the tracking glow
-   also orange the only thing a moving cursor changed was a fade - the accent
-   was already sitting there, so nothing appeared to follow anything. The warm
-   belongs to the cursor now and to nothing else, which is what makes the
-   tracking readable. */
-.burden-rail::before {
-  content: "";
-  position: absolute;
-  inset-inline: 0;
-  top: 0;
-  height: 1px;
-  background: var(--color-line);
-  transform-origin: left center;
-}
-
-/* THE ETCH FOLLOWS THE CURSOR. This was a fixed gradient anchored at the left,
-   which is not a hover state at all - it lit the same inch of rule wherever the
-   pointer happened to be. The band writes the pointer's x into --etch-x (see
-   burden-banner.tsx) and the glow centres on it, so the warmth sits under the
-   cursor and travels with it.
-
-   On its own pseudo-element rather than transitioned on ::before, because two
-   gradients do not interpolate; only opacity moves here. */
-.burden-rail::after {
-  content: "";
-  position: absolute;
-  inset-inline: 0;
-  top: 0;
-  height: 1px;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.4s var(--ease-brand);
-  background: linear-gradient(
-    90deg,
-    rgba(13, 139, 242, 0) calc(var(--etch-x, 50%) - 20%),
-    rgba(13, 139, 242, 0.3) calc(var(--etch-x, 50%) - 12%),
-    rgba(13, 139, 242, 0.9) calc(var(--etch-x, 50%) - 4%),
-    #46bcff var(--etch-x, 50%),
-    rgba(13, 139, 242, 0.9) calc(var(--etch-x, 50%) + 4%),
-    rgba(13, 139, 242, 0.3) calc(var(--etch-x, 50%) + 12%),
-    rgba(13, 139, 242, 0) calc(var(--etch-x, 50%) + 20%)
-  );
-}
-
-/* BOTH RULES LIGHT, NOT ONE. The etch was on the top rule alone, which reads as
-   a single lit edge; the reference frames its figures between two rules and
-   treats them as a pair. Same --etch-x, so the two glows sit on one vertical
-   under the cursor and the block lights as a unit. */
-.burden-baseline::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.4s var(--ease-brand);
-  background: linear-gradient(
-    90deg,
-    rgba(13, 139, 242, 0) calc(var(--etch-x, 50%) - 20%),
-    rgba(13, 139, 242, 0.3) calc(var(--etch-x, 50%) - 12%),
-    rgba(13, 139, 242, 0.9) calc(var(--etch-x, 50%) - 4%),
-    #46bcff var(--etch-x, 50%),
-    rgba(13, 139, 242, 0.9) calc(var(--etch-x, 50%) + 4%),
-    rgba(13, 139, 242, 0.3) calc(var(--etch-x, 50%) + 12%),
-    rgba(13, 139, 242, 0) calc(var(--etch-x, 50%) + 20%)
-  );
-}
-
-.burden-banner[data-etch] .burden-baseline::after {
-  opacity: 1;
-}
-
-/* THE BASELINE IS ONE RULE UNDER ALL OF THEM. It used to be a stub inside each
-   cell - three short lines with a 3rem gap of nothing between them, which is
-   the single thing that made this read as three boxes rather than as a rail.
-   The reference runs one hairline the full width under the whole row, and the
-   measures sit ON it rather than being it.
-
-   Absolutely positioned, so it is not a grid item and does not take a column. */
+   So the softness is drawn rather than left to the rasteriser. Each rule is a
+   2px box carrying a vertical gradient: transparent, a solid core across the
+   middle, transparent again. Shift that by any fraction of a pixel and it looks
+   the same, because it was already soft - which makes the two identical at any
+   position, any zoom and any device ratio. It also happens to be the hairline
+   the reference draws. */
+.burden-rail::before,
 .burden-baseline {
+  content: "";
   position: absolute;
   inset-inline: 0;
-  bottom: 0;
-  height: 1px;
-  background: var(--color-line);
+  height: 2px;
+  background: linear-gradient(
+    180deg,
+    rgba(220, 231, 241, 0) 0%,
+    var(--color-line) 32%,
+    var(--color-line) 68%,
+    rgba(220, 231, 241, 0) 100%
+  );
   transform-origin: left center;
 }
 
+.burden-rail::before {
+  top: -1px;
+}
+
+.burden-baseline {
+  bottom: -1px;
+}
+
+[data-reveal].reveal-pending .burden-rail::before,
 [data-reveal].reveal-pending .burden-baseline {
   transform: scaleX(0);
 }
 
+[data-reveal].reveal-in .burden-rail::before,
 [data-reveal].reveal-in .burden-baseline {
-  animation: grow-x 1.1s var(--ease-brand) 0.1s both;
-}
-
-.burden-banner[data-etch] .burden-rail::after {
-  opacity: 1;
-}
-
-[data-reveal].reveal-pending .burden-rail::before {
-  transform: scaleX(0);
-}
-
-[data-reveal].reveal-in .burden-rail::before {
   animation: grow-x 1.1s var(--ease-brand) 0.1s both;
 }
 
@@ -1048,57 +951,90 @@ body {
   margin-top: 2.6rem;
 }
 
-/* NO VERTICAL DIVIDERS. There were hairlines between the cells, and the
-   reference has none - it separates its figures with space alone. Boxing each
-   figure on both sides is most of what made ours read as cells in a table
-   rather than as figures on a rail, and with one continuous baseline under the
-   row the verticals were also cutting it into thirds. Stacked, the column gap
-   does the separating on its own. */
 @media (min-width: 768px) {
   .burden-cell + .burden-cell {
     margin-top: 0;
   }
 }
 
-/* The figure. Ink by default with a brand ramp sitting underneath, clipped to
-   the glyphs and waiting. Not display:flex — background-clip:text wants its
-   text in inline flow, and the unit rides the numeral's baseline for free
-   there anyway. */
+/* THE HIGHLIGHT LOCKS TO A COLUMN. It used to be one glow on the rail centred
+   on --etch-x, a live read of the pointer's position - so it slid continuously
+   and lit whatever inch of rule the cursor happened to be over. The reference
+   does not do that. Its highlight is a segment the width of one stat that snaps
+   from column to column: three discrete states, not a continuum.
+
+   Which is why it is drawn per CELL rather than per rail. Each cell owns a
+   segment on each rule, spanning its own column and fading out at both ends,
+   and the switch between them is opacity - so moving across cross-fades one
+   segment out while the next comes up, and it can only ever be on one of three
+   places. No pointer maths, no JavaScript, and the whole cursor-tracking client
+   component that used to feed it is deleted.
+
+   The segments bleed 1.5rem either side, which is half the column gap, so
+   consecutive ones meet in the middle of the gutter instead of leaving a hole
+   there. They fade to nothing well before that, so the overhang past the rail
+   at the outer edges is invisible. */
+.burden-cell::before,
+.burden-cell::after {
+  content: "";
+  position: absolute;
+  inset-inline: -1.5rem;
+  height: 2px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.45s var(--ease-brand);
+  background: linear-gradient(
+    90deg,
+    rgba(34, 97, 173, 0) 0%,
+    rgba(34, 97, 173, 0.5) 26%,
+    rgba(13, 139, 242, 0.6) 50%,
+    rgba(34, 97, 173, 0.5) 74%,
+    rgba(34, 97, 173, 0) 100%
+  );
+}
+
+.burden-cell::before {
+  top: calc(-2.4rem - 1px);
+}
+
+.burden-cell::after {
+  bottom: -1px;
+}
+
+/* THE FIRST ONE IS LIT UNTIL SOMETHING ELSE IS. A rail whose highlight only
+   exists on hover is a rail nobody sees highlighted - on a phone, in a
+   screenshot, or by anyone who never happens to cross it. The reference leads
+   with its first figure and holds it there. */
+.burden-cell:first-of-type::before,
+.burden-cell:first-of-type::after {
+  opacity: 1;
+}
+
+/* Hovering anywhere in the rail drops every segment... */
+.burden-rail:hover .burden-cell::before,
+.burden-rail:hover .burden-cell::after {
+  opacity: 0;
+}
+
+/* ...and the hovered cell takes it back. Written at this specificity on
+   purpose: the rule above is three classes deep, so a two-class selector would
+   lose to it and the hovered cell would go dark along with the rest. */
+.burden-rail:hover .burden-cell:hover::before,
+.burden-rail:hover .burden-cell:hover::after {
+  opacity: 1;
+}
+
+/* The figure. Solid colour, no clipped gradient and no travelling beam: the
+   highlight is a state now, and a state that animates through dark on a timer
+   is not a state. */
 .burden-value {
   display: block;
-  /* Up from a 36px ceiling. Against the reference at the same measure ours was
-     reading a size small - its figures carry the block and ours were sharing
-     the job with their captions. */
   font-size: clamp(2rem, 3.35vw, 2.7rem);
-  /* LIGHTER THAN IT WAS. 600 was chosen when these were the loudest thing on a
-     page that needed one; beside the reference at the same size it reads chunky
-     rather than confident, and the weight is doing work the size already does.
-     500 keeps the figure clearly heavier than its label and stops it shouting. */
   font-weight: 500;
   line-height: 1;
   letter-spacing: -0.03em;
-  /* Dark grey rather than the near-black ink: at this size a full-strength
-     ink figure reads as heavy, and the whole point of the rail is that the
-     numbers are calm until they are hovered. */
   color: #414c59;
-  /* Every stop clears 3:1 on white, which is what this size needs. The
-     lighter half of the ladder — cyan, sky, frost — is absent on purpose:
-     it is beautiful and it is unreadable. */
-  background-image: linear-gradient(
-    100deg,
-    #2261ad 0%,
-    #0473bb 22%,
-    #0783c6 42%,
-    #1596d4 62%,
-    #6771b5 100%
-  );
-  background-size: 190% 100%;
-  background-position: 100% 0;
-  -webkit-background-clip: text;
-  background-clip: text;
-  transition:
-    color 0.5s var(--ease-brand),
-    background-position 1.15s var(--ease-brand);
+  transition: color 0.45s var(--ease-brand);
 }
 
 /* Was 0.4em, which made the B in 1.4 B look like a footnote rather than the
@@ -1109,51 +1045,19 @@ body {
   margin-left: 0.04em;
 }
 
-/* SMALLER AGAINST THE FIGURE. The label ran at 17px under a 36px number - a
-   ratio near one half, which is why the two competed. The reference sets its
-   captions at roughly a third of its figure, so the number is unmistakably the
-   subject and the caption is the footnote it needs to be. */
 .burden-label {
   margin-top: 0.8rem;
   font-size: 0.95rem;
-  /* 450, not 400. At 14px the regular weight goes papery under a figure this
-     heavy - the caption stopped looking quiet and started looking faint. The
-     variable face makes the half step available, and a half step is all this
-     needs; 500 would start competing. */
+  /* 450, not 400. At this size the regular weight goes papery under a figure
+     this heavy - the caption stopped looking quiet and started looking faint. */
   font-weight: 450;
   line-height: 1.45;
   color: var(--color-muted);
-  transition: color 0.4s var(--ease-brand);
+  transition: color 0.45s var(--ease-brand);
 }
 
-/* THE FIRST ONE IS DARKER, WHICH IS WHAT THE REFERENCE DOES. Its four captions
-   are not one grey: the leading one sits near black and the rest fall back, so
-   the row has a head rather than being four equal things in a line. Ours were
-   three identical greys, which reads as a table.
-
-   Ink here rather than a half tone. The step from muted has to survive being
-   glanced at, and 6.3:1 to 12.5:1 on this ground is a step you can see without
-   looking for it. */
-/* :first-of-type, NOT :first-child. The baseline is an absolutely positioned
-   span sitting ahead of the cells in the rail, so it holds first-child and this
-   rule matched nothing at all. Of-type is right rather than lucky: the cells are
-   divs and the baseline is a span, so the first div is the first figure whether
-   the baseline is drawn or not - and on /pipeline, where there are no measures
-   and no baseline, it still resolves to the same cell. */
-.burden-cell:first-of-type .burden-label {
-  color: var(--color-ink);
-}
-
-/* margin-top:auto pins the tracks to a common baseline across the row, so the
-   long third label cannot drop its measure below its neighbours'. */
-/* margin-top:auto pins the measures to a common baseline across the row, so the
-   long third label cannot drop its bar below its neighbours'. The padding is
-   matched to the rail's own top padding, so the figures sit centred between the
-   two rules rather than closer to the lower one. The track draws no line of its
-   own any more - see .burden-baseline for where that went. */
-/* Pure spacing now that the measures are gone: margin-top:auto pins every cell
-   to a common baseline, so the long third caption cannot push its own rule
-   below its neighbours'. */
+/* Pure spacing: margin-top:auto pins every cell's foot to a common line, so the
+   long third caption cannot drop its rule below its neighbours'. */
 .burden-track {
   position: relative;
   margin-top: auto;
@@ -1161,116 +1065,32 @@ body {
   align-self: stretch;
 }
 
-/* THE BEAM RUNS ON ITS OWN, AND HOVER ONLY BRIGHTENS IT.
-
-   IT WAS HOVER-ONLY, WHICH MEANT NOBODY SAW IT. The whole effect sat behind a
-   pointer that has to be over one specific figure, so looking at the page - or
-   at a screenshot of it, or at it on a phone - showed three flat grey numbers
-   and nothing else. An animation nobody encounters is not a subtle animation,
-   it is an absent one.
-
-   So the ramp is always there and always travelling. At rest it is mostly the
-   calm dark grey with one blue length inside it, and at 320% the window onto
-   that ramp is under a third of it: the figure reads dark for most of the cycle
-   and a blue pass crosses it every ten seconds. Hovered, the SAME sweep runs
-   with the colours inverted - blue throughout with a brighter core - so hover
-   raises the whole figure rather than starting something.
-
-   The duration and the sweep are identical in both states, and deliberately.
-   Changing animation-duration mid-flight makes the browser re-map the current
-   time, which pops; holding it and swapping only the gradient means the beam
-   keeps its place and simply changes colour under the pointer.
-
-   THE THREE ARE STAGGERED, on the --i the rail already sets per cell. Negative
-   delays a third of the cycle apart put each figure at a different point in the
-   same sweep, so the rail has something moving somewhere most of the time and
-   never all three at once, which would read as a flash.
-
-   #1596d4 is the ceiling on purpose - it clears 3:1 on white at this size, and
-   every stop lighter on the ladder does not. */
-/* IT HOLDS NOW, RATHER THAN CONSTANTLY TRAVELLING. The first cut swept at a
-   constant rate from one end to the other, which meant the figure was in
-   transition for the whole cycle: never settled on a colour, always sliding
-   between two. Read across three numbers doing it out of phase, that is busy
-   rather than alive.
-
-   The sweep is the same distance; what changed is that the keyframes park at
-   both ends of it. Roughly a third of the cycle is spent stationary and fully
-   blue, another sixth stationary and fully dark, and the moves between them
-   take the rest on an ease so they settle rather than arrive. What a viewer
-   sees is a figure that turns blue, STAYS blue long enough to register as a
-   state, and turns back.
-
-   The stops are chosen against the gradient below rather than by eye: at 320%
-   the window onto the ramp is 31.25% wide, so position 50% sits entirely inside
-   the blue plateau and 120% and -20% sit entirely inside the dark ones. Those
-   are the three positions the animation parks at, which is why each hold is a
-   flat colour and not a frozen gradient. */
-.burden-value {
-  animation: burden-beam 13s cubic-bezier(0.45, 0, 0.25, 1) infinite;
-  animation-delay: calc(var(--i, 0) * -4.33s);
+/* The lit cell, on the same three-state logic as the segments above. #0473bb
+   clears 4.8:1 on the mist behind it and ink clears 12.5:1, so both halves of
+   the lit state are legible rather than merely brighter. */
+.burden-cell:first-of-type .burden-value {
+  color: #0473bb;
 }
 
-/* The fill only goes transparent where the ramp can actually be clipped to the
-   glyphs. Without the guard, a browser without background-clip:text renders
-   three invisible numbers. */
-@supports ((-webkit-background-clip: text) or (background-clip: text)) {
-  .burden-value {
-    color: transparent;
-    background-image: linear-gradient(
-      100deg,
-      #414c59 0%,
-      #414c59 18%,
-      #2261ad 24%,
-      #0473bb 30%,
-      #1596d4 50%,
-      #0473bb 70%,
-      #2261ad 76%,
-      #414c59 82%,
-      #414c59 100%
-    );
-    background-size: 320% 100%;
-  }
-}
-
-.burden-cell:hover .burden-value {
-  color: transparent;
-  background-image: linear-gradient(
-    100deg,
-    #2261ad 0%,
-    #2261ad 20%,
-    #0473bb 30%,
-    #0783c6 40%,
-    #1596d4 50%,
-    #0783c6 60%,
-    #0473bb 70%,
-    #2261ad 80%,
-    #2261ad 100%
-  );
-  background-size: 320% 100%;
-}
-
-/* Three parked positions and two moves between them. The doubled stops are the
-   holds; the gaps between the pairs are the travel. */
-@keyframes burden-beam {
-  0%,
-  8% {
-    background-position: 120% 0;
-  }
-  32%,
-  62% {
-    background-position: 50% 0;
-  }
-  86%,
-  100% {
-    background-position: -20% 0;
-  }
-}
-
-.burden-cell:hover .burden-label {
+.burden-cell:first-of-type .burden-label {
   color: var(--color-ink);
 }
 
+.burden-rail:hover .burden-cell .burden-value {
+  color: #414c59;
+}
+
+.burden-rail:hover .burden-cell .burden-label {
+  color: var(--color-muted);
+}
+
+.burden-rail:hover .burden-cell:hover .burden-value {
+  color: #0473bb;
+}
+
+.burden-rail:hover .burden-cell:hover .burden-label {
+  color: var(--color-ink);
+}
 
 /* ---------- Bloom choreography (contact-bloom.tsx) ----------------------
    The mark's ovals at architectural scale. Entrance and drift live on NESTED
