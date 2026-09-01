@@ -911,12 +911,20 @@ body {
   position: absolute;
   inset-inline: 0;
   height: 2px;
+  /* The core is a fifth of the box, not a third. At 32-68 the solid stretch was
+     0.72px with a 0.64px shoulder either side, which paints ink across most of
+     the 2px and reads as a thick soft line. Pulled to 45-55 the solid is 0.2px
+     and the rest is shoulder, so what you see is a fine hairline with the edges
+     eased - a hairline that happens to be antialiased rather than a soft band.
+     The core takes a little more colour to pay for being narrow. */
   background: linear-gradient(
     180deg,
-    rgba(220, 231, 241, 0) 0%,
-    var(--color-line) 32%,
-    var(--color-line) 68%,
-    rgba(220, 231, 241, 0) 100%
+    rgba(190, 215, 236, 0) 0%,
+    rgba(190, 215, 236, 0.5) 26%,
+    rgba(190, 215, 236, 0.92) 45%,
+    rgba(190, 215, 236, 0.92) 55%,
+    rgba(190, 215, 236, 0.5) 74%,
+    rgba(190, 215, 236, 0) 100%
   );
   transform-origin: left center;
 }
@@ -974,6 +982,22 @@ body {
    consecutive ones meet in the middle of the gutter instead of leaving a hole
    there. They fade to nothing well before that, so the overhang past the rail
    at the outer edges is invisible. */
+/* THE SEGMENT IS THE SAME HAIRLINE, IN BLUE - and getting that wrong is what
+   made it look like slop. It was a flat 2px block of colour laid over a rule
+   that is soft in the vertical, so wherever it sat the line went twice as thick
+   and several times as saturated: a chunky bar, not a lit hairline.
+
+   It carries the rule's own vertical gradient now, at the same 45-55 core, so
+   the lit and unlit stretches of a rule are the SAME line and differ only in
+   hue. The horizontal fade moves to a mask, which is the only way to have both:
+   a background gradient can run in one direction, and this needs the vertical
+   for shape and the horizontal for the ends.
+
+   The mask fades over the outer thirty per cent at each end, which across a
+   segment this wide is a long dissolve - the previous ramp was a quarter of the
+   width on a solid bar, and a soft ramp on a hard shape still reads as an edge.
+   And the peak comes down from 0.6 to 0.42: the reference's highlight is a tint
+   you notice on the second look, not a coloured line. */
 .burden-cell::before,
 .burden-cell::after {
   content: "";
@@ -984,12 +1008,27 @@ body {
   opacity: 0;
   transition: opacity 0.45s var(--ease-brand);
   background: linear-gradient(
-    90deg,
+    180deg,
     rgba(34, 97, 173, 0) 0%,
-    rgba(34, 97, 173, 0.5) 26%,
-    rgba(13, 139, 242, 0.6) 50%,
-    rgba(34, 97, 173, 0.5) 74%,
+    rgba(34, 97, 173, 0.22) 26%,
+    rgba(34, 97, 173, 0.42) 45%,
+    rgba(34, 97, 173, 0.42) 55%,
+    rgba(34, 97, 173, 0.22) 74%,
     rgba(34, 97, 173, 0) 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    #000 30%,
+    #000 70%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    #000 30%,
+    #000 70%,
+    transparent 100%
   );
 }
 
@@ -2795,3 +2834,6 @@ body {
 
 /* rebuild */
 
+
+
+/* r */

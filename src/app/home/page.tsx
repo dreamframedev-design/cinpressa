@@ -63,8 +63,18 @@ export default function HomePage() {
             followed the cursor along the rule. The highlight locks to a column
             now (see .burden-cell::before in globals.css), which is three
             opacity states in CSS - so the component, its rAF latch and its
-            coarse-pointer guard are all deleted. */}
-        <section className="border-b border-line bg-mist">
+            coarse-pointer guard are all deleted.
+
+            NO BORDER, AND IT DISSOLVES INTO WHAT FOLLOWS. It carried border-b,
+            which drew a second hairline about thirty pixels under the rail's
+            own baseline - two lines marking one boundary, and the rail's line
+            is the one that means something. With the border gone the flat mist
+            fill would still have stepped against the white the next section
+            opens on, so the fill is a gradient instead: mist through most of
+            its height, white by the bottom edge. The hero above feathers INTO
+            mist and the section below starts ON white, so all three now meet
+            without a seam anywhere. */}
+        <section className="bg-[linear-gradient(180deg,#f4f8fc_0%,#f4f8fc_58%,#ffffff_100%)]">
           <div className="mx-auto w-full max-w-7xl px-6 pb-7 lg:px-10 lg:pb-8">
             <BurdenRail
               figures={[
