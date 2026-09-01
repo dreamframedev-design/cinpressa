@@ -55,6 +55,16 @@ export function BurdenRail({
   return (
     <Reveal variant="fade" className={className}>
       <dl className="burden-rail">
+        {/* ONE RULE UNDER THE WHOLE ROW. Each cell used to draw its own stub
+            under its own measure, so at the grid width there were three short
+            lines with 3rem of nothing between them. Continuous, it frames the
+            figures the way the reference does. Only drawn where there are
+            measures to stand on it: /pipeline's three findings are not
+            proportions of anything and carry no bars, so a rule under them
+            would be framing an empty row. */}
+        {figures.some((f) => f.share !== undefined) ? (
+          <span aria-hidden className="burden-baseline" />
+        ) : null}
         {figures.map((f, i) => (
           <div
             key={f.label}

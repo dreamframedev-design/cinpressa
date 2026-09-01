@@ -12,6 +12,12 @@
   /* Core */
   --color-blue: #2261ad;
   --color-orange: #f9a81a;
+  /* ELECTRIC. Brighter and more saturated than anything on the brand ladder,
+     which tops out at #1596d4 - the reference's rules read as lit rather than
+     as drawn, and nothing already in the palette does that. It is only ever
+     used on rules and bars, never on type: at 3.0:1 on white it would fail as
+     text and passes easily as a line. */
+  --color-electric: #0d8bf2;
   --color-green: #afdbbc;
   --color-indigo: #6771b5;
 
@@ -664,8 +670,12 @@ body {
   }
 }
 
-/* The upper rule frames. It fades out at the right the way the Bleed bands do,
-   so the rail is bounded without being boxed. */
+/* THE TWO RULES RUN EDGE TO EDGE AT ONE WEIGHT. This one used to fade out over
+   its last third, the way the Bleed bands do - bounded without being boxed,
+   which was right when it was the only rule here. It is a pair now, and a pair
+   that frames a row has to actually close: a top rule dissolving over the third
+   figure while the baseline under it holds reads as a mistake rather than as
+   restraint. The reference draws both of its rules flat across. */
 /* THE RESTING RULE IS PALE, and that is the point of it. It carried a fixed
    orange ignition at its left end for one commit, and with the tracking glow
    also orange the only thing a moving cursor changed was a fade - the accent
@@ -678,12 +688,7 @@ body {
   inset-inline: 0;
   top: 0;
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    var(--color-pale) 0%,
-    var(--color-pale) 68%,
-    rgba(190, 215, 236, 0) 100%
-  );
+  background: var(--color-pale);
   transform-origin: left center;
 }
 
@@ -706,14 +711,65 @@ body {
   transition: opacity 0.4s var(--ease-brand);
   background: linear-gradient(
     90deg,
-    rgba(249, 168, 26, 0) calc(var(--etch-x, 50%) - 20%),
-    rgba(249, 168, 26, 0.28) calc(var(--etch-x, 50%) - 12%),
-    rgba(249, 168, 26, 0.85) calc(var(--etch-x, 50%) - 4%),
-    var(--color-orange) var(--etch-x, 50%),
-    rgba(249, 168, 26, 0.85) calc(var(--etch-x, 50%) + 4%),
-    rgba(249, 168, 26, 0.28) calc(var(--etch-x, 50%) + 12%),
-    rgba(249, 168, 26, 0) calc(var(--etch-x, 50%) + 20%)
+    rgba(13, 139, 242, 0) calc(var(--etch-x, 50%) - 20%),
+    rgba(13, 139, 242, 0.3) calc(var(--etch-x, 50%) - 12%),
+    rgba(13, 139, 242, 0.9) calc(var(--etch-x, 50%) - 4%),
+    #46bcff var(--etch-x, 50%),
+    rgba(13, 139, 242, 0.9) calc(var(--etch-x, 50%) + 4%),
+    rgba(13, 139, 242, 0.3) calc(var(--etch-x, 50%) + 12%),
+    rgba(13, 139, 242, 0) calc(var(--etch-x, 50%) + 20%)
   );
+}
+
+/* BOTH RULES LIGHT, NOT ONE. The etch was on the top rule alone, which reads as
+   a single lit edge; the reference frames its figures between two rules and
+   treats them as a pair. Same --etch-x, so the two glows sit on one vertical
+   under the cursor and the block lights as a unit. */
+.burden-baseline::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-brand);
+  background: linear-gradient(
+    90deg,
+    rgba(13, 139, 242, 0) calc(var(--etch-x, 50%) - 20%),
+    rgba(13, 139, 242, 0.3) calc(var(--etch-x, 50%) - 12%),
+    rgba(13, 139, 242, 0.9) calc(var(--etch-x, 50%) - 4%),
+    #46bcff var(--etch-x, 50%),
+    rgba(13, 139, 242, 0.9) calc(var(--etch-x, 50%) + 4%),
+    rgba(13, 139, 242, 0.3) calc(var(--etch-x, 50%) + 12%),
+    rgba(13, 139, 242, 0) calc(var(--etch-x, 50%) + 20%)
+  );
+}
+
+.burden-banner[data-etch] .burden-baseline::after {
+  opacity: 1;
+}
+
+/* THE BASELINE IS ONE RULE UNDER ALL OF THEM. It used to be a stub inside each
+   cell - three short lines with a 3rem gap of nothing between them, which is
+   the single thing that made this read as three boxes rather than as a rail.
+   The reference runs one hairline the full width under the whole row, and the
+   measures sit ON it rather than being it.
+
+   Absolutely positioned, so it is not a grid item and does not take a column. */
+.burden-baseline {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--color-pale);
+  transform-origin: left center;
+}
+
+[data-reveal].reveal-pending .burden-baseline {
+  transform: scaleX(0);
+}
+
+[data-reveal].reveal-in .burden-baseline {
+  animation: grow-x 1.1s var(--ease-brand) 0.1s both;
 }
 
 .burden-banner[data-etch] .burden-rail::after {
@@ -740,27 +796,15 @@ body {
   margin-top: 2.6rem;
 }
 
-/* Divider between cells, on the grid only: a vertical hairline that fades at
-   both ends. Stacked, the tracks already do the separating. */
+/* NO VERTICAL DIVIDERS. There were hairlines between the cells, and the
+   reference has none - it separates its figures with space alone. Boxing each
+   figure on both sides is most of what made ours read as cells in a table
+   rather than as figures on a rail, and with one continuous baseline under the
+   row the verticals were also cutting it into thirds. Stacked, the column gap
+   does the separating on its own. */
 @media (min-width: 768px) {
   .burden-cell + .burden-cell {
     margin-top: 0;
-  }
-
-  .burden-cell + .burden-cell::before {
-    content: "";
-    position: absolute;
-    left: -1.5rem;
-    top: -0.1rem;
-    bottom: 0.9rem;
-    width: 1px;
-    background: linear-gradient(
-      180deg,
-      rgba(190, 215, 236, 0) 0%,
-      var(--color-pale) 26%,
-      var(--color-pale) 74%,
-      rgba(190, 215, 236, 0) 100%
-    );
   }
 }
 
@@ -771,7 +815,11 @@ body {
 .burden-value {
   display: block;
   font-size: clamp(1.75rem, 2.8vw, 2.25rem);
-  font-weight: 600;
+  /* LIGHTER THAN IT WAS. 600 was chosen when these were the loudest thing on a
+     page that needed one; beside the reference at the same size it reads chunky
+     rather than confident, and the weight is doing work the size already does.
+     500 keeps the figure clearly heavier than its label and stops it shouting. */
+  font-weight: 500;
   line-height: 1;
   letter-spacing: -0.03em;
   /* Dark grey rather than the near-black ink: at this size a full-strength
@@ -806,47 +854,54 @@ body {
   margin-left: 0.04em;
 }
 
+/* SMALLER AGAINST THE FIGURE. The label ran at 17px under a 36px number - a
+   ratio near one half, which is why the two competed. The reference sets its
+   captions at roughly a third of its figure, so the number is unmistakably the
+   subject and the caption is the footnote it needs to be. */
 .burden-label {
-  margin-top: 0.55rem;
-  font-size: 1.05rem;
+  margin-top: 0.7rem;
+  font-size: 0.9rem;
   font-weight: 400;
-  line-height: 1.5;
+  line-height: 1.45;
   color: var(--color-muted);
   transition: color 0.4s var(--ease-brand);
 }
 
 /* margin-top:auto pins the tracks to a common baseline across the row, so the
    long third label cannot drop its measure below its neighbours'. */
+/* margin-top:auto pins the measures to a common baseline across the row, so the
+   long third label cannot drop its bar below its neighbours'. The padding is
+   matched to the rail's own top padding, so the figures sit centred between the
+   two rules rather than closer to the lower one. The track draws no line of its
+   own any more - see .burden-baseline for where that went. */
 .burden-track {
   position: relative;
   margin-top: auto;
-  padding-top: 1rem;
+  padding-top: 1.45rem;
   align-self: stretch;
 }
 
-.burden-track::before {
-  content: "";
-  position: absolute;
-  inset-inline: 0;
-  bottom: 0;
-  height: 1px;
-  background: var(--color-line);
-}
-
-/* The share bars carry the accent too. They are the one measured thing in the
-   top third of the page - three 2px rules stating a proportion - which is what
-   punctuation is for, and they put the mark's orange directly under the hero
-   rather than leaving it to appear halfway down. */
+/* THE MEASURES RIDE THE BASELINE, IN ELECTRIC BLUE. They were flat orange, and
+   orange against a rail whose figures reveal in blue was two accents doing one
+   job. They run the brand blue into the electric now, so the bar arrives at its
+   brightest exactly where it stops - the eye lands on the end of the measure,
+   which is the part that states the proportion. */
 .burden-share {
   position: absolute;
   left: 0;
   bottom: -0.5px;
   height: 2px;
   width: var(--share);
-  background: var(--color-orange);
+  background: linear-gradient(
+    90deg,
+    #1f6ed0 0%,
+    var(--color-electric) 58%,
+    #46bcff 100%
+  );
   transform-origin: left center;
   transition:
     background 0.5s var(--ease-brand),
+    box-shadow 0.4s var(--ease-brand),
     height 0.35s var(--ease-brand);
 }
 
@@ -903,9 +958,18 @@ body {
   color: var(--color-ink);
 }
 
+/* Hovered, the measure thickens and lights. The glow is what makes it read as
+   electric rather than merely blue - a 3px rule with a halo under it is lit,
+   the same rule without one is drawn. */
 .burden-cell:hover .burden-share {
   height: 3px;
-  background: linear-gradient(90deg, #2261ad 0%, #0783c6 55%, #1596d4 100%);
+  background: linear-gradient(
+    90deg,
+    var(--color-electric) 0%,
+    #46bcff 55%,
+    #7ad4ff 100%
+  );
+  box-shadow: 0 0 14px rgba(13, 139, 242, 0.6);
 }
 
 
@@ -2555,6 +2619,8 @@ body {
     box-shadow: none !important;
   }
 }
+
+
 
 
 
