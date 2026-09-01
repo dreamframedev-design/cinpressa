@@ -9,41 +9,42 @@ import { PortfolioBadge } from "@/components/portfolio-badge";
 /**
  * The homepage hero, with an A/B switch between its two treatments.
  *
- * A — THE FIELD, WITH THE BADGE IN THE LITERAL BRAND COLOUR, and the default.
- * The open flow: ribbons that widen and narrow but never pinch, spanning the
- * whole hero behind the copy the way a field does on an interior page, and
- * feathering into the section below so the boundary never cuts it. It traded
- * places with the churn, which is on /pipeline now.
+ * ONE FIELD UNDER ALL BUT TWO OF THEM. The open flow - ribbons that widen and
+ * narrow but never pinch - spans the whole hero behind the copy the way a field
+ * does on an interior page, and feathers into the section below so the boundary
+ * never cuts it. A, B, D and E draw it identically, down to the mount key, so
+ * switching between any of those does not even restart the art. Only C swaps
+ * the field out, and only F adds anything to it.
  *
- * Its plate is #F9A81A itself, at full strength and full opacity - the value
- * off the brand sheet rather than a version of it, which was the brief. It
- * leads because that is the answer to the brief, and the default should be the
- * thing being proposed rather than the hedge against it.
+ * That is deliberate. With the art held constant across four of the six stops,
+ * every one of those comparisons isolates exactly one variable, which is the
+ * only way any of them can actually be judged.
  *
- * B — THE SAME HERO, WITH THE RESTRAINED PLATE. Same field, same thread, same
- * copy at the same size: the ONLY difference between A and B is the badge, and
- * that is the point of it. B runs the accent cut, which carries the orange on
- * the rings and the edge over a cream ground instead of filling the plate with
- * it. Holding everything else constant is the only way to actually judge that
- * one call.
+ * A — THE BADGE IN THE LITERAL BRAND COLOUR, and the default. Its plate is
+ * #F9A81A itself, at full strength and full opacity - the value off the brand
+ * sheet rather than a version of it, which was the brief. It leads because the
+ * default should be the thing being proposed rather than the hedge against it.
+ *
+ * B — THE SAME HERO WITH THE RESTRAINED PLATE. The accent cut carries the
+ * orange on the edge and the relation over a cream ground instead of filling
+ * the plate with it. Nothing else differs from A at all.
  *
  * C — THE MARK. What the hero carried before: the logo converging, with its own
  * petal colours blooming outward behind it on four mismatched breaths.
  *
- * D — THE SAME FIELD AS A, WITHOUT THE THREAD, and the neutral one. One
- * component and one set of ribbons; the only difference from A is whether the
- * golden thread is drawn through it. It is also the only option whose badge
- * stays on the hairline cut, so the sole warm thing anywhere on D is the beam
+ * D — THE NEUTRAL ONE. Same field again, and the only option whose badge stays
+ * on the hairline cut, so the sole warm thing anywhere on D is the beam
  * crossing "hypertension".
  *
- * E — D'S FIELD, D'S COPY, SET SMALLER AND HIGHER. A typographic comparison
- * rather than an artistic one: it draws exactly the same field as D, so nothing
- * about the art is in question when the two are put side by side, and the only
- * differences are the ones being judged - the headline comes down about a fifth
- * and the whole block sits higher in the frame.
+ * E — D'S FIELD AND D'S COPY, SET SMALLER AND HIGHER. A typographic comparison
+ * rather than an artistic one: the headline comes down about a fifth and the
+ * whole block sits higher in the frame.
  *
- * That is the point of pairing it with D rather than with A. A carries the
- * thread, so comparing type against A would change two things at once.
+ * F — D, PLUS THE GOLDEN THREAD. The thread used to be welded to A, which meant
+ * it could never be judged on its own: A differed from the others in the badge
+ * AND in the thread at the same time. It is its own stop now, on the neutral
+ * base, so F against D is a question about one line drawn through a field and
+ * nothing else.
  *
  * The two are not variants of one layout, which is why this holds the whole
  * hero rather than just its art slot. A is a backdrop and wants the copy on one
@@ -71,7 +72,7 @@ const BLOOMS = [
   { color: "103,113,181", size: 62, x: 34, y: 36, low: 0.2, high: 0.4, dur: 23, delay: -13 },
 ];
 
-type View = "a" | "b" | "c" | "d" | "e";
+type View = "a" | "b" | "c" | "d" | "e" | "f";
 
 export function HomeHero() {
   const [view, setView] = useState<View>("a");
@@ -95,14 +96,13 @@ export function HomeHero() {
         />
       ) : (
         <>
-          {view === "d" || view === "e" ? (
-            /* The same field as A, with nothing drawn in it - and D and E share
-               it exactly, down to the mount key, so switching between those two
-               does not even restart the art. Whatever is being compared there,
-               it is not the field. */
-            <OpenFlow key="plain" thread={false} className="absolute inset-0" />
-          ) : (
+          {view === "f" ? (
+            /* The one stop that carries the thread. Same component and same
+               ribbons as every other field on this hero; the only difference is
+               whether the line is drawn through it. */
             <OpenFlow key="flow" className="absolute inset-0" />
+          ) : (
+            <OpenFlow key="plain" thread={false} className="absolute inset-0" />
           )}
           {/* Feather into the section below, so neither field is cut off by the
               boundary after all the work it does to avoid a visible edge.
@@ -155,20 +155,31 @@ export function HomeHero() {
               it is built to be lifted whole into any sibling company's site
               with one prop changed.
 
-              THE TONE IS THE WHOLE SWITCH at three of the five stops. A is the
-              solid cut, the plate at #F9A81A itself - and it is the default,
-              because the default should be the thing being proposed rather than
-              the hedge against it. D is the neutral cut: hairline plate, blue
-              rings, so the only warm thing anywhere on it is the beam crossing
-              "hypertension". Everything else runs the accent cut in between. */}
+              A is the solid cut, the plate at #F9A81A itself, and it is the
+              default because the default should be the thing being proposed
+              rather than the hedge against it. D and F take the hairline cut -
+              F is D plus the thread, so it has to carry D's badge or the two
+              would differ in two things at once. Everything else runs the
+              accent cut in between. */}
           <div className="anim-rise" style={{ animationDelay: "0.02s" }}>
             <PortfolioBadge
               parent="CinRx"
-              tone={view === "d" ? "line" : view === "a" ? "solid" : "accent"}
+              tone={
+                view === "d" || view === "f"
+                  ? "line"
+                  : view === "a"
+                    ? "solid"
+                    : "accent"
+              }
             />
           </div>
+          {/* WEIGHT 400, NOT 300. The headline was set light because everything
+              on this site is, but at 68px the 300 reads thin rather than
+              elegant - the strokes go spindly at exactly the size that is
+              supposed to carry the page. One step up is enough; 500 would make
+              it a different headline. */}
           <h1
-            className={`anim-rise mt-7 font-light leading-[1.04] tracking-tight text-ink ${
+            className={`anim-rise mt-7 font-normal leading-[1.04] tracking-tight text-ink ${
               compact
                 ? "text-[clamp(2rem,4.1vw,3.25rem)]"
                 : "text-[clamp(2.4rem,5.4vw,4.25rem)]"
@@ -195,6 +206,7 @@ export function HomeHero() {
                   { id: "c", label: "C" },
                   { id: "d", label: "D" },
                   { id: "e", label: "E" },
+                  { id: "f", label: "F" },
                 ] as { id: View; label: string }[]
               ).map((v) => (
                 <button

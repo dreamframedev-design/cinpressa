@@ -13,25 +13,31 @@
  * that any sibling site would already define. Drop the file in, pass a name,
  * done.
  *
- * THE FORM IS A PLATE IN TWO ZONES, divided by a hairline. Left is the parent,
- * set in ink at the weight a name deserves and in its own case - CinRx is
- * elephant case, upper and lower mixed, and no text-transform is allowed near
- * it. Right is the relationship, set small and tracked in the muted grey, which
- * is where a qualifier belongs. Reading it as "A CinRx | PORTFOLIO COMPANY"
- * gives the name first and the relation second, which is the order that
- * matters; a flat sentence buries the name mid-phrase.
+ * IT IS TWO TEXT RUNS ON A PLATE, AND NOTHING ELSE. It carried a two-ring glyph
+ * and a hairline divider between the zones; both are gone. The glyph was there
+ * to say "part of a group" and the divider to separate the name from the
+ * qualifier — but the name is already 14.72px semibold ink and the qualifier is
+ * 10.88px tracked caps in grey, which is three differences doing that job
+ * before any rule is drawn. A divider between two things that are already
+ * unmistakably different is a line for its own sake, and the glyph was one more
+ * object competing with a word that has to be read first.
+ *
+ * What is left is the phrase, the plate, and the edge. That is the whole badge,
+ * and it is better for having less in it.
+ *
+ * THE FORM IS A PLATE IN TWO ZONES. Left is the parent, set in ink at the
+ * weight a name deserves and in its own case - CinRx is elephant case, upper
+ * and lower mixed, and no text-transform is allowed near it. Right is the
+ * relationship, set small and tracked in the muted grey, which is where a
+ * qualifier belongs. Reading it as "A CinRx  PORTFOLIO COMPANY" gives the name
+ * first and the relation second, which is the order that matters; a flat
+ * sentence buries the name mid-phrase.
  *
  * THE ARTICLE IS REQUIRED, NOT DECORATIVE. The approved phrasing is "a CinRx
  * portfolio company" and it has to survive being split across two zones, so the
  * "A" leads the left one. It is set smaller and in the muted grey rather than
  * at the name's weight: it belongs to the sentence, not to the company, and at
  * full weight it competes with the first letter of the name it introduces.
- *
- * THE GLYPH IS TWO OVERLAPPING RINGS, and it is deliberately not a logo. CinRx
- * has its own mark and inventing one would be worse than having none; two rings
- * meeting is the plainest possible statement of "part of a group", and it
- * happens to be the same construction the CinPressa mark itself is built from,
- * so it sits in the family without pretending to be anyone's identity.
  *
  * Corners at 4px, matching the buttons and the form controls rather than the
  * pill this would have been six months ago.
@@ -43,8 +49,8 @@
  * "line"   — the hairline default. Neutral, and the only one that is safe
  *            anywhere, which is why it is the default for a component meant to
  *            be dropped into sites that have not been seen.
- * "accent" — the brand's warm accent, on the rings, the edge and the
- *            relationship text, over a cream plate. The name stays in ink.
+ * "accent" — the brand's warm accent on the edge and the relationship text,
+ *            over a cream plate. The name stays in ink.
  * "solid"  — the plate IS the brand colour, #F9A81A at full strength and full
  *            opacity, with everything on it in ink. Not a tint of the orange
  *            and not a wash: the literal value off the brand sheet. See the
@@ -85,22 +91,12 @@ export function PortfolioBadge({
 
   const inner = (
     <>
-      <svg
-        aria-hidden
-        viewBox="0 0 26 16"
-        className="portfolio-badge-glyph"
-        fill="none"
-      >
-        <circle cx="9" cy="8" r="6.1" stroke="currentColor" strokeWidth="1.3" />
-        <circle cx="17" cy="8" r="6.1" stroke="currentColor" strokeWidth="1.3" />
-      </svg>
       <span className="portfolio-badge-name">
         {article ? (
           <span className="portfolio-badge-lead">{article} </span>
         ) : null}
         {parent}
       </span>
-      <span aria-hidden className="portfolio-badge-rule" />
       <span className="portfolio-badge-kind">{relation}</span>
     </>
   );

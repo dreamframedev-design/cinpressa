@@ -653,9 +653,14 @@ body {
    proportions if a sibling runs a different base size. */
 .portfolio-badge {
   display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.42rem 0.8rem 0.42rem 0.65rem;
+  align-items: baseline;
+  /* Wider than it was. The glyph and the divider are gone, so this gap is the
+     only thing separating the name from the qualifier - it has to be big enough
+     to read as a break rather than a word space, and 0.85rem is about two
+     spaces at this size. Padding is symmetric now that nothing sits inboard of
+     the left edge. */
+  gap: 0.85rem;
+  padding: 0.44rem 0.85rem;
   border: 1px solid var(--color-line);
   border-radius: 4px;
   /* Nearly white and slightly translucent: the hero paints a field behind
@@ -668,16 +673,6 @@ body {
     border-color 0.25s var(--ease-brand),
     background-color 0.25s var(--ease-brand),
     box-shadow 0.25s var(--ease-brand);
-}
-
-/* Two rings meeting. Not a logo - see the note in the component. */
-.portfolio-badge-glyph {
-  width: 1.55rem;
-  height: 0.95rem;
-  flex: none;
-  color: var(--color-blue);
-  opacity: 0.6;
-  transition: opacity 0.25s var(--ease-brand);
 }
 
 /* THE ARTICLE. Sized in em so it tracks the name if the name is ever resized,
@@ -702,13 +697,6 @@ body {
   white-space: nowrap;
 }
 
-.portfolio-badge-rule {
-  width: 1px;
-  height: 0.95rem;
-  flex: none;
-  background: var(--color-line);
-}
-
 /* The relationship, set as the qualifier it is. */
 .portfolio-badge-kind {
   font-size: 0.68rem;
@@ -725,13 +713,10 @@ body {
   box-shadow: 0 2px 10px -4px rgba(20, 48, 79, 0.18);
 }
 
-.portfolio-badge-link:hover .portfolio-badge-glyph {
-  opacity: 1;
-}
-
-/* THE ACCENT TONE. The brand's warm colour, carried on the rings, the edge and
-   the relationship text - three places, which is enough for the plate to read
-   as an orange object rather than a neutral one with an orange dot on it.
+/* THE ACCENT TONE. The brand's warm colour on the edge and the relationship
+   text. It carried the rings too until they were removed; with only two places
+   left to put it, the edge does more work here than it used to and is pitched
+   accordingly.
 
    THE NAME STAYS IN INK, and that is the one line held against making this more
    orange. It is the thing on the plate that has to be read first; amber type at
@@ -746,15 +731,6 @@ body {
   border-color: rgba(249, 168, 26, 0.45);
   background: rgba(255, 248, 235, 0.86);
   box-shadow: 0 1px 2px rgba(154, 95, 0, 0.06);
-}
-
-.portfolio-badge-accent .portfolio-badge-glyph {
-  color: var(--color-orange);
-  opacity: 1;
-}
-
-.portfolio-badge-accent .portfolio-badge-rule {
-  background: rgba(249, 168, 26, 0.5);
 }
 
 .portfolio-badge-accent .portfolio-badge-kind {
@@ -786,10 +762,6 @@ body {
    from size and weight instead of colour. That is a better badge anyway: on a
    field this saturated, a second text colour is noise.
 
-   The rings go ink too, at full strength. Ink at 55% opacity over this orange
-   is 2.8:1 and misses the 3:1 a meaningful graphic needs; there is no reason to
-   run them faint on the one cut whose whole point is not being faint.
-
    The edge is a deeper amber rather than a hairline. A solid plate needs its
    own boundary or it reads as a swatch that happens to have landed there. */
 .portfolio-badge-solid {
@@ -798,19 +770,10 @@ body {
   box-shadow: 0 1px 3px rgba(120, 72, 0, 0.2);
 }
 
-.portfolio-badge-solid .portfolio-badge-glyph {
-  color: var(--color-ink);
-  opacity: 1;
-}
-
 .portfolio-badge-solid .portfolio-badge-name,
 .portfolio-badge-solid .portfolio-badge-kind,
 .portfolio-badge-solid .portfolio-badge-lead {
   color: var(--color-ink);
-}
-
-.portfolio-badge-solid .portfolio-badge-rule {
-  background: rgba(20, 48, 79, 0.32);
 }
 
 .portfolio-badge-solid.portfolio-badge-link:hover {
@@ -834,15 +797,6 @@ body {
 .portfolio-badge-dark .portfolio-badge-kind,
 .portfolio-badge-dark .portfolio-badge-lead {
   color: rgba(255, 255, 255, 0.7);
-}
-
-.portfolio-badge-dark .portfolio-badge-rule {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.portfolio-badge-dark .portfolio-badge-glyph {
-  color: #95daf8;
-  opacity: 0.8;
 }
 
 .portfolio-badge-dark.portfolio-badge-link:hover {
@@ -1147,36 +1101,75 @@ body {
   animation: grow-x 1s var(--ease-brand) calc(0.6s + var(--i) * 0.14s) both;
 }
 
-/* THE HOVER IS BLUE, AND THE BLUE MOVES. Resting, the figure is the calm dark
-   grey. Hovered, the grey fill retreats and a ramp clipped to the glyphs comes
-   up in its place - but the ramp is not one flat sweep any more. It carries the
-   dark grey inside it as two narrow bands, and it travels, so what crosses the
-   number is a beam shifting between that dark and the blue rather than a single
-   pass from one to the other.
+/* THE BEAM RUNS ON ITS OWN, AND HOVER ONLY BRIGHTENS IT.
 
-   Sized at 220% with the sweep running 110% to -10%, the window onto the ramp
-   is a little under half of it: there is always blue on the figure and always
-   exactly one dark band somewhere in it. Blue is the state; the dark is what
-   moves through.
+   IT WAS HOVER-ONLY, WHICH MEANT NOBODY SAW IT. The whole effect sat behind a
+   pointer that has to be over one specific figure, so looking at the page - or
+   at a screenshot of it, or at it on a phone - showed three flat grey numbers
+   and nothing else. An animation nobody encounters is not a subtle animation,
+   it is an absent one.
 
-   #1596d4 is the beam's core and is the ceiling on purpose - it clears 3:1 on
-   white at this size, and every stop lighter on the ladder does not. */
+   So the ramp is always there and always travelling. At rest it is mostly the
+   calm dark grey with one blue length inside it, and at 320% the window onto
+   that ramp is under a third of it: the figure reads dark for most of the cycle
+   and a blue pass crosses it every ten seconds. Hovered, the SAME sweep runs
+   with the colours inverted - blue throughout with a brighter core - so hover
+   raises the whole figure rather than starting something.
+
+   The duration and the sweep are identical in both states, and deliberately.
+   Changing animation-duration mid-flight makes the browser re-map the current
+   time, which pops; holding it and swapping only the gradient means the beam
+   keeps its place and simply changes colour under the pointer.
+
+   THE THREE ARE STAGGERED, on the --i the rail already sets per cell. Negative
+   delays a third of the cycle apart put each figure at a different point in the
+   same sweep, so the rail has something moving somewhere most of the time and
+   never all three at once, which would read as a flash.
+
+   #1596d4 is the ceiling on purpose - it clears 3:1 on white at this size, and
+   every stop lighter on the ladder does not. */
+.burden-value {
+  animation: burden-beam 10s linear infinite;
+  animation-delay: calc(var(--i, 0) * -3.33s);
+}
+
+/* The fill only goes transparent where the ramp can actually be clipped to the
+   glyphs. Without the guard, a browser without background-clip:text renders
+   three invisible numbers. */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .burden-value {
+    color: transparent;
+    background-image: linear-gradient(
+      100deg,
+      #414c59 0%,
+      #414c59 30%,
+      #2261ad 38%,
+      #0473bb 44%,
+      #1596d4 50%,
+      #0473bb 56%,
+      #2261ad 62%,
+      #414c59 70%,
+      #414c59 100%
+    );
+    background-size: 320% 100%;
+  }
+}
+
 .burden-cell:hover .burden-value {
   color: transparent;
   background-image: linear-gradient(
     100deg,
     #2261ad 0%,
-    #414c59 12%,
-    #0473bb 26%,
-    #0783c6 38%,
+    #2261ad 26%,
+    #0473bb 36%,
+    #0783c6 44%,
     #1596d4 50%,
-    #0783c6 62%,
-    #0473bb 74%,
-    #414c59 88%,
+    #0783c6 56%,
+    #0473bb 64%,
+    #2261ad 74%,
     #2261ad 100%
   );
-  background-size: 220% 100%;
-  animation: burden-beam 3.6s linear infinite;
+  background-size: 320% 100%;
 }
 
 @keyframes burden-beam {
@@ -2746,11 +2739,18 @@ body {
     transition: none !important;
   }
 
-  /* The hover still turns the figure blue, it just does not travel. Parked at
-     the middle of the ramp, which is the stretch with no dark band in it. */
-  .burden-cell:hover .burden-value {
+  /* No sweep at all here, in either state - a beam that cannot travel is just a
+     stripe parked across a numeral. The figure is flat dark grey and the hover
+     is flat blue, which is the same information without the motion. */
+  .burden-value {
     animation: none !important;
-    background-position: 50% 0 !important;
+    background-image: none !important;
+    color: #414c59 !important;
+  }
+
+  .burden-cell:hover .burden-value {
+    background-image: none !important;
+    color: #0473bb !important;
   }
 
   /* Colour and texture stay; only the motion stops. */
@@ -2897,4 +2897,6 @@ body {
 
 
 /* rebuild */
+
+
 

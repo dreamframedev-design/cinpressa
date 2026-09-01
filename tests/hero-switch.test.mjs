@@ -4,7 +4,7 @@ import { readFile } from "node:fs/promises";
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 
-test("the homepage hero switches between five treatments, A first", async () => {
+test("the homepage hero switches between six treatments, A first", async () => {
   const hero = await read("src/components/home-hero.tsx");
 
   assert.match(hero, /^"use client";/);
@@ -15,13 +15,13 @@ test("the homepage hero switches between five treatments, A first", async () => 
   assert.match(hero, /<ConvergenceMark key="mark"[^>]*variant="cascade"/);
   assert.match(hero, /const mark = view === "c";/);
   const labels = [...hero.matchAll(/label: "([A-Z])"/g)].map((m) => m[1]);
-  assert.deepEqual(labels, ["A", "B", "C", "D", "E"]);
-  // A, B, D and E are the SAME field - one component and one set of ribbons, so
-  // none of them can drift from the others. D and E share the mount key
-  // outright, because what is being compared across those two is the type, not
-  // the art; A and B differ from them only in the thread.
+  assert.deepEqual(labels, ["A", "B", "C", "D", "E", "F"]);
+  // FOUR OF THE SIX DRAW THE IDENTICAL FIELD, down to the mount key, so those
+  // comparisons isolate exactly one variable each. Only C swaps the field out
+  // and only F adds the thread to it.
   assert.match(hero, /<OpenFlow key="plain" thread=\{false\} className="absolute inset-0" \/>/);
-  assert.match(hero, /view === "d" \|\| view === "e"/);
+  assert.match(hero, /view === "f" \?/);
+  assert.match(hero, /<OpenFlow key="flow" className="absolute inset-0" \/>/);
   // The gold band is gone from the whole codebase, not just unused.
   assert.doesNotMatch(hero, /goldBand/);
   assert.doesNotMatch(hero, /Bleed/);
@@ -87,10 +87,12 @@ test("provenance is a badge, and the badge is portable", async () => {
   const hero = await read("src/components/home-hero.tsx");
   const badge = await read("src/components/portfolio-badge.tsx");
 
-  // Three tones across five stops: the solid plate on A, which is also the
-  // default - the default should be the thing being proposed, not the hedge
-  // against it - the hairline on D, and the accent on everything between.
-  assert.match(hero, /tone=\{view === "d" \? "line" : view === "a" \? "solid" : "accent"\}/);
+  // The solid plate on A, which is also the default - the default should be the
+  // thing being proposed, not the hedge against it. D and F take the hairline:
+  // F is D plus the thread, so it has to carry D's badge or the two would
+  // differ in two things at once.
+  assert.match(hero, /view === "d" \|\| view === "f"\s*\?\s*"line"/);
+  assert.match(hero, /view === "a"\s*\?\s*"solid"/);
   assert.match(badge, /"line" \| "accent" \| "solid" \| "dark"/);
   // The approved phrasing is "a CinRx portfolio company", so the article has to
   // survive the split across the plate's two zones.
@@ -121,8 +123,17 @@ test("provenance is a badge, and the badge is portable", async () => {
   assert.match(badge, /parent = "CinRx"/);
   assert.match(badge, /href = "https:\/\/cinrx.com"/);
   assert.doesNotMatch(badge, /CinPressa Pharma|CIN-111/);
+  // NOTHING BUT THE TWO TEXT RUNS. The glyph and the divider are removed, not
+  // hidden: the name is 14.72px semibold ink and the qualifier is 10.88px
+  // tracked caps in grey, which is three differences doing that separating job
+  // before any rule is drawn.
+  assert.doesNotMatch(badge, /portfolio-badge-glyph|portfolio-badge-rule|<svg/);
+  assert.doesNotMatch(css2, /portfolio-badge-glyph|portfolio-badge-rule/);
+
   // The name must never be case-transformed - CinRx is elephant case.
-  const css = await read("src/app/globals.css");
-  const rule = css.slice(css.indexOf(".portfolio-badge-name"), css.indexOf(".portfolio-badge-rule"));
-  assert.doesNotMatch(rule, /text-transform/);
+  const nameRule = css2.slice(
+    css2.indexOf(".portfolio-badge-name {"),
+    css2.indexOf(".portfolio-badge-kind {")
+  );
+  assert.doesNotMatch(nameRule, /text-transform/);
 });
