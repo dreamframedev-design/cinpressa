@@ -645,6 +645,63 @@ body {
 }
 
 
+/* ---------- Hero switch (home-hero.tsx) -------------------------------
+   Review furniture, and it is dressed as furniture: a chip small enough to
+   ignore, parked in the hero's bottom corner. It exists to be deleted the day
+   one of the six is chosen.
+
+   IT IS ANCHORED TO THE CONTENT GUTTER, NOT THE VIEWPORT, and that is a
+   correctness fix rather than a taste one. SiteAlleys puts its hairline at
+   max(24px, calc(50% - 640px + 24px)) from each edge - fixed at 24 on narrow
+   screens, but moving INBOARD once the 1280 container starts centring. A
+   control pinned 40px from the viewport edge is clear of it at 1280 and gets
+   crossed by it at about 1340, which is exactly what happened. Anchoring to the
+   same max-w-7xl gutter every other element respects puts it permanently
+   inboard of the alley at any width.
+
+   The letters are muted rather than stone. Stone measures 2.3:1 on this ground
+   and these are real controls, not decoration; muted is 6.7:1, and white on the
+   selected blue is 6.3:1, so both states clear AA at 10px. */
+.hero-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.1rem;
+  padding: 0.2rem;
+  border: 1px solid var(--color-line);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 1px 2px rgba(20, 48, 79, 0.05);
+}
+
+.hero-switch button {
+  min-width: 1.15rem;
+  padding: 0.16rem 0.08rem;
+  border-radius: 2px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  color: var(--color-muted);
+  transition:
+    color 0.2s var(--ease-brand),
+    background-color 0.2s var(--ease-brand);
+}
+
+.hero-switch button:hover {
+  background: rgba(190, 215, 236, 0.28);
+  color: var(--color-ink);
+}
+
+/* Filled rather than underlined. An underline on a 10px letter inside a chip
+   this size is two pixels of decoration doing the work of a state; a fill says
+   it at a glance. */
+.hero-switch button[aria-pressed="true"] {
+  background: var(--color-blue);
+  color: #ffffff;
+}
+
 /* ---------- Nav lockup stands down ------------------------------------
    Set by the homepage hero while it is showing the mark at architectural
    scale (see home-hero.tsx). Two marks on one screen, one of them 500px and
@@ -2979,3 +3036,6 @@ body {
 
 
 
+
+
+/* rebuild */

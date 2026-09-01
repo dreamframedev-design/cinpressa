@@ -266,32 +266,49 @@ export function HomeHero() {
 
           Corner-parked and out of flow, it costs the layout nothing: what is
           left in the column is exactly the badge and the headline, which is
-          what ships. */}
-      <div className="absolute bottom-5 right-6 z-10 flex items-center gap-3 lg:bottom-7 lg:right-10">
-        {(
-          [
-            { id: "a", label: "A" },
-            { id: "b", label: "B" },
-            { id: "c", label: "C" },
-            { id: "d", label: "D" },
-            { id: "e", label: "E" },
-            { id: "f", label: "F" },
-          ] as { id: View; label: string }[]
-        ).map((v) => (
-          <button
-            key={v.id}
-            type="button"
-            aria-pressed={v.id === view}
-            onClick={() => setView(v.id)}
-            className={
-              v.id === view
-                ? "text-[0.76rem] font-semibold tracking-[0.08em] text-blue underline decoration-blue/40 underline-offset-4"
-                : "text-[0.76rem] tracking-[0.08em] text-stone/70 transition-colors hover:text-body"
-            }
-          >
-            {v.label}
-          </button>
-        ))}
+          what ships.
+
+          THE WRAPPER IS THE CONTENT CONTAINER, not a viewport offset, and that
+          is what keeps it off the alley. SiteAlleys anchors its hairline at
+          max(24px, calc(50% - 640px + 24px)) from each edge, which moves inboard
+          once the 1280 container starts centring - so a control pinned 40px
+          from the viewport edge clears it at 1280 and is crossed by it at about
+          1340. Sharing max-w-7xl and the same px gutter as everything else puts
+          the chip permanently inside the alley at any width.
+
+          px-10 AT EVERY WIDTH, rather than matching the content gutter's px-6
+          below lg. The alley's floor is 24px and so is that gutter, so aligning
+          to it exactly would put the chip's right edge ON the hairline between
+          640 and 1024 - clear everywhere else and touching in the one band. 40
+          holds a margin at every width the alleys are drawn at, and at lg it
+          lands on the content gutter anyway.
+
+          pointer-events-none on the full-width strip so it cannot swallow
+          clicks across the hero; the chip itself takes them back. */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-5 z-10 lg:bottom-7">
+        <div className="mx-auto flex w-full max-w-7xl justify-end px-10">
+          <div className="hero-switch pointer-events-auto">
+            {(
+              [
+                { id: "a", label: "A" },
+                { id: "b", label: "B" },
+                { id: "c", label: "C" },
+                { id: "d", label: "D" },
+                { id: "e", label: "E" },
+                { id: "f", label: "F" },
+            ] as { id: View; label: string }[]
+            ).map((v) => (
+              <button
+                key={v.id}
+                type="button"
+                aria-pressed={v.id === view}
+                onClick={() => setView(v.id)}
+              >
+                {v.label}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
