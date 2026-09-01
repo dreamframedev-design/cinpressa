@@ -771,6 +771,54 @@ body {
   box-shadow: 0 2px 10px -4px rgba(154, 95, 0, 0.28);
 }
 
+/* THE SOLID CUT. The plate is #F9A81A - the value off the brand sheet, at full
+   opacity, with nothing mixed into it. The accent cut above puts the orange on
+   the rings and the edge over a cream ground, which is the restrained reading
+   of the same idea; this is the unrestrained one, and it exists because the
+   brief was the exact colour rather than a version of it.
+
+   EVERYTHING ON IT GOES INK, and that is forced rather than chosen. White on
+   #F9A81A measures 2.0:1 and fails at any size - the orange is simply too light
+   to carry white type - while the amber the accent cut uses for its relation
+   text drops to 2.7:1 on this ground, so neither of the obvious answers
+   survives. Ink at #14304F is 6.8:1 here, which clears AA for the 11px relation
+   with room to spare, so the whole plate is set in it and the hierarchy comes
+   from size and weight instead of colour. That is a better badge anyway: on a
+   field this saturated, a second text colour is noise.
+
+   The rings go ink too, at full strength. Ink at 55% opacity over this orange
+   is 2.8:1 and misses the 3:1 a meaningful graphic needs; there is no reason to
+   run them faint on the one cut whose whole point is not being faint.
+
+   The edge is a deeper amber rather than a hairline. A solid plate needs its
+   own boundary or it reads as a swatch that happens to have landed there. */
+.portfolio-badge-solid {
+  border-color: #dd9110;
+  background: var(--color-orange);
+  box-shadow: 0 1px 3px rgba(120, 72, 0, 0.2);
+}
+
+.portfolio-badge-solid .portfolio-badge-glyph {
+  color: var(--color-ink);
+  opacity: 1;
+}
+
+.portfolio-badge-solid .portfolio-badge-name,
+.portfolio-badge-solid .portfolio-badge-kind,
+.portfolio-badge-solid .portfolio-badge-lead {
+  color: var(--color-ink);
+}
+
+.portfolio-badge-solid .portfolio-badge-rule {
+  background: rgba(20, 48, 79, 0.32);
+}
+
+.portfolio-badge-solid.portfolio-badge-link:hover {
+  border-color: #c47f08;
+  background: #ffb32e;
+  box-shadow: 0 3px 12px -4px rgba(120, 72, 0, 0.4);
+}
+
 /* On a dark ground - a footer, a dark hero - the plate inverts rather than
    sitting on the page as a white sticker. */
 .portfolio-badge-dark {
@@ -2849,3 +2897,4 @@ body {
 
 
 /* rebuild */
+

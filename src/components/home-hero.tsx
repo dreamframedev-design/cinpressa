@@ -9,28 +9,40 @@ import { PortfolioBadge } from "@/components/portfolio-badge";
 /**
  * The homepage hero, with an A/B switch between its two treatments.
  *
- * A — THE FIELD, and the default. The open flow: ribbons that widen and narrow
- * but never pinch. It spans the whole hero behind the copy, the way a field
- * does on an interior page, and feathers into the section below so the boundary
- * never cuts it. It traded places with the churn, which is on /pipeline now.
+ * A — THE FIELD, WITH THE BADGE IN THE LITERAL BRAND COLOUR, and the default.
+ * The open flow: ribbons that widen and narrow but never pinch, spanning the
+ * whole hero behind the copy the way a field does on an interior page, and
+ * feathering into the section below so the boundary never cuts it. It traded
+ * places with the churn, which is on /pipeline now.
  *
- * B — THE MARK. What the hero carried before: the logo converging, with its own
+ * Its plate is #F9A81A itself, at full strength and full opacity - the value
+ * off the brand sheet rather than a version of it, which was the brief. It
+ * leads because that is the answer to the brief, and the default should be the
+ * thing being proposed rather than the hedge against it.
+ *
+ * B — THE SAME HERO, WITH THE RESTRAINED PLATE. Same field, same thread, same
+ * copy at the same size: the ONLY difference between A and B is the badge, and
+ * that is the point of it. B runs the accent cut, which carries the orange on
+ * the rings and the edge over a cream ground instead of filling the plate with
+ * it. Holding everything else constant is the only way to actually judge that
+ * one call.
+ *
+ * C — THE MARK. What the hero carried before: the logo converging, with its own
  * petal colours blooming outward behind it on four mismatched breaths.
  *
- * C — THE SAME FIELD AS A, WITHOUT THE THREAD. One component and one set of
- * ribbons; the only difference is whether the golden thread is drawn through
- * it. That makes A and C a choice about the thread rather than a choice
- * between two unrelated pieces of art, and it means neither can drift from the
- * other.
+ * D — THE SAME FIELD AS A, WITHOUT THE THREAD, and the neutral one. One
+ * component and one set of ribbons; the only difference from A is whether the
+ * golden thread is drawn through it. It is also the only option whose badge
+ * stays on the hairline cut, so the sole warm thing anywhere on D is the beam
+ * crossing "hypertension".
  *
- * D — C'S FIELD, C'S COPY, SET SMALLER AND HIGHER. The gold band that used to
- * be here is gone; D is now a typographic comparison rather than an artistic
- * one. It draws exactly the same field as C, so nothing about the art is in
- * question when the two are put side by side, and the only differences are the
- * ones being judged: the headline comes down about a fifth and the whole block
- * sits higher in the frame.
+ * E — D'S FIELD, D'S COPY, SET SMALLER AND HIGHER. A typographic comparison
+ * rather than an artistic one: it draws exactly the same field as D, so nothing
+ * about the art is in question when the two are put side by side, and the only
+ * differences are the ones being judged - the headline comes down about a fifth
+ * and the whole block sits higher in the frame.
  *
- * That is the point of pairing it with C rather than with A. A carries the
+ * That is the point of pairing it with D rather than with A. A carries the
  * thread, so comparing type against A would change two things at once.
  *
  * The two are not variants of one layout, which is why this holds the whole
@@ -59,13 +71,13 @@ const BLOOMS = [
   { color: "103,113,181", size: 62, x: 34, y: 36, low: 0.2, high: 0.4, dur: 23, delay: -13 },
 ];
 
-type View = "a" | "b" | "c" | "d";
+type View = "a" | "b" | "c" | "d" | "e";
 
 export function HomeHero() {
   const [view, setView] = useState<View>("a");
-  const mark = view === "b";
-  /** D's whole proposition: same field, smaller headline, higher block. */
-  const compact = view === "d";
+  const mark = view === "c";
+  /** E's whole proposition: same field, smaller headline, higher block. */
+  const compact = view === "e";
 
   return (
     <section className="relative flex min-h-[88vh] items-center overflow-hidden bg-gradient-to-b from-white via-white to-mist lg:min-h-[76vh]">
@@ -83,8 +95,8 @@ export function HomeHero() {
         />
       ) : (
         <>
-          {view === "c" || view === "d" ? (
-            /* The same field as A, with nothing drawn in it - and C and D share
+          {view === "d" || view === "e" ? (
+            /* The same field as A, with nothing drawn in it - and D and E share
                it exactly, down to the mount key, so switching between those two
                does not even restart the art. Whatever is being compared there,
                it is not the field. */
@@ -143,14 +155,17 @@ export function HomeHero() {
               it is built to be lifted whole into any sibling company's site
               with one prop changed.
 
-              IT CARRIES THE ACCENT EVERYWHERE EXCEPT C. That is the whole
-              definition of C now: the neutral cut, blue and grey, with no warm
-              anywhere on it but the beam that crosses "hypertension". Every
-              other option gets the warm plate, so the comparison the switch
-              offers is genuinely "how much orange does this hero want" rather
-              than four unrelated treatments. */}
+              THE TONE IS THE WHOLE SWITCH at three of the five stops. A is the
+              solid cut, the plate at #F9A81A itself - and it is the default,
+              because the default should be the thing being proposed rather than
+              the hedge against it. D is the neutral cut: hairline plate, blue
+              rings, so the only warm thing anywhere on it is the beam crossing
+              "hypertension". Everything else runs the accent cut in between. */}
           <div className="anim-rise" style={{ animationDelay: "0.02s" }}>
-            <PortfolioBadge parent="CinRx" tone={view === "c" ? "line" : "accent"} />
+            <PortfolioBadge
+              parent="CinRx"
+              tone={view === "d" ? "line" : view === "a" ? "solid" : "accent"}
+            />
           </div>
           <h1
             className={`anim-rise mt-7 font-light leading-[1.04] tracking-tight text-ink ${
@@ -179,6 +194,7 @@ export function HomeHero() {
                   { id: "b", label: "B" },
                   { id: "c", label: "C" },
                   { id: "d", label: "D" },
+                  { id: "e", label: "E" },
                 ] as { id: View; label: string }[]
               ).map((v) => (
                 <button

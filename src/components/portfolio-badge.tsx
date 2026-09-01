@@ -44,12 +44,14 @@
  *            anywhere, which is why it is the default for a component meant to
  *            be dropped into sites that have not been seen.
  * "accent" — the brand's warm accent, on the rings, the edge and the
- *            relationship text. The name stays in ink: it is the one thing here
- *            that has to be read first and legibly, and amber type at 14px is a
- *            worse name than ink type at 14px however on-brand it is.
+ *            relationship text, over a cream plate. The name stays in ink.
+ * "solid"  — the plate IS the brand colour, #F9A81A at full strength and full
+ *            opacity, with everything on it in ink. Not a tint of the orange
+ *            and not a wash: the literal value off the brand sheet. See the
+ *            stylesheet for why every mark on it goes dark rather than white.
  * "dark"   — for a dark ground: a footer, an inverted hero.
  */
-type Tone = "line" | "accent" | "dark";
+type Tone = "line" | "accent" | "solid" | "dark";
 
 export function PortfolioBadge({
   parent = "CinRx",
@@ -73,6 +75,7 @@ export function PortfolioBadge({
   const classes = [
     "portfolio-badge",
     tone === "accent" ? "portfolio-badge-accent" : "",
+    tone === "solid" ? "portfolio-badge-solid" : "",
     tone === "dark" ? "portfolio-badge-dark" : "",
     href ? "portfolio-badge-link" : "",
     className,

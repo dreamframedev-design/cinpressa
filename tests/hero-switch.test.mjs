@@ -4,23 +4,24 @@ import { readFile } from "node:fs/promises";
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 
-test("the homepage hero switches between four treatments, A first", async () => {
+test("the homepage hero switches between five treatments, A first", async () => {
   const hero = await read("src/components/home-hero.tsx");
 
   assert.match(hero, /^"use client";/);
   // A is the default and is the field that was on /pipeline.
   assert.match(hero, /useState<View>\("a"\)/);
   assert.match(hero, /import \{ OpenFlow \} from "@\/components\/open-flow"/);
-  // B is the mark.
+  // C is the mark.
   assert.match(hero, /<ConvergenceMark key="mark"[^>]*variant="cascade"/);
+  assert.match(hero, /const mark = view === "c";/);
   const labels = [...hero.matchAll(/label: "([A-Z])"/g)].map((m) => m[1]);
-  assert.deepEqual(labels, ["A", "B", "C", "D"]);
-  // A, C and D are the SAME field - one component and one set of ribbons, so
-  // none of the three can drift from the others. C and D share the mount key
+  assert.deepEqual(labels, ["A", "B", "C", "D", "E"]);
+  // A, B, D and E are the SAME field - one component and one set of ribbons, so
+  // none of them can drift from the others. D and E share the mount key
   // outright, because what is being compared across those two is the type, not
-  // the art; A differs from them only in the thread.
+  // the art; A and B differ from them only in the thread.
   assert.match(hero, /<OpenFlow key="plain" thread=\{false\} className="absolute inset-0" \/>/);
-  assert.match(hero, /view === "c" \|\| view === "d"/);
+  assert.match(hero, /view === "d" \|\| view === "e"/);
   // The gold band is gone from the whole codebase, not just unused.
   assert.doesNotMatch(hero, /goldBand/);
   assert.doesNotMatch(hero, /Bleed/);
@@ -69,13 +70,13 @@ test("the hero fields swapped pages", async () => {
   assert.doesNotMatch(science, /OpenFlow/);
 });
 
-test("D is C, set smaller and higher", async () => {
+test("E is D, set smaller and higher", async () => {
   const hero = await read("src/components/home-hero.tsx");
   const flow = await read("src/components/open-flow.tsx");
 
-  // D was the gold band; it is a typographic variant now. Same field as C, so
-  // the only differences between the two are the ones being judged.
-  assert.match(hero, /const compact = view === "d";/);
+  // A typographic variant, not an artistic one: same field as D, so the only
+  // differences between the two are the ones being judged.
+  assert.match(hero, /const compact = view === "e";/);
   assert.match(hero, /compact[\s\S]{0,40}text-\[clamp\(2rem/);
   assert.match(hero, /compact\s*\?\s*"self-start pt-24 lg:pb-28 lg:pt-40"/);
   // And the band is deleted rather than left dangling behind a false default.
@@ -86,7 +87,11 @@ test("provenance is a badge, and the badge is portable", async () => {
   const hero = await read("src/components/home-hero.tsx");
   const badge = await read("src/components/portfolio-badge.tsx");
 
-  assert.match(hero, /<PortfolioBadge parent="CinRx" tone=\{view === "c" \? "line" : "accent"\} \/>/);
+  // Three tones across five stops: the solid plate on A, which is also the
+  // default - the default should be the thing being proposed, not the hedge
+  // against it - the hairline on D, and the accent on everything between.
+  assert.match(hero, /tone=\{view === "d" \? "line" : view === "a" \? "solid" : "accent"\}/);
+  assert.match(badge, /"line" \| "accent" \| "solid" \| "dark"/);
   // The approved phrasing is "a CinRx portfolio company", so the article has to
   // survive the split across the plate's two zones.
   assert.match(badge, /article = "A"/);
@@ -96,8 +101,18 @@ test("provenance is a badge, and the badge is portable", async () => {
   // Brand orange is 1.9:1 on the accent plate. The relationship text uses the
   // darker amber the news tags already use, which clears AA at 11px.
   assert.match(css2, /\.portfolio-badge-accent \.portfolio-badge-kind \{\s*color: #9a5f00;/);
+
+  // THE SOLID CUT IS THE EXACT BRAND VALUE, not a tint of it and not a wash.
+  // The plate reads the token straight and nothing dilutes it.
+  const solid = css2.slice(css2.indexOf(".portfolio-badge-solid {"), css2.indexOf(".portfolio-badge-dark {"));
+  assert.match(solid, /background: var\(--color-orange\);/);
+  assert.doesNotMatch(solid, /rgba\(249, 168, 26/);
+  // White is 2.0:1 on that ground and the accent cut's amber drops to 2.7:1, so
+  // every mark on the solid plate is ink, which measures 6.8:1.
+  assert.match(solid, /portfolio-badge-name,[\s\S]{0,120}color: var\(--color-ink\);/);
+  assert.doesNotMatch(solid, /#ffffff|#9a5f00/i);
   // The name never goes amber - it is the thing that has to be read first.
-  const accent = css2.slice(css2.indexOf(".portfolio-badge-accent {"), css2.indexOf(".portfolio-badge-dark {"));
+  const accent = css2.slice(css2.indexOf(".portfolio-badge-accent {"), css2.indexOf(".portfolio-badge-solid {"));
   assert.doesNotMatch(accent, /\.portfolio-badge-name/);
   // The old kicker is gone from the hero entirely.
   assert.doesNotMatch(hero, /portfolio company/);
