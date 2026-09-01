@@ -86,7 +86,19 @@ test("provenance is a badge, and the badge is portable", async () => {
   const hero = await read("src/components/home-hero.tsx");
   const badge = await read("src/components/portfolio-badge.tsx");
 
-  assert.match(hero, /<PortfolioBadge parent="CinRx" \/>/);
+  assert.match(hero, /<PortfolioBadge parent="CinRx" tone=\{view === "c" \? "line" : "accent"\} \/>/);
+  // The approved phrasing is "a CinRx portfolio company", so the article has to
+  // survive the split across the plate's two zones.
+  assert.match(badge, /article = "A"/);
+  // C is the neutral cut by definition: no warm anywhere on it but the beam.
+  const css2 = await read("src/app/globals.css");
+  assert.match(css2, /\.portfolio-badge-accent \{/);
+  // Brand orange is 1.9:1 on the accent plate. The relationship text uses the
+  // darker amber the news tags already use, which clears AA at 11px.
+  assert.match(css2, /\.portfolio-badge-accent \.portfolio-badge-kind \{\s*color: #9a5f00;/);
+  // The name never goes amber - it is the thing that has to be read first.
+  const accent = css2.slice(css2.indexOf(".portfolio-badge-accent {"), css2.indexOf(".portfolio-badge-dark {"));
+  assert.doesNotMatch(accent, /\.portfolio-badge-name/);
   // The old kicker is gone from the hero entirely.
   assert.doesNotMatch(hero, /portfolio company/);
   // Nothing in the component is CinPressa's: the parent and the link are both

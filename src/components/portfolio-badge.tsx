@@ -17,9 +17,15 @@
  * set in ink at the weight a name deserves and in its own case - CinRx is
  * elephant case, upper and lower mixed, and no text-transform is allowed near
  * it. Right is the relationship, set small and tracked in the muted grey, which
- * is where a qualifier belongs. Reading it as "CinRx | PORTFOLIO COMPANY" gives
- * the name first and the relation second, which is the order that matters; the
- * old sentence buried the name in the middle of a lowercase phrase.
+ * is where a qualifier belongs. Reading it as "A CinRx | PORTFOLIO COMPANY"
+ * gives the name first and the relation second, which is the order that
+ * matters; a flat sentence buries the name mid-phrase.
+ *
+ * THE ARTICLE IS REQUIRED, NOT DECORATIVE. The approved phrasing is "a CinRx
+ * portfolio company" and it has to survive being split across two zones, so the
+ * "A" leads the left one. It is set smaller and in the muted grey rather than
+ * at the name's weight: it belongs to the sentence, not to the company, and at
+ * full weight it competes with the first letter of the name it introduces.
  *
  * THE GLYPH IS TWO OVERLAPPING RINGS, and it is deliberately not a logo. CinRx
  * has its own mark and inventing one would be worse than having none; two rings
@@ -30,17 +36,50 @@
  * Corners at 4px, matching the buttons and the form controls rather than the
  * pill this would have been six months ago.
  */
+
+/**
+ * How much colour the plate carries.
+ *
+ * "line"   — the hairline default. Neutral, and the only one that is safe
+ *            anywhere, which is why it is the default for a component meant to
+ *            be dropped into sites that have not been seen.
+ * "accent" — the brand's warm accent, on the rings, the edge and the
+ *            relationship text. The name stays in ink: it is the one thing here
+ *            that has to be read first and legibly, and amber type at 14px is a
+ *            worse name than ink type at 14px however on-brand it is.
+ * "dark"   — for a dark ground: a footer, an inverted hero.
+ */
+type Tone = "line" | "accent" | "dark";
+
 export function PortfolioBadge({
   parent = "CinRx",
+  article = "A",
+  relation = "Portfolio company",
+  tone = "line",
   href = "https://cinrx.com",
   className = "",
 }: {
   /** The parent company's name, in its own casing. */
   parent?: string;
+  /** The leading article. Pass "An" where the name needs it, "" to drop it. */
+  article?: string;
+  /** The relationship. Rendered in caps by the stylesheet, not by this string. */
+  relation?: string;
+  tone?: Tone;
   /** Omit for a plate that is not a link. */
   href?: string;
   className?: string;
 }) {
+  const classes = [
+    "portfolio-badge",
+    tone === "accent" ? "portfolio-badge-accent" : "",
+    tone === "dark" ? "portfolio-badge-dark" : "",
+    href ? "portfolio-badge-link" : "",
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   const inner = (
     <>
       <svg
@@ -52,23 +91,23 @@ export function PortfolioBadge({
         <circle cx="9" cy="8" r="6.1" stroke="currentColor" strokeWidth="1.3" />
         <circle cx="17" cy="8" r="6.1" stroke="currentColor" strokeWidth="1.3" />
       </svg>
-      <span className="portfolio-badge-name">{parent}</span>
+      <span className="portfolio-badge-name">
+        {article ? (
+          <span className="portfolio-badge-lead">{article} </span>
+        ) : null}
+        {parent}
+      </span>
       <span aria-hidden className="portfolio-badge-rule" />
-      <span className="portfolio-badge-kind">Portfolio company</span>
+      <span className="portfolio-badge-kind">{relation}</span>
     </>
   );
 
   if (!href) {
-    return <span className={`portfolio-badge ${className}`}>{inner}</span>;
+    return <span className={classes}>{inner}</span>;
   }
 
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noreferrer"
-      className={`portfolio-badge portfolio-badge-link ${className}`}
-    >
+    <a href={href} target="_blank" rel="noreferrer" className={classes}>
       {inner}
     </a>
   );

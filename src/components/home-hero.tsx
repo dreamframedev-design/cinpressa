@@ -141,9 +141,16 @@ export function HomeHero() {
               the site uses - so the one piece of provenance on the page carried
               no more weight than a heading's garnish. See portfolio-badge.tsx;
               it is built to be lifted whole into any sibling company's site
-              with one prop changed. */}
+              with one prop changed.
+
+              IT CARRIES THE ACCENT EVERYWHERE EXCEPT C. That is the whole
+              definition of C now: the neutral cut, blue and grey, with no warm
+              anywhere on it but the beam that crosses "hypertension". Every
+              other option gets the warm plate, so the comparison the switch
+              offers is genuinely "how much orange does this hero want" rather
+              than four unrelated treatments. */}
           <div className="anim-rise" style={{ animationDelay: "0.02s" }}>
-            <PortfolioBadge parent="CinRx" />
+            <PortfolioBadge parent="CinRx" tone={view === "c" ? "line" : "accent"} />
           </div>
           <h1
             className={`anim-rise mt-7 font-light leading-[1.04] tracking-tight text-ink ${
