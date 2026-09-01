@@ -45,7 +45,7 @@ export function ContactForm() {
 
   if (status === "success") {
     return (
-      <div className="rounded-2xl border border-line bg-white/70 px-8 py-12 text-center backdrop-blur-sm">
+      <div className="rounded-[5px] border border-line bg-white/70 px-8 py-12 text-center backdrop-blur-sm">
         <span aria-hidden className="mx-auto block h-px w-12 bg-sky" />
         <h2 className="mt-7 text-2xl font-light tracking-tight text-ink">
           Thank you, your message is on its way
@@ -66,8 +66,15 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6" noValidate>
-      <div className="grid gap-6 sm:grid-cols-2">
+    /* GROUPED, NOT A STACK OF SIX. The fields divide the way the inquiry does -
+       who is writing, then what about - and each group is titled and ruled off.
+       Six identical rows in one column is what "not detailed" describes: there
+       is nothing in it for the eye to hold on to, so the panel reads as a
+       template rather than as a considered thing. Two named groups and a footer
+       bar give it a structure that matches the form's own logic. */
+    <form onSubmit={handleSubmit} noValidate>
+      <Group title="Your details">
+      <div className="grid gap-x-5 gap-y-4 sm:grid-cols-2">
         <Field label="Full name" htmlFor="name">
           <input
             id="name"
@@ -92,7 +99,10 @@ export function ContactForm() {
         </Field>
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-2">
+      </Group>
+
+      <Group title="Your inquiry">
+      <div className="grid gap-x-5 gap-y-4 sm:grid-cols-2">
         <Field label="Organization" htmlFor="organization" optional>
           <input
             id="organization"
@@ -127,37 +137,77 @@ export function ContactForm() {
         </Field>
       </div>
 
-      <Field label="Message" htmlFor="message">
-        <textarea
-          id="message"
-          name="message"
-          required
-          rows={6}
-          className={`${inputClass} resize-y`}
-          placeholder="Tell us about your inquiry."
-        />
-      </Field>
+      <div className="mt-4">
+        <Field label="Message" htmlFor="message">
+          <textarea
+            id="message"
+            name="message"
+            required
+            rows={6}
+            className={`${inputClass} resize-y`}
+            placeholder="Tell us about your inquiry."
+          />
+        </Field>
+      </div>
+      </Group>
 
       {error ? (
-        <p className="text-base font-medium text-orange" role="alert">
+        <p
+          className="mt-5 rounded-[4px] border border-orange/40 bg-orange/10 px-3.5 py-2.5 text-[0.95rem] font-medium text-[#9a5f00]"
+          role="alert"
+        >
           {error}
         </p>
       ) : null}
 
-      <button
-        type="submit"
-        disabled={status === "submitting"}
-        className="btn-primary group disabled:cursor-not-allowed disabled:opacity-60"
-      >
-        {status === "submitting" ? "Sending…" : "Send message"}
-        <ArrowIcon className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
-      </button>
+      {/* THE FOOTER BAR. The submit sits on a ruled row beside the one thing a
+          person wants to know before they press it, rather than floating under
+          the last field on its own. */}
+      <div className="mt-7 flex flex-col gap-4 border-t border-line/70 pt-6 sm:flex-row sm:items-center sm:justify-between">
+        <p className="max-w-xs text-[0.9rem] leading-relaxed text-muted">
+          Your details are used only to answer this inquiry.
+        </p>
+        <button
+          type="submit"
+          disabled={status === "submitting"}
+          className="btn-primary group shrink-0 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {status === "submitting" ? "Sending…" : "Send message"}
+          <ArrowIcon className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+        </button>
+      </div>
     </form>
   );
 }
 
+/**
+ * A titled, ruled section of the form. The title is set small and quiet: it is
+ * a signpost between groups, not a second heading competing with the panel's
+ * own.
+ */
+function Group({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="mt-7 first:mt-0">
+      <div className="mb-4 flex items-center gap-3">
+        <h3 className="text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-muted">
+          {title}
+        </h3>
+        <span aria-hidden className="h-px flex-1 bg-line" />
+      </div>
+      {children}
+    </section>
+  );
+}
+
+/* THE REFERENCE'S CONTROL, NOT A PILL. Twelve pixels of radius on a fifty pixel
+   input is most of the way to a lozenge; at five, the field reads as a field.
+   The rest follows from the same place: a hairline that is actually visible, a
+   one pixel inner shadow so the control sits IN the panel rather than on it,
+   tighter padding, and a focus state that is a crisp two pixel halo rather than
+   a soft glow. The transition drops from 300ms to 160 - a form control should
+   answer immediately, and 300 on a border colour reads as lag, not as polish. */
 const inputClass =
-  "w-full rounded-xl border border-line bg-white/70 px-4 py-3.5 text-base text-ink outline-none backdrop-blur-sm transition-[border-color,background-color,box-shadow] duration-300 placeholder:text-muted/70 hover:border-periwinkle hover:bg-white/85 focus:border-sky focus:bg-white focus:ring-2 focus:ring-sky/25";
+  "w-full rounded-[5px] border border-line bg-white/80 px-3.5 py-2.5 text-base text-ink shadow-[inset_0_1px_2px_rgba(20,48,79,0.05)] outline-none backdrop-blur-sm transition-[border-color,background-color,box-shadow] duration-150 placeholder:text-muted/70 hover:border-periwinkle hover:bg-white focus:border-blue focus:bg-white focus:ring-2 focus:ring-blue/20";
 
 function Field({
   label,
@@ -171,10 +221,14 @@ function Field({
   children: React.ReactNode;
 }) {
   return (
+    /* SENTENCE CASE, AND SMALLER. The labels were set in the eyebrow treatment -
+       15px, semibold, uppercase, tracked out an eighth of an em - which shouts
+       FULL NAME over every field and takes as much attention as the heading
+       does. A field label is meant to be read once and then ignored. */
     <label htmlFor={htmlFor} className="block">
-      <span className="mb-2 block text-[0.92rem] font-semibold uppercase tracking-[0.16em] text-body">
+      <span className="mb-1.5 flex items-baseline gap-1.5 text-[0.83rem] font-medium text-body">
         {label}
-        {optional ? <span className="ml-1 normal-case text-muted/70">(optional)</span> : null}
+        {optional ? <span className="text-[0.78rem] text-muted/80">Optional</span> : null}
       </span>
       {children}
     </label>

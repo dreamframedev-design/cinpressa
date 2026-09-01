@@ -67,8 +67,26 @@ export default function ContactPage() {
             </div>
 
             <Reveal variant="rise" delay={200}>
-              <div className="glass-panel p-7 sm:p-10">
-                <ContactForm />
+              {/* THE PANEL HAS A HEAD NOW. It was a pane with a form dropped
+                  into it, opening on a field label, so there was nothing at the
+                  top to say what it is or what happens after you send. A titled
+                  header ruled off from the body is the cheapest possible fix and
+                  the one the reference uses on every panel it has. The padding
+                  moves onto the two regions rather than the panel, so the rule
+                  between them can run the full width. */}
+              <div className="glass-panel overflow-hidden">
+                <div className="border-b border-line/70 px-6 py-6 sm:px-9 sm:py-7">
+                  <h2 className="text-[1.2rem] font-medium tracking-tight text-ink">
+                    Send us a message
+                  </h2>
+                  <p className="mt-1.5 text-[0.95rem] leading-relaxed text-muted">
+                    Inquiries are routed to the team that can answer them. We
+                    reply within two business days.
+                  </p>
+                </div>
+                <div className="px-6 py-7 sm:px-9 sm:py-8">
+                  <ContactForm />
+                </div>
               </div>
             </Reveal>
           </div>

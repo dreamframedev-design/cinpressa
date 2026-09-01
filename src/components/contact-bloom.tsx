@@ -34,6 +34,11 @@ import type { CSSProperties } from "react";
 type Oval = {
   color: string;
   alpha: number;
+  /**
+   * Lay this oval on rather than multiplying it in. Exactly one does - the
+   * gold - and see the note on it for why.
+   */
+  onTop?: boolean;
   cx: number;
   cy: number;
   rx: number;
@@ -57,19 +62,42 @@ type Oval = {
  *  outward and some inward (ds either side of 1), so neighbouring overlaps
  *  deepen and thin against each other rather than in unison. */
 const OVALS: Oval[] = [
-  /* THE GOLD PETAL. This oval was the mark's green; it carries the accent now,
-     which is the one colour in the logo the page had none of. Alpha is half the
-     others because orange is a far stronger hue than the pale green it
-     replaced - at the same 0.85 it stopped being a wash and became a tint over
-     the whole upper left. At 0.42 multiplied over white it lands near
-     rgb(253,220,163), a warm sand that the ink headline still clears 9:1 on,
-     and it deepens to amber wherever the azure ovals cross it. Geometry and
-     motion are untouched. */
-  { color: "#F9A81A", alpha: 0.42, cx: 300, cy: 170, rx: 560, ry: 380, rot: -18, ex: -60, ey: -40, delay: 0, dx: 30, dy: 18, dr: 1.6, ds: 1.035, dur: 34 },
+  /* Back to the mark's green. This one carried the accent for a while, and at
+     560x380 it was the wrong petal for it: the note was that the gold read as a
+     faded version of the brand colour on one of the big shapes. It was faded,
+     necessarily - at 0.42, because orange at the 0.85 the light surfaces run
+     stopped being a wash and became a tint over the whole upper left. The fix
+     is not a stronger wash on a big petal. It is the exact colour on a small
+     one, which is the last entry. */
+  { color: "#AFDBBC", alpha: 0.85, cx: 300, cy: 170, rx: 560, ry: 380, rot: -18, ex: -60, ey: -40, delay: 0, dx: 30, dy: 18, dr: 1.6, ds: 1.035, dur: 34 },
   { color: "#95DAF8", alpha: 0.8, cx: 1090, cy: 240, rx: 640, ry: 410, rot: 14, ex: 70, ey: -30, delay: 0.12, dx: -34, dy: 22, dr: -1.8, ds: 0.98, dur: 44 },
   { color: "#AADBF6", alpha: 0.85, cx: 760, cy: 820, rx: 560, ry: 380, rot: -9, ex: 0, ey: 70, delay: 0.24, dx: 26, dy: -26, dr: 1.3, ds: 1.045, dur: 38 },
   { color: "#6771B5", alpha: 0.3, cx: 1280, cy: 780, rx: 470, ry: 320, rot: 26, ex: 60, ey: 40, delay: 0.36, dx: -22, dy: -18, dr: -2.2, ds: 1.025, dur: 48 },
-  { color: "#2261AD", alpha: 0.2, cx: 120, cy: 720, rx: 430, ry: 300, rot: 32, ex: -50, ey: 40, delay: 0.3, dx: 20, dy: -20, dr: 1.8, ds: 0.975, dur: 52 },
+  /* THE GOLD PETAL, AND IT IS THE EXACT COLOUR. The smallest oval in the set at
+     430x300, and the only one that is neither multiplied nor translucent: an
+     eyedropper anywhere inside it returns #F9A81A.
+     
+     BOTH OF THOSE ARE REQUIRED, and for the same reason. Multiply would mix it
+     with whatever it crosses, and the pale azure petal runs straight through
+     this corner - gold multiplied into that lands near rgb(166,144,25), a dark
+     mustard, which is the dingy yellow this page has already been told twice it
+     must never show. Alpha below 1 would mix it with the white underneath and
+     make it the pale sand the note was about. Laid on at full strength it can
+     only ever be the brand colour.
+     
+     AND IT IS ACTUALLY SMALL, which the others are not. Every oval here is sized
+     for a viewBox that gets scaled up to cover the section, so the "smallest" of
+     them at 430x300 still rendered 1154px across - a solid orange wall down the
+     left of the page rather than a petal. At 220x152 it comes out near 500px:
+     large enough to be a shape in the composition, small enough to be an accent
+     in it.
+
+     Last in the list so nothing draws over it, and set low left, below where the
+     copy column ends. That matters more than usual now that it is opaque: body
+     grey clears 4.7:1 on this colour and the ink headline 6.8:1, but the small
+     blue eyebrow only manages 3.2:1, so no text sits on it at all. Screenprint
+     edge and no blur, same as the rest. */
+  { color: "#F9A81A", alpha: 1, onTop: true, cx: 158, cy: 812, rx: 220, ry: 152, rot: 32, ex: -50, ey: 40, delay: 0.3, dx: 20, dy: -20, dr: 1.8, ds: 0.975, dur: 52 },
 ];
 
 export function ContactBloom({ className = "" }: { className?: string }) {
@@ -112,7 +140,7 @@ export function ContactBloom({ className = "" }: { className?: string }) {
                 transform={`rotate(${o.rot} ${o.cx} ${o.cy})`}
                 fill={o.color}
                 fillOpacity={o.alpha}
-                style={{ mixBlendMode: "multiply" }}
+                style={{ mixBlendMode: o.onTop ? "normal" : "multiply" }}
               />
             </g>
           </g>

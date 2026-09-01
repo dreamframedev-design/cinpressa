@@ -118,7 +118,13 @@ export function HomeHero() {
       )}
 
       <div
-        className={`relative mx-auto grid w-full max-w-7xl items-center gap-14 px-6 pb-20 pt-32 lg:gap-10 lg:px-10 lg:pb-16 lg:pt-32 ${
+        /* THE BLOCK SITS HIGHER IN THE FIELD. The section centres its content in
+           a tall min-height, so where the copy lands is set by the difference
+           between these two paddings rather than by either one alone. Taking 32
+           off the top and adding 48 to the bottom moves the whole group up by
+           40px without changing the hero's height or the area the field paints.
+           Still 96px of clearance under a nav that is 76 tall. */
+        className={`relative mx-auto grid w-full max-w-7xl items-center gap-14 px-6 pb-24 pt-28 lg:gap-10 lg:px-10 lg:pb-28 lg:pt-24 ${
           mark ? "lg:grid-cols-[1.08fr_0.92fr]" : ""
         }`}
       >
