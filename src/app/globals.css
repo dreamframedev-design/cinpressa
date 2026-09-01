@@ -2294,11 +2294,53 @@ body {
    that used to live here went with the textured chevron the chart no longer
    draws. */
 
+/* THE PIPE DRAWS ITSELF ON FIRST VIEW, and it animates WIDTH rather than a
+   transform. That is the whole difference between this reading as a bar being
+   laid down and reading as slop.
+
+   It used to run grow-x, a scaleX from 0. Scaling a rounded bar horizontally
+   scales its corner radii with it, so both caps spend the entire animation as
+   flattened ellipses that only round out at the final frame - and the beam
+   inside, which is a child, gets squashed to nothing and stretched back. A
+   progress bar that distorts while it grows is worse than one that does not
+   move at all.
+
+   Animating width keeps the caps circular at every frame and the beam
+   undistorted, because the element is genuinely that wide at each step rather
+   than a wide element drawn small. It costs a layout per frame on one small
+   box for one second, which is a fair price and is not on any hot path.
+
+   The width itself is a custom property set by the component, so the from-zero
+   keyframe and the resting value cannot disagree.
+
+   THE EASE MATTERS AS MUCH AS THE PROPERTY. --ease-brand front-loads almost all
+   of its travel, which is right for something arriving and wrong for something
+   being measured out - the bar would shoot to nearly full length and creep the
+   rest. 0.22/1/0.36/1 spends its length more evenly and settles rather than
+   creeping. */
 [data-reveal].reveal-pending .track-progress {
-  transform: scaleX(0);
+  width: 0;
 }
+
 [data-reveal].reveal-in .track-progress {
-  animation: grow-x 1.1s var(--ease-brand) 0.25s both;
+  animation: pl-draw 1.25s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+}
+
+@keyframes pl-draw {
+  from {
+    width: 0;
+  }
+  to {
+    width: var(--pl-progress);
+  }
+}
+
+/* WITHOUT JAVASCRIPT, OR ABOVE THE FOLD, the bar is simply the right width.
+   Reveal only marks elements that start below the viewport, so a visitor who
+   lands with the chart already on screen gets no animation and no missing bar -
+   which is the correct behaviour rather than a fallback. */
+.track-progress {
+  width: var(--pl-progress);
 }
 
 /* Continuous focal pulse ring */
@@ -2466,6 +2508,20 @@ body {
 
 .pl-beam {
   animation: pl-beam 8s cubic-bezier(0.37, 0, 0.63, 1) 1.6s infinite;
+}
+
+/* THE SHINE WAITS FOR THE BAR TO FINISH. Held until the draw completes at 1.45s
+   and given a beat after it, so the sequence reads as one event: the pipe is
+   laid down, it settles, and only then does light cross it. Started together
+   they fight - a specular pass over something still growing looks like a
+   loading bar, which is the one thing this chart must not look like. */
+[data-reveal].reveal-pending .pl-beam {
+  animation: none;
+  opacity: 0;
+}
+
+[data-reveal].reveal-in .pl-beam {
+  animation: pl-beam 8s cubic-bezier(0.37, 0, 0.63, 1) 2.1s infinite;
 }
 
 /* The stage column under the cursor. A tint and a crisp top rule, nothing soft. */
@@ -2673,10 +2729,11 @@ body {
     transform: none !important;
   }
 
+  /* Drawn at its length, not drawn out. */
   .track-progress {
     animation: none !important;
     opacity: 1 !important;
-    transform: none !important;
+    width: var(--pl-progress) !important;
   }
 
   /* The rules are simply drawn, and the lit segment simply appears. */
@@ -2865,6 +2922,7 @@ body {
 
 
 /* r */
+
 
 
 

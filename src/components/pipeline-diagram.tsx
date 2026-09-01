@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { CSSProperties } from "react";
 import { Reveal } from "@/components/reveal";
 
 /**
@@ -171,8 +172,17 @@ export function PipelineDiagram() {
                   style={{ height: `${BAR_H}px` }}
                 >
                   <div
-                    className="track-progress absolute inset-y-0 left-0 origin-left overflow-hidden rounded-full"
-                    style={{ width: `${PROGRESS}%`, background: FILL }}
+                    /* The width is published as a custom property rather than
+                       set directly, so the stylesheet can animate TO it on first
+                       view without this file and that one both owning the
+                       number. See .track-progress in globals.css. */
+                    className="track-progress absolute inset-y-0 left-0 overflow-hidden rounded-full"
+                    style={
+                      {
+                        "--pl-progress": `${PROGRESS}%`,
+                        background: FILL,
+                      } as CSSProperties
+                    }
                   >
                     <div
                       aria-hidden
