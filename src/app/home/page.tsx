@@ -75,7 +75,7 @@ export default function HomePage() {
             mist and the section below starts ON white, so all three now meet
             without a seam anywhere. */}
         <section className="bg-[linear-gradient(180deg,#f4f8fc_0%,#f4f8fc_58%,#ffffff_100%)]">
-          <div className="mx-auto w-full max-w-7xl px-6 pb-7 lg:px-10 lg:pb-8">
+          <div className="mx-auto w-full max-w-7xl px-6 pb-5 lg:px-10 lg:pb-6">
             <BurdenRail
               figures={[
               {
@@ -116,7 +116,10 @@ export default function HomePage() {
             The lead-in ends in a colon and belongs to its list, so the two stay
             together inside the right column - the constraint that broke two
             earlier cuts of this content. */}
-        <Section tone="sky" className="pt-14! lg:pt-20!">
+        {/* CLOSER TO THE BAND ABOVE. The rail's own bottom rule already ends the
+            figures, and this section then opened 80px below it - so the two read
+            as separated rather than sequential. */}
+        <Section tone="sky" className="pt-9! lg:pt-12!">
           {/* TWO COLUMNS AND TWO ROWS, which is what makes the second beat of
               each column start on the same line as the other's. A fixed offset
               on the turn would only hold at one width - the paragraph across

@@ -892,10 +892,12 @@ body {
    widths - and every padding, margin and line-height below is stated in px.
    38 + 43 + 13 + 44 + 35 = 173 exactly. */
 .burden-rail {
+  /* Shared with the lit segment below, so the two boxes are the same box. */
+  --rail-pad: 52px;
   position: relative;
   display: grid;
   grid-template-columns: 1fr;
-  padding-block: 38px 0;
+  padding-block: var(--rail-pad) 0;
 }
 
 @media (min-width: 768px) {
@@ -906,46 +908,52 @@ body {
 
 }
 
-/* ONE PIXEL, FLAT, AND VERY LIGHT. That is all the reference's rules are, and
-   every attempt to be cleverer than that made them worse.
+/* BOTH HAIRLINES ARE BORDERS ON ONE BOX, AND THE REVEAL NO LONGER TRANSFORMS
+   THEM. This is the fix I should have found four rounds ago.
 
-   The last one was the worst of them: I tried to defeat a sub-pixel rounding
-   difference by AUTHORING the softness - a 2px box with the ink graded into a
-   core - so that neither line could snap. It works, in that the two become
-   identical. It is also the wrong object. Spreading a pixel of ink over two
-   pixels of height does not produce a hairline, it produces a soft band, and a
-   soft band at a colour dark enough to still register reads exactly as "thick
-   and solid all the way through".
+   THE ACTUAL CAUSE was never the arithmetic. The top rule carried the reveal -
+   grow-x, a scaleX that ends at 1 with fill-mode both, so the element keeps a
+   transform forever. A permanent transform on a 1px-tall box puts it on its own
+   composited layer, where its sub-pixel y is PRESERVED rather than snapped to
+   the device grid: the line paints across two rows at partial coverage instead
+   of one at full. That is why it was specifically the TOP one that kept coming
+   back heavier, through every change I made to paddings, colours and heights.
+   The baseline had no transform, so it snapped, so it was the crisp one - and
+   "match the bottom one" was exactly right.
 
-   A hairline is one pixel of a light colour. If the rasteriser puts one of them
-   half a pixel off on a particular display, that is a far smaller error than
-   drawing the wrong thing on every display to prevent it. */
-.burden-rail::before,
-.burden-baseline {
+   So the reveal animates OPACITY now. Nothing about these lines is transformed
+   at any point, which means both are snapped by the same rasteriser rule.
+
+   AND THEY ARE TWO BORDERS ON A SINGLE BOX rather than two positioned elements.
+   One box is snapped once, so its top and bottom edges are quantised together
+   by construction - the two hairlines cannot disagree even if the rail's height
+   is fractional, which it will be at any browser zoom that is not 100%. That is
+   the robust part: it holds at 110%, at 125%, at DPR 1.25, at any of the
+   conditions the integer-pixel approach only covered by luck. */
+.burden-rail::before {
   content: "";
   position: absolute;
-  inset-inline: 0;
-  height: 1px;
-  background: var(--color-line);
-  transform-origin: left center;
+  inset: 0;
+  pointer-events: none;
+  border-top: 1px solid var(--color-line);
+  border-bottom: 1px solid var(--color-line);
 }
 
-.burden-rail::before {
-  top: 0;
+[data-reveal].reveal-pending .burden-rail::before {
+  opacity: 0;
 }
 
-.burden-baseline {
-  bottom: 0;
+[data-reveal].reveal-in .burden-rail::before {
+  animation: burden-rules-in 1.1s var(--ease-brand) 0.1s both;
 }
 
-[data-reveal].reveal-pending .burden-rail::before,
-[data-reveal].reveal-pending .burden-baseline {
-  transform: scaleX(0);
-}
-
-[data-reveal].reveal-in .burden-rail::before,
-[data-reveal].reveal-in .burden-baseline {
-  animation: grow-x 1.1s var(--ease-brand) 0.1s both;
+@keyframes burden-rules-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .burden-cell {
@@ -983,25 +991,27 @@ body {
    consecutive ones meet in the middle of the gutter instead of leaving a hole
    there. They fade to nothing well before that, so the overhang past the rail
    at the outer edges is invisible. */
-/* THE SEGMENT IS THE SAME HAIRLINE, IN BLUE. One pixel, exactly like the rule
-   it lies on, so a lit stretch and an unlit stretch are the same line and
-   differ only in hue. It was a flat 2px block over a 2px graded rule at one
-   point, which is what made it read as a bar rather than a lit line.
+/* THE LIT SEGMENT IS BUILT THE SAME WAY, for the same reason: one box spanning
+   exactly the rail's own, carrying a border on each edge, so a lit hairline and
+   an unlit one are quantised identically and differ only in colour. It shares
+   the rail's padding through a custom property rather than repeating the
+   number, so the two boxes cannot drift apart in a later edit.
 
-   The horizontal fade is a mask rather than a background gradient, because the
-   background is now a flat colour and there is nothing to grade it with. It
-   dissolves over the outer thirty per cent at each end, which across a segment
-   this wide is long enough that no edge is findable. */
-.burden-cell::before,
-.burden-cell::after {
+   The horizontal fade is a mask, which applies to the element's paint including
+   its borders. Thirty per cent at each end is long enough across a segment this
+   wide that no edge is findable. */
+.burden-cell::before {
   content: "";
   position: absolute;
-  inset-inline: -1.5rem;
-  height: 1px;
+  top: calc(-1 * var(--rail-pad));
+  bottom: 0;
+  left: -1.5rem;
+  right: -1.5rem;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.45s var(--ease-brand);
-  background: rgba(34, 97, 173, 0.5);
+  border-top: 1px solid rgba(34, 97, 173, 0.5);
+  border-bottom: 1px solid rgba(34, 97, 173, 0.5);
   -webkit-mask-image: linear-gradient(
     90deg,
     transparent 0%,
@@ -1018,34 +1028,23 @@ body {
   );
 }
 
-.burden-cell::before {
-  top: -38px;
-}
-
-.burden-cell::after {
-  bottom: 0;
-}
-
 /* THE FIRST ONE IS LIT UNTIL SOMETHING ELSE IS. A rail whose highlight only
    exists on hover is a rail nobody sees highlighted - on a phone, in a
    screenshot, or by anyone who never happens to cross it. The reference leads
    with its first figure and holds it there. */
-.burden-cell:first-of-type::before,
-.burden-cell:first-of-type::after {
+.burden-cell:first-of-type::before {
   opacity: 1;
 }
 
 /* Hovering anywhere in the rail drops every segment... */
-.burden-rail:hover .burden-cell::before,
-.burden-rail:hover .burden-cell::after {
+.burden-rail:hover .burden-cell::before {
   opacity: 0;
 }
 
 /* ...and the hovered cell takes it back. Written at this specificity on
    purpose: the rule above is three classes deep, so a two-class selector would
    lose to it and the hovered cell would go dark along with the rest. */
-.burden-rail:hover .burden-cell:hover::before,
-.burden-rail:hover .burden-cell:hover::after {
+.burden-rail:hover .burden-cell:hover::before {
   opacity: 1;
 }
 
@@ -1113,10 +1112,13 @@ body {
 
 /* Pure spacing: margin-top:auto pins every cell's foot to a common line, so the
    long third caption cannot drop its rule below its neighbours'. */
+/* 52 above and 40 below. The reference carries noticeably more air over its
+   figures than under its captions, and ours had it near even at 38 and 35,
+   which is what made the band look bottom-weighted. */
 .burden-track {
   position: relative;
   margin-top: auto;
-  padding-top: 35px;
+  padding-top: 40px;
   align-self: stretch;
 }
 
@@ -2666,14 +2668,13 @@ body {
     transform: none !important;
   }
 
-  /* The rail is simply drawn; the hover reveal still happens, just at once. */
-  .burden-rail::before,
-  .burden-baseline {
+  /* The rules are simply drawn, and the lit segment simply appears. */
+  .burden-rail::before {
     animation: none !important;
-    transform: none !important;
+    opacity: 1 !important;
   }
 
-  .burden-rail::after {
+  .burden-cell::before {
     transition: none !important;
   }
 
@@ -2853,6 +2854,8 @@ body {
 
 
 /* r */
+
+
 
 
 

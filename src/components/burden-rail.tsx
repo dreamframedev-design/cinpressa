@@ -53,12 +53,6 @@ export function BurdenRail({
   return (
     <Reveal variant="fade" className={className}>
       <dl className="burden-rail">
-        {/* ONE RULE UNDER THE WHOLE ROW, on every rail. Each cell used to draw
-            its own stub, so at the grid width there were three short lines with
-            3rem of nothing between them. Continuous, it frames the figures the
-            way the reference does - and now that nothing rides on it, there is
-            no reason for /pipeline to go without. */}
-        <span aria-hidden className="burden-baseline" />
         {figures.map((f, i) => (
           <div
             key={f.label}
