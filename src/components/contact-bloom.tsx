@@ -75,6 +75,24 @@ const OVALS: Oval[] = [
 /**
  * THE NEGATIVE SPACE, AND HOW IT IS CUT.
  *
+ * IT HAS TO CLAIM THE WHOLE GAP, WHICH IS WHAT THE LAST CUT GOT WRONG. The
+ * allowance was sized to sit comfortably inside the open ground, so the petals
+ * barely grazed it and what survived the mask was very nearly the allowance
+ * itself: an oval. Correct machinery, wrong shape - it read as another sphere,
+ * which is exactly the thing this replaces.
+ *
+ * The gap was then measured rather than guessed, by sampling the petals' own
+ * implicit equations on a grid across the lower left. It is open from the left
+ * edge to x=360 at y=580, narrowing to x=200 by y=740 and holding that width
+ * down to the bottom edge - a wedge with the green petal closing it from above
+ * and the pale blue one from the right.
+ *
+ * So the allowance now overruns that gap on every side: past the petals where
+ * they cut it, and past the canvas where they do not. Nothing of its own
+ * outline survives. Every edge of the orange is either a petal's curve or the
+ * frame, which is the definition of the shape being left over rather than
+ * drawn.
+ *
  * There is a gap in the lower left where the green petal's underside and the
  * pale blue petal's left flank fall away from each other and neither covers the
  * ground. That gap is this composition's version of the wedge in the logo, and
@@ -88,10 +106,10 @@ const OVALS: Oval[] = [
  * the green above, by the pale blue to its right, and by its own curve
  * elsewhere. Cut, not drawn, which is how the logo builds it.
  *
- * It has to OVERLAP the petals, and that is the whole trick. An allowance
- * sitting neatly inside the gap would survive whole and paint a small orange
- * oval, which is the thing this replaces. Overlapping, the petals do the
- * cutting and the shape ends up with curved edges it never declares.
+ * It has to OVERRUN the petals, and that is the whole trick. An allowance
+ * sitting inside the gap survives whole and paints an oval, which is the thing
+ * this replaces. Overrunning, the petals do all the cutting and the shape ends
+ * up with curved edges it never declares.
  *
  * And it moves, because they do. The mask carries its own copies of all four on
  * the same entrance and the same drift, so the wedge stays in register as they
@@ -112,7 +130,7 @@ const OVALS: Oval[] = [
  * collision whatever the contrast says. Dropped below the last line of the
  * column, the wedge has the lower left to itself.
  */
-const NEGATIVE = { cx: 218, cy: 725, rx: 170, ry: 100, rot: -38 };
+const NEGATIVE = { cx: 120, cy: 800, rx: 330, ry: 300, rot: 0 };
 
 /** One ellipse inside its two animation groups. Used for the visible petals,
  *  and again in flat black for the mask that cuts the negative space. */

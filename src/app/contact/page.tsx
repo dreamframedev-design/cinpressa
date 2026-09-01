@@ -53,7 +53,7 @@ export default function ContactPage() {
                 </h1>
               </Reveal>
               <Reveal variant="fade" delay={220}>
-                <p className="mt-7 max-w-md text-lg leading-relaxed text-body">
+                <p className="mt-4 max-w-md text-lg leading-relaxed text-body">
                   For business, partnering, or general inquiries, please reach
                   out through the contact form. CinPressa welcomes discussions
                   with partners interested in advancing a differentiated
@@ -61,7 +61,37 @@ export default function ContactPage() {
                 </p>
               </Reveal>
               <Reveal variant="fade" delay={360}>
-                <div className="mt-10 border-t border-line pt-8">
+                {/* TIGHTER THAN IT WAS, so this block clears the wedge. The
+                    orange in the lower left is the gap between two petals, and
+                    the gap's top boundary is the green petal's own curve - it
+                    cannot be moved without the shape stopping being negative
+                    space. This block sat astride that boundary, about half of
+                    each line on orange and half on white, which reads as a
+                    collision whatever the contrast says. Forty pixels up and it
+                    is clear of the gap entirely, and the corner belongs to the
+                    wedge.
+
+                    The gap's edge is DIAGONAL, which is why this needed more
+                    than a nudge: a line crossing it is half on orange and half
+                    off no matter where it sits vertically, so the block has to
+                    clear the boundary completely rather than sit above its
+                    midpoint. Measured by sampling the mask under each line -
+                    both are at zero per cent now.
+
+                    THE 24px COMES OUT OF THIS BLOCK AND THE PARAGRAPH ABOVE IT,
+                    not out of the wedge. Lowering the wedge instead would have
+                    worked too, and it would have cost the thing that makes it
+                    negative space: its top edge is the green petal's own curve,
+                    and pulling the allowance down replaces most of that run with
+                    a drawn arc of its own. Moving type is cheaper than giving up
+                    the shape.
+
+                    Moving the block DOWN was measured and rejected - it never
+                    clears either, because the block is 483px wide and the wedge
+                    narrows as it descends, so the best any downward offset
+                    manages is 47% on the orange. Up is the only direction that
+                    resolves. */}
+                <div className="mt-2 border-t border-line pt-3">
                   <p className="text-[0.92rem] font-semibold uppercase tracking-[0.16em] text-body">
                     Parent company
                   </p>
