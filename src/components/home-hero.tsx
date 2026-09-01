@@ -22,6 +22,12 @@ import { OpenFlow } from "@/components/open-flow";
  * between two unrelated pieces of art, and it means neither can drift from the
  * other.
  *
+ * D — THE SAME FIELD AGAIN, WITH THE GOLD AT BAND SCALE. One of the upper
+ * ribbons is painted in the brand gold instead of its blue, and the thread is
+ * off: the two are the same accent said at two sizes, and running both would
+ * put gold in the field twice. A, C and D are one component and one geometry
+ * throughout - what changes between them is only where the gold is.
+ *
  * The two are not variants of one layout, which is why this holds the whole
  * hero rather than just its art slot. A is a backdrop and wants the copy on one
  * measure with the field open to its right; B is an object in a column and
@@ -48,7 +54,7 @@ const BLOOMS = [
   { color: "103,113,181", size: 62, x: 34, y: 36, low: 0.2, high: 0.4, dur: 23, delay: -13 },
 ];
 
-type View = "a" | "b" | "c";
+type View = "a" | "b" | "c" | "d";
 
 export function HomeHero() {
   const [view, setView] = useState<View>("a");
@@ -70,7 +76,17 @@ export function HomeHero() {
         />
       ) : (
         <>
-          {view === "c" ? (
+          {view === "d" ? (
+            /* The gold moved from the thread into one of the ribbons. Thread
+               off: the band IS the accent at that point, and two golds in one
+               field is one too many. */
+            <OpenFlow
+              key="gold"
+              thread={false}
+              goldBand
+              className="absolute inset-0"
+            />
+          ) : view === "c" ? (
             /* The same field as A, with nothing drawn in it. The two are one
                component and one set of ribbons; only the thread differs, so
                choosing between them is a choice about the thread rather than
@@ -107,22 +123,31 @@ export function HomeHero() {
         }`}
       >
         <div className={mark ? undefined : "max-w-2xl"}>
-          {/* NOT UPPERCASED, and that is deliberate rather than a lapse in the
-              eyebrow style. CinRx is set in elephant case - upper and lower
-              mixed - and that is how the name is always written, so a
-              text-transform that flattens it to CINRX is not available here.
-              The tracking and weight carry the eyebrow treatment instead.
+          {/* CAPS EVERYWHERE EXCEPT THE NAME. The eyebrow style is uppercase;
+              CinRx is set in elephant case - upper and lower mixed - and that
+              is how the name is always written, so it is the one thing here the
+              text-transform must not reach. Hence the exemption on a span of
+              its own rather than a hand-typed string: the rule is stated as
+              "all of this is caps, except this name", which is what it is.
+
+              THE WHOLE LINE IS ONE FLEX ITEM. This <p> is a flex row so the
+              rule can sit on the text's centre, and a flex container makes each
+              bare text run its own item - splitting the sentence to exempt
+              CinRx would have put the row's gap either side of the name. The
+              span around all of it keeps the sentence as one item with normal
+              inline flow inside.
 
               The rule is blue again, matching the words it introduces. The
               orange it carried for a few commits now lives on the rail below
-              and on the thread in the field, which is enough punctuation for
-              one screen. */}
+              and in the field, which is enough punctuation for one screen. */}
           <p
             className="anim-rise flex items-center gap-3 text-[0.92rem] font-semibold tracking-[0.18em] text-blue"
             style={{ animationDelay: "0.02s" }}
           >
             <span aria-hidden className="h-px w-8 bg-blue" />
-            A CinRx portfolio company
+            <span className="uppercase">
+              A <span className="normal-case">CinRx</span> portfolio company
+            </span>
           </p>
           <h1
             className="anim-rise mt-7 text-[clamp(2.4rem,5.4vw,4.25rem)] font-light leading-[1.04] tracking-tight text-ink"
@@ -146,6 +171,7 @@ export function HomeHero() {
                   { id: "a", label: "A" },
                   { id: "b", label: "B" },
                   { id: "c", label: "C" },
+                  { id: "d", label: "D" },
                 ] as { id: View; label: string }[]
               ).map((v) => (
                 <button

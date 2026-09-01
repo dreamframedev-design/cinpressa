@@ -38,6 +38,12 @@ import { HeroCanvas, TAU } from "@/components/hero-canvas";
  *
  * Nothing is fast: every period sits between 26 and 74 seconds. Under reduced
  * motion HeroCanvas holds a single composed frame, which is a good still image.
+ *
+ * THE GOLD BAND (see goldBand) swaps one of the upper ribbons from blue to the
+ * brand gold, as an alternative to the thread rather than an addition to it. It
+ * is the same ribbon in the same place on the same geometry; only its colour and
+ * its compositing change. See paintGold for why it cannot simply be given a gold
+ * value in the table.
  */
 
 type Ribbon = {
@@ -95,6 +101,19 @@ const RIBBONS: Ribbon[] = [
   { base: 0.93, rise: 0.04, weight: 0.32, amp: 0.038, lambda: 0.83, phase: 3.1, color: [103, 113, 181], alpha: 0.42, blur: 8, flow: 50, bob: 0.026, bobPeriod: 34, breathe: 0.22, breathePeriod: 26 },
 ];
 
+/**
+ * WHICH RIBBON GOES GOLD. Index 2: base 0.63, weight 0.17. It is the largest of
+ * the three that ride above the mass, which is what makes it read as a band
+ * rather than as a highlight, and it is far enough up the field to sit clear of
+ * the deep blue floor. Deliberately not index 1 - that is the azure at weight
+ * 0.26 that gives the field its body, and turning it gold would leave the field
+ * without a blue centre.
+ */
+const GOLD_INDEX = 2;
+
+/** The mark's gold, the same value the thread and the rail's tracks use. */
+const GOLD: [number, number, number] = [249, 168, 26];
+
 /** Centre line of a ribbon at horizontal fraction f and time t, in fractions. */
 function centre(b: Ribbon, f: number, t: number) {
   const bob = b.bob * Math.sin((TAU * t) / b.bobPeriod + b.phase);
@@ -136,12 +155,95 @@ function edge(
   }
 }
 
+/**
+ * THE ONE GOLD RIBBON, AND WHY IT IS NOT JUST A DIFFERENT COLOUR IN THE TABLE.
+ *
+ * Every other ribbon is multiplied into the stack, which is what makes the
+ * crossings deepen on their own. Multiply is the wrong operation for gold over
+ * blue: the two are near-complementary, so the product is neither - it lands in
+ * olive. This is the same failure the thread hit, at the scale of a whole band,
+ * and the note then was that no part of it may go dingy at any point.
+ *
+ * So the band is painted in two passes. A warm white bed goes down first,
+ * knocking the blues beneath it back to roughly a tenth of their strength, and
+ * the gold is then laid ON that ground rather than multiplied into it.
+ *
+ * NEITHER PASS MULTIPLIES, and the second one is the one that matters. The
+ * first cut of this bedded the band and still multiplied the gold, which is
+ * clean at full strength but fails at the band's own soft edge: as the gold
+ * thins, multiply can only ever darken, so it cannot lift red above a ground
+ * that is still slightly blue. Measured at the lower edge it came out
+ * rgb(184,182,138) - green level with red, which is sage. Source-over has no
+ * such floor: it interpolates toward the gold itself, and gold's red is its
+ * strongest channel, so red leads green at every alpha from full to nothing and
+ * the fade runs gold to pale rather than gold through olive.
+ *
+ * The bed is blurred wider than the gold so the ground is already clean
+ * wherever the gold reaches, rather than the two thinning together.
+ *
+ * The bed is why this ribbon occludes what it passes over while the blue ones
+ * blend. That is correct for it: a single gold band among five blues should read
+ * as one ribbon lying in front, not as a tint over the others.
+ *
+ * Drawn after the whole blue stack so the bed has everything to lighten, and
+ * before the scrims so the headline still gets its damping.
+ */
+function paintGold(
+  ctx: CanvasRenderingContext2D,
+  b: Ribbon,
+  w: number,
+  h: number,
+  t: number,
+) {
+  const path = () => {
+    ctx.beginPath();
+    edge(ctx, b, w, h, t, -0.5, false, true);
+    edge(ctx, b, w, h, t, 0.5, true, false);
+    ctx.closePath();
+  };
+
+  ctx.globalCompositeOperation = "source-over";
+
+  // The bed is blurred WIDER than the gold, so it is still at strength where
+  // the gold's own edge is thinning. Blurred to match, the two would fall off
+  // together and the last of the gold would land on ground that is still blue -
+  // which is the sage edge this exists to prevent.
+  ctx.filter = `blur(${(9 * (w / 1600)).toFixed(1)}px)`;
+  const bed = ctx.createLinearGradient(0, 0, w, 0);
+  bed.addColorStop(0, "rgba(255,251,242,0)");
+  bed.addColorStop(0.2, "rgba(255,251,242,0.78)");
+  bed.addColorStop(0.55, "rgba(255,251,242,0.9)");
+  bed.addColorStop(0.86, "rgba(255,251,242,0.84)");
+  bed.addColorStop(1, "rgba(255,251,242,0)");
+  ctx.fillStyle = bed;
+  path();
+  ctx.fill();
+
+  // Softer edges than the blue ribbon it replaces carries: a hard boundary
+  // where the band crosses something dark reads as a hole punched in the field
+  // rather than as a ribbon lying across it.
+  ctx.filter = `blur(${(5 * (w / 1600)).toFixed(1)}px)`;
+  const [r, g, bl] = GOLD;
+  const gold = ctx.createLinearGradient(0, 0, w, 0);
+  gold.addColorStop(0, `rgba(${r},${g},${bl},0)`);
+  gold.addColorStop(0.2, `rgba(${r},${g},${bl},0.56)`);
+  gold.addColorStop(0.55, `rgba(${r},${g},${bl},0.68)`);
+  gold.addColorStop(0.86, `rgba(${r},${g},${bl},0.6)`);
+  gold.addColorStop(1, `rgba(${r},${g},${bl},0)`);
+  ctx.fillStyle = gold;
+  path();
+  ctx.fill();
+
+  ctx.filter = "none";
+}
+
 function render(
   ctx: CanvasRenderingContext2D,
   w: number,
   h: number,
   t: number,
   withThread: boolean,
+  withGoldBand: boolean,
 ) {
   // Multiply needs something to multiply into, and the hero is white.
   ctx.globalCompositeOperation = "source-over";
@@ -152,7 +254,11 @@ function render(
   ctx.globalCompositeOperation = "multiply";
   const blurScale = w / 1600;
 
-  for (const b of RIBBONS) {
+  for (let i = 0; i < RIBBONS.length; i++) {
+    // The gold one is held back and painted after the whole stack, because its
+    // bed has to have something to lighten. See paintGold.
+    if (withGoldBand && i === GOLD_INDEX) continue;
+    const b = RIBBONS[i];
     const [r, g, bl] = b.color;
     // Fade to nothing at both ends: the colour arrives and leaves rather than
     // starting and stopping, which is what keeps the field from having edges.
@@ -189,6 +295,8 @@ function render(
     edge(ctx, b, w, h, t, -0.5, false, true);
     ctx.stroke();
   }
+
+  if (withGoldBand) paintGold(ctx, RIBBONS[GOLD_INDEX], w, h, t);
 
   // ── THE GOLDEN THREAD. Skipped entirely when the field is asked for
   //    without it (see the thread prop) - the hero offers the same flow with
@@ -327,11 +435,20 @@ export function OpenFlow({
   className = "",
   /** The golden thread. Off gives the same field with nothing drawn in it. */
   thread = true,
+  /**
+   * Paint one of the upper ribbons in the brand gold instead of its blue. Meant
+   * as an alternative to the thread rather than a companion to it - the two are
+   * the same accent stated at two scales, and running both puts gold in the
+   * field twice.
+   */
+  goldBand = false,
 }: {
   className?: string;
   thread?: boolean;
+  goldBand?: boolean;
 }) {
-  const draw: HeroRender = (ctx, w, h, t) => render(ctx, w, h, t, thread);
+  const draw: HeroRender = (ctx, w, h, t) =>
+    render(ctx, w, h, t, thread, goldBand);
   return (
     <HeroCanvas
       render={draw}

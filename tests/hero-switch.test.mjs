@@ -4,7 +4,7 @@ import { readFile } from "node:fs/promises";
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 
-test("the homepage hero switches between three treatments, A first", async () => {
+test("the homepage hero switches between four treatments, A first", async () => {
   const hero = await read("src/components/home-hero.tsx");
 
   assert.match(hero, /^"use client";/);
@@ -13,18 +13,18 @@ test("the homepage hero switches between three treatments, A first", async () =>
   assert.match(hero, /import \{ OpenFlow \} from "@\/components\/open-flow"/);
   // B is the mark.
   assert.match(hero, /<ConvergenceMark key="mark"[^>]*variant="cascade"/);
-  // Three treatments now, and no more: the four-way variant picker is not
-  // coming back. C is the layered wave field from further down the page.
   const labels = [...hero.matchAll(/label: "([A-Z])"/g)].map((m) => m[1]);
-  assert.deepEqual(labels, ["A", "B", "C"]);
-  // C is the SAME field as A with the thread switched off - one component and
-  // one set of ribbons, so the two cannot drift from each other and the choice
-  // between them is a choice about the thread.
+  assert.deepEqual(labels, ["A", "B", "C", "D"]);
+  // A, C and D are the SAME field - one component and one set of ribbons, so
+  // none of the three can drift from the others and the choice between them is
+  // only ever a choice about where the gold is: a thread, nothing, or a band.
   assert.match(hero, /<OpenFlow key="plain" thread=\{false\} className="absolute inset-0" \/>/);
+  assert.match(hero, /key="gold"[\s\S]{0,80}thread=\{false\}[\s\S]{0,40}goldBand/);
   assert.doesNotMatch(hero, /Bleed/);
   const flow = await read("src/components/open-flow.tsx");
   assert.match(flow, /thread = true/);
   assert.match(flow, /if \(withThread\)/);
+  assert.match(flow, /goldBand = false/);
   assert.match(hero, /aria-pressed=\{v\.id === view\}/);
 });
 
@@ -65,4 +65,32 @@ test("the hero fields swapped pages", async () => {
   assert.doesNotMatch(pipeline, /OpenFlow/);
   // /science keeps no field of its own; PageHero falls back to its own mark.
   assert.doesNotMatch(science, /OpenFlow/);
+});
+
+test("the gold band is bedded, not multiplied into the blue", async () => {
+  const flow = await read("src/components/open-flow.tsx");
+  const code = flow.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "");
+
+  // Gold and blue are near-complementary, so multiplying one into the other
+  // lands in olive - the failure the thread already hit once. The band goes
+  // down as a warm-white bed FIRST and the gold is laid on that ground, and
+  // NEITHER pass multiplies: as gold thins, multiply can only darken, so it
+  // cannot lift red past a ground that is still faintly blue and the fade has
+  // to pass through sage. Measured at rgb(184,182,138) before this changed.
+  const band = code.slice(code.indexOf("function paintGold"), code.indexOf("function render("));
+  const bed = band.indexOf("rgba(255,251,242");
+  const gold = band.indexOf("GOLD;");
+  assert.ok(bed > 0 && gold > bed, "the bed must be laid before the gold");
+  assert.doesNotMatch(band, /globalCompositeOperation = "multiply"/);
+  assert.match(band, /globalCompositeOperation = "source-over"/);
+
+  // And it is painted after the whole blue stack, or the bed has nothing to
+  // lighten and the ribbons drawn later multiply straight back over it.
+  const loop = code.indexOf("for (let i = 0; i < RIBBONS.length");
+  const call = code.indexOf("if (withGoldBand) paintGold");
+  assert.ok(loop > 0 && call > loop);
+
+  // One ribbon changes, not the table: A, C and D must stay the same geometry.
+  assert.equal((flow.match(/const RIBBONS: Ribbon\[\] = \[/g) || []).length, 1);
+  assert.match(code, /const GOLD_INDEX = 2;/);
 });
