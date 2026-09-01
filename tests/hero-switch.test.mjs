@@ -16,15 +16,17 @@ test("the homepage hero switches between four treatments, A first", async () => 
   const labels = [...hero.matchAll(/label: "([A-Z])"/g)].map((m) => m[1]);
   assert.deepEqual(labels, ["A", "B", "C", "D"]);
   // A, C and D are the SAME field - one component and one set of ribbons, so
-  // none of the three can drift from the others and the choice between them is
-  // only ever a choice about where the gold is: a thread, nothing, or a band.
+  // none of the three can drift from the others. C and D share the mount key
+  // outright, because what is being compared across those two is the type, not
+  // the art; A differs from them only in the thread.
   assert.match(hero, /<OpenFlow key="plain" thread=\{false\} className="absolute inset-0" \/>/);
-  assert.match(hero, /key="gold"[\s\S]{0,80}thread=\{false\}[\s\S]{0,40}goldBand/);
+  assert.match(hero, /view === "c" \|\| view === "d"/);
+  // The gold band is gone from the whole codebase, not just unused.
+  assert.doesNotMatch(hero, /goldBand/);
   assert.doesNotMatch(hero, /Bleed/);
   const flow = await read("src/components/open-flow.tsx");
   assert.match(flow, /thread = true/);
   assert.match(flow, /if \(withThread\)/);
-  assert.match(flow, /goldBand = false/);
   assert.match(hero, /aria-pressed=\{v\.id === view\}/);
 });
 
@@ -67,30 +69,33 @@ test("the hero fields swapped pages", async () => {
   assert.doesNotMatch(science, /OpenFlow/);
 });
 
-test("the gold band is bedded, not multiplied into the blue", async () => {
+test("D is C, set smaller and higher", async () => {
+  const hero = await read("src/components/home-hero.tsx");
   const flow = await read("src/components/open-flow.tsx");
-  const code = flow.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "");
 
-  // Gold and blue are near-complementary, so multiplying one into the other
-  // lands in olive - the failure the thread already hit once. The band goes
-  // down as a warm-white bed FIRST and the gold is laid on that ground, and
-  // NEITHER pass multiplies: as gold thins, multiply can only darken, so it
-  // cannot lift red past a ground that is still faintly blue and the fade has
-  // to pass through sage. Measured at rgb(184,182,138) before this changed.
-  const band = code.slice(code.indexOf("function paintGold"), code.indexOf("function render("));
-  const bed = band.indexOf("rgba(255,251,242");
-  const gold = band.indexOf("GOLD;");
-  assert.ok(bed > 0 && gold > bed, "the bed must be laid before the gold");
-  assert.doesNotMatch(band, /globalCompositeOperation = "multiply"/);
-  assert.match(band, /globalCompositeOperation = "source-over"/);
+  // D was the gold band; it is a typographic variant now. Same field as C, so
+  // the only differences between the two are the ones being judged.
+  assert.match(hero, /const compact = view === "d";/);
+  assert.match(hero, /compact[\s\S]{0,40}text-\[clamp\(2rem/);
+  assert.match(hero, /compact\s*\?\s*"self-start pt-24 lg:pb-28 lg:pt-40"/);
+  // And the band is deleted rather than left dangling behind a false default.
+  assert.doesNotMatch(flow, /goldBand|paintGold|GOLD_INDEX/);
+});
 
-  // And it is painted after the whole blue stack, or the bed has nothing to
-  // lighten and the ribbons drawn later multiply straight back over it.
-  const loop = code.indexOf("for (let i = 0; i < RIBBONS.length");
-  const call = code.indexOf("if (withGoldBand) paintGold");
-  assert.ok(loop > 0 && call > loop);
+test("provenance is a badge, and the badge is portable", async () => {
+  const hero = await read("src/components/home-hero.tsx");
+  const badge = await read("src/components/portfolio-badge.tsx");
 
-  // One ribbon changes, not the table: A, C and D must stay the same geometry.
-  assert.equal((flow.match(/const RIBBONS: Ribbon\[\] = \[/g) || []).length, 1);
-  assert.match(code, /const GOLD_INDEX = 2;/);
+  assert.match(hero, /<PortfolioBadge parent="CinRx" \/>/);
+  // The old kicker is gone from the hero entirely.
+  assert.doesNotMatch(hero, /portfolio company/);
+  // Nothing in the component is CinPressa's: the parent and the link are both
+  // props, so a sibling site lifts the file and changes one word.
+  assert.match(badge, /parent = "CinRx"/);
+  assert.match(badge, /href = "https:\/\/cinrx.com"/);
+  assert.doesNotMatch(badge, /CinPressa Pharma|CIN-111/);
+  // The name must never be case-transformed - CinRx is elephant case.
+  const css = await read("src/app/globals.css");
+  const rule = css.slice(css.indexOf(".portfolio-badge-name"), css.indexOf(".portfolio-badge-rule"));
+  assert.doesNotMatch(rule, /text-transform/);
 });

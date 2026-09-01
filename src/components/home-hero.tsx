@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { CSSProperties } from "react";
 import { ConvergenceMark } from "@/components/convergence-mark";
 import { OpenFlow } from "@/components/open-flow";
+import { PortfolioBadge } from "@/components/portfolio-badge";
 
 /**
  * The homepage hero, with an A/B switch between its two treatments.
@@ -22,11 +23,15 @@ import { OpenFlow } from "@/components/open-flow";
  * between two unrelated pieces of art, and it means neither can drift from the
  * other.
  *
- * D — THE SAME FIELD AGAIN, WITH THE GOLD AT BAND SCALE. One of the upper
- * ribbons is painted in the brand gold instead of its blue, and the thread is
- * off: the two are the same accent said at two sizes, and running both would
- * put gold in the field twice. A, C and D are one component and one geometry
- * throughout - what changes between them is only where the gold is.
+ * D — C'S FIELD, C'S COPY, SET SMALLER AND HIGHER. The gold band that used to
+ * be here is gone; D is now a typographic comparison rather than an artistic
+ * one. It draws exactly the same field as C, so nothing about the art is in
+ * question when the two are put side by side, and the only differences are the
+ * ones being judged: the headline comes down about a fifth and the whole block
+ * sits higher in the frame.
+ *
+ * That is the point of pairing it with C rather than with A. A carries the
+ * thread, so comparing type against A would change two things at once.
  *
  * The two are not variants of one layout, which is why this holds the whole
  * hero rather than just its art slot. A is a backdrop and wants the copy on one
@@ -59,6 +64,8 @@ type View = "a" | "b" | "c" | "d";
 export function HomeHero() {
   const [view, setView] = useState<View>("a");
   const mark = view === "b";
+  /** D's whole proposition: same field, smaller headline, higher block. */
+  const compact = view === "d";
 
   return (
     <section className="relative flex min-h-[88vh] items-center overflow-hidden bg-gradient-to-b from-white via-white to-mist lg:min-h-[76vh]">
@@ -76,21 +83,11 @@ export function HomeHero() {
         />
       ) : (
         <>
-          {view === "d" ? (
-            /* The gold moved from the thread into one of the ribbons. Thread
-               off: the band IS the accent at that point, and two golds in one
-               field is one too many. */
-            <OpenFlow
-              key="gold"
-              thread={false}
-              goldBand
-              className="absolute inset-0"
-            />
-          ) : view === "c" ? (
-            /* The same field as A, with nothing drawn in it. The two are one
-               component and one set of ribbons; only the thread differs, so
-               choosing between them is a choice about the thread rather than
-               about two unrelated pieces of art. */
+          {view === "c" || view === "d" ? (
+            /* The same field as A, with nothing drawn in it - and C and D share
+               it exactly, down to the mount key, so switching between those two
+               does not even restart the art. Whatever is being compared there,
+               it is not the field. */
             <OpenFlow key="plain" thread={false} className="absolute inset-0" />
           ) : (
             <OpenFlow key="flow" className="absolute inset-0" />
@@ -123,40 +120,37 @@ export function HomeHero() {
            between these two paddings rather than by either one alone. Taking 32
            off the top and adding 48 to the bottom moves the whole group up by
            40px without changing the hero's height or the area the field paints.
-           Still 96px of clearance under a nav that is 76 tall. */
-        className={`relative mx-auto grid w-full max-w-7xl items-center gap-14 px-6 pb-24 pt-28 lg:gap-10 lg:px-10 lg:pb-28 lg:pt-24 ${
-          mark ? "lg:grid-cols-[1.08fr_0.92fr]" : ""
-        }`}
+           Still 96px of clearance under a nav that is 76 tall.
+
+           D OPTS OUT OF THE CENTRING ENTIRELY, and has to. Under items-center
+           the position is a function of the CONTENT's height, so D's smaller
+           headline made its block shorter and centring then pushed it 20px
+           DOWN - the opposite of what a compact variant is for. self-start
+           takes it off the centre line so its top padding places it outright:
+           160px puts the badge 45px above where A and C hold theirs, and it
+           stays there whatever the headline does. */
+        className={`relative mx-auto grid w-full max-w-7xl items-center gap-14 px-6 pb-24 lg:gap-10 lg:px-10 ${
+          compact
+            ? "self-start pt-24 lg:pb-28 lg:pt-40"
+            : "pt-28 lg:pb-28 lg:pt-24"
+        } ${mark ? "lg:grid-cols-[1.08fr_0.92fr]" : ""}`}
       >
         <div className={mark ? undefined : "max-w-2xl"}>
-          {/* CAPS EVERYWHERE EXCEPT THE NAME. The eyebrow style is uppercase;
-              CinRx is set in elephant case - upper and lower mixed - and that
-              is how the name is always written, so it is the one thing here the
-              text-transform must not reach. Hence the exemption on a span of
-              its own rather than a hand-typed string: the rule is stated as
-              "all of this is caps, except this name", which is what it is.
-
-              THE WHOLE LINE IS ONE FLEX ITEM. This <p> is a flex row so the
-              rule can sit on the text's centre, and a flex container makes each
-              bare text run its own item - splitting the sentence to exempt
-              CinRx would have put the row's gap either side of the name. The
-              span around all of it keeps the sentence as one item with normal
-              inline flow inside.
-
-              The rule is blue again, matching the words it introduces. The
-              orange it carried for a few commits now lives on the rail below
-              and in the field, which is enough punctuation for one screen. */}
-          <p
-            className="anim-rise flex items-center gap-3 text-[0.92rem] font-semibold tracking-[0.18em] text-blue"
-            style={{ animationDelay: "0.02s" }}
-          >
-            <span aria-hidden className="h-px w-8 bg-blue" />
-            <span className="uppercase">
-              A <span className="normal-case">CinRx</span> portfolio company
-            </span>
-          </p>
+          {/* THE PROVENANCE IS A PLATE NOW, not a kicker. It was a hairline and
+              a run of tracked caps - the same treatment every section label on
+              the site uses - so the one piece of provenance on the page carried
+              no more weight than a heading's garnish. See portfolio-badge.tsx;
+              it is built to be lifted whole into any sibling company's site
+              with one prop changed. */}
+          <div className="anim-rise" style={{ animationDelay: "0.02s" }}>
+            <PortfolioBadge parent="CinRx" />
+          </div>
           <h1
-            className="anim-rise mt-7 text-[clamp(2.4rem,5.4vw,4.25rem)] font-light leading-[1.04] tracking-tight text-ink"
+            className={`anim-rise mt-7 font-light leading-[1.04] tracking-tight text-ink ${
+              compact
+                ? "text-[clamp(2rem,4.1vw,3.25rem)]"
+                : "text-[clamp(2.4rem,5.4vw,4.25rem)]"
+            }`}
             style={{ animationDelay: "0.1s" }}
           >
             {/* The blue lands on "hypertension", not on "siRNA". The molecule
