@@ -876,11 +876,26 @@ body {
    figure is emphasised and the rest fall back, and the highlight on its rules
    is a soft segment that LOCKS to a column rather than following the pointer. */
 
+/* EVERY VERTICAL MEASUREMENT IN THIS BLOCK IS A WHOLE PIXEL, AND THAT IS WHAT
+   FINALLY SETTLES THE TWO RULES.
+
+   The top rule sits on the rail's top edge and the baseline on its bottom, so
+   the two render identically only if the rail's HEIGHT is a whole number - then
+   both edges share the same sub-pixel phase and land the same way wherever the
+   rail happens to sit. It was 173.64: rem paddings, a vw-scaled figure and a
+   unitless line-height all contribute fractions, so the bottom edge was always
+   offset from the top by 0.64 of a pixel and the two hairlines could not agree.
+
+   So the rem and vw values are gone from the vertical axis. The figure steps at
+   two breakpoints instead of scaling fluidly - a stat rail does not need fluid
+   type, and it is the vw term that made an integer impossible at intermediate
+   widths - and every padding, margin and line-height below is stated in px.
+   38 + 43 + 13 + 44 + 35 = 173 exactly. */
 .burden-rail {
   position: relative;
   display: grid;
   grid-template-columns: 1fr;
-  padding-block: 2.4rem 0;
+  padding-block: 38px 0;
 }
 
 @media (min-width: 768px) {
@@ -888,53 +903,39 @@ body {
     grid-template-columns: repeat(3, 1fr);
     column-gap: 3rem;
   }
+
 }
 
-/* THE TWO RULES ARE AUTHORED SOFT, AND THAT IS THE FIX FOR THEM DISAGREEING.
+/* ONE PIXEL, FLAT, AND VERY LIGHT. That is all the reference's rules are, and
+   every attempt to be cleverer than that made them worse.
 
-   They were 1px each and the top one still rendered three times heavier. The
-   cause is sub-pixel: the rail's top landed on a whole pixel and its bottom did
-   not, so at DPR 1 the top rule painted as one solid row while the baseline
-   spread across two at roughly a third and two thirds. Same declaration, and no
-   colour or fractional height reconciles them, because the difference is WHERE
-   each line sits, not what it is.
+   The last one was the worst of them: I tried to defeat a sub-pixel rounding
+   difference by AUTHORING the softness - a 2px box with the ink graded into a
+   core - so that neither line could snap. It works, in that the two become
+   identical. It is also the wrong object. Spreading a pixel of ink over two
+   pixels of height does not produce a hairline, it produces a soft band, and a
+   soft band at a colour dark enough to still register reads exactly as "thick
+   and solid all the way through".
 
-   So the softness is drawn rather than left to the rasteriser. Each rule is a
-   2px box carrying a vertical gradient: transparent, a solid core across the
-   middle, transparent again. Shift that by any fraction of a pixel and it looks
-   the same, because it was already soft - which makes the two identical at any
-   position, any zoom and any device ratio. It also happens to be the hairline
-   the reference draws. */
+   A hairline is one pixel of a light colour. If the rasteriser puts one of them
+   half a pixel off on a particular display, that is a far smaller error than
+   drawing the wrong thing on every display to prevent it. */
 .burden-rail::before,
 .burden-baseline {
   content: "";
   position: absolute;
   inset-inline: 0;
-  height: 2px;
-  /* The core is a fifth of the box, not a third. At 32-68 the solid stretch was
-     0.72px with a 0.64px shoulder either side, which paints ink across most of
-     the 2px and reads as a thick soft line. Pulled to 45-55 the solid is 0.2px
-     and the rest is shoulder, so what you see is a fine hairline with the edges
-     eased - a hairline that happens to be antialiased rather than a soft band.
-     The core takes a little more colour to pay for being narrow. */
-  background: linear-gradient(
-    180deg,
-    rgba(190, 215, 236, 0) 0%,
-    rgba(190, 215, 236, 0.5) 26%,
-    rgba(190, 215, 236, 0.92) 45%,
-    rgba(190, 215, 236, 0.92) 55%,
-    rgba(190, 215, 236, 0.5) 74%,
-    rgba(190, 215, 236, 0) 100%
-  );
+  height: 1px;
+  background: var(--color-line);
   transform-origin: left center;
 }
 
 .burden-rail::before {
-  top: -1px;
+  top: 0;
 }
 
 .burden-baseline {
-  bottom: -1px;
+  bottom: 0;
 }
 
 [data-reveal].reveal-pending .burden-rail::before,
@@ -982,40 +983,25 @@ body {
    consecutive ones meet in the middle of the gutter instead of leaving a hole
    there. They fade to nothing well before that, so the overhang past the rail
    at the outer edges is invisible. */
-/* THE SEGMENT IS THE SAME HAIRLINE, IN BLUE - and getting that wrong is what
-   made it look like slop. It was a flat 2px block of colour laid over a rule
-   that is soft in the vertical, so wherever it sat the line went twice as thick
-   and several times as saturated: a chunky bar, not a lit hairline.
+/* THE SEGMENT IS THE SAME HAIRLINE, IN BLUE. One pixel, exactly like the rule
+   it lies on, so a lit stretch and an unlit stretch are the same line and
+   differ only in hue. It was a flat 2px block over a 2px graded rule at one
+   point, which is what made it read as a bar rather than a lit line.
 
-   It carries the rule's own vertical gradient now, at the same 45-55 core, so
-   the lit and unlit stretches of a rule are the SAME line and differ only in
-   hue. The horizontal fade moves to a mask, which is the only way to have both:
-   a background gradient can run in one direction, and this needs the vertical
-   for shape and the horizontal for the ends.
-
-   The mask fades over the outer thirty per cent at each end, which across a
-   segment this wide is a long dissolve - the previous ramp was a quarter of the
-   width on a solid bar, and a soft ramp on a hard shape still reads as an edge.
-   And the peak comes down from 0.6 to 0.42: the reference's highlight is a tint
-   you notice on the second look, not a coloured line. */
+   The horizontal fade is a mask rather than a background gradient, because the
+   background is now a flat colour and there is nothing to grade it with. It
+   dissolves over the outer thirty per cent at each end, which across a segment
+   this wide is long enough that no edge is findable. */
 .burden-cell::before,
 .burden-cell::after {
   content: "";
   position: absolute;
   inset-inline: -1.5rem;
-  height: 2px;
+  height: 1px;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.45s var(--ease-brand);
-  background: linear-gradient(
-    180deg,
-    rgba(34, 97, 173, 0) 0%,
-    rgba(34, 97, 173, 0.22) 26%,
-    rgba(34, 97, 173, 0.42) 45%,
-    rgba(34, 97, 173, 0.42) 55%,
-    rgba(34, 97, 173, 0.22) 74%,
-    rgba(34, 97, 173, 0) 100%
-  );
+  background: rgba(34, 97, 173, 0.5);
   -webkit-mask-image: linear-gradient(
     90deg,
     transparent 0%,
@@ -1033,11 +1019,11 @@ body {
 }
 
 .burden-cell::before {
-  top: calc(-2.4rem - 1px);
+  top: -38px;
 }
 
 .burden-cell::after {
-  bottom: -1px;
+  bottom: 0;
 }
 
 /* THE FIRST ONE IS LIT UNTIL SOMETHING ELSE IS. A rail whose highlight only
@@ -1068,12 +1054,42 @@ body {
    is not a state. */
 .burden-value {
   display: block;
-  font-size: clamp(2rem, 3.35vw, 2.7rem);
+  font-size: 34px;
   font-weight: 500;
-  line-height: 1;
+  /* HEIGHT AS WELL AS LINE-HEIGHT, and the height is the one that counts. The
+     figure holds two inline spans at different sizes - the numeral and its
+     unit - and a line box is the union of every inline box in it, not the
+     block's line-height. Measured, that came out 52.84 against a 48px
+     line-height, and the 4.84 of overflow was fractional, which put the rail's
+     bottom edge back off-phase from its top. Pinning the box makes the cell's
+     height depend only on values stated here. */
+  line-height: 40px;
+  height: 40px;
   letter-spacing: -0.03em;
   color: #414c59;
   transition: color 0.45s var(--ease-brand);
+}
+
+/* THE STEPS HAVE TO FOLLOW THE BASE RULE, not lead it. They were declared in
+   the grid's media block near the top of this section, which is earlier in the
+   file - same specificity, so the 34px below simply overwrote them and the
+   figure never grew past its smallest step at any width. Line-height moves with
+   the size so the cell's height stays whole at every breakpoint, which is the
+   whole reason these are px. */
+@media (min-width: 768px) {
+  .burden-value {
+    font-size: 38px;
+    line-height: 44px;
+    height: 44px;
+  }
+}
+
+@media (min-width: 1100px) {
+  .burden-value {
+    font-size: 43px;
+    line-height: 50px;
+    height: 50px;
+  }
 }
 
 /* Was 0.4em, which made the B in 1.4 B look like a footnote rather than the
@@ -1085,12 +1101,12 @@ body {
 }
 
 .burden-label {
-  margin-top: 0.8rem;
-  font-size: 0.95rem;
+  margin-top: 13px;
+  font-size: 15px;
   /* 450, not 400. At this size the regular weight goes papery under a figure
      this heavy - the caption stopped looking quiet and started looking faint. */
   font-weight: 450;
-  line-height: 1.45;
+  line-height: 22px;
   color: var(--color-muted);
   transition: color 0.45s var(--ease-brand);
 }
@@ -1100,7 +1116,7 @@ body {
 .burden-track {
   position: relative;
   margin-top: auto;
-  padding-top: 2.2rem;
+  padding-top: 35px;
   align-self: stretch;
 }
 
@@ -2837,3 +2853,7 @@ body {
 
 
 /* r */
+
+
+
+
