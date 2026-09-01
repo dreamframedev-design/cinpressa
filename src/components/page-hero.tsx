@@ -29,8 +29,8 @@ export function PageHero({
   aside,
   field,
 }: PageHeroProps) {
-  /** Nothing under the headline but the next section. */
-  const bare = !deck && !subtitle && !aside;
+  /** An aside occupies the right column and needs the room to stand in. */
+  const tall = Boolean(aside);
 
   return (
     <section className="relative overflow-hidden bg-white">
@@ -57,14 +57,21 @@ export function PageHero({
           content-start keeps the eyebrow on the same baseline whether the
           headline runs one line or three.
 
-          A HERO CARRYING NEITHER A DECK NOR A SUBTITLE SITS SHORTER. The tall
-          value was sized for headers that carry one; /pipeline's lost its deck
-          and the fixed height then held 307px of empty white under the headline
-          before the next section's own 112px of padding even started. Holding
-          every header to one height stops serving consistency at the point
-          where it opens a hole - the amount of content is genuinely different,
-          so the box is too. This is the only bare hero on the site today, so it
-          is the only one that moves. */}
+          THE FLOOR IS A FLOOR, NOT A HEIGHT. 41rem was set for a header that
+          carries a deck, a subtitle and an aside, and then every header was
+          held to it. /pipeline lost its deck and sat on 307px of empty white;
+          /news carries a two line subtitle and sat on 397px of it, which is
+          most of a screen between the headline and the first announcement.
+
+          A minimum only has to be tall enough that a lone headline does not
+          look cramped - past that the content should set the height, and it
+          does: /about's three line subtitle overruns this floor on its own and
+          the header grows to fit. So the floor is one value now for everything
+          except a header with an aside, where the right column genuinely needs
+          the room to stand in. Consistency of scale is what the eyebrow, the
+          type ramp and the top padding are for; it was never the job of a fixed
+          box, and holding one stopped serving it at the point where it opened a
+          hole under three pages out of four. */}
       <div
         /* w-full IS LOAD-BEARING. Without it a grid shrinks to fit its
            content, and mx-auto then centres that shrunken box - so on a wide
@@ -73,10 +80,10 @@ export function PageHero({
            other container on the site pairs w-full with max-w-7xl; this one
            did not, which is why the interior heroes sat off-axis. */
         className={`relative mx-auto grid w-full max-w-7xl content-start gap-12 px-6 pt-32 lg:px-10 lg:pt-44 ${
-          bare
-            ? "min-h-[26rem] pb-12 lg:min-h-[30rem] lg:pb-16"
-            : "min-h-[33rem] pb-16 lg:min-h-[41rem] lg:pb-24"
-        } ${aside ? "lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16" : ""}`}
+          tall
+            ? "min-h-[33rem] pb-16 lg:min-h-[41rem] lg:pb-24 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16"
+            : "min-h-[26rem] pb-12 lg:min-h-[30rem] lg:pb-16"
+        }`}
       >
         <div className="max-w-3xl">
           {/* No rule above the eyebrow. It was the one orange accent per page and

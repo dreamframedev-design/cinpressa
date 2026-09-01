@@ -11,13 +11,22 @@ import type { CSSProperties } from "react";
  * colour — the mark itself, four translucent ovals whose OVERLAPS create
  * every interior colour in the logo.
  *
- * So this is the mark at architectural scale. Five ovals in the spec-sheet
+ * So this is the mark at architectural scale. Four ovals in the spec-sheet
  * colours sweep corner to corner across the hero, multiply-blended, so
  * wherever two of them cross a deeper pool of colour appears that neither
  * had alone — which is the contact page's whole subject: where two parties
  * overlap, something new exists. A first cut dressed the colour with dashed
  * hairline orbits and a landed orange dose; the note back was that they
  * read as clutter and a stray dot, so the ovals now carry the piece alone.
+ *
+ * THE ORANGE IS NEGATIVE SPACE, WHICH IS WHAT IT IS IN THE LOGO. Open
+ * cinpressa-mark.svg and there is exactly one warm shape in it, class cls-13:
+ * not a petal, but the wedge left over between the green petal, the blue one
+ * and the cyan one. It is the only colour in the mark that nothing draws — it
+ * exists because of where the other shapes are not. Painting it here as its own
+ * oval was the mistake, twice over: first as a faded wash on a big petal, then
+ * as the exact colour on a small one. Both were still a shape. See NEGATIVE
+ * below for how it is cut rather than drawn.
  *
  * MOTION. Each oval enters on its own slow settle, then breathes on its own
  * cycle (32-52s, ease-in-out, alternate): a drift of a couple dozen pixels,
@@ -34,11 +43,6 @@ import type { CSSProperties } from "react";
 type Oval = {
   color: string;
   alpha: number;
-  /**
-   * Lay this oval on rather than multiplying it in. Exactly one does - the
-   * gold - and see the note on it for why.
-   */
-  onTop?: boolean;
   cx: number;
   cy: number;
   rx: number;
@@ -62,43 +66,104 @@ type Oval = {
  *  outward and some inward (ds either side of 1), so neighbouring overlaps
  *  deepen and thin against each other rather than in unison. */
 const OVALS: Oval[] = [
-  /* Back to the mark's green. This one carried the accent for a while, and at
-     560x380 it was the wrong petal for it: the note was that the gold read as a
-     faded version of the brand colour on one of the big shapes. It was faded,
-     necessarily - at 0.42, because orange at the 0.85 the light surfaces run
-     stopped being a wash and became a tint over the whole upper left. The fix
-     is not a stronger wash on a big petal. It is the exact colour on a small
-     one, which is the last entry. */
   { color: "#AFDBBC", alpha: 0.85, cx: 300, cy: 170, rx: 560, ry: 380, rot: -18, ex: -60, ey: -40, delay: 0, dx: 30, dy: 18, dr: 1.6, ds: 1.035, dur: 34 },
   { color: "#95DAF8", alpha: 0.8, cx: 1090, cy: 240, rx: 640, ry: 410, rot: 14, ex: 70, ey: -30, delay: 0.12, dx: -34, dy: 22, dr: -1.8, ds: 0.98, dur: 44 },
   { color: "#AADBF6", alpha: 0.85, cx: 760, cy: 820, rx: 560, ry: 380, rot: -9, ex: 0, ey: 70, delay: 0.24, dx: 26, dy: -26, dr: 1.3, ds: 1.045, dur: 38 },
   { color: "#6771B5", alpha: 0.3, cx: 1280, cy: 780, rx: 470, ry: 320, rot: 26, ex: 60, ey: 40, delay: 0.36, dx: -22, dy: -18, dr: -2.2, ds: 1.025, dur: 48 },
-  /* THE GOLD PETAL, AND IT IS THE EXACT COLOUR. The smallest oval in the set at
-     430x300, and the only one that is neither multiplied nor translucent: an
-     eyedropper anywhere inside it returns #F9A81A.
-     
-     BOTH OF THOSE ARE REQUIRED, and for the same reason. Multiply would mix it
-     with whatever it crosses, and the pale azure petal runs straight through
-     this corner - gold multiplied into that lands near rgb(166,144,25), a dark
-     mustard, which is the dingy yellow this page has already been told twice it
-     must never show. Alpha below 1 would mix it with the white underneath and
-     make it the pale sand the note was about. Laid on at full strength it can
-     only ever be the brand colour.
-     
-     AND IT IS ACTUALLY SMALL, which the others are not. Every oval here is sized
-     for a viewBox that gets scaled up to cover the section, so the "smallest" of
-     them at 430x300 still rendered 1154px across - a solid orange wall down the
-     left of the page rather than a petal. At 220x152 it comes out near 500px:
-     large enough to be a shape in the composition, small enough to be an accent
-     in it.
-
-     Last in the list so nothing draws over it, and set low left, below where the
-     copy column ends. That matters more than usual now that it is opaque: body
-     grey clears 4.7:1 on this colour and the ink headline 6.8:1, but the small
-     blue eyebrow only manages 3.2:1, so no text sits on it at all. Screenprint
-     edge and no blur, same as the rest. */
-  { color: "#F9A81A", alpha: 1, onTop: true, cx: 158, cy: 812, rx: 220, ry: 152, rot: 32, ex: -50, ey: 40, delay: 0.3, dx: 20, dy: -20, dr: 1.8, ds: 0.975, dur: 52 },
 ];
+
+/**
+ * THE NEGATIVE SPACE, AND HOW IT IS CUT.
+ *
+ * There is a gap in the lower left where the green petal's underside and the
+ * pale blue petal's left flank fall away from each other and neither covers the
+ * ground. That gap is this composition's version of the wedge in the logo, and
+ * this is the shape that claims it.
+ *
+ * It is an ALLOWANCE, not a petal. Nothing here is drawn at its own outline:
+ * the orange is a flat fill of the whole canvas shown only through a mask, and
+ * this oval is the white in that mask - the region we are willing to let orange
+ * appear in at all. Every petal is then punched back out of it in black. What
+ * survives is the part of this oval that no petal covers: a wedge bounded by
+ * the green above, by the pale blue to its right, and by its own curve
+ * elsewhere. Cut, not drawn, which is how the logo builds it.
+ *
+ * It has to OVERLAP the petals, and that is the whole trick. An allowance
+ * sitting neatly inside the gap would survive whole and paint a small orange
+ * oval, which is the thing this replaces. Overlapping, the petals do the
+ * cutting and the shape ends up with curved edges it never declares.
+ *
+ * And it moves, because they do. The mask carries its own copies of all four on
+ * the same entrance and the same drift, so the wedge stays in register as they
+ * breathe - opening and closing a little on their own periods rather than
+ * sliding out from under them.
+ *
+ * The numbers are the gap's own geometry rather than a guess. Sampling the two
+ * petals' implicit equations, the ground is open from about (300,600) down to
+ * (60,820), so the allowance is centred on that run and leaned -38 degrees to
+ * lie along it. It is also held clear of the left edge on purpose: the viewBox
+ * is sliced to cover, so a narrow window crops the first thirty or so units of
+ * it, and a wedge that reaches the crop stops being a shape and becomes a
+ * blob running off the side.
+ *
+ * And clear of the copy. It sat 70 units higher for a cut, where its point ran
+ * up through "Parent company" and left that block half on orange and half off -
+ * legible at 4.7:1, but a line of type straddling a colour boundary reads as a
+ * collision whatever the contrast says. Dropped below the last line of the
+ * column, the wedge has the lower left to itself.
+ */
+const NEGATIVE = { cx: 218, cy: 725, rx: 170, ry: 100, rot: -38 };
+
+/** One ellipse inside its two animation groups. Used for the visible petals,
+ *  and again in flat black for the mask that cuts the negative space. */
+function Petal({
+  o,
+  fill,
+  alpha,
+  blend,
+}: {
+  o: Oval;
+  fill: string;
+  alpha: number;
+  blend?: "multiply";
+}) {
+  return (
+    <g
+      className="cb-enter"
+      style={
+        {
+          "--ex": `${o.ex}px`,
+          "--ey": `${o.ey}px`,
+          "--d": `${o.delay}s`,
+        } as CSSProperties
+      }
+    >
+      <g
+        className="cb-drift"
+        style={
+          {
+            "--dx": `${o.dx}px`,
+            "--dy": `${o.dy}px`,
+            "--dr": `${o.dr}deg`,
+            "--ds": o.ds,
+            "--dur": `${o.dur}s`,
+          } as CSSProperties
+        }
+      >
+        <ellipse
+          cx={o.cx}
+          cy={o.cy}
+          rx={o.rx}
+          ry={o.ry}
+          transform={`rotate(${o.rot} ${o.cx} ${o.cy})`}
+          fill={fill}
+          fillOpacity={alpha}
+          style={blend ? { mixBlendMode: blend } : undefined}
+        />
+      </g>
+    </g>
+  );
+}
 
 export function ContactBloom({ className = "" }: { className?: string }) {
   return (
@@ -108,44 +173,55 @@ export function ContactBloom({ className = "" }: { className?: string }) {
         preserveAspectRatio="xMidYMid slice"
         className="h-full w-full"
       >
-        {OVALS.map((o) => (
-          <g
-            key={o.color}
-            className="cb-enter"
-            style={
-              {
-                "--ex": `${o.ex}px`,
-                "--ey": `${o.ey}px`,
-                "--d": `${o.delay}s`,
-              } as CSSProperties
-            }
+        <defs>
+          {/* White is kept, black is cut. The allowance first, then every petal
+              punched out of it at full black whatever its own alpha - the
+              orange belongs to the bare ground, so anywhere a petal reaches at
+              all is somewhere the orange is not. */}
+          <mask
+            id="cb-negative"
+            maskUnits="userSpaceOnUse"
+            x="0"
+            y="0"
+            width="1440"
+            height="900"
           >
-            <g
-              className="cb-drift"
-              style={
-                {
-                  "--dx": `${o.dx}px`,
-                  "--dy": `${o.dy}px`,
-                  "--dr": `${o.dr}deg`,
-                  "--ds": o.ds,
-                  "--dur": `${o.dur}s`,
-                } as CSSProperties
-              }
-            >
-              <ellipse
-                cx={o.cx}
-                cy={o.cy}
-                rx={o.rx}
-                ry={o.ry}
-                transform={`rotate(${o.rot} ${o.cx} ${o.cy})`}
-                fill={o.color}
-                fillOpacity={o.alpha}
-                style={{ mixBlendMode: o.onTop ? "normal" : "multiply" }}
-              />
-            </g>
-          </g>
+            <ellipse
+              cx={NEGATIVE.cx}
+              cy={NEGATIVE.cy}
+              rx={NEGATIVE.rx}
+              ry={NEGATIVE.ry}
+              transform={`rotate(${NEGATIVE.rot} ${NEGATIVE.cx} ${NEGATIVE.cy})`}
+              fill="#ffffff"
+            />
+            {OVALS.map((o) => (
+              <Petal key={`${o.color}-mask`} o={o} fill="#000000" alpha={1} />
+            ))}
+          </mask>
+        </defs>
+
+        {OVALS.map((o) => (
+          <Petal
+            key={o.color}
+            o={o}
+            fill={o.color}
+            alpha={o.alpha}
+            blend="multiply"
+          />
         ))}
 
+        {/* THE EXACT COLOUR, because nothing is mixed into it. A flat fill of
+            the brand orange shown only where the mask lets it through, which by
+            construction is only ever bare ground. No multiply and no alpha: an
+            eyedropper anywhere in the wedge returns #F9A81A. */}
+        <rect
+          x="0"
+          y="0"
+          width="1440"
+          height="900"
+          fill="#F9A81A"
+          mask="url(#cb-negative)"
+        />
       </svg>
     </div>
   );

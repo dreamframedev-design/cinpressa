@@ -50,8 +50,11 @@ test("the shipped placeholders cannot be mistaken for announcements", async () =
   const body = code(await read("src/lib/news.ts"));
 
   // Every row is stamped in the UI's own kind slot, where "Press release" sits.
+  // The count is not the point and is not asserted - there were three to show a
+  // stack, there is one now that the layout is settled - but there must be at
+  // least one to check, and every one of them must carry the stamp.
   const categories = [...body.matchAll(/category: "([^"]+)"/g)].map((m) => m[1]);
-  assert.ok(categories.length >= 3);
+  assert.ok(categories.length >= 1);
   for (const c of categories) assert.equal(c, "Sample");
 
   // None is phrased as a CinPressa announcement.

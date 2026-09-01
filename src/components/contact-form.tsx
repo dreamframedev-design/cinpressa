@@ -143,7 +143,12 @@ export function ContactForm() {
             id="message"
             name="message"
             required
-            rows={6}
+            /* FOUR, NOT SIX. The textarea was the single tallest element in
+               the panel at ~190px, and it is the one that can give: it resizes
+               vertically, and four rows is still more than the visible part of
+               most messages. Losing two rows is 48px, which is most of what put
+               the send button below the fold. */
+            rows={4}
             className={`${inputClass} resize-y`}
             placeholder="Tell us about your inquiry."
           />
@@ -163,7 +168,7 @@ export function ContactForm() {
       {/* THE FOOTER BAR. The submit sits on a ruled row beside the one thing a
           person wants to know before they press it, rather than floating under
           the last field on its own. */}
-      <div className="mt-7 flex flex-col gap-4 border-t border-line/70 pt-6 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-6 flex flex-col gap-4 border-t border-line/70 pt-5 sm:flex-row sm:items-center sm:justify-between">
         <p className="max-w-xs text-[0.9rem] leading-relaxed text-muted">
           Your details are used only to answer this inquiry.
         </p>
@@ -187,8 +192,8 @@ export function ContactForm() {
  */
 function Group({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="mt-7 first:mt-0">
-      <div className="mb-4 flex items-center gap-3">
+    <section className="mt-6 first:mt-0">
+      <div className="mb-3.5 flex items-center gap-3">
         <h3 className="text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-muted">
           {title}
         </h3>

@@ -58,10 +58,15 @@ const REAL: Announcement[] = [];
  *     themselves as placeholders and say what they are demonstrating.
  *   - The site itself is behind the pre-launch password gate.
  *
- * They are realistic in LENGTH only, because the thing being judged is how a
- * headline wraps and how the rows sit against each other. The three are
- * deliberately uneven so the dividers, the date column and the ragged case can
- * all be read in one stack.
+ * It is realistic in LENGTH only, because the thing being judged is how a real
+ * headline wraps at this measure and how one row sits in the page.
+ *
+ * THERE IS ONE, NOT THREE. Three were here to show the dividers, the date
+ * column and the ragged case in a stack; with the layout settled, three
+ * identical stand-ins on a newsroom that has published nothing read as three
+ * announcements at a glance, which is worse than reading as none. The one that
+ * stayed is the one that exercises the most: a full-length headline that has to
+ * wrap, a two-line summary, and a release link.
  *
  * TO SHIP FOR REAL: change SAMPLE to REAL on the export below. That is the
  * whole removal, and a test will confirm the real list is still empty.
@@ -74,22 +79,6 @@ const SAMPLE: Announcement[] = [
       "Placeholder headline of about this length, long enough to show how a real wire headline wraps across this column",
     summary:
       "The summary sits here and runs to roughly two lines at this measure, which is about what a release abstract needs. Replace this array with real entries in the file above.",
-    href: "#",
-  },
-  {
-    date: "2026-07-02",
-    category: "Sample",
-    title: "Placeholder headline, shorter, to show the ragged case",
-    summary:
-      "A one line summary, so the height difference between rows is visible.",
-  },
-  {
-    date: "2026-05-20",
-    category: "Sample",
-    title:
-      "Placeholder headline for a third row, so the dividers and the date column can be judged in a stack",
-    summary:
-      "The homepage teaser shows the three most recent entries. The newsroom shows all of them.",
     href: "#",
   },
 ];

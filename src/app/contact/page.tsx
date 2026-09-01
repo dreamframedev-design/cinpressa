@@ -27,7 +27,13 @@ export default function ContactPage() {
         <section className="relative overflow-hidden bg-white">
           <ContactBloom className="absolute inset-0" />
 
-          <div className="relative mx-auto grid w-full max-w-7xl gap-14 px-6 pb-24 pt-32 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20 lg:px-10 lg:pt-44">
+          {/* THE PANEL HAS TO LAND ABOVE THE FOLD. It opened 176px down on a
+              680px pane, so the send button and half the message field were
+              below the bottom of the window and the first thing a visitor did
+              on the contact page was scroll to find the form. The top padding
+              comes back to 112 - still clear of an 89px nav - and the column
+              gap tightens; the rest of the fit is in the panel itself. */}
+          <div className="relative mx-auto grid w-full max-w-7xl gap-12 px-6 pb-20 pt-28 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:px-10 lg:pt-28">
             <div>
               <Reveal variant="draw">
                 <span
@@ -75,7 +81,7 @@ export default function ContactPage() {
                   moves onto the two regions rather than the panel, so the rule
                   between them can run the full width. */}
               <div className="glass-panel overflow-hidden">
-                <div className="border-b border-line/70 px-6 py-6 sm:px-9 sm:py-7">
+                <div className="border-b border-line/70 px-6 py-5 sm:px-9 sm:py-6">
                   <h2 className="text-[1.2rem] font-medium tracking-tight text-ink">
                     Send us a message
                   </h2>
@@ -84,7 +90,7 @@ export default function ContactPage() {
                     reply within two business days.
                   </p>
                 </div>
-                <div className="px-6 py-7 sm:px-9 sm:py-8">
+                <div className="px-6 py-6 sm:px-9 sm:py-7">
                   <ContactForm />
                 </div>
               </div>

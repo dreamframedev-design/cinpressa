@@ -4,7 +4,6 @@ import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { PageHero } from "@/components/page-hero";
 import { Section } from "@/components/section";
-import { SectionHeader } from "@/components/section-header";
 import { MarkArt } from "@/components/geometry";
 import { Reveal } from "@/components/reveal";
 import { ArrowIcon } from "@/components/arrow-icon";
@@ -32,20 +31,23 @@ export default function NewsPage() {
           subtitle="Follow CinPressa's progress as CIN-111 advances through development."
         />
 
-        {/* Pulled up. The hero above carries a subtitle so it runs its full
-            41rem, and this section's own py-28 sat under that - about two
-            hundred pixels of white between the headline and the first thing
-            the page is actually for. */}
-        <Section className="pt-10! lg:pt-14!">
-          <SectionHeader
-            eyebrow="Announcements"
-            title="Company news and milestones"
-            subtitle="Company news, financing milestones, clinical initiation, and study readouts will be posted here as the CIN-111 program advances."
-          />
+        {/* THE SECTION HEADER IS GONE, and the section closes up behind it. It
+            ran an eyebrow, "Company news and milestones", and a sentence saying
+            that news would be posted here as the program advances - directly
+            under a page hero already titled "News from CinPressa" and
+            subtitled with the same promise. It was the third statement of one
+            fact, and the list beneath it needs no introduction: a dated,
+            categorised entry announces itself.
 
-          <div className="mt-14">
+            With it removed the padding is the whole spacing fix. The section
+            was pulled to pt-10 to sit close under the hero, then the header
+            added its own stack and the list added mt-14 on top of that. Now
+            there is one gap between the hero and the first entry, and it is
+            this one. */}
+        <Section className="pt-2! lg:pt-6!">
+          <div>
             {hasNews ? (
-              <ol className="grid gap-px overflow-hidden rounded-3xl border border-line bg-line">
+              <ol className="grid gap-px overflow-hidden rounded-[6px] border border-line bg-line">
                 {ANNOUNCEMENTS.map((item, i) => (
                   <Reveal
                     key={item.date + item.title}
@@ -86,7 +88,7 @@ export default function NewsPage() {
             ) : (
               <Reveal
                 variant="rise"
-                className="rounded-3xl border border-line bg-white/70 px-7 py-16 text-center sm:py-20"
+                className="rounded-[6px] border border-line bg-white/70 px-7 py-16 text-center sm:py-20"
               >
                 <MarkArt
                   variant="outline"

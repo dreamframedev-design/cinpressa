@@ -33,11 +33,14 @@ test("the hero deck and the bar's headline are gone", async () => {
   assert.doesNotMatch(code(page), /A single, focused program advancing/);
   // The eyebrow stays, so the figure is still labelled.
   assert.match(page, /Pipeline[\s\S]{0,20}?<\/p>/);
-  // A hero with neither deck nor subtitle sits shorter, so the bar is not
-  // pushed down the screen by 307px of empty white.
+  // The hero's min-height is a FLOOR, not a height, so the bar is not pushed
+  // down the screen by 307px of empty white. Only a header with an aside keeps
+  // the tall box - the right column needs the room; everything else takes the
+  // short floor and grows past it on its own content if it has any.
   const hero = await read("src/components/page-hero.tsx");
-  assert.match(hero, /const bare = !deck && !subtitle && !aside;/);
+  assert.match(hero, /const tall = Boolean\(aside\);/);
   assert.match(hero, /min-h-\[26rem\] pb-12 lg:min-h-\[30rem\] lg:pb-16/);
+  assert.match(hero, /min-h-\[33rem\] pb-16 lg:min-h-\[41rem\]/);
   // That sentence is gone from the body too, by request - the hero two screens
   // up already names the programme in those words, and it was a claim standing
   // in front of its own evidence. The body opens on the data now.
