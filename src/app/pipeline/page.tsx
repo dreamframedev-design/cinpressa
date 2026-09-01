@@ -27,9 +27,7 @@ const phase1Spec = [
 /* THE SAME RAIL AS THE HOMEPAGE, not a lookalike. These were three bordered
    tiles with their own type ramp and their own accent per tile; they are the
    burden rail now, so a change to the rail's proportions lands in both places
-   at once and the two cannot drift. No shares: none of these three is a
-   proportion of anything, and the rail leaves the track off when it is not
-   given one. */
+   at once and the two cannot drift. */
 const highlights = [
   { value: "~100", unit: "×", label: "therapeutic window in GLP toxicology" },
   /* Was "6 mo+ / potential dosing interval". The updated copy states a

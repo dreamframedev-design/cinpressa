@@ -68,19 +68,16 @@ export default function HomePage() {
                 unit: "B",
                 /* "worldwide" was never in the map; it says "globally". */
                 label: "people globally live with hypertension",
-                share: 1,
               },
               {
                 value: "700",
                 unit: "M+",
                 label: "remain uncontrolled or untreated",
-                share: 0.5,
               },
               {
                 value: "70",
                 unit: "%",
                 label: "of treated patients do not achieve target blood pressure levels",
-                share: 0.7,
               },
             ]}
             />

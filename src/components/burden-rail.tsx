@@ -6,15 +6,6 @@ export type Figure = {
   value: string;
   unit?: string;
   label: string;
-  /**
-   * The figure's share of its OWN stated whole, 0–1, drawn along the track
-   * under it. Prevalence is the whole and runs full; 700 M is half of 1.4 B;
-   * 70 % is seven tenths of the treated. Each cell is its own gauge, which is
-   * why the label carries the denominator rather than the cells sharing one
-   * axis.
-   */
-  /** Omit on a rail whose figures are not proportions of anything. */
-  share?: number;
 };
 
 /**
@@ -33,12 +24,19 @@ export type Figure = {
  * page does not need colour to be seen, and holding the colour back means there
  * is something left to give on hover.
  *
- * THE HOVER. Each figure carries a brand gradient clipped to its own glyphs,
- * hidden under an ink fill. Hovering the cell fades the ink out and slides the
- * gradient across, so the colour appears to be revealed from inside the number
- * rather than painted onto it — and the measure under it turns from grey to the
- * same ramp at the same moment. Every stop in that ramp clears AA at this size;
+ * THE COLOUR. Each figure carries a brand gradient clipped to its own glyphs
+ * and travelling: it holds dark, turns blue, holds blue, turns back. Hovering a
+ * cell swaps that ramp for one that is blue throughout, so the pointer raises
+ * the figure rather than starting anything. Every stop clears AA at this size;
  * the lighter half of the ladder is deliberately absent.
+ *
+ * NOTHING RIDES ON THE RULES. Each cell used to draw a proportion bar along the
+ * baseline — its share of its own stated whole. It was a real measure, and it
+ * was also the single thing stopping the bottom rule from matching the
+ * reference, which bounds its figures with two plain hairlines and puts nothing
+ * whatever on them. Three coloured lengths of three different widths under
+ * three numbers read as a chart someone had started and abandoned. The captions
+ * carry the denominators; they always did.
  *
  * The redundancy that used to make this section grating was not solved here. It
  * was solved in the copy above, by deleting the sentences that read these
@@ -55,45 +53,26 @@ export function BurdenRail({
   return (
     <Reveal variant="fade" className={className}>
       <dl className="burden-rail">
-        {/* ONE RULE UNDER THE WHOLE ROW. Each cell used to draw its own stub
-            under its own measure, so at the grid width there were three short
-            lines with 3rem of nothing between them. Continuous, it frames the
-            figures the way the reference does. Only drawn where there are
-            measures to stand on it: /pipeline's three findings are not
-            proportions of anything and carry no bars, so a rule under them
-            would be framing an empty row. */}
-        {figures.some((f) => f.share !== undefined) ? (
-          <span aria-hidden className="burden-baseline" />
-        ) : null}
+        {/* ONE RULE UNDER THE WHOLE ROW, on every rail. Each cell used to draw
+            its own stub, so at the grid width there were three short lines with
+            3rem of nothing between them. Continuous, it frames the figures the
+            way the reference does - and now that nothing rides on it, there is
+            no reason for /pipeline to go without. */}
+        <span aria-hidden className="burden-baseline" />
         {figures.map((f, i) => (
           <div
             key={f.label}
             className="burden-cell"
-            style={
-              {
-                "--share":
-                  f.share === undefined
-                    ? undefined
-                    : `${Math.round(f.share * 1000) / 10}%`,
-                "--i": i,
-              } as CSSProperties
-            }
+            style={{ "--i": i } as CSSProperties}
           >
             <dd className="burden-value">
               <CountUp value={f.value} />
               {f.unit ? <span className="burden-unit">{f.unit}</span> : null}
             </dd>
             <dt className="burden-label">{f.label}</dt>
-            {/* THE TRACK IS THE PROPORTION, so a figure that is not a
-                proportion of anything does not get one. /pipeline reuses this
-                rail for three findings - a therapeutic window, a reduction
-                sustained to a day, an expiry year - and a progress bar under
-                any of those would be inventing a scale. */}
-            {f.share === undefined ? null : (
-              <div aria-hidden className="burden-track">
-                <span className="burden-share" />
-              </div>
-            )}
+            {/* Pure spacing: it pins every cell's foot to a common line so the
+                long third caption cannot drop the rule below its neighbours'. */}
+            <div aria-hidden className="burden-track" />
           </div>
         ))}
       </dl>
