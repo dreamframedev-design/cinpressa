@@ -20,10 +20,9 @@ import { PortfolioBadge } from "@/components/portfolio-badge";
  * stops, every one of those comparisons isolates exactly one variable, which is
  * the only way any of them can actually be judged.
  *
- * A — THE BADGE IN THE LITERAL BRAND COLOUR, and the default. Its plate is
- * #F9A81A itself, at full strength and full opacity - the value off the brand
- * sheet rather than a version of it, which was the brief. It leads because the
- * default should be the thing being proposed rather than the hedge against it.
+ * A — THE DEFAULT. Open field, no mark, no thread. The badge is the same
+ * words-only cut on every stop, so A against the others never asks a question
+ * about the provenance line.
  *
  * B — THE MARK, AND THE NAV STANDS DOWN FOR IT. The logo converging in the
  * right column, with its own petal colours blooming outward behind it on four
@@ -36,17 +35,14 @@ import { PortfolioBadge } from "@/components/portfolio-badge";
  * nav keeps its job either way - the wordmark is still a link home and still
  * says who this is - it just stops competing with a version of itself.
  *
- * C — THE SAME HERO AS A WITH THE RESTRAINED PLATE. The accent cut carries the
- * orange on the edge and the relation over a cream ground instead of filling
- * the plate with it. Nothing else differs from A at all.
+ * C — THE SAME HERO AS A. Held as its own stop so the switch still has a
+ * place to park a later cut without shuffling the letters around it.
  *
- * D — THE NEUTRAL ONE. Same field again, and the only option whose badge stays
- * on the hairline cut, so the sole warm thing anywhere on D is the beam
- * crossing "hypertension".
+ * D — THE NEUTRAL ONE. Same field again. The sole warm thing anywhere on D is
+ * the beam crossing "hypertension".
  *
  * E — D, PLUS THE GOLDEN THREAD. The thread used to be welded to A, which meant
- * it could never be judged on its own: A differed from the others in the badge
- * AND in the thread at the same time. It is its own stop now, on the neutral
+ * it could never be judged on its own. It is its own stop now, on the same
  * base, so E against D is a question about one line drawn through a field and
  * nothing else.
  *
@@ -170,30 +166,11 @@ export function HomeHero() {
         }`}
       >
         <div className={mark ? undefined : "max-w-2xl"}>
-          {/* THE PROVENANCE IS A PLATE NOW, not a kicker. It was a hairline and
-              a run of tracked caps - the same treatment every section label on
-              the site uses - so the one piece of provenance on the page carried
-              no more weight than a heading's garnish. See portfolio-badge.tsx;
-              it is built to be lifted whole into any sibling company's site
-              with one prop changed.
-
-              A is the solid cut, the plate at #F9A81A itself, and it is the
-              default because the default should be the thing being proposed
-              rather than the hedge against it. D and E take the hairline cut -
-              E is D plus the thread, so it has to carry D's badge or the two
-              would differ in two things at once. B and C run the accent cut in
-              between. */}
+          {/* THE PROVENANCE IS THE WORDS, not a plate. Same cut on every stop,
+              so switching A through E never changes the badge. See
+              portfolio-badge.tsx. */}
           <div className="anim-rise" style={{ animationDelay: "0.02s" }}>
-            <PortfolioBadge
-              parent="CinRx"
-              tone={
-                view === "d" || view === "e"
-                  ? "line"
-                  : view === "a"
-                    ? "solid"
-                    : "accent"
-              }
-            />
+            <PortfolioBadge parent="CinRx" />
           </div>
           {/* WEIGHT 400, NOT 300. The headline was set light because everything
               on this site is, but at 68px the 300 reads thin rather than

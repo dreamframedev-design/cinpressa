@@ -711,7 +711,7 @@ body {
 }
 
 /* ---------- Portfolio badge (portfolio-badge.tsx) ----------------------
-   Provenance as a plate, not a kicker. Every token here is one any sibling
+   Provenance as a phrase, not a plate. Every token here is one any sibling
    site under the same parent already defines, so the component lifts whole.
 
    Sized off the body ramp rather than in fixed pixels, so it holds its
@@ -719,25 +719,13 @@ body {
 .portfolio-badge {
   display: inline-flex;
   align-items: baseline;
-  /* Wider than it was. The glyph and the divider are gone, so this gap is the
-     only thing separating the name from the qualifier - it has to be big enough
-     to read as a break rather than a word space, and 0.85rem is about two
-     spaces at this size. Padding is symmetric now that nothing sits inboard of
-     the left edge. */
-  gap: 0.85rem;
-  padding: 0.44rem 0.85rem;
-  border: 1px solid var(--color-line);
-  border-radius: 4px;
-  /* Nearly white and slightly translucent: the hero paints a field behind
-     this, and a solid chip would punch a hole in it. */
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  box-shadow: 0 1px 2px rgba(20, 48, 79, 0.04);
-  transition:
-    border-color 0.25s var(--ease-brand),
-    background-color 0.25s var(--ease-brand),
-    box-shadow 0.25s var(--ease-brand);
+  /* A word space, not a zone break. Size, weight and case already separate
+     the name from the qualifier; a second gap on top of that read as a hole
+     in the phrase. */
+  gap: 0.32em;
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.25s var(--ease-brand);
 }
 
 /* THE ARTICLE. Sized in em so it tracks the name if the name is ever resized,
@@ -772,10 +760,8 @@ body {
   white-space: nowrap;
 }
 
-.portfolio-badge-link:hover {
-  border-color: var(--color-pale);
-  background: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 2px 10px -4px rgba(20, 48, 79, 0.18);
+.portfolio-badge-link:hover .portfolio-badge-name {
+  color: var(--color-blue);
 }
 
 /* THE ACCENT TONE. The brand's warm colour on the edge and the relationship

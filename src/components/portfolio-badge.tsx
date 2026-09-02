@@ -13,34 +13,27 @@
  * that any sibling site would already define. Drop the file in, pass a name,
  * done.
  *
- * IT IS TWO TEXT RUNS ON A PLATE, AND NOTHING ELSE. It carried a two-ring glyph
- * and a hairline divider between the zones; both are gone. The glyph was there
- * to say "part of a group" and the divider to separate the name from the
- * qualifier — but the name is already 14.72px semibold ink and the qualifier is
- * 10.88px tracked caps in grey, which is three differences doing that job
- * before any rule is drawn. A divider between two things that are already
- * unmistakably different is a line for its own sake, and the glyph was one more
- * object competing with a word that has to be read first.
+ * IT IS TWO TEXT RUNS, AND NOTHING ELSE. It carried a plate, a two-ring glyph
+ * and a hairline divider; all three are gone. The name is already 14.72px
+ * semibold ink and the qualifier is 10.88px tracked caps in grey, which is
+ * three differences doing the job of a box before any edge is drawn. A plate
+ * around two things that are already unmistakably different is a chip for its
+ * own sake.
  *
- * What is left is the phrase, the plate, and the edge. That is the whole badge,
- * and it is better for having less in it.
- *
- * THE FORM IS A PLATE IN TWO ZONES. Left is the parent, set in ink at the
+ * THE FORM IS TWO ZONES IN A PHRASE. Left is the parent, set in ink at the
  * weight a name deserves and in its own case - CinRx is elephant case, upper
  * and lower mixed, and no text-transform is allowed near it. Right is the
  * relationship, set small and tracked in the muted grey, which is where a
- * qualifier belongs. Reading it as "A CinRx  PORTFOLIO COMPANY" gives the name
+ * qualifier belongs. Reading it as "A CinRx PORTFOLIO COMPANY" gives the name
  * first and the relation second, which is the order that matters; a flat
- * sentence buries the name mid-phrase.
+ * sentence buries the name mid-phrase. The gap between the zones is a word
+ * space, not a break.
  *
  * THE ARTICLE IS REQUIRED, NOT DECORATIVE. The approved phrasing is "a CinRx
  * portfolio company" and it has to survive being split across two zones, so the
  * "A" leads the left one. It is set smaller and in the muted grey rather than
  * at the name's weight: it belongs to the sentence, not to the company, and at
  * full weight it competes with the first letter of the name it introduces.
- *
- * Corners at 4px, matching the buttons and the form controls rather than the
- * pill this would have been six months ago.
  */
 
 /**
