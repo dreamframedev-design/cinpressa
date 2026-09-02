@@ -146,18 +146,20 @@ export default function PipelinePage() {
         <Section tone="indigo">
           <SectionHeader
             eyebrow="Clinical development"
-            /* COPY SUPPLIED, AND IT COLLIDES WITH THE SUBTITLE UNDER IT. The
-               headline now states the study is ongoing while the subtitle still
-               says the first-in-human study is "expected to commence in fall
-               2026" — a heading cannot be in the present tense over a sentence
-               in the future tense. Same contradiction already flagged on the
-               Phase I stage in pipeline-diagram.tsx. Changed as asked and
-               raised: if the study has started, this subtitle and that stage's
-               state both need to move with it, and neither is mine to decide. */
+            /* NO SUBTITLE HERE ANY MORE, AND THAT SETTLES A CONTRADICTION. The
+               headline states the study is ongoing; the sentence that used to
+               sit under it still had the first-in-human study "expected to
+               commence in fall 2026", which is a heading in the present tense
+               over a sentence in the future tense. It is gone rather than
+               rewritten, so this section now says one thing. The Phase I stage
+               in pipeline-diagram.tsx is still state "next" — see the note
+               there; whether the bar should reach further is a copy decision. */
             title="A single ascending dose study is ongoing."
-            subtitle="CinPressa plans to submit a U.S. IND for CIN-111 around mid-2026, with a U.S.-based first-in-human study expected to commence in fall 2026."
           />
-          <Reveal variant="rise" delay={100} className="mt-12 overflow-hidden rounded-2xl border border-line">
+          {/* Tighter than the 3rem this had while the header ran three elements
+              deep. With the subtitle gone the header is a label and a line, and
+              the table is what that line introduces — so it sits closer. */}
+          <Reveal variant="rise" delay={100} className="mt-10 overflow-hidden rounded-2xl border border-line">
             <dl>
               {phase1Spec.map((row) => (
                 <div
