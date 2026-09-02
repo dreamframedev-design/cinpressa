@@ -421,11 +421,9 @@ body {
   letter-spacing: -0.03em;
 }
 
-/* Home headline. Stripe sets this cut in Söhne at a half-bold; we use Geist
-   at 600, the nearest licensed grotesque, so the line has the same stance
-   without lifting their file. */
+/* Home headline. Google Sans at 600 — the same face as the ticker. */
 .hero-title {
-  font-family: var(--font-geist-sans), "Geist", "Sohne", system-ui, sans-serif;
+  font-family: var(--font-display), "Google Sans", system-ui, sans-serif;
   font-weight: 600;
   letter-spacing: -0.035em;
 }
@@ -1096,7 +1094,7 @@ body {
    is not a state. */
 .burden-value {
   display: block;
-  font-family: var(--font-geist-sans), "Geist", "Sohne", system-ui, sans-serif;
+  font-family: var(--font-display), "Google Sans", system-ui, sans-serif;
   font-size: 39px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;

@@ -1,5 +1,4 @@
 import localFont from "next/font/local";
-import { GeistSans } from "geist/font/sans";
 
 /**
  * Stem Extra Light (ParaType) — the logo wordmark face.
@@ -20,11 +19,16 @@ export const stem = localFont({
 });
 
 /**
- * Display face for the home headline and the burden ticker.
+ * Google Sans — home headline and ticker.
  *
- * Stripe sets both of those in Söhne (Klim). That cut is licensed to them;
- * we cannot ship their file. Geist is the nearest licensed grotesque with
- * the same even lining figures, so B / M+ / % sit on the number's cap height
- * instead of shrinking into a superscript.
+ * The variable file lives in the project zip; this is the woff2 cut of it.
+ * Stripe's ticker is Söhne. This is the face we were given to match that
+ * stance: even lining figures so B / M+ / % sit at the numeral's cap height.
  */
-export const display = GeistSans;
+export const display = localFont({
+  src: "../fonts/google-sans.woff2",
+  weight: "400 700",
+  style: "normal",
+  variable: "--font-display",
+  display: "swap",
+});
