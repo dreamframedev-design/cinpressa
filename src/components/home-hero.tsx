@@ -9,16 +9,12 @@ import { PortfolioBadge } from "@/components/portfolio-badge";
 /**
  * The homepage hero, with an A/B switch between its two treatments.
  *
- * ONE FIELD UNDER ALL BUT TWO OF THEM. The open flow - ribbons that widen and
+ * ONE FIELD UNDER A AND E. The open flow - ribbons that widen and
  * narrow but never pinch - spans the whole hero behind the copy the way a field
  * does on an interior page, and feathers into the section below so the boundary
- * never cuts it. A, C and D draw it identically, down to the mount key, so
- * switching between any of those does not even restart the art. Only B swaps
- * the field out, and only E adds anything to it.
- *
- * That is deliberate. With the art held constant across three of the five
- * stops, every one of those comparisons isolates exactly one variable, which is
- * the only way any of them can actually be judged.
+ * never cuts it. A and E draw it identically, down to the mount key, so
+ * switching between them does not even restart the art. Only B swaps the field
+ * out, and only E adds anything to it.
  *
  * A — THE DEFAULT. Open field, no mark, no thread. The badge is the same
  * words-only cut on every stop, so A against the others never asks a question
@@ -35,16 +31,8 @@ import { PortfolioBadge } from "@/components/portfolio-badge";
  * nav keeps its job either way - the wordmark is still a link home and still
  * says who this is - it just stops competing with a version of itself.
  *
- * C — THE SAME HERO AS A. Held as its own stop so the switch still has a
- * place to park a later cut without shuffling the letters around it.
- *
- * D — THE NEUTRAL ONE. Same field again. The sole warm thing anywhere on D is
- * the beam crossing "hypertension".
- *
- * E — D, PLUS THE GOLDEN THREAD. The thread used to be welded to A, which meant
- * it could never be judged on its own. It is its own stop now, on the same
- * base, so E against D is a question about one line drawn through a field and
- * nothing else.
+ * E — A, PLUS THE GOLDEN THREAD. Same field as A; the only difference is the
+ * line drawn through it.
  *
  * The typographic variant that used to hold this letter is gone. It set the
  * headline about a fifth smaller and pinned the block higher, and dropping it
@@ -78,7 +66,7 @@ const BLOOMS = [
   { color: "103,113,181", size: 62, x: 34, y: 36, low: 0.2, high: 0.4, dur: 23, delay: -13 },
 ];
 
-type View = "a" | "b" | "c" | "d" | "e";
+type View = "a" | "b" | "e";
 
 export function HomeHero() {
   const [view, setView] = useState<View>("a");
@@ -89,7 +77,7 @@ export function HomeHero() {
      than a child, and threading one boolean between them would mean a context,
      a client wrapper around both, or lifting the switch's whole state out of
      the component that owns it - real structure for a control that exists to be
-     deleted the moment one of these six is chosen.
+     deleted the moment one of these is chosen.
 
      Scoped to the document element and cleaned up on unmount, so no other page
      can inherit it. */
@@ -167,7 +155,7 @@ export function HomeHero() {
       >
         <div className={mark ? undefined : "max-w-2xl"}>
           {/* THE PROVENANCE IS THE WORDS, not a plate. Same cut on every stop,
-              so switching A through E never changes the badge. See
+              so switching A, B and E never changes the badge. See
               portfolio-badge.tsx. */}
           <div className="anim-rise" style={{ animationDelay: "0.02s" }}>
             <PortfolioBadge parent="CinRx" />
@@ -261,8 +249,6 @@ export function HomeHero() {
               [
                 { id: "a", label: "A" },
                 { id: "b", label: "B" },
-                { id: "c", label: "C" },
-                { id: "d", label: "D" },
                 { id: "e", label: "E" },
             ] as { id: View; label: string }[]
             ).map((v) => (
