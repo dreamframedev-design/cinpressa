@@ -491,6 +491,32 @@ body {
     color: transparent;
     -webkit-text-fill-color: transparent;
   }
+
+  /* Wider gold than the H1, same stops otherwise. Brand orange is still the
+     core; the extra width is the darker ambers that already clear large-text
+     contrast, so the figure can sit in warmth without becoming a 2:1 stripe. */
+  .burden-key {
+    background-image: linear-gradient(
+      100deg,
+      #2261ad 0%,
+      #2261ad 16%,
+      #2166b4 24%,
+      #1d6cba 32%,
+      #8a6a2a 38%,
+      #c07a00 42%,
+      #e39a10 45%,
+      #f9a81a 47.5%,
+      #f9a81a 52.5%,
+      #e39a10 55%,
+      #c07a00 58%,
+      #8a6a2a 62%,
+      #1d6cba 68%,
+      #2166b4 76%,
+      #2261ad 84%,
+      #2261ad 100%
+    );
+    animation: ticker-beam 12s linear calc(var(--i, 0) * 1.35s) infinite;
+  }
 }
 
 /* Across, then hold. The rest of the cycle is the word sitting still in blue. */
@@ -499,6 +525,34 @@ body {
     background-position: 128% 0;
   }
   92% {
+    background-position: -28% 0;
+  }
+  100% {
+    background-position: -28% 0;
+  }
+}
+
+/* Ticker beam. Same colours as the H1, but the gold is a plateau, not a
+   pin-stripe, and the cycle dwells on it. A 4-glyph figure makes a 3% core
+   read as a strobe; holding the warm centre for a few seconds is what makes
+   the three numbers feel like one flow instead of three flashes. */
+@keyframes ticker-beam {
+  0% {
+    background-position: 128% 0;
+  }
+  22% {
+    background-position: 62% 0;
+  }
+  30% {
+    background-position: 50% 0;
+  }
+  54% {
+    background-position: 50% 0;
+  }
+  66% {
+    background-position: 38% 0;
+  }
+  84% {
     background-position: -28% 0;
   }
   100% {
@@ -1063,14 +1117,13 @@ body {
   transition: color 0.45s var(--ease-brand);
 }
 
-/* Same beam as .hero-key, on the three figures. Inline-block so numeral and
-   unit share one box and the ramp crosses "1.4B" as a single word. Delay is
-   staggered off --i so the sweep reads left to right down the rail. If the
-   rail starts below the fold, hold at rest until Reveal lights it; if it is
-   already on screen, the sweep runs from load, same as the headline. */
+/* Same beam colours as .hero-key, on the three figures. Inline-block so
+   numeral and unit share one box. The cycle is slower than the headline's and
+   dwells on the gold; delay is staggered off --i so the warmth reads left to
+   right rather than flashing all three. */
 .burden-key {
   display: inline-block;
-  animation: hero-beam 7.2s linear calc(var(--i, 0) * 0.85s) infinite;
+  animation: ticker-beam 12s linear calc(var(--i, 0) * 1.35s) infinite;
 }
 
 [data-reveal].reveal-pending .burden-key {
@@ -1079,7 +1132,7 @@ body {
 }
 
 [data-reveal].reveal-in .burden-key {
-  animation: hero-beam 7.2s linear calc(var(--i, 0) * 0.85s) infinite;
+  animation: ticker-beam 12s linear calc(var(--i, 0) * 1.35s) infinite;
 }
 
 /* THE STEPS HAVE TO FOLLOW THE BASE RULE, not lead it. They were declared in
