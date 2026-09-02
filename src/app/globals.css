@@ -491,7 +491,7 @@ body {
        speed across the word is unchanged - still 6.6s, which was the part that
        was right - and the rest between passes drops from 1.4s to 0.6s, so the
        second animation begins sooner without either one moving faster. */
-    animation: hero-beam 7.2s linear 0s infinite;
+    animation: hero-beam 5.2s linear 0s infinite;
   }
 
   /* Nested glyphs (the rail's numeral + unit) have to go transparent too, or
@@ -771,56 +771,15 @@ body {
    Sized off the body ramp rather than in fixed pixels, so it holds its
    proportions if a sibling runs a different base size. */
 .portfolio-badge {
-  position: relative;
   display: inline-flex;
   align-items: baseline;
   /* A word space, not a zone break. Size, weight and case already separate
      the name from the qualifier; a second gap on top of that read as a hole
      in the phrase. */
   gap: 0.32em;
-  padding: 0.12em 0.18em 0.14em 0.04em;
-  overflow: hidden;
   color: inherit;
   text-decoration: none;
   transition: color 0.25s var(--ease-brand);
-}
-
-/* Occasional sheen. Same language as the pipeline beam: one eased crossing,
-   then a long still. A white/gold band, skewed, clipped to the line so it
-   reads as light on the words rather than a box sliding past. */
-.portfolio-badge::after {
-  content: "";
-  position: absolute;
-  top: -30%;
-  bottom: -30%;
-  left: 0;
-  width: 38%;
-  pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.15) 32%,
-    rgba(255, 248, 230, 0.72) 48%,
-    rgba(249, 168, 26, 0.38) 50%,
-    rgba(255, 255, 255, 0.55) 53%,
-    transparent 78%
-  );
-  transform: translateX(-160%) skewX(-16deg);
-  mix-blend-mode: soft-light;
-  animation: badge-shine 16s cubic-bezier(0.37, 0, 0.63, 1) 2s infinite;
-}
-
-@keyframes badge-shine {
-  0%,
-  74% {
-    transform: translateX(-160%) skewX(-16deg);
-  }
-  88% {
-    transform: translateX(340%) skewX(-16deg);
-  }
-  100% {
-    transform: translateX(340%) skewX(-16deg);
-  }
 }
 
 /* THE ARTICLE. Sized in em so it tracks the name if the name is ever resized,
@@ -857,6 +816,76 @@ body {
 
 .portfolio-badge-link:hover .portfolio-badge-name {
   color: var(--color-blue);
+}
+
+/* Shine clipped to the glyphs. background-attachment:fixed so CinRx and
+   PORTFOLIO COMPANY share one band; a 0.7s pass, then it rests. */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .portfolio-badge-name,
+  .portfolio-badge-lead,
+  .portfolio-badge-kind {
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    background-size: 240% 100%;
+    background-position: 130% 0;
+    background-attachment: fixed;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: badge-shine 8s cubic-bezier(0.4, 0, 0.2, 1) 1s infinite;
+  }
+
+  .portfolio-badge-name {
+    background-image: linear-gradient(
+      105deg,
+      #14304f 0%,
+      #14304f 44%,
+      #fff8e8 49%,
+      #f9a81a 50%,
+      #fff8e8 51%,
+      #14304f 56%,
+      #14304f 100%
+    );
+  }
+
+  .portfolio-badge-lead,
+  .portfolio-badge-kind {
+    background-image: linear-gradient(
+      105deg,
+      #4b5f74 0%,
+      #4b5f74 44%,
+      #fff8e8 49%,
+      #f9a81a 50%,
+      #fff8e8 51%,
+      #4b5f74 56%,
+      #4b5f74 100%
+    );
+  }
+
+  .portfolio-badge-link:hover .portfolio-badge-name {
+    background-image: linear-gradient(
+      105deg,
+      #2261ad 0%,
+      #2261ad 44%,
+      #fff8e8 49%,
+      #f9a81a 50%,
+      #fff8e8 51%,
+      #2261ad 56%,
+      #2261ad 100%
+    );
+  }
+}
+
+@keyframes badge-shine {
+  0%,
+  84% {
+    background-position: 130% 0;
+  }
+  92% {
+    background-position: -30% 0;
+  }
+  100% {
+    background-position: -30% 0;
+  }
 }
 
 /* THE ACCENT TONE. The brand's warm colour on the edge and the relationship
@@ -2801,7 +2830,9 @@ body {
   .crescendo-point,
   .hero-key,
   .burden-key,
-  .portfolio-badge::after {
+  .portfolio-badge-name,
+  .portfolio-badge-lead,
+  .portfolio-badge-kind {
     animation: none !important;
   }
 
