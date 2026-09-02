@@ -74,7 +74,7 @@ export default function BrandPage() {
           <p className="text-[0.92rem] font-semibold uppercase tracking-[0.2em] text-blue">
             Internal reference
           </p>
-          <h1 className="mt-5 text-[clamp(2rem,4vw,3rem)] font-light leading-tight tracking-tight text-ink">
+          <h1 className="hero-title mt-5 text-[clamp(2rem,4vw,3rem)] leading-tight text-ink">
             Brand reference
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-body">

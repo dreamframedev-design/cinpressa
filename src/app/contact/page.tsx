@@ -48,7 +48,11 @@ export default function ContactPage() {
                 </p>
               </Reveal>
               <Reveal variant="rise-blur" delay={140}>
-                <h1 className="mt-5 text-[clamp(2.25rem,5vw,3.5rem)] font-light leading-[1.06] tracking-tight text-ink">
+                {/* Contact builds its own hero rather than using PageHero, so
+                    it has to opt into .hero-title by hand. Same headline, same
+                    treatment — the fact that the markup differs is our problem,
+                    not something a visitor should be able to see. */}
+                <h1 className="hero-title mt-5 text-[clamp(2.25rem,5vw,3.5rem)] leading-[1.06] text-ink">
                   Start a conversation
                 </h1>
               </Reveal>

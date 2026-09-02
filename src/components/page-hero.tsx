@@ -96,10 +96,10 @@ export function PageHero({
             </p>
           </Reveal>
           <Reveal variant="rise-blur" delay={140}>
-            {/* Same face as the home headline. An interior hero is the same
-                object as the home one at a smaller size; setting them in two
-                different typefaces made the site read as two sites. */}
-            <h1 className="type-display mt-5 text-[clamp(2.25rem,5vw,3.85rem)] font-light leading-[1.06] text-ink">
+            {/* .hero-title, the same rule the home headline uses: an interior
+                hero is the home hero at a smaller size, so it gets the face and
+                the weight rather than a lighter approximation of them. */}
+            <h1 className="hero-title mt-5 text-[clamp(2.25rem,5vw,3.85rem)] leading-[1.06] text-ink">
               {title}
             </h1>
           </Reveal>

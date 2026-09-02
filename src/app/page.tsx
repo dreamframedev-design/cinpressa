@@ -53,7 +53,7 @@ export default async function SplashPage({
 
             <h1 className="mt-6 text-sky">
               <span
-                className="anim-rise block text-[clamp(2.5rem,6.5vw,5.5rem)] font-light uppercase leading-none tracking-[0.04em]"
+                className="hero-wordmark anim-rise block text-[clamp(2.5rem,6.5vw,5.5rem)] font-light uppercase leading-none tracking-[0.04em]"
                 style={{ animationDelay: "0.1s" }}
               >
                 CinPressa

@@ -423,13 +423,30 @@ body {
   letter-spacing: -0.03em;
 }
 
-/* Home headline. Medium, not semibold: at this size 600 reads as black.
-   Stripe's Söhne line sits around 500; same here. */
+/* EVERY TOP-OF-PAGE HEADLINE, NOT JUST THE HOME ONE. This started as the home
+   hero's own rule and the rest of the site stayed on the old face at 300,
+   which made an interior page read as a different site to the one you arrived
+   on. A visitor does not know that /pipeline is a "different template" — they
+   know the writing got thinner when they clicked. So the treatment travels:
+   interior heroes, contact and the brand reference all take it.
+
+   Medium, not semibold: at this size 600 reads as black. Stripe's Söhne line
+   sits around 500; same here. The tracking is tighter than .type-display's
+   because it is set for headline sizes, where the default gaps open up. */
 .hero-title {
   font-family: var(--font-display), "Google Sans", system-ui, sans-serif;
   font-weight: 500;
   font-variation-settings: "wght" 500;
   letter-spacing: -0.035em;
+}
+
+/* The splash wordmark takes the face and nothing else. The gate page's one
+   line is set as a logotype — uppercase, opened up, echoing the lockup in the
+   header above it — so it must not inherit .hero-title's weight or its
+   negative tracking. Both of those are set for sentences, and this is not one.
+   Declaring only the family leaves its own font-light and tracking in place. */
+.hero-wordmark {
+  font-family: var(--font-display), "Google Sans", system-ui, sans-serif;
 }
 
 /* GOOGLE SANS ON DISPLAY TYPE ONLY. Headlines, decks, statements and figures —
