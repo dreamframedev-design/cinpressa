@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
-import { stem } from "@/lib/fonts";
+import { display, stem } from "@/lib/fonts";
 import { SiteAlleys } from "@/components/site-alleys";
 import "./globals.css";
 
@@ -34,7 +34,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${montserrat.variable} ${stem.variable} antialiased`}>
+      <body
+        className={`${montserrat.variable} ${stem.variable} ${display.variable} antialiased`}
+      >
         {/* Positioned wrapper so the alleys can span the whole document rather
             than the viewport — they run behind every section and stop at the
             first element carrying data-alleys-end (the dark footer). */}

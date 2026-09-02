@@ -421,6 +421,15 @@ body {
   letter-spacing: -0.03em;
 }
 
+/* Home headline. Stripe sets this cut in Söhne at a half-bold; we use Geist
+   at 600, the nearest licensed grotesque, so the line has the same stance
+   without lifting their file. */
+.hero-title {
+  font-family: var(--font-geist-sans), "Geist", "Sohne", system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+}
+
 /* ---------- Hero beam ("hypertension") ----------
 
    A warm sweep crossing the one blue word in the headline, so the mark's
@@ -1087,17 +1096,15 @@ body {
    is not a state. */
 .burden-value {
   display: block;
-  font-size: 34px;
-  font-weight: 500;
-  /* HEIGHT AS WELL AS LINE-HEIGHT, and the height is the one that counts. The
-     figure holds two inline spans at different sizes - the numeral and its
-     unit - and a line box is the union of every inline box in it, not the
-     block's line-height. Measured, that came out 52.84 against a 48px
-     line-height, and the 4.84 of overflow was fractional, which put the rail's
-     bottom edge back off-phase from its top. Pinning the box makes the cell's
-     height depend only on values stated here. */
-  line-height: 40px;
-  height: 40px;
+  font-family: var(--font-geist-sans), "Geist", "Sohne", system-ui, sans-serif;
+  font-size: 39px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  /* HEIGHT AS WELL AS LINE-HEIGHT. The unit is now the same size as the
+     numeral, so the line box is one size; pin it so the rail's hairlines
+     stay on whole pixels. */
+  line-height: 46px;
+  height: 46px;
   letter-spacing: -0.03em;
   color: var(--color-blue);
   transition: color 0.45s var(--ease-brand);
@@ -1129,26 +1136,27 @@ body {
    whole reason these are px. */
 @media (min-width: 768px) {
   .burden-value {
-    font-size: 38px;
-    line-height: 44px;
-    height: 44px;
+    font-size: 44px;
+    line-height: 51px;
+    height: 51px;
   }
 }
 
 @media (min-width: 1100px) {
   .burden-value {
-    font-size: 43px;
-    line-height: 50px;
-    height: 50px;
+    font-size: 49px;
+    line-height: 56px;
+    height: 56px;
   }
 }
 
-/* Was 0.4em, which made the B in 1.4 B look like a footnote rather than the
-   word "billion". Big enough now to read as part of the figure. */
+/* Same cap height as the numeral. Stripe's 1.9T / 200M+ does this: the
+   unit is the figure, not a superscript riding it. */
 .burden-unit {
-  font-size: 0.72em;
-  letter-spacing: -0.02em;
-  margin-left: 0.04em;
+  font-size: 1em;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  margin-left: 0.02em;
 }
 
 .burden-label {

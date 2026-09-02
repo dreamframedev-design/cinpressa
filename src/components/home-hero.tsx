@@ -160,13 +160,8 @@ export function HomeHero() {
           <div className="anim-rise" style={{ animationDelay: "0.02s" }}>
             <PortfolioBadge parent="CinRx" />
           </div>
-          {/* WEIGHT 400, NOT 300. The headline was set light because everything
-              on this site is, but at 68px the 300 reads thin rather than
-              elegant - the strokes go spindly at exactly the size that is
-              supposed to carry the page. One step up is enough; 500 would make
-              it a different headline. */}
           <h1
-            className="anim-rise mt-7 text-[clamp(2.4rem,5.4vw,4.25rem)] font-normal leading-[1.04] tracking-tight text-ink"
+            className="hero-title anim-rise mt-7 text-[clamp(2.4rem,5.4vw,4.25rem)] leading-[1.04] tracking-tight text-ink"
             style={{ animationDelay: "0.1s" }}
           >
             {/* The blue lands on "hypertension", not on "siRNA". The molecule
