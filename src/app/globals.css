@@ -421,10 +421,12 @@ body {
   letter-spacing: -0.03em;
 }
 
-/* Home headline. Google Sans at 600 — the same face as the ticker. */
+/* Home headline. Medium, not semibold: at this size 600 reads as black.
+   Stripe's Söhne line sits around 500; same here. */
 .hero-title {
   font-family: var(--font-display), "Google Sans", system-ui, sans-serif;
-  font-weight: 600;
+  font-weight: 500;
+  font-variation-settings: "wght" 500;
   letter-spacing: -0.035em;
 }
 
@@ -1096,7 +1098,8 @@ body {
   display: block;
   font-family: var(--font-display), "Google Sans", system-ui, sans-serif;
   font-size: 39px;
-  font-weight: 600;
+  font-weight: 500;
+  font-variation-settings: "wght" 500;
   font-variant-numeric: tabular-nums;
   /* HEIGHT AS WELL AS LINE-HEIGHT. The unit is now the same size as the
      numeral, so the line box is one size; pin it so the rail's hairlines
