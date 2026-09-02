@@ -771,15 +771,56 @@ body {
    Sized off the body ramp rather than in fixed pixels, so it holds its
    proportions if a sibling runs a different base size. */
 .portfolio-badge {
+  position: relative;
   display: inline-flex;
   align-items: baseline;
   /* A word space, not a zone break. Size, weight and case already separate
      the name from the qualifier; a second gap on top of that read as a hole
      in the phrase. */
   gap: 0.32em;
+  padding: 0.12em 0.18em 0.14em 0.04em;
+  overflow: hidden;
   color: inherit;
   text-decoration: none;
   transition: color 0.25s var(--ease-brand);
+}
+
+/* Occasional sheen. Same language as the pipeline beam: one eased crossing,
+   then a long still. A white/gold band, skewed, clipped to the line so it
+   reads as light on the words rather than a box sliding past. */
+.portfolio-badge::after {
+  content: "";
+  position: absolute;
+  top: -30%;
+  bottom: -30%;
+  left: 0;
+  width: 38%;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.15) 32%,
+    rgba(255, 248, 230, 0.72) 48%,
+    rgba(249, 168, 26, 0.38) 50%,
+    rgba(255, 255, 255, 0.55) 53%,
+    transparent 78%
+  );
+  transform: translateX(-160%) skewX(-16deg);
+  mix-blend-mode: soft-light;
+  animation: badge-shine 16s cubic-bezier(0.37, 0, 0.63, 1) 2s infinite;
+}
+
+@keyframes badge-shine {
+  0%,
+  74% {
+    transform: translateX(-160%) skewX(-16deg);
+  }
+  88% {
+    transform: translateX(340%) skewX(-16deg);
+  }
+  100% {
+    transform: translateX(340%) skewX(-16deg);
+  }
 }
 
 /* THE ARTICLE. Sized in em so it tracks the name if the name is ever resized,
@@ -797,7 +838,7 @@ body {
    parent may well be elephant case, as CinRx is, and flattening a company's
    name is not a styling decision that belongs to a badge. */
 .portfolio-badge-name {
-  font-size: 0.92rem;
+  font-size: 1.06rem;
   font-weight: 600;
   letter-spacing: -0.005em;
   color: var(--color-ink);
@@ -806,7 +847,7 @@ body {
 
 /* The relationship, set as the qualifier it is. */
 .portfolio-badge-kind {
-  font-size: 0.68rem;
+  font-size: 0.78rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.13em;
@@ -2759,7 +2800,8 @@ body {
   .crescendo-turn,
   .crescendo-point,
   .hero-key,
-  .burden-key {
+  .burden-key,
+  .portfolio-badge::after {
     animation: none !important;
   }
 
