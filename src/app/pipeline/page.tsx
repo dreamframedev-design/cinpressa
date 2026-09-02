@@ -54,11 +54,21 @@ export default function PipelinePage() {
           title={
             <>
               <span className="text-blue">CIN-111</span>{" "}
-              {/* Stone, not ink. At display weight a full-strength pipe beside
-                  "CIN-111" reads as a fourth 1 - the name looked like CIN-1111.
-                  It is a separator, so it sits back with the rules. */}
-              <span className="text-stone">|</span> Best-in-class AGT siRNA for
-              hypertension
+              {/* A DRAWN HAIRLINE, NOT A PIPE GLYPH. Colouring the "|" stone
+                  stopped it reading as a fourth 1 in "CIN-1111", but it was
+                  still a letterform: it took the headline's 500 weight and its
+                  size, so at 3.85rem it landed as a stroke thicker than any
+                  rule on the site. A separator drawn as type cannot be made
+                  thin, because its width is the font's decision.
+
+                  So it is an element now, 1px at every size, which is what
+                  every other divider here measures. aria-hidden with it — a
+                  pipe read aloud between the name and the claim is noise. */}
+              <span
+                aria-hidden
+                className="mx-[0.05em] inline-block h-[0.66em] w-px bg-stone align-baseline"
+              />{" "}
+              Best-in-class AGT siRNA for hypertension
             </>
           }
         />
