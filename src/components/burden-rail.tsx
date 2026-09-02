@@ -18,17 +18,14 @@ export type Figure = {
  * the quietest thing on it in practice.
  *
  * THE FIGURES ARE THE POINT, SO THEY ARE HEAVY. Everything else on this site is
- * set light; these are set at 600 and in ink. That contrast is deliberate and it
- * is the reason the rail reads before the paragraph above it does. It is also
- * why they start MONOCHROME: a number that is already the boldest mark on the
- * page does not need colour to be seen, and holding the colour back means there
- * is something left to give on hover.
+ * set light; these are set at 500 and in the same blue as the headline's key
+ * word. That contrast is deliberate and it is the reason the rail reads before
+ * the paragraph below it does.
  *
- * THE COLOUR. Each figure carries a brand gradient clipped to its own glyphs
- * and travelling: it holds dark, turns blue, holds blue, turns back. Hovering a
- * cell swaps that ramp for one that is blue throughout, so the pointer raises
- * the figure rather than starting anything. Every stop clears AA at this size;
- * the lighter half of the ladder is deliberately absent.
+ * THE COLOUR. Each figure carries the same beam as the word "hypertension"
+ * above it: brand blue, crossed by a narrow orange sweep, clipped to the
+ * glyphs. The three are staggered so the light reads left to right down the
+ * rail rather than flashing all three at once.
  *
  * NOTHING RIDES ON THE RULES. Each cell used to draw a proportion bar along the
  * baseline — its share of its own stated whole. It was a real measure, and it
@@ -60,8 +57,10 @@ export function BurdenRail({
             style={{ "--i": i } as CSSProperties}
           >
             <dd className="burden-value">
-              <CountUp value={f.value} />
-              {f.unit ? <span className="burden-unit">{f.unit}</span> : null}
+              <span className="hero-key burden-key">
+                <CountUp value={f.value} />
+                {f.unit ? <span className="burden-unit">{f.unit}</span> : null}
+              </span>
             </dd>
             <dt className="burden-label">{f.label}</dt>
             {/* Pure spacing: it pins every cell's foot to a common line so the

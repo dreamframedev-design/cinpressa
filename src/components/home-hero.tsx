@@ -9,12 +9,12 @@ import { PortfolioBadge } from "@/components/portfolio-badge";
 /**
  * The homepage hero, with an A/B switch between its two treatments.
  *
- * ONE FIELD UNDER A AND E. The open flow - ribbons that widen and
+ * ONE FIELD UNDER A AND C. The open flow - ribbons that widen and
  * narrow but never pinch - spans the whole hero behind the copy the way a field
  * does on an interior page, and feathers into the section below so the boundary
- * never cuts it. A and E draw it identically, down to the mount key, so
+ * never cuts it. A and C draw it identically, down to the mount key, so
  * switching between them does not even restart the art. Only B swaps the field
- * out, and only E adds anything to it.
+ * out, and only C adds anything to it.
  *
  * A — THE DEFAULT. Open field, no mark, no thread. The badge is the same
  * words-only cut on every stop, so A against the others never asks a question
@@ -31,7 +31,7 @@ import { PortfolioBadge } from "@/components/portfolio-badge";
  * nav keeps its job either way - the wordmark is still a link home and still
  * says who this is - it just stops competing with a version of itself.
  *
- * E — A, PLUS THE GOLDEN THREAD. Same field as A; the only difference is the
+ * C — A, PLUS THE GOLDEN THREAD. Same field as A; the only difference is the
  * line drawn through it.
  *
  * The typographic variant that used to hold this letter is gone. It set the
@@ -66,7 +66,7 @@ const BLOOMS = [
   { color: "103,113,181", size: 62, x: 34, y: 36, low: 0.2, high: 0.4, dur: 23, delay: -13 },
 ];
 
-type View = "a" | "b" | "e";
+type View = "a" | "b" | "c";
 
 export function HomeHero() {
   const [view, setView] = useState<View>("a");
@@ -106,7 +106,7 @@ export function HomeHero() {
         />
       ) : (
         <>
-          {view === "e" ? (
+          {view === "c" ? (
             /* The one stop that carries the thread. Same component and same
                ribbons as every other field on this hero; the only difference is
                whether the line is drawn through it. */
@@ -153,9 +153,9 @@ export function HomeHero() {
           mark ? "lg:grid-cols-[1.08fr_0.92fr]" : ""
         }`}
       >
-        <div className={mark ? undefined : "max-w-2xl"}>
+        <div className={mark ? "pl-4 lg:pl-6" : "max-w-2xl pl-4 lg:pl-6"}>
           {/* THE PROVENANCE IS THE WORDS, not a plate. Same cut on every stop,
-              so switching A, B and E never changes the badge. See
+              so switching A, B and C never changes the badge. See
               portfolio-badge.tsx. */}
           <div className="anim-rise" style={{ animationDelay: "0.02s" }}>
             <PortfolioBadge parent="CinRx" />
@@ -249,7 +249,7 @@ export function HomeHero() {
               [
                 { id: "a", label: "A" },
                 { id: "b", label: "B" },
-                { id: "e", label: "E" },
+                { id: "c", label: "C" },
             ] as { id: View; label: string }[]
             ).map((v) => (
               <button

@@ -450,6 +450,7 @@ body {
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
   .hero-key {
     color: transparent;
+    -webkit-text-fill-color: transparent;
     background-image: linear-gradient(
       100deg,
       #2261ad 0%,
@@ -482,6 +483,13 @@ body {
        was right - and the rest between passes drops from 1.4s to 0.6s, so the
        second animation begins sooner without either one moving faster. */
     animation: hero-beam 7.2s linear 0s infinite;
+  }
+
+  /* Nested glyphs (the rail's numeral + unit) have to go transparent too, or
+     they paint solid over the clipped ramp and the beam never shows. */
+  .hero-key * {
+    color: transparent;
+    -webkit-text-fill-color: transparent;
   }
 }
 
@@ -1051,8 +1059,27 @@ body {
   line-height: 40px;
   height: 40px;
   letter-spacing: -0.03em;
-  color: #414c59;
+  color: var(--color-blue);
   transition: color 0.45s var(--ease-brand);
+}
+
+/* Same beam as .hero-key, on the three figures. Inline-block so numeral and
+   unit share one box and the ramp crosses "1.4B" as a single word. Delay is
+   staggered off --i so the sweep reads left to right down the rail. If the
+   rail starts below the fold, hold at rest until Reveal lights it; if it is
+   already on screen, the sweep runs from load, same as the headline. */
+.burden-key {
+  display: inline-block;
+  animation: hero-beam 7.2s linear calc(var(--i, 0) * 0.85s) infinite;
+}
+
+[data-reveal].reveal-pending .burden-key {
+  animation: none;
+  background-position: 128% 0;
+}
+
+[data-reveal].reveal-in .burden-key {
+  animation: hero-beam 7.2s linear calc(var(--i, 0) * 0.85s) infinite;
 }
 
 /* THE STEPS HAVE TO FOLLOW THE BASE RULE, not lead it. They were declared in
@@ -1108,27 +1135,15 @@ body {
   align-self: stretch;
 }
 
-/* The lit cell, on the same three-state logic as the segments above. #0473bb
-   clears 4.8:1 on the mist behind it and ink clears 12.5:1, so both halves of
-   the lit state are legible rather than merely brighter. */
-.burden-cell:first-of-type .burden-value {
-  color: #0473bb;
-}
-
+/* The lit cell, on the same three-state logic as the segments above. The
+   figures carry the beam themselves now, so only the caption shifts: ink on
+   the first column, and on whichever cell is hovered. */
 .burden-cell:first-of-type .burden-label {
   color: var(--color-ink);
 }
 
-.burden-rail:hover .burden-cell .burden-value {
-  color: #414c59;
-}
-
 .burden-rail:hover .burden-cell .burden-label {
   color: var(--color-muted);
-}
-
-.burden-rail:hover .burden-cell:hover .burden-value {
-  color: #0473bb;
 }
 
 .burden-rail:hover .burden-cell:hover .burden-label {
@@ -2698,7 +2713,8 @@ body {
   .crescendo-lede,
   .crescendo-turn,
   .crescendo-point,
-  .hero-key {
+  .hero-key,
+  .burden-key {
     animation: none !important;
   }
 
@@ -2738,19 +2754,8 @@ body {
     transition: none !important;
   }
 
-  /* No sweep at all here, in either state - a beam that cannot travel is just a
-     stripe parked across a numeral. The figure is flat dark grey and the hover
-     is flat blue, which is the same information without the motion. */
-  .burden-value {
-    animation: none !important;
-    background-image: none !important;
-    color: #414c59 !important;
-  }
-
-  .burden-cell:hover .burden-value {
-    background-image: none !important;
-    color: #0473bb !important;
-  }
+  /* A beam that cannot travel is a stripe parked on the numeral. Hold the
+     rest position of the same ramp: brand blue, no motion. */
 
   /* Colour and texture stay; only the motion stops. */
   .mark-suspend,
