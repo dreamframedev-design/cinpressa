@@ -52,11 +52,12 @@ const FILL = "#f9a81a";
  * IT REACHES INTO PHASE I AGAIN NOW, BY INSTRUCTION, and the copy has moved
  * with it: the status line reads that a single ascending dose study is ongoing.
  * The bar spans four stages, so a third of the way through the first phase is
- * 25% for the completed preclinical plus a third of the next quarter. What has
- * NOT moved is the Clinical development section further down the page, which
- * still reads "expected to commence in fall 2026" - flagged, not silently
- * reconciled, because which of the two is true is not a call this file can
- * make.
+ * 25% for the completed preclinical plus a third of the next quarter. The
+ * Clinical development section further down the page has since taken the same
+ * sentence as its headline, so two places now say the study is running - and
+ * that section's own subtitle still reads "expected to commence in fall 2026".
+ * Flagged there and here, not silently reconciled, because which of the two is
+ * true is not a call this file can make.
  */
 const PROGRESS = 33.3;
 
@@ -210,7 +211,13 @@ export function PipelineDiagram() {
           aria-live="polite"
           className="text-[1.15rem] leading-relaxed text-ink transition-opacity duration-200"
         >
-          <span className="font-semibold text-blue">{shown.name}.</span>{" "}
+          {/* An em dash, not a full stop. The stage name is a label on the
+              sentence that follows, not a sentence of its own, and a period
+              made the line read as two fragments. The dash stays out of the
+              blue span: it joins the label to the clause, so it belongs to
+              neither. */}
+          <span className="font-semibold text-blue">{shown.name}</span>
+          {" — "}
           {shown.status}
         </p>
       </div>

@@ -146,7 +146,15 @@ export default function PipelinePage() {
         <Section tone="indigo">
           <SectionHeader
             eyebrow="Clinical development"
-            title="From IND to first-in-human"
+            /* COPY SUPPLIED, AND IT COLLIDES WITH THE SUBTITLE UNDER IT. The
+               headline now states the study is ongoing while the subtitle still
+               says the first-in-human study is "expected to commence in fall
+               2026" — a heading cannot be in the present tense over a sentence
+               in the future tense. Same contradiction already flagged on the
+               Phase I stage in pipeline-diagram.tsx. Changed as asked and
+               raised: if the study has started, this subtitle and that stage's
+               state both need to move with it, and neither is mine to decide. */
+            title="A single ascending dose study is ongoing."
             subtitle="CinPressa plans to submit a U.S. IND for CIN-111 around mid-2026, with a U.S.-based first-in-human study expected to commence in fall 2026."
           />
           <Reveal variant="rise" delay={100} className="mt-12 overflow-hidden rounded-2xl border border-line">
