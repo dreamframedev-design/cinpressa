@@ -241,15 +241,20 @@ export default function HomePage() {
               <div>
                 {/* Deck scale, not body scale. At text-lg/xl this was still
                     reading as the first paragraph of a block rather than as the
-                    section's opening claim; it clamps up to 32px now, half
+                    section's opening claim; it clamps up to 36px now, half
                     again the body around it, so it holds the column against a
-                    card that is 686px wide. */}
-                <p className="text-[clamp(1.45rem,2.4vw,2rem)] font-light leading-[1.2] tracking-tight text-ink">
+                    card that is 686px wide.
+
+                    THE TWO COLUMNS ARE MEANT TO MATCH IN HEIGHT. The card came
+                    down and this went up to meet it; both moved, because
+                    closing the gap from one side alone would have made either
+                    the card cramped or this column loud. */}
+                <p className="type-display text-[clamp(1.6rem,2.7vw,2.25rem)] font-light leading-[1.2] text-ink">
                   CinPressa is advancing a long-acting AGT siRNA designed to
                   provide durable blood pressure reduction with one to two
                   administrations per year.
                 </p>
-                <p className="mt-5 text-base leading-relaxed text-body">
+                <p className="mt-5 text-[1.06rem] leading-relaxed text-body">
                   The goal is to establish a continuous backbone of blood
                   pressure control independent of daily patient adherence.
                   Meaningful baseline BP reduction may be sufficient for many

@@ -438,10 +438,10 @@ export function DoseMigration() {
   };
 
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-line bg-white pb-6 shadow-[0_36px_72px_-44px_rgba(13,35,66,0.3)] sm:pb-8">
+    <div className="relative overflow-hidden rounded-3xl border border-line bg-white pb-5 shadow-[0_36px_72px_-44px_rgba(13,35,66,0.3)] sm:pb-6">
       {/* The year, stated. Nothing separates this from the canvas below it:
           the days should look like they are falling out from under it. */}
-      <div className="flex items-start justify-between gap-6 px-6 pt-8 sm:px-10 sm:pt-10">
+      <div className="flex items-start justify-between gap-6 px-6 pt-7 sm:px-10 sm:pt-8">
         <div>
           {/* No rule above the figure. A hairline in this system divides,
               measures or leads a label; one floating over a numeral does none
@@ -453,7 +453,7 @@ export function DoseMigration() {
               the picture underneath is the proof — saying it a second time in
               small type under each end was the caption explaining the diagram
               back to someone who had just watched it happen. */}
-          <h3 className="max-w-[22ch] text-[clamp(1.65rem,3vw,2.4rem)] font-light leading-[1.12] tracking-tight text-ink">
+          <h3 className="type-display max-w-[22ch] text-[clamp(1.65rem,3vw,2.4rem)] font-light leading-[1.12] text-ink">
             <span className="font-normal">365</span> doses, compressed into two
           </h3>
         </div>
@@ -472,15 +472,16 @@ export function DoseMigration() {
         </div>
       </div>
 
-      {/* Shorter than it was. With the two captions gone the card had no reason
-          to keep the height they needed, and the block is compact enough now
-          that a taller frame would only add space around it. Bottom margin is
-          zero — the card's own padding carries the room under the doses. */}
+      {/* Shorter again, so the card finishes near where the paragraph column
+          beside it does. The calendar block is sized off the canvas, so taking
+          height off it tightens the artwork rather than adding margin around
+          it. Bottom margin is zero — the card's own padding carries the room
+          under the doses. */}
       {/* The canvas is inset to the card's own gutter rather than run full
           bleed, so the grid inside it can use the whole width and still line up
           with the headline. That inset IS the layout — see the note on `cell`
           in the render. */}
-      <div className="relative -mt-2 h-[300px] sm:h-[440px] lg:h-[460px]">
+      <div className="relative -mt-2 h-[268px] sm:h-[372px] lg:h-[388px]">
         <HeroCanvas
           render={draw}
           className="absolute inset-y-0 left-6 right-6 sm:left-10 sm:right-10"

@@ -51,7 +51,7 @@ export function SectionHeader({
       ) : null}
 
       <Reveal variant="rise-blur" delay={eyebrow ? 90 : 0}>
-        <Heading className="mt-6 text-[clamp(1.9rem,3.6vw,2.85rem)] font-light leading-[1.12] tracking-tight text-ink">
+        <Heading className="type-display mt-6 text-[clamp(1.9rem,3.6vw,2.85rem)] font-light leading-[1.12] text-ink">
           {title}
         </Heading>
       </Reveal>

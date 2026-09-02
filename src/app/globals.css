@@ -382,6 +382,7 @@ body {
 .crescendo-lede,
 .crescendo-turn {
   display: block;
+  font-family: var(--font-display), "Google Sans", system-ui, sans-serif;
   font-size: clamp(1.4rem, 2.3vw, 1.9rem);
   font-weight: 300;
   line-height: 1.25;
@@ -415,6 +416,7 @@ body {
 .crescendo-point {
   display: block;
   margin-top: 0.8rem;
+  font-family: var(--font-display), "Google Sans", system-ui, sans-serif;
   font-size: clamp(2.15rem, 4.6vw, 3.5rem);
   font-weight: 300;
   line-height: 1.06;
@@ -428,6 +430,16 @@ body {
   font-weight: 500;
   font-variation-settings: "wght" 500;
   letter-spacing: -0.035em;
+}
+
+/* GOOGLE SANS ON DISPLAY TYPE ONLY. Headlines, decks, statements and figures —
+   the sizes where this face's tighter joins and even lining figures are the
+   reason we chose it. Body copy stays on Montserrat: at 17px its wider set
+   is the more readable of the two, and swapping a whole site's reading face
+   is not what "use the new font" means. */
+.type-display {
+  font-family: var(--font-display), "Google Sans", system-ui, sans-serif;
+  letter-spacing: -0.025em;
 }
 
 /* ---------- Hero beam ("hypertension") ----------
