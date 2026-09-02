@@ -501,20 +501,21 @@ body {
     -webkit-text-fill-color: transparent;
   }
 
-  /* Full brand gold while it sits, then a short edge into blue. The olive
-     stops (#8a6a2a against #1d6cba) were the dingy hang: they are a mix of
-     the two hues, so parking there reads as dirty yellow. They are gone. */
+  /* Gold is a traveling band, not a parked fill. A second gold (#e39a10)
+     inside the plateau keeps the glyphs shifting while they stay yellow, so
+     the long warm stretch still moves. Edges snap to blue — no olive mix. */
   .burden-key {
     background-image: linear-gradient(
       100deg,
       #2261ad 0%,
-      #2261ad 34%,
-      #f9a81a 40%,
-      #f9a81a 60%,
-      #2261ad 66%,
+      #2261ad 30%,
+      #f9a81a 36%,
+      #e39a10 46%,
+      #f9a81a 56%,
+      #2261ad 62%,
       #2261ad 100%
     );
-    animation: ticker-beam 12s linear calc(var(--i, 0) * 1.35s) infinite;
+    animation: ticker-beam 14s linear calc(var(--i, 0) * 1.5s) infinite;
   }
 }
 
@@ -531,23 +532,19 @@ body {
   }
 }
 
-/* Ticker beam. Sit in the gold plateau, then leave it. The old 38% stop was
-   the hang: that position parks the glyphs in the blue/gold mix, which is the
-   dingy colour. 50% is the plateau; -28% is blue. Nothing in between is held. */
+/* Ticker beam. Always moving. Most of the cycle is a slow crawl through the
+   gold-on-text range so yellow lasts; nothing is held at one position. */
 @keyframes ticker-beam {
   0% {
     background-position: 128% 0;
   }
-  18% {
-    background-position: 78% 0;
+  14% {
+    background-position: 74% 0;
   }
-  26% {
-    background-position: 50% 0;
+  82% {
+    background-position: 26% 0;
   }
-  58% {
-    background-position: 50% 0;
-  }
-  70% {
+  94% {
     background-position: -28% 0;
   }
   100% {
@@ -1117,7 +1114,7 @@ body {
    right rather than flashing all three. */
 .burden-key {
   display: inline-block;
-  animation: ticker-beam 12s linear calc(var(--i, 0) * 1.35s) infinite;
+  animation: ticker-beam 14s linear calc(var(--i, 0) * 1.5s) infinite;
 }
 
 [data-reveal].reveal-pending .burden-key {
@@ -1126,7 +1123,7 @@ body {
 }
 
 [data-reveal].reveal-in .burden-key {
-  animation: ticker-beam 12s linear calc(var(--i, 0) * 1.35s) infinite;
+  animation: ticker-beam 14s linear calc(var(--i, 0) * 1.5s) infinite;
 }
 
 /* THE STEPS HAVE TO FOLLOW THE BASE RULE, not lead it. They were declared in
