@@ -73,6 +73,17 @@ export function ContactForm() {
        template rather than as a considered thing. Two named groups and a footer
        bar give it a structure that matches the form's own logic. */
     <form onSubmit={handleSubmit} noValidate>
+      {/* Honeypot: off-screen and skipped by keyboard, so only a bot fills it.
+          A filled value is dropped server-side. */}
+      <input
+        type="text"
+        name="_gotcha"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="absolute left-[-9999px] h-px w-px opacity-0"
+      />
+
       <Group title="Your details">
       <div className="grid gap-x-5 gap-y-4 sm:grid-cols-2">
         <Field label="Full name" htmlFor="name">
