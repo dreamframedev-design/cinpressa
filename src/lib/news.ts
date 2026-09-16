@@ -44,52 +44,8 @@ export type Announcement = {
  */
 const REAL: Announcement[] = [];
 
-/**
- * PLACEHOLDER CONTENT, SHIPPED ON PURPOSE AND TEMPORARY.
- *
- * These are on the deployed site so the populated design can be reviewed while
- * the newsroom is still empty. They are not press releases and are built so
- * that nobody can take them for any:
- *
- *   - Every entry's category is "Sample", which renders in the row's own kind
- *     slot, exactly where "Press release" would sit. Any screen showing one is
- *     stamped on every row.
- *   - Not one headline is phrased as a CinPressa announcement. They describe
- *     themselves as placeholders and say what they are demonstrating.
- *   - The site itself is behind the pre-launch password gate.
- *
- * It is realistic in LENGTH only, because the thing being judged is how a real
- * headline wraps at this measure and how one row sits in the page.
- *
- * THERE IS ONE, NOT THREE. Three were here to show the dividers, the date
- * column and the ragged case in a stack; with the layout settled, three
- * identical stand-ins on a newsroom that has published nothing read as three
- * announcements at a glance, which is worse than reading as none. The one that
- * stayed is the one that exercises the most: a full-length headline that has to
- * wrap, a two-line summary, and a release link.
- *
- * TO SHIP FOR REAL: change SAMPLE to REAL on the export below. That is the
- * whole removal, and a test will confirm the real list is still empty.
- */
-const SAMPLE: Announcement[] = [
-  {
-    date: "2026-09-14",
-    category: "Sample",
-    title:
-      "Placeholder headline of about this length, long enough to show how a real wire headline wraps across this column",
-    summary:
-      "The summary sits here and runs to roughly two lines at this measure, which is about what a release abstract needs. Replace this array with real entries in the file above.",
-    href: "#",
-  },
-];
-
-/**
- * The list both surfaces read.
- *
- * Currently SAMPLE, for design review. Swap to REAL to publish the true
- * (empty) state, or once real releases exist.
- */
-export const ANNOUNCEMENTS: Announcement[] = SAMPLE;
+/** The list read by the newsroom. */
+export const ANNOUNCEMENTS: Announcement[] = REAL;
 
 const FORMATTER = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
