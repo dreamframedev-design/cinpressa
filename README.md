@@ -5,31 +5,15 @@ a best-in-class, long-acting AGT siRNA for hypertension.
 
 ## Structure
 
-The public **splash** (`/`) is a password gate. Entering the access code unlocks
-the full build, which is held behind that gate until launch:
+The site is live. Every route is public:
 
+- `/`: redirects to `/home`
 - `/home`: challenge, approach, pipeline + news teasers
 - `/about`: leadership, track record, the CinRx model
 - `/science`: unmet need, mechanism (RAAS pathway diagram)
 - `/pipeline`: CIN-111 preclinical data, Phase 1 plan, capital & timeline
 - `/news`: pre-launch newsroom
 - `/contact`: inquiry form (`/api/contact`)
-
-## Access gate
-
-A soft "coming soon" lock, not real auth. It keeps the in-progress build private.
-
-- Set the password with the `SITE_PASSWORD` environment variable
-  (`.env.local` locally; a Vercel Environment Variable in production).
-- The default fallback is `msc123`. **Override it with a private value before
-  wide sharing.** Rotating `SITE_PASSWORD` logs everyone out.
-- The typed password is never stored in the browser: a correct entry sets an
-  httpOnly cookie holding an opaque token derived from the password.
-- `src/proxy.ts` protects every full-build route and redirects locked visitors
-  back to the splash; `src/lib/access.ts` holds the shared logic.
-
-When the site is ready to go public, remove the route matchers in
-`src/proxy.ts` (or delete the file) and point `/` at the full home.
 
 ## Stack
 
