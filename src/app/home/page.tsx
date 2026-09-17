@@ -118,7 +118,7 @@ export default function HomePage() {
               </h2>
             </Reveal>
 
-            <Reveal variant="fade" delay={180} className="mt-8 max-w-3xl space-y-5 text-base leading-relaxed text-body lg:mt-9">
+            <Reveal variant="fade" delay={180} className="mt-3 max-w-3xl space-y-5 text-base leading-relaxed text-body">
               <p>
                 Medication non-adherence is the leading cause of poor blood
                 pressure control, and hypertension is largely asymptomatic,
