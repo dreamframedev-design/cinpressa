@@ -208,7 +208,7 @@ export function PipelineDiagram() {
           line belongs to that bar and reads as its caption, so it takes the
           bar's width. min-h drops with it, since one line is now the common
           case rather than the exception. */}
-      <div className="mt-5 min-h-[2.2rem]">
+      <div className="mt-8 min-h-[2.2rem]">
         <p
           aria-live="polite"
           className="text-[1.15rem] leading-relaxed text-ink transition-opacity duration-200"
