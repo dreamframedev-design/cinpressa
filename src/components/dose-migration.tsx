@@ -438,7 +438,7 @@ export function DoseMigration() {
   };
 
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-line bg-white pb-5 shadow-[0_36px_72px_-44px_rgba(13,35,66,0.3)] sm:pb-6">
+    <div className="relative overflow-hidden rounded-3xl border border-line bg-white pb-5 shadow-panel sm:pb-6">
       {/* The year, stated. Nothing separates this from the canvas below it:
           the days should look like they are falling out from under it. */}
       <div className="flex items-start justify-between gap-6 px-6 pt-7 sm:px-10 sm:pt-8">

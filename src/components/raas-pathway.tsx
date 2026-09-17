@@ -75,16 +75,7 @@ const FLOW: FlowTiming = { cycle: 8.4, lead: 0.05, travel: 0.76, dwell: 0.24 };
  */
 export function RaasPathway() {
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-line bg-white p-5 shadow-[0_36px_72px_-52px_rgba(13,35,66,0.42)] sm:p-7">
-      {/* Warmth pooled at the upstream end of the card, under the one node
-          CIN-111 acts on. Far below the threshold of a visible shape — it only
-          weights the top of the diagram toward the amber the tag and the
-          signal are drawn in. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -left-24 -top-28 h-80 w-80 rounded-full bg-orange/[0.09] blur-3xl"
-      />
-
+    <div className="relative overflow-hidden rounded-3xl border border-line bg-white p-5 shadow-panel sm:p-7">
       {/* Two column heads. The tags below sit at the far right of their rows,
           which only reads as a deliberate second column once something names
           it — and only at widths where the tag still fits beside its node, so
@@ -206,11 +197,9 @@ export function RaasPathway() {
         </ol>
       </div>
 
-      {/* The argument the diagram is making, stated plainly. Two panels rather
-          than two ticked lines: upstream carries the amber it is marked with
-          in the cascade above, downstream stays neutral. */}
+      {/* Both explanations sit on white; the markers carry the pathway colours. */}
       <div className="relative mt-8 grid gap-3 border-t border-line pt-6 xl:grid-cols-2">
-        <div className="rounded-2xl border border-orange/25 bg-orange/[0.07] p-4">
+        <div className="rounded-2xl border border-line bg-white p-4">
           <p className="flex items-center gap-2 text-[0.8rem] font-semibold uppercase tracking-[0.16em] text-[#9a5f00]">
             <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-orange" />
             Upstream
@@ -220,7 +209,7 @@ export function RaasPathway() {
             off at its source.
           </p>
         </div>
-        <div className="rounded-2xl border border-line bg-mist p-4">
+        <div className="rounded-2xl border border-line bg-white p-4">
           <p className="flex items-center gap-2 text-[0.8rem] font-semibold uppercase tracking-[0.16em] text-muted">
             <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-periwinkle" />
             Downstream

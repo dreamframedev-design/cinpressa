@@ -111,85 +111,87 @@ export function PipelineDiagram() {
 
   return (
     <Reveal variant="rise">
-      {/* Narrow screens scroll the chart rather than compressing the stages. */}
-      <div className="-mx-6 overflow-x-auto px-6 lg:mx-0 lg:px-0">
-        <div className="min-w-[36rem] overflow-hidden rounded-2xl border border-line bg-white">
-          <div className={`${COLUMNS} border-b border-line bg-mist/70`}>
-            <div className="px-5 py-4 text-[0.92rem] font-semibold uppercase tracking-[0.16em] text-body sm:px-7">
-              Program
-            </div>
-            {STAGES.map((stage, i) => (
-              <button
-                key={stage.name}
-                type="button"
-                onMouseEnter={() => setActive(i)}
-                onMouseLeave={() => setActive(null)}
-                onFocus={() => setActive(i)}
-                onBlur={() => setActive(null)}
-                aria-label={`${stage.name}: ${stage.status}`}
-                className={`pl-stage border-l border-line px-3 py-4 text-center text-[0.92rem] font-semibold uppercase tracking-[0.16em] outline-none ${
-                  active === i ? "bg-blue/[0.07] text-blue" : "text-body"
-                }`}
-              >
-                {stage.name}
-              </button>
-            ))}
-          </div>
-
-          <div className={`${COLUMNS} items-center`}>
-            <div className="px-5 py-7 sm:px-7">
-              <p className="text-base font-medium text-ink">CIN-111</p>
-              <p className="mt-1.5 text-base leading-relaxed text-body">
-                AGT siRNA &middot; Hypertension
-              </p>
-            </div>
-
-            <div
-              className="relative col-span-4 self-stretch"
-              role="img"
-              aria-label="CIN-111 development status: preclinical complete, Phase I underway, Phase II and Phase III not yet started."
-            >
-              {/* Stage boundaries, aligned to the header columns above. The column
-                  under the cursor tints its full height, so the hover reads down the
-                  chart rather than stopping at the header. */}
-              {STAGES.map((_, i) => (
-                <span
-                  key={i}
-                  aria-hidden
-                  className="pl-stage absolute inset-y-0 border-l border-line"
-                  style={{
-                    left: `${i * 25}%`,
-                    width: "25%",
-                    backgroundColor:
-                      active === i ? "rgba(34,97,173,0.05)" : "transparent",
-                  }}
-                />
-              ))}
-
-              <div className="relative flex h-full items-center py-8">
-                {/* The whole pipeline, empty. The fill below measures against it. */}
-                <div
-                  className="relative w-full rounded-full bg-line/70"
-                  style={{ height: `${BAR_H}px` }}
+      {/* Keep the shadow outside the scroll clip so it remains visible on mobile. */}
+      <div className="rounded-2xl border border-line bg-white shadow-panel">
+        <div className="overflow-x-auto rounded-2xl">
+          <div className="min-w-[48rem]">
+            <div className={`${COLUMNS} border-b border-line bg-mist/70`}>
+              <div className="px-5 py-4 text-[0.92rem] font-semibold uppercase tracking-[0.16em] text-body sm:px-7">
+                Program
+              </div>
+              {STAGES.map((stage, i) => (
+                <button
+                  key={stage.name}
+                  type="button"
+                  onMouseEnter={() => setActive(i)}
+                  onMouseLeave={() => setActive(null)}
+                  onFocus={() => setActive(i)}
+                  onBlur={() => setActive(null)}
+                  aria-label={`${stage.name}: ${stage.status}`}
+                  className={`pl-stage border-l border-line px-3 py-4 text-center text-[0.92rem] font-semibold uppercase tracking-[0.16em] outline-none ${
+                    active === i ? "bg-blue/[0.07] text-blue" : "text-body"
+                  }`}
                 >
+                  {stage.name}
+                </button>
+              ))}
+            </div>
+
+            <div className={`${COLUMNS} items-center`}>
+              <div className="px-5 py-7 sm:px-7">
+                <p className="text-base font-medium text-ink">CIN-111</p>
+                <p className="mt-1.5 text-base leading-relaxed text-body">
+                  AGT siRNA &middot; Hypertension
+                </p>
+              </div>
+
+              <div
+                className="relative col-span-4 self-stretch"
+                role="img"
+                aria-label="CIN-111 development status: preclinical complete, Phase I underway, Phase II and Phase III not yet started."
+              >
+                {/* Stage boundaries, aligned to the header columns above. The column
+                    under the cursor tints its full height, so the hover reads down the
+                    chart rather than stopping at the header. */}
+                {STAGES.map((_, i) => (
+                  <span
+                    key={i}
+                    aria-hidden
+                    className="pl-stage absolute inset-y-0 border-l border-line"
+                    style={{
+                      left: `${i * 25}%`,
+                      width: "25%",
+                      backgroundColor:
+                        active === i ? "rgba(34,97,173,0.05)" : "transparent",
+                    }}
+                  />
+                ))}
+
+                <div className="relative flex h-full items-center py-8">
+                  {/* The whole pipeline, empty. The fill below measures against it. */}
                   <div
-                    /* The width is published as a custom property rather than
-                       set directly, so the stylesheet can animate TO it on first
-                       view without this file and that one both owning the
-                       number. See .track-progress in globals.css. */
-                    className="track-progress absolute inset-y-0 left-0 overflow-hidden rounded-full"
-                    style={
-                      {
-                        "--pl-progress": `${PROGRESS}%`,
-                        background: FILL,
-                      } as CSSProperties
-                    }
+                    className="relative w-full rounded-full bg-line/70"
+                    style={{ height: `${BAR_H}px` }}
                   >
                     <div
-                      aria-hidden
-                      className="pl-beam absolute inset-y-0 left-0 w-[42%]"
-                      style={{ background: BEAM }}
-                    />
+                      /* The width is published as a custom property rather than
+                         set directly, so the stylesheet can animate TO it on first
+                         view without this file and that one both owning the
+                         number. See .track-progress in globals.css. */
+                      className="track-progress absolute inset-y-0 left-0 overflow-hidden rounded-full"
+                      style={
+                        {
+                          "--pl-progress": `${PROGRESS}%`,
+                          background: FILL,
+                        } as CSSProperties
+                      }
+                    >
+                      <div
+                        aria-hidden
+                        className="pl-beam absolute inset-y-0 left-0 w-[42%]"
+                        style={{ background: BEAM }}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

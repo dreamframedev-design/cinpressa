@@ -15,7 +15,7 @@ test("the pipeline bar is the first thing under the hero", async () => {
   // programme - so the eyebrow is what marks the section now.
   const stage = page.indexOf("<PipelineDiagram />");
   const lead = page.indexOf("In hypertensive");
-  const clinical = page.indexOf('title="From IND to first-in-human"');
+  const clinical = page.indexOf('eyebrow="Clinical development"');
 
   assert.ok(hero < stage, "the stage section must come after the hero");
   assert.ok(

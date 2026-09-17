@@ -169,7 +169,7 @@ export default function PipelinePage() {
           {/* Tighter than the 3rem this had while the header ran three elements
               deep. With the subtitle gone the header is a label and a line, and
               the table is what that line introduces — so it sits closer. */}
-          <Reveal variant="rise" delay={100} className="mt-10 overflow-hidden rounded-2xl border border-line">
+          <Reveal variant="rise" delay={100} className="mt-10 overflow-hidden rounded-2xl border border-line bg-white shadow-panel">
             <dl>
               {phase1Spec.map((row) => (
                 <div

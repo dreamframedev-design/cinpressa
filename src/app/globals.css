@@ -47,6 +47,11 @@
 
   --ease-brand: cubic-bezier(0.16, 1, 0.3, 1);
 
+  /* Shared panel depth: broad ambient shadow plus a closer contact shadow. */
+  --shadow-panel:
+    0 50px 100px -20px rgba(13, 35, 66, 0.25),
+    0 30px 60px -30px rgba(13, 35, 66, 0.3);
+
   /* ---------- Type scale ----------
 
      RAISE THE FLOOR, HOLD THE CEILING. The note back was that the site reads
@@ -421,6 +426,10 @@ body {
   font-weight: 300;
   line-height: 1.06;
   letter-spacing: -0.03em;
+}
+
+.home-challenge .crescendo-point {
+  margin-top: 0.25rem;
 }
 
 /* EVERY TOP-OF-PAGE HEADLINE, NOT JUST THE HOME ONE. This started as the home
@@ -2990,8 +2999,6 @@ body {
 
 
 /* r */
-
-
 
 
 
