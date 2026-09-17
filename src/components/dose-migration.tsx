@@ -454,7 +454,7 @@ export function DoseMigration() {
               small type under each end was the caption explaining the diagram
               back to someone who had just watched it happen. */}
           <h3 className="type-display max-w-[22ch] text-[clamp(1.65rem,3vw,2.4rem)] font-light leading-[1.12] text-ink">
-            <span className="font-normal">365</span> doses, compressed into two
+            <span className="font-normal">365</span> doses, compressed into 2
           </h3>
         </div>
 

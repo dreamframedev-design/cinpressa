@@ -4,50 +4,16 @@ import { readFile } from "node:fs/promises";
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 
-test("the homepage hero switches between five treatments, A first", async () => {
+test("the homepage ships the approved golden-thread hero without review controls", async () => {
   const hero = await read("src/components/home-hero.tsx");
-
-  assert.match(hero, /^"use client";/);
-  // A is the default and is the field that was on /pipeline.
-  assert.match(hero, /useState<View>\("a"\)/);
-  assert.match(hero, /import \{ OpenFlow \} from "@\/components\/open-flow"/);
-  // B is the mark, and it is the one stop where the nav drops its own copy of
-  // it: two marks on one screen, at 500px and at 44, is the big one asking to
-  // be looked at while the small one insists it is the logo.
-  assert.match(hero, /<ConvergenceMark key="mark"[^>]*variant="cascade"/);
-  assert.match(hero, /const mark = view === "b";/);
-  assert.match(hero, /root\.dataset\.navMark = "off"/);
-  // Cleaned up on unmount, or another page inherits a nav with no mark.
-  assert.match(hero, /delete root\.dataset\.navMark;[\s\S]{0,120}\}, \[mark\]\)/);
-  const css0 = await read("src/app/globals.css");
-  assert.match(css0, /\[data-nav-mark="off"\] \.logo-hover-scope \.nvm \{\s*display: none;/);
-  const labels = [...hero.matchAll(/label: "([A-Z])"/g)].map((m) => m[1]);
-  assert.deepEqual(labels, ["A", "B", "C", "D", "E"]);
-  // THREE OF THE FIVE DRAW THE IDENTICAL FIELD, down to the mount key, so those
-  // comparisons isolate exactly one variable each. Only B swaps the field out
-  // and only E adds the thread to it.
-  assert.match(hero, /<OpenFlow key="plain" thread=\{false\} className="absolute inset-0" \/>/);
-  assert.match(hero, /view === "e" \?/);
-  assert.match(hero, /<OpenFlow key="flow" className="absolute inset-0" \/>/);
-  // The gold band is gone from the whole codebase, not just unused.
-  assert.doesNotMatch(hero, /goldBand/);
-  assert.doesNotMatch(hero, /Bleed/);
   const flow = await read("src/components/open-flow.tsx");
+
+  assert.match(hero, /<OpenFlow key="flow" className="absolute inset-0" \/>/);
   assert.match(flow, /thread = true/);
   assert.match(flow, /if \(withThread\)/);
-  assert.match(hero, /aria-pressed=\{v\.id === view\}/);
-  // The compact typographic variant is gone, and with it the branch it forced
-  // into the padding and the headline - one size and one position for every
-  // stop now. Comments stripped first: the note explaining the removal names
-  // the thing it removed, which is not the same as still shipping it.
-  const heroCode = hero
-    .replace(/\/\*[\s\S]*?\*\//g, "")
-    .replace(/\/\/.*$/gm, "");
-  assert.doesNotMatch(heroCode, /compact/);
-  // The gold band went when D became a type variant; it stays gone.
-  assert.doesNotMatch(flow, /goldBand|paintGold|GOLD_INDEX/);
+  assert.doesNotMatch(hero, /useState|setView|ConvergenceMark|hero-switch|aria-pressed|<button|navMark/);
+  assert.doesNotMatch(hero, /thread=\{false\}/);
 });
-
 test("the field feathers to the colour the boundary actually is", async () => {
   const hero = await read("src/components/home-hero.tsx");
 
@@ -77,7 +43,7 @@ test("the hero fields swapped pages", async () => {
     read("src/components/home-hero.tsx"),
   ]);
 
-  // The two traded places: the open flow is the homepage's treatment A...
+  // The approved homepage keeps the open flow...
   assert.match(hero, /<OpenFlow key="flow" className="absolute inset-0" \/>/);
   assert.doesNotMatch(hero, /HeroChurn/);
   // ...and the churn is back on /pipeline.
@@ -91,12 +57,7 @@ test("provenance is a badge, and the badge is portable", async () => {
   const hero = await read("src/components/home-hero.tsx");
   const badge = await read("src/components/portfolio-badge.tsx");
 
-  // The solid plate on A, which is also the default - the default should be the
-  // thing being proposed, not the hedge against it. D and F take the hairline:
-  // F is D plus the thread, so it has to carry D's badge or the two would
-  // differ in two things at once.
-  assert.match(hero, /view === "d" \|\| view === "e"\s*\?\s*"line"/);
-  assert.match(hero, /view === "a"\s*\?\s*"solid"/);
+  assert.match(hero, /<PortfolioBadge parent="CinRx" \/>/);
   assert.match(badge, /"line" \| "accent" \| "solid" \| "dark"/);
   // The approved phrasing is "a CinRx portfolio company", so the article has to
   // survive the split across the plate's two zones.

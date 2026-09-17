@@ -4,8 +4,7 @@ import test from "node:test";
 
 const home = readFileSync(new URL("../src/app/home/page.tsx", import.meta.url), "utf8");
 const css = readFileSync(new URL("../src/app/globals.css", import.meta.url), "utf8");
-/* The hero moved into its own client component when it gained the A/B
-   switch; the measurements below are still its measurements. */
+/* The hero has its own component; its approved measurements stay fixed. */
 const hero = readFileSync(new URL("../src/components/home-hero.tsx", import.meta.url), "utf8");
 /** The docblock quotes the copy it replaced, so it must not answer the test.
  *  "persistence." also survives legitimately in "treatment persistence." */
@@ -18,13 +17,10 @@ test("the homepage hinge carries the replacement copy, as a crescendo", () => {
   assert.doesNotMatch(home, /verdict-(turn|set|answer|key)/);
   assert.doesNotMatch(code(css), /\.verdict-/);
 
-  // Centred now: the hinge merged into one block with the cause and the
-  // consequence, and that block sits between a full-bleed banner and a tag
-  // list that tapers, so it holds their axis.
-  // Two columns now: the statement stands alone on the left, and everything
-  // that substantiates it stacks on the right.
-  assert.match(home, /className="crescendo max-w-none"/);
-  assert.match(home, /lg:grid-cols-\[minmax\(0,1\.05fr\)_minmax\(0,0\.95fr\)\]/);
+  // The full statement reads before its supporting evidence, at every width.
+  const headline = home.match(/<h2 className="crescendo max-w-none">([\s\S]*?)<\/h2>/)?.[1];
+  assert.ok(headline, "the statement is one semantic heading");
+  assert.match(headline, /crescendo-lede[\s\S]*crescendo-turn[\s\S]*crescendo-key/);
   assert.match(home, /In hypertension, the challenge is not whether blood pressure/);
   assert.match(home, /The challenge is whether it can remain/);
   assert.match(home, /<span className="crescendo-key">controlled over time\.<\/span>/);
@@ -42,6 +38,9 @@ test("the hinge is one block with the cause and the consequence", () => {
   assert.match(block, /Medication non-adherence is the leading cause/);
   assert.match(block, /risk of serious complications for/);
   assert.match(block, /COMPLICATIONS_RUN/);
+  assert.ok(block.indexOf("controlled over time.") < block.indexOf("Medication non-adherence"));
+  assert.ok(block.indexOf("Medication non-adherence") < block.indexOf("Persistent uncontrolled"));
+  assert.doesNotMatch(block, /grid-cols|order-\d/);
 });
 
 

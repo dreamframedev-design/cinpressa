@@ -99,92 +99,32 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* THE PROBLEM, IN TWO COLUMNS: THE CLAIM AND ITS EVIDENCE.
-
-            This was three things - a hinge section, the Bleed, and a "Control
-            that lasts remains elusive" section repeating the same argument in
-            prose. The headline is deleted and what is left is split at its
-            natural seam rather than stacked: the statement stands on the left,
-            and everything that substantiates it - why persistence fails, and
-            what failing costs - stacks on the right.
-
-            The crescendo carries the left column on its own, so the split is
-            weighted toward it: display type at 30 and 56px needs room to break
-            where it wants to, and the right column is prose plus a tag list
-            that reflows to whatever it is given.
-
-            The lead-in ends in a colon and belongs to its list, so the two stay
-            together inside the right column - the constraint that broke two
-            earlier cuts of this content. */}
-        {/* CLOSER TO THE BAND ABOVE. The rail's own bottom rule already ends the
-            figures, and this section then opened 80px below it - so the two read
-            as separated rather than sequential. */}
-        <Section tone="sky" className="pt-9! lg:pt-12!">
-          {/* TWO COLUMNS AND TWO ROWS, which is what makes the second beat of
-              each column start on the same line as the other's. A fixed offset
-              on the turn would only hold at one width - the paragraph across
-              from it rewraps, so the distance to match changes with the
-              viewport. Grid rows solve it outright: row one is the premise
-              beside the cause, row two is the answer beside the consequence,
-              and the browser aligns them at any measure.
-
-              The cost is that the crescendo is two paragraphs rather than one.
-              Both halves are whole sentences, and the sentence that runs into
-              the payoff is not the one that got split, so nothing is broken for
-              a screen reader by the change.
-
-              ORDER PUTS THE CRESCENDO BACK TOGETHER WHEN THE GRID STACKS. In
-              one column the source order would read premise, cause, answer,
-              consequence - which drops the supporting paragraph into the middle
-              of a sentence that has not finished. Below the breakpoint the two
-              crescendo halves take orders 1 and 2 and the body paragraphs 3 and
-              4, so the phrase completes before anything else speaks; at lg
-              every order resets to 0 and source order takes the grid back. */}
-          <div className="grid gap-x-12 gap-y-9 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-start lg:gap-x-16">
-            <Reveal variant="fade" className="order-1 lg:order-none">
-              <p className="crescendo max-w-none">
+        {/* One reading column keeps the statement and its evidence together.
+            The existing crescendo plays as one sequence before the supporting copy. */}
+        <Section tone="sky" className="pt-9! pb-12! lg:pt-12! lg:pb-16!">
+          <div className="home-challenge mx-auto max-w-4xl">
+            <Reveal variant="fade">
+              <h2 className="crescendo max-w-none">
                 <span className="crescendo-lede">
                   In hypertension, the challenge is not whether blood pressure can
-                  be lowered.
+                  be lowered.{" "}
                 </span>
-              </p>
-            </Reveal>
-
-            <Reveal variant="fade" delay={120} className="order-3 lg:order-none">
-              <p className="text-base leading-relaxed text-body">
-                Medication non-adherence is the leading cause of poor blood
-                pressure control, and hypertension is largely asymptomatic,
-                resulting in poor long-term adherence and treatment persistence.
-              </p>
-            </Reveal>
-
-            <Reveal variant="fade" delay={60} className="order-2 lg:order-none">
-              <p className="crescendo max-w-none">
                 <span className="crescendo-turn">
                   The challenge is whether it can remain{" "}
                 </span>
                 <span className="crescendo-point">
                   <span className="crescendo-key">controlled over time.</span>
                 </span>
-              </p>
+              </h2>
             </Reveal>
 
-            {/* THE SEVEN RUN IN, rather than sitting in badges. As tags they
-                took three rows and most of this column; as a sentence they take
-                two lines and finish the paragraph that introduces them, which
-                is what a list of seven short terms wants to be.
-
-                The colon goes with them - a colon introduces a list that is
-                about to be set apart, and nothing is set apart any more. The
-                terms lowercase because they are now inside a sentence rather
-                than labels in their own right; not one of them is a proper
-                noun, so nothing is lost. They stay in ink against the body
-                grey, so the run still reads as the list it is.
-
-                Still generated from the same array, so the terms and their
-                order have one source. */}
-            <Reveal variant="fade" delay={160} className="order-4 lg:order-none">
-              <p className="text-base leading-relaxed text-body">
+            <Reveal variant="fade" delay={180} className="mt-8 max-w-3xl space-y-5 text-base leading-relaxed text-body lg:mt-9">
+              <p>
+                Medication non-adherence is the leading cause of poor blood
+                pressure control, and hypertension is largely asymptomatic,
+                resulting in poor long-term adherence and treatment persistence.
+              </p>
+              <p>
                 Persistent uncontrolled blood pressure substantially increases
                 the risk of serious complications for{" "}
                 <span className="text-ink">{COMPLICATIONS_RUN}</span>
@@ -192,7 +132,6 @@ export default function HomePage() {
             </Reveal>
           </div>
         </Section>
-
         {/* Bleed runs full-bleed rather than inside the container - it is a piece,
             not a figure, and gutters would make it read as an illustration sitting
             in a slot. It lands directly under the answer, which is the point. */}
